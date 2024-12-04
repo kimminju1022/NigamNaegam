@@ -58,6 +58,5 @@
     🎇작업도구 주소 🎇<br>
    ![ 슬랙 : ](./ex/img/slack.png)
    피그마 : https://www.figma.com/design/YzpvRObv2PnbrkMWCGYe6v/Untitled?t=bAXWt8iQiLdijV71-0
-    노션  :
-   E R D  :
-
+    지라  : https://nanum112.atlassian.net/jira/software/projects/GREEN/boards/2
+   E R D  : https://www.erdcloud.com/d/iYgN5poNpJC9wzYyz
