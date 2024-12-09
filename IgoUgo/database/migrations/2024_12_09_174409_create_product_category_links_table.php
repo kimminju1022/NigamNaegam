@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hotel_categories', function (Blueprint $table) {
-            $table->id('hc_id');
-            $table->string('hc_name', 20);
-            $table->char('hc_type', 1)->unique();
+        Schema::create('product_category_links', function (Blueprint $table) {
+            $table->id('pcl_id');
+            $table->bigInteger('prod_id');
+            $table->char('cc_type', 1);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hotel_categories');
+        Schema::dropIfExists('product_category_links');
     }
 };

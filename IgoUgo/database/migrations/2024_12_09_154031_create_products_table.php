@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('prod_price');
             $table->string('prod_latitude', 100);
             $table->string('prod_longitude', 100);
+            $table->string('prod_address', 100);
             $table->timestamps();
             $table->softDeletes();
         });

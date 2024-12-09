@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('hotel_longitude', 100);
             $table->string('hotel_title', 100);
             $table->string('hotel_content', 2000);
+            $table->string('hotel_address', 100);
             $table->bigInteger('hotel_price');
             $table->timestamps();
             $table->softDeletes();
