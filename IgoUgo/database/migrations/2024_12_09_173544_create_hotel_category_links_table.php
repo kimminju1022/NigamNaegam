@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hotels_category_links', function (Blueprint $table) {
+        Schema::create('hotel_category_links', function (Blueprint $table) {
             $table->id('hcl_id');
             $table->bigInteger('hotel_id');
             $table->char('hc_type', 1);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hotels_category_links');
+        Schema::dropIfExists('hotel_category_links');
     }
 };
