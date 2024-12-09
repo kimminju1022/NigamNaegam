@@ -16,8 +16,8 @@
         </div> -->
 
 
-        <img class="header-logo-img" src="img/내(신발).png" alt="">
-        <img class="header-title-img" src="img/T_logo_N.png" alt="">
+        <img class="header-logo-img" src="/logo_gam.png" alt="">
+        <img class="header-title-img" src="/logo_IgoUgo.png" alt="">
         <div class="header-title-button">
             <button class="button-FAQ">FAQ</button>
             <button class="button-register">회원가입</button>
@@ -42,7 +42,7 @@
 <footer class="footer">
     <div class="footer-inner">
         <div>
-            <img class="footer-logo" src="/img/logo2.png" alt="">
+            <img class="footer-logo" src="/logo_footer.png" alt="">
         </div>
         <div class="footer-text">
             <p>Tel : 053.572.1005</p>
