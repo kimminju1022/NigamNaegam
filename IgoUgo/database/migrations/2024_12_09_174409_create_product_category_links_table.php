@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('product_category_links', function (Blueprint $table) {
             $table->id('pcl_id');
-            $table->bigInteger('prod_id');
+            $table->bigInteger('prod_id')->unsigned();
             $table->char('cc_type', 1);
         });
     }

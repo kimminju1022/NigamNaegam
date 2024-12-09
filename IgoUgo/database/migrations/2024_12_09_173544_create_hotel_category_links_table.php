@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('hotel_category_links', function (Blueprint $table) {
             $table->id('hcl_id');
-            $table->bigInteger('hotel_id');
+            $table->bigInteger('hotel_id')->unsigned();
             $table->char('hc_type', 1);
         });
     }
