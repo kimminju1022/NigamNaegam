@@ -1,6 +1,21 @@
 <template>
 <header class="header">
     <div class="header-title">
+         <!-- 햄버거 버튼 -->
+         <!-- <button class="hamburger-btn">버튼버튼</button> -->
+        
+         <!-- 네비게이션 메뉴 -->
+         <!-- <div v-if="isMenuOpen" class="navi">
+            <button class="button-register">회원가입</button>
+            <button class="button-btn">로그인</button>
+            <button class="button-same">호텔</button>
+            <button class="button-same">상품</button>
+            <button class="button-same">게시판</button>
+            <hr>
+            <button class="button-FAQ">FAQ</button>
+        </div> -->
+
+
         <img class="header-logo-img" src="img/내(신발).png" alt="">
         <img class="header-title-img" src="img/T_logo_N.png" alt="">
         <div class="header-title-button">
@@ -45,7 +60,33 @@
 </template>
 
 <script setup>
+// import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+// // 창 크기 여부
+// const isHambuger = ref(window.innerWidth <= 900);  // 600 이하일 때 햄버거 메뉴 표시
+// // 메뉴 상태 
+// const isMenuOpen = ref(false);
+
+// // 창 크기 변화 감지
+// const handleResize = () => {
+//     isHambuger.value = window.innerWidth <= 900;  // 창 크기 변화에 따라 햄버거 버튼 상태 변경
+// };
+
+// onMounted(() => {
+//     isHambuger.value = window.innerWidth <= 900;
+//   // 창 크기 변화 이벤트 리스너 등록
+//     window.addEventListener('resize', handleResize);
+// });
+
+// onBeforeUnmount(() => {
+//   // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
+//     window.removeEventListener('resize', handleResize);
+// });
+
+// // 메뉴 열기/닫기
+// const toggleMenu = () => {
+//     isMenuOpen.value = !isMenuOpen.value;
+// };
 </script>
 
 <style>
@@ -62,6 +103,14 @@
     font-weight: normal;
     font-style: normal;
 }
+/* 네비게이션 메뉴 */
+.navi {
+    position: relative;
+    width: 200px;
+    height: 400px;
+    background-color: #01083A;
+}
+
 /* 해더해더 */
 .header {
     display: grid;
