@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('hotels', function(Blueprint $table) {
-            $table->foreign('hc_id')->references('hc_id')->on('hotel_categories');
+        Schema::table('hotel_category_links', function(Blueprint $table) {
+            $table->foreign('hotel_id')->references('hotel_id')->on('hotels');
+            $table->foreign('hc_type')->references('hc_type')->on('hotel_categories');
         });
 
-        Schema::table('products', function(Blueprint $table) {
-            $table->foreign('cc_id')->references('cc_id')->on('content_categories');
+        Schema::table('product_category_links', function(Blueprint $table) {
+            $table->foreign('prod_id')->references('prod_id')->on('products');
+            $table->foreign('cc_type')->references('cc_type')->on('product_categories');
         });
 
         Schema::table('boards', function(Blueprint $table) {
@@ -51,12 +53,14 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('hotels', function(Blueprint $table) {
-            $table->dropForeign(['hc_id']);
+        Schema::table('hotel_category_links', function(Blueprint $table) {
+            $table->dropForeign(['hotel_id']);
+            $table->dropForeign(['hc_type']);
         });
 
-        Schema::table('products', function(Blueprint $table) {
-            $table->dropForeign(['cc_id']);
+        Schema::table('product_category_links', function(Blueprint $table) {
+            $table->dropForeign(['prod_id']);
+            $table->dropForeign(['cc_type']);
         });
 
         Schema::table('boards', function(Blueprint $table) {
