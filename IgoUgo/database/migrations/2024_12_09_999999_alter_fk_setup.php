@@ -20,7 +20,7 @@ return new class extends Migration
 
         Schema::table('product_category_links', function(Blueprint $table) {
             $table->foreign('prod_id')->references('prod_id')->on('products');
-            $table->foreign('cc_type')->references('cc_type')->on('product_categories');
+            $table->foreign('cc_type')->references('cc_type')->on('content_categories');
         });
 
         Schema::table('boards', function(Blueprint $table) {

@@ -10,15 +10,21 @@ class User extends Authenticatable
 {
     use  HasFactory, Notifiable;
 
+    protected $primaryKey = 'user_id';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'user_email',
+        'user_password',
+        'user_name',
+        'user_nickname',
+        'user_profile',
+        'user_phone',
+        'refresh_token',
     ];
 
     /**
@@ -27,16 +33,18 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'user_password',
+        'refresh_token',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * TimeZone format when serializing JSON
+     * 
+     * @param \DateTimeInterface $date
+     * 
+     * @return String('Y-m-d H:i:s')
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
