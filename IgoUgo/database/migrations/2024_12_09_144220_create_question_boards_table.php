@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('qb_content', 2000);
             $table->string('qb_img', 100)->default('/default/board_default.png');
             $table->string('qb_reply', 2000)->nullable();
+            $table->char('qb_status', 1)->default(0);
             $table->timestamp('qb_reply_created_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

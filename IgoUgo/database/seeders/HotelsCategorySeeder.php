@@ -17,9 +17,9 @@ class HotelsCategorySeeder extends Seeder
     {
         HotelsCategory::insert([
             ['hc_type' => '0', 'hc_name' => '조식']
-            ,['hc_type' => '1', 'hc_name' => '질문게시판']
-            ,['hc_type' => '2', 'hc_name' => '문의게시판']
-            ,['hc_type' => '3', 'hc_name' => '문의게시판']
+            ,['hc_type' => '1', 'hc_name' => '금연']
+            ,['hc_type' => '2', 'hc_name' => '와이파이']
+            ,['hc_type' => '3', 'hc_name' => '주차']
         ]);
     }
 }
