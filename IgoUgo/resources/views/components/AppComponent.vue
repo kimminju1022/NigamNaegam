@@ -1,62 +1,62 @@
 <template>
-<header class="header">
-    <div class="header-title">
-         <!-- 햄버거 버튼 -->
-         <!-- <button class="hamburger-btn">버튼버튼</button> -->
-        
-         <!-- 네비게이션 메뉴 -->
-         <!-- <div v-if="isMenuOpen" class="navi">
-            <button class="button-register">회원가입</button>
-            <button class="button-btn">로그인</button>
+    <header class="header">
+        <div class="header-title">
+            <!-- 햄버거 버튼 -->
+            <!-- <button class="hamburger-btn">버튼버튼</button> -->
+            
+            <!-- 네비게이션 메뉴 -->
+            <!-- <div v-if="isMenuOpen" class="navi">
+                <button class="button-register">회원가입</button>
+                <button class="button-btn">로그인</button>
+                <button class="button-same">호텔</button>
+                <button class="button-same">상품</button>
+                <button class="button-same">게시판</button>
+                <hr>
+                <button class="button-FAQ">FAQ</button>
+            </div> -->
+
+
+            <img class="header-logo-img" src="/logo_gam.png" alt="">
+            <img class="header-title-img" src="/logo_IgoUgo.png" alt="">
+            <div class="header-title-button">
+                <button class="button-FAQ">FAQ</button>
+                <button class="button-register">회원가입</button>
+                <button class="button-btn">로그인</button>
+            </div>
+        </div>
+        <div class="header-btn">
             <button class="button-same">호텔</button>
             <button class="button-same">상품</button>
             <button class="button-same">게시판</button>
-            <hr>
-            <button class="button-FAQ">FAQ</button>
-        </div> -->
-
-
-        <img class="header-logo-img" src="/logo_gam.png" alt="">
-        <img class="header-title-img" src="/logo_IgoUgo.png" alt="">
-        <div class="header-title-button">
-            <button class="button-FAQ">FAQ</button>
-            <button class="button-register">회원가입</button>
-            <button class="button-login">로그인</button>
+            <div class="header-search-btn"> 
+                <input class="header-search" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                <button class="button-btn">검색</button>
+            </div>
         </div>
-    </div>
-    <div class="header-btn">
-        <button class="button-same">호텔</button>
-        <button class="button-same">상품</button>
-        <button class="button-same">게시판</button>
-        <div class="header-search-btn"> 
-            <input class="header-search" type="text" required placeholder="Q 어디로 놀러가세요?" >
-            <button class="button-btn">검색</button>
-        </div>
-    </div>
-</header>
+    </header>
 
-<main class="main">
-<router-view></router-view>
-</main>
+    <main class="main">
+        <router-view></router-view>
+    </main>
 
-<footer class="footer">
-    <div class="footer-inner">
-        <div>
-            <img class="footer-logo" src="/logo_footer.png" alt="">
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <img class="footer-logo" src="/logo_footer.png" alt="">
+            </div>
+            <div class="footer-text">
+                <p>Tel : 053.572.1005</p>
+                <p>후원계좌 : 농협 000-00000-00</p>
+                <p>(주)절어서 대구속으로</p>
+                <p>대표 : 뽀빠이</p>
+                <p>사업자 번호 : 123-45-678</p>
+            </div>
         </div>
-        <div class="footer-text">
-            <p>Tel : 053.572.1005</p>
-            <p>후원계좌 : 농협 000-00000-00</p>
-            <p>(주)절어서 대구속으로</p>
-            <p>대표 : 뽀빠이</p>
-            <p>사업자 번호 : 123-45-678</p>
+        <div class="footer-bottom">
+            <hr class="hr">
+            <p class="copy-right">COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
         </div>
-    </div>
-    <div class="footer-bottom">
-        <hr class="hr">
-        <p class="copy-right">COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
-    </div>
-</footer>
+    </footer>
 </template>
 
 <script setup>
@@ -95,7 +95,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+header *, footer {
     font-family: 'MapoBackpacking';
+}
+main {
+    font-family: 'SUITE-Regular';
 }
 @font-face {
     font-family: 'MapoBackpacking';
@@ -103,6 +108,13 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
 /* 네비게이션 메뉴 */
 .navi {
     position: relative;
@@ -111,13 +123,14 @@
     background-color: #01083A;
 }
 
-/* 해더해더 */
+/* 헤더해더 */
 .header {
     display: grid;
     grid-template-rows: 150px 60px;
     width: 100vw;
     background-color: #fff;
     position: fixed;
+    font-family: 'MapoBackpacking';
 }
 .header-title {
     display: grid;
@@ -180,8 +193,8 @@
     margin-right: 20px;
     gap: 20px;
 }
-/* 여러곳에 사용될 버튼 css */
-.button-login {
+
+.button-btn {
     font-size: 25px;
     width: 100px;
     height: 50px;
@@ -197,7 +210,7 @@
     color: #01083A;  
 }
 
-/* 버튼 */
+/* 여러곳에 사용될 버튼 css */
 .btn {
     border: none;
     text-decoration: none;
@@ -210,8 +223,8 @@
     color: #ffff;
 }
 
-.button-white {
-    background-color: #fff;
+.button-clear {
+    background-color: transparent;
     color: #01083A;
 }
 
@@ -229,6 +242,7 @@
     transform: translateY(0%);
     display: grid;
     grid-template-rows: 200px 60px;
+    font-family: 'MapoBackpacking';
 }
 .footer-inner {
     display: grid;
