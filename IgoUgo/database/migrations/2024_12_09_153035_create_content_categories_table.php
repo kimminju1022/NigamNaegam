@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('content_categories', function (Blueprint $table) {
             $table->id('cc_id');
             $table->string('cc_name', 20);
-            $table->char('cc_type', 1);
+            $table->char('cc_type', 1)->unique();
         });
     }
 
