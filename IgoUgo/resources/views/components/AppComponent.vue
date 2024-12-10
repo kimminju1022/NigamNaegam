@@ -21,7 +21,7 @@
         <div class="header-title-button">
             <button class="button-FAQ">FAQ</button>
             <button class="button-register">회원가입</button>
-            <button class="button-btn">로그인</button>
+            <button class="button-login">로그인</button>
         </div>
     </div>
     <div class="header-btn">
@@ -181,7 +181,7 @@
     gap: 20px;
 }
 /* 여러곳에 사용될 버튼 css */
-.button-btn {
+.button-login {
     font-size: 25px;
     width: 100px;
     height: 50px;
@@ -195,6 +195,24 @@
     border-style: none;
     font-size: 25px;
     color: #01083A;  
+}
+
+/* 버튼 */
+.btn {
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center; 
+}
+
+.button-navy {
+    background-color: #01083A;
+    color: #ffff;
+}
+
+.button-white {
+    background-color: #fff;
+    color: #01083A;
 }
 
 /* 메인메인 */
