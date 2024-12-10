@@ -7,6 +7,10 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
 import NotFoundComponent from '../views/NotFoundComponent.vue';
+import MyPageComponent from '../views/components/user/MyPageComponent.vue';
+import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
+import PasswordChkComponent from '../views/components/user/PasswordChkComponent.vue';
+import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 
 const routes = [
   // 다른 경로와 컴포넌트 추가 가능
@@ -37,6 +41,22 @@ const routes = [
   {
     path: '/boards/update',
     component: BoardUpdateComponent,
+  },
+  {
+    path: '/mypage',
+    component: MyPageComponent,
+  },
+  {
+    path: '/mypage/update',
+    component: MyPageUpdateComponent,
+  },
+  {
+    path: '/passwordchk',
+    component: PasswordChkComponent,
+  },
+  {
+    path: '/password/update',
+    component: PasswordUpdateComponent,
   },
   {
     path: '/:catchAll(.*)',

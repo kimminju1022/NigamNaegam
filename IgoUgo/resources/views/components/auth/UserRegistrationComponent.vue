@@ -50,8 +50,8 @@
             </div>
         </div>
         <div class="registration-btn">
-            <button class="btn button-navy btn-registration">회원가입</button>
-            <button class="btn button-clear btn-cancel">취소</button>
+            <button class="btn bg-navy btn-registration">회원가입</button>
+            <button class="btn bg-clear btn-cancel">취소</button>
         </div>
     </div>
 </template>

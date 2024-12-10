@@ -19,9 +19,9 @@
             <img class="header-logo-img" src="/logo_gam.png" alt="">
             <img class="header-title-img" src="/logo_IgoUgo.png" alt="">
             <div class="header-title-button">
-                <button class="btn button-clear button-FAQ">FAQ</button>
-                <button class="btn button-clear button-register">회원가입</button>
-                <button class="btn button-navy button-btn">로그인</button>
+                <button class="btn bg-clear button-FAQ">FAQ</button>
+                <button class="btn bg-clear button-register">회원가입</button>
+                <button class="btn bg-navy button-btn">로그인</button>
             </div>
         </div>
         <div class="header-btn">
@@ -30,7 +30,7 @@
             <button class="button-same">게시판</button>
             <div class="header-search-btn"> 
                 <input class="header-search" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                <button class="btn button-navy button-btn">검색</button>
+                <button class="btn bg-navy button-btn">검색</button>
             </div>
         </div>
     </header>

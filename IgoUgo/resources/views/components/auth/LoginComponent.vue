@@ -9,8 +9,8 @@
             <input class="input-login" type="password" placeholder="password">
         </div>
         <div class="login-btn">
-            <button class="btn button-navy btn-login">로그인</button>
-            <button class="btn button-clear btn-cancel">취소</button>
+            <button class="btn bg-navy btn-login">로그인</button>
+            <button class="btn bg-clear btn-cancel">취소</button>
         </div>
     </div>
 </template>
