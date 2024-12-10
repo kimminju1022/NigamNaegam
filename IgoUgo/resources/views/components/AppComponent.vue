@@ -244,11 +244,10 @@ input, textarea {
 /* 푸터푸터 */
 .footer {
     height: 200px;
-    width: 100vw;
+    /* width: 100vw; */
     background-color: #01083a;
-    position: fixed;
-    bottom: 0;
-    /* transform: translateY(0%); */
+    position: relative;
+    transform: translateY(0%);
     display: grid;
     grid-template-rows: 140px 60px;
     z-index: 1000;
