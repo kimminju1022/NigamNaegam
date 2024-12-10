@@ -47,14 +47,17 @@
             <div class="footer-text">
                 <p>Tel : 053.572.1005</p>
                 <p>후원계좌 : 농협 000-00000-00</p>
-                <p>(주)절어서 대구속으로</p>
+                <p>(주)  절어서 대구속으로</p>
                 <p>대표 : 뽀빠이</p>
                 <p>사업자 번호 : 123-45-678</p>
             </div>
         </div>
         <div class="footer-bottom">
             <hr class="hr">
-            <p class="copy-right">COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
+            <div class="copy-right">
+                <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
+
+            </div>
         </div>
     </footer>
 </template>
@@ -115,6 +118,11 @@ main {
     font-style: normal;
 }
 
+input, textarea {
+    border: none;
+    outline: none;
+}
+
 /* 네비게이션 메뉴 */
 .navi {
     position: relative;
@@ -126,7 +134,7 @@ main {
 /* 헤더해더 */
 .header {
     display: grid;
-    grid-template-rows: 150px 60px;
+    grid-template-rows: 100px 50px;
     width: 100vw;
     background-color: #fff;
     position: fixed;
@@ -157,13 +165,13 @@ main {
     margin-left: auto;
 }
 .header-logo-img {
-    width: 150px;
-    height: 150px;
-    min-width: 100px;
+    width: 110px;
+    height: 110px;
+    /* min-width: 100px; */
 }
 .header-title-img {
-    width: 510px;
-    height: 110px;
+    width: 450px;
+    /* height: 110px; */
 }
 .button-FAQ {
     background-color:transparent;
@@ -235,14 +243,13 @@ main {
 
 /* 푸터푸터 */
 .footer {
-    height: 260px;
+    height: 200px;
     width: 100vw;
     background-color: #01083a;
     position: relative;
     transform: translateY(0%);
     display: grid;
-    grid-template-rows: 200px 60px;
-    font-family: 'MapoBackpacking';
+    grid-template-rows: 140px 60px;
 }
 .footer-inner {
     display: grid;
@@ -256,25 +263,27 @@ main {
     justify-self: start;
 }
 .footer-logo {
-    height: 200px;
-    width: 200px;
+    height: 140px;
+    width: 140px;
 }
 .footer-text {
     color: #ffff;
-    font-size: 25px;
+    font-size: 1.1rem;
     font-weight: 400;
     letter-spacing: 3px;
     white-space: nowrap;
 }
 .footer-bottom {
     margin: 0 auto;
+    padding: 10px;
 }
 .hr {
     width: 95vw;
 }
 .copy-right {
-    font-size: 25px;
+    font-size: 1rem;
     color: #fff;
-    margin: 10px;
+    margin: 10px auto;
+    width: 400px;
 }
 </style>
