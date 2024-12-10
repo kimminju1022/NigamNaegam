@@ -19,9 +19,9 @@
             <img class="header-logo-img" src="/logo_gam.png" alt="">
             <img class="header-title-img" src="/logo_IgoUgo.png" alt="">
             <div class="header-title-button">
-                <button class="button-FAQ">FAQ</button>
-                <button class="button-register">회원가입</button>
-                <button class="button-btn">로그인</button>
+                <button class="btn button-clear button-FAQ">FAQ</button>
+                <button class="btn button-clear button-register">회원가입</button>
+                <button class="btn button-navy button-btn">로그인</button>
             </div>
         </div>
         <div class="header-btn">
@@ -30,7 +30,7 @@
             <button class="button-same">게시판</button>
             <div class="header-search-btn"> 
                 <input class="header-search" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                <button class="button-btn">검색</button>
+                <button class="btn button-navy button-btn">검색</button>
             </div>
         </div>
     </header>
@@ -97,12 +97,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'LeferiBaseType-RegularA';
 }
-header *, footer {
+
+/* ***** 지우지 말 것 ***** */
+/* header *, footer {
     font-family: 'MapoBackpacking';
+    font-weight: 100;
 }
-main {
-    font-family: 'SUITE-Regular';
+main * {
+    font-family: 'LeferiBaseType-RegularA';
 }
 @font-face {
     font-family: 'MapoBackpacking';
@@ -111,11 +115,19 @@ main {
     font-style: normal;
 }
 @font-face {
-    font-family: 'SUITE-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
-    font-weight: 400;
+    font-family: 'LeferiBaseType-RegularA';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-RegularA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+} */
+
+@font-face {
+    font-family: 'LeferiBaseType-RegularA';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-RegularA.woff') format('woff');
+    font-weight: normal;
     font-style: normal;
 }
+
 
 input, textarea {
     border: none;
@@ -158,7 +170,8 @@ input, textarea {
 .header-btn {
     display: flex;
     align-items: center;
-    margin-left: 20px;
+    /* margin-left: 20px; */
+    padding: 30px;
     gap: 20px;
 }
 .header-btn > :last-child {
@@ -174,25 +187,19 @@ input, textarea {
     /* height: 110px; */
 }
 .button-FAQ {
-    background-color:transparent;
-    border-style: none;
-    font-size: 20px;
-    color: #01083A;
+    font-size: 1.1rem;
 }
 .button-register {
-    background-color:transparent;
-    border-style: none;
-    font-size: 25px;
-    color: #01083A;
+    font-size: 1.1rem;
 }
 .header-search {
     border-radius: 50px;
-    width: 400px;
+    width: 350px;
     height: 35px;
     background-color: #f5f5f5;
     border-style: none;
     font-size: 1.1rem;
-    padding-left: 20%;
+    padding-left: 20px;
     outline: none;
 }
 .header-search-btn {
@@ -203,13 +210,11 @@ input, textarea {
 }
 
 .button-btn {
-    font-size: 25px;
-    width: 100px;
-    height: 50px;
+    font-size: 1.1rem;
+    width: 70px;
+    height: 40px;
     border-radius: 50px;
     border-style: none;
-    color: #ffff;
-    background-color: #01083A;
 }
 .button-same {
     background-color:transparent;
@@ -226,6 +231,10 @@ input, textarea {
     text-align: center; 
 }
 
+.btn:hover {
+    font-weight: 900;
+}
+
 .button-navy {
     background-color: #01083A;
     color: #ffff;
@@ -238,7 +247,7 @@ input, textarea {
 
 /* 메인메인 */
 .main {
-    padding-top: 210px;
+    padding-top: 160px;
 }
 
 /* 푸터푸터 */
@@ -269,8 +278,8 @@ input, textarea {
 }
 .footer-text {
     color: #ffff;
-    font-size: 1.1rem;
-    letter-spacing: 3px;
+    font-size: 15px;
+    letter-spacing: 1px;
     white-space: nowrap;
 }
 .footer-bottom {
