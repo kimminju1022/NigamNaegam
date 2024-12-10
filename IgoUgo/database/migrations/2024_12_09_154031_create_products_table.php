@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('prod_img', 100);
             $table->string('prod_content', 2000);
             $table->bigInteger('prod_price');
-            $table->string('prod_latitude', 100);
-            $table->string('prod_longitude', 100);
+            $table->decimal('prod_latitude', 12, 9);
+            $table->decimal('prod_longitude', 12, 9);
             $table->string('prod_address', 100);
             $table->timestamps();
             $table->softDeletes();

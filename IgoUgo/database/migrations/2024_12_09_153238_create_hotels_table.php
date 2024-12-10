@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('hotels', function (Blueprint $table) {
             $table->id('hotel_id');
             $table->bigInteger('hc_id')->unsigned();
-            $table->string('hotel_latitude', 100);
-            $table->string('hotel_longitude', 100);
+            $table->decimal('hotel_latitude', 12, 9);
+            $table->decimal('hotel_longitude', 12, 9);
             $table->string('hotel_title', 100);
             $table->string('hotel_content', 2000);
             $table->string('hotel_address', 100);
