@@ -62,3 +62,5 @@
     지라  : https://nanum112.atlassian.net/jira/software/projects/GREEN/boards/2
    <hr>
    E R D  : https://www.erdcloud.com/d/iYgN5poNpJC9wzYyz
+   <hr>
+   작업요구서 : (./ex/img/작업요구서.pdf)
