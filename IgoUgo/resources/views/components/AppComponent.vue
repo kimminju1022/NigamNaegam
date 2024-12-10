@@ -188,11 +188,11 @@ input, textarea {
 .header-search {
     border-radius: 50px;
     width: 400px;
-    height: 50px;
+    height: 35px;
     background-color: #f5f5f5;
     border-style: none;
-    font-size: 25px;
-    padding-left: 15px;
+    font-size: 1.1rem;
+    padding-left: 20%;
     outline: none;
 }
 .header-search-btn {
@@ -251,6 +251,7 @@ input, textarea {
     /* transform: translateY(0%); */
     display: grid;
     grid-template-rows: 140px 60px;
+    z-index: 1000;
 }
 .footer-inner {
     display: grid;
