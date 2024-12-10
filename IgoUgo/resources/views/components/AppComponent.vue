@@ -56,7 +56,6 @@
             <hr class="hr">
             <div class="copy-right">
                 <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
-
             </div>
         </div>
     </footer>
@@ -139,6 +138,7 @@ input, textarea {
     background-color: #fff;
     position: fixed;
     font-family: 'MapoBackpacking';
+    z-index: 1000;
 }
 .header-title {
     display: grid;
@@ -246,8 +246,9 @@ input, textarea {
     height: 200px;
     width: 100vw;
     background-color: #01083a;
-    position: relative;
-    transform: translateY(0%);
+    position: fixed;
+    bottom: 0;
+    /* transform: translateY(0%); */
     display: grid;
     grid-template-rows: 140px 60px;
 }
@@ -269,7 +270,6 @@ input, textarea {
 .footer-text {
     color: #ffff;
     font-size: 1.1rem;
-    font-weight: 400;
     letter-spacing: 3px;
     white-space: nowrap;
 }
