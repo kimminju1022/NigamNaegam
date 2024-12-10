@@ -235,12 +235,12 @@ input, textarea {
     font-weight: 900;
 }
 
-.button-navy {
+.bg-navy {
     background-color: #01083A;
     color: #ffff;
 }
 
-.button-clear {
+.bg-clear {
     background-color: transparent;
     color: #01083A;
 }
