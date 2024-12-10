@@ -1,5 +1,6 @@
 <template>
-    <header class="header">
+    <!-- <header class="header"> -->
+    <header>
         <div class="header-title">
             <!-- 햄버거 버튼 -->
             <!-- <button class="hamburger-btn">버튼버튼</button> -->
@@ -16,21 +17,21 @@
             </div> -->
 
 
-            <img class="header-logo-img" src="/logo_gam.png" alt="">
-            <img class="header-title-img" src="/logo_IgoUgo.png" alt="">
+            <a href="#"><img class="header-logo-img" src="/logo_gam.png" alt=""></a>
+            <a href="#"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></a>
             <div class="header-title-button">
-                <button class="btn bg-clear button-FAQ">FAQ</button>
-                <button class="btn bg-clear button-register">회원가입</button>
-                <button class="btn bg-navy button-btn">로그인</button>
+                <button class="btn bg-clear header-btn">FAQ</button>
+                <button class="btn bg-clear header-btn">회원가입</button>
+                <button class="btn bg-navy header-bg-btn">로그인</button>
             </div>
         </div>
-        <div class="header-btn">
-            <button class="button-same">호텔</button>
-            <button class="button-same">상품</button>
-            <button class="button-same">게시판</button>
-            <div class="header-search-btn"> 
-                <input class="header-search" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                <button class="btn bg-navy button-btn">검색</button>
+        <div class="header-list">
+            <button class="btn">호텔</button>
+            <button class="btn">상품</button>
+            <button class="btn">게시판</button>
+            <div class="header-search"> 
+                <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                <button class="btn bg-navy header-bg-btn">검색</button>
             </div>
         </div>
     </header>
@@ -39,7 +40,8 @@
         <router-view></router-view>
     </main>
 
-    <footer class="footer">
+    <!-- <footer class="footer"> -->
+    <footer>
         <div class="footer-inner">
             <div>
                 <img class="footer-logo" src="/logo_footer.png" alt="">
@@ -120,6 +122,7 @@ main * {
     font-weight: normal;
     font-style: normal;
 } */
+ /* ********************** */
 
 @font-face {
     font-family: 'LeferiBaseType-RegularA';
@@ -128,6 +131,20 @@ main * {
     font-style: normal;
 }
 
+/* body {
+    padding: 10px 10px;
+    max-width: 800px;
+    margin: auto;
+    -ms-overflow-style: none;
+} */
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+a {
+    text-decoration: none;
+}
 
 input, textarea {
     border: none;
@@ -143,7 +160,7 @@ input, textarea {
 }
 
 /* 헤더해더 */
-.header {
+header {
     display: grid;
     grid-template-rows: 100px 50px;
     width: 100vw;
@@ -167,14 +184,14 @@ input, textarea {
     gap: 25px;
 }
 
-.header-btn {
+.header-list {
     display: flex;
     align-items: center;
     /* margin-left: 20px; */
     padding: 30px;
     gap: 20px;
 }
-.header-btn > :last-child {
+.header-list > :last-child {
     margin-left: auto;
 }
 .header-logo-img {
@@ -186,41 +203,44 @@ input, textarea {
     width: 450px;
     /* height: 110px; */
 }
-.button-FAQ {
-    font-size: 1.1rem;
+.header-btn {
+    font-size: 18px;
 }
-.button-register {
-    font-size: 1.1rem;
+.header-bg-btn {
+    font-size: 18px;
+    width: 70px;
+    height: 35px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .header-search {
-    border-radius: 50px;
-    width: 350px;
-    height: 35px;
-    background-color: #f5f5f5;
-    border-style: none;
-    font-size: 1.1rem;
-    padding-left: 20px;
-    outline: none;
-}
-.header-search-btn {
     display: flex;
     align-items: center;
     margin-right: 20px;
     gap: 20px;
 }
-
-.button-btn {
-    font-size: 1.1rem;
-    width: 70px;
-    height: 40px;
+.header-search-bar {
     border-radius: 50px;
+    width: 330px;
+    height: 35px;
+    background-color: #f5f5f5;
     border-style: none;
+    font-size: 16px;
+    padding-left: 20px;
 }
-.button-same {
+
+.header-list > button {
     background-color:transparent;
-    border-style: none;
     font-size: 25px;
     color: #01083A;  
+    transition: color .7s ease-in-out, box-shadow .7s ease-in-out;
+}
+
+.header-list >  button:hover {
+    box-shadow: inset 100px 0 0 0 #01083A;
+    color: #fff;
 }
 
 /* 여러곳에 사용될 버튼 css */
@@ -231,9 +251,9 @@ input, textarea {
     text-align: center; 
 }
 
-.btn:hover {
-    font-weight: 900;
-}
+/* .btn:hover {
+    font-weight: 700;
+} */
 
 .bg-navy {
     background-color: #01083A;
@@ -251,7 +271,7 @@ input, textarea {
 }
 
 /* 푸터푸터 */
-.footer {
+footer {
     height: 200px;
     /* width: 100vw; */
     background-color: #01083a;
@@ -260,6 +280,7 @@ input, textarea {
     display: grid;
     grid-template-rows: 140px 60px;
     z-index: 1000;
+    margin-top: 100px;
 }
 .footer-inner {
     display: grid;
@@ -290,7 +311,7 @@ input, textarea {
     width: 95vw;
 }
 .copy-right {
-    font-size: 1rem;
+    font-size: 13px;
     color: #fff;
     margin: 10px auto;
     width: 400px;

@@ -2,7 +2,7 @@
     <div class="form-box">
         <div class="form-header-title">
             <h1>회원가입</h1>
-            <h3>회원이 되어 다양한 경험을 공유해보세요!</h3>
+            <p>회원이 되어 다양한 경험을 공유해보세요!</p>
         </div>
 
         <div class="login-form">
