@@ -1,22 +1,20 @@
 <template>
     <!-- <header class="header"> -->
     <header>
+        <!-- 햄버거 버튼 -->
+        <!-- <button class="hamburger-btn">버튼버튼</button> -->
+        
+        <!-- 네비게이션 메뉴 -->
+        <!-- <div v-if="isMenuOpen" class="navi">
+            <button class="button-register">회원가입</button>
+            <button class="button-btn">로그인</button>
+            <button class="button-same">호텔</button>
+            <button class="button-same">상품</button>
+            <button class="button-same">게시판</button>
+            <hr>
+            <button class="button-FAQ">FAQ</button>
+        </div> -->
         <div class="header-title">
-            <!-- 햄버거 버튼 -->
-            <!-- <button class="hamburger-btn">버튼버튼</button> -->
-            
-            <!-- 네비게이션 메뉴 -->
-            <!-- <div v-if="isMenuOpen" class="navi">
-                <button class="button-register">회원가입</button>
-                <button class="button-btn">로그인</button>
-                <button class="button-same">호텔</button>
-                <button class="button-same">상품</button>
-                <button class="button-same">게시판</button>
-                <hr>
-                <button class="button-FAQ">FAQ</button>
-            </div> -->
-
-
             <a href="#"><img class="header-logo-img" src="/logo_gam.png" alt=""></a>
             <a href="#"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></a>
             <div class="header-title-button">
@@ -185,10 +183,22 @@ header {
 /* 헤더 1 -> 로고 , 로그인 버튼 */
 .header-title {
     display: grid;
-    grid-template-columns: 270px 1fr 270px;
+    grid-template-columns: 1fr 3.5fr 1fr;
     align-items: center;
     justify-items: center;
 }
+
+/* 감로고 뺀 버전 */
+/* .header-title-2 {
+    display: grid;
+    grid-template-columns: 1fr 3.5fr;
+    align-items: center;
+    justify-items: center;
+} */
+ /* 감로고는 사이드바 안에 넣어볼까 */
+ /* 내감니감 사진을 좀 작은 버전 만들어서 1000보다 작아지면 그 사진으로 대체하는 걸로? */
+ /* 아니면  */
+ /* ***** 지우지마 ***** */
 
 .header-title > :first-child {
     justify-self: start;
