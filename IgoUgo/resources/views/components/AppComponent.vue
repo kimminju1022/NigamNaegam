@@ -109,13 +109,6 @@
     font-style: normal;
 }
 
-/* body {
-    padding: 10px 10px;
-    max-width: 800px;
-    margin: auto;
-    -ms-overflow-style: none;
-} */
-
 ::-webkit-scrollbar {
     display: none;
 }
@@ -151,13 +144,13 @@ header {
 }
 .header-title {
     display: grid;
-    grid-template-columns: 320px 1fr 320px;
+    grid-template-columns: 270px 1fr 270px;
     align-items: center;
     justify-items: center;
 }
 .header-title > :first-child {
     justify-self: start;
-    margin-left: 80px;
+    margin-left: 50px;
 }
 .header-title-button {
     display: flex;
@@ -168,7 +161,7 @@ header {
     display: flex;
     align-items: center;
     /* margin-left: 20px; */
-    padding: 30px;
+    padding: 25px;
     gap: 20px;
 }
 .header-list > :last-child {
@@ -198,7 +191,7 @@ header {
 .header-search {
     display: flex;
     align-items: center;
-    margin-right: 20px;
+    /* margin-right: 10px; */
     gap: 20px;
 }
 .header-search-bar {
@@ -247,7 +240,7 @@ header {
 
 /* 메인메인 */
 .main {
-    padding-top: 30px;
+    padding: 30px;
     margin: 0 auto;
     max-width: 1300px;
     min-width: 600px;
