@@ -335,7 +335,7 @@ header {
     padding: 30px 25px 25px 25px;
     margin: 0 auto;
     max-width: 1300px;
-    min-width: 600px;
+    /* min-width: 600px; */
 }
 
 /* ************************************ */
@@ -344,6 +344,7 @@ header {
 footer {
     height: 230px;
     /* width: 100vw; */
+    min-width: 600px;
     background-color: #01083a;
     position: relative;
     transform: translateY(0%);
