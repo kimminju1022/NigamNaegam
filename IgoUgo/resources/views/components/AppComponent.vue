@@ -141,6 +141,7 @@ header {
     margin: 0 auto;
     max-width: 1300px;
     min-width: 600px;
+    gap: 15px;
 }
 .header-title {
     display: grid;
@@ -240,7 +241,7 @@ header {
 
 /* 메인메인 */
 .main {
-    padding: 30px;
+    padding: 30px 25px 25px 25px;
     margin: 0 auto;
     max-width: 1300px;
     min-width: 600px;
