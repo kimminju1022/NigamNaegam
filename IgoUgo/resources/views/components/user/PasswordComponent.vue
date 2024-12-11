@@ -1,6 +1,6 @@
 <template>
     <div class="password">
-        <h1>비밀번호 변경</h1>
+        <h1>비밀번호 확인</h1>
         <div class="password-err">
             <p>비밀번호가 맞지 않습니다.</p>
         </div>
@@ -8,17 +8,8 @@
             <p class="bg-navy">현재 비밀번호</p>
             <input placeholder="비밀번호 입력">
         </div>
-        <div class="password-item">
-            <p class="bg-navy">변경할 비밀번호</p>
-            <input placeholder="비밀번호 입력">
-        </div>
-        <div class="password-item">
-            <p class="bg-navy">변경할 비밀번호 확인</p>
-            <input placeholder="비밀번호 입력">
-        </div>
         <div class="my-profile-chk-btn">
-            <button class="btn bg-navy btn-chk">변경</button>
-            <button class="btn bg-clear btn-chk">취소</button>
+            <button class="btn bg-navy btn-chk">확인</button>
         </div>
     </div>
 </template>
@@ -31,7 +22,7 @@
 .password {
     max-width: 500px;
     gap: 20px;
-    margin: 0 auto 26px auto;
+    margin: 0 auto 140px auto;
     text-align: center;
 }
 
@@ -53,7 +44,6 @@
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 20px;
-    margin-bottom: 10px;
 }
 
 .password-item :nth-child(1) {
@@ -81,6 +71,7 @@
     display: flex;
     justify-content: flex-end;
     padding: 10px 5px;
+    margin-top: 10px;
 }
 
 .my-profile-chk-btn button {

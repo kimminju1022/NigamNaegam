@@ -28,51 +28,60 @@
     font-weight: 400;
     font-style: normal;
 }
+
 .form-box {
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
     place-items: center;
-    margin: 80px auto;
-    width: 450px;
+    margin: 41px auto 0 auto;
+    max-width: 450px;
     padding: 0 20px 20px;
 }
+
 .login-form{
     display: grid;
     gap: 10px;
     margin: 0 auto;
 }
+
 h1 {
     color: #01083a;
     font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 30px;
 }
+
 .login-form > p {
     color: red;
     font-size: 13px;
 }
+
 .input-login{
     background: #F5F5F5;
-    width: 350px;
-    height: 50px;
-    padding: 20px;
+    min-width: 350px;
+    /* height: 50px; */
+    padding: 15px 20px;
     font-size: 18px;
     border-radius: 20px;
 }
+
 .login-btn {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
+
 .btn-login {
-    width: 350px;
+    /* max-width: 350px; */
+    min-width: 350px;
     height: 50px;
     font-size: 20px;
     font-weight: 500;
     border-radius: 20px;
 }
-.btn-cancel {
+
+/* .btn-cancel {
     margin-top: 30px;
     width: 400px;
     height: 50px;
@@ -80,21 +89,25 @@ h1 {
     font-weight: 500;
     border-radius: 20px;
     border: 2px solid #01083a;
-}
+} */
+
 .go-registration {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px;
 }
+
 .go-registration > p {
     color: #4C4C4C;
 }
+
 .btn-registration {
     width: 80px;
     font-size: 20px;
     font-weight: 500;
 }
+
 /* .btn-registration:hover {
     border-bottom: 1px solid #01083a;
 } */

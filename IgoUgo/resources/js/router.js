@@ -9,7 +9,7 @@ import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent
 import NotFoundComponent from '../views/NotFoundComponent.vue';
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
-import PasswordChkComponent from '../views/components/user/PasswordChkComponent.vue';
+import PasswordComponent from '../views/components/user/PasswordComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
 import HotelListDetail from '../views/components/board/HotelListDetail.vue';
@@ -57,8 +57,8 @@ const routes = [
     component: MyPageUpdateComponent,
   },
   {
-    path: '/passwordchk',
-    component: PasswordChkComponent,
+    path: '/password',
+    component: PasswordComponent,
   },
   {
     path: '/password/update',
