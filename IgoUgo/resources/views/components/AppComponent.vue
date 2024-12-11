@@ -49,7 +49,7 @@
             <div class="footer-text">
                 <p>Tel : 053.572.1005</p>
                 <p>후원계좌 : 농협 000-00000-00</p>
-                <p>(주)  절어서 대구속으로</p>
+                <p>(주)  절어서 한국속으로</p>
                 <p>대표 : 뽀빠이</p>
                 <p>사업자 번호 : 123-45-678</p>
             </div>
@@ -99,34 +99,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'LeferiBaseType-RegularA';
+    font-family: 'MinSans-Regular';
 }
 
-/* ***** 지우지 말 것 ***** */
-/* header *, footer {
-    font-family: 'MapoBackpacking';
-    font-weight: 100;
-}
-main * {
-    font-family: 'LeferiBaseType-RegularA';
-}
 @font-face {
-    font-family: 'MapoBackpacking';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'LeferiBaseType-RegularA';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-RegularA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-} */
- /* ********************** */
-
-@font-face {
-    font-family: 'LeferiBaseType-RegularA';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-RegularA.woff') format('woff');
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
