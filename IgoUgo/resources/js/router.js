@@ -12,6 +12,7 @@ import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponen
 import PasswordChkComponent from '../views/components/user/PasswordChkComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
+import HotelListDetail from '../views/components/board/HotelListDetail.vue';
 
 const routes = [
   // 다른 경로와 컴포넌트 추가 가능
@@ -66,6 +67,10 @@ const routes = [
   {
     path: '/:catchAll(.*)',
     component: NotFoundComponent,
+  },
+  {
+    path: '/hotels/detail',
+    component: HotelListDetail,
   },
 ];
 
