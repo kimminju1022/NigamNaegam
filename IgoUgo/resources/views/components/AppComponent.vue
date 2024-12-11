@@ -1,45 +1,80 @@
 <template>
     <!-- <header class="header"> -->
     <header>
-        <!-- 햄버거 버튼 -->
-        <!-- <button class="hamburger-btn">버튼버튼</button> -->
-        
-        <!-- 네비게이션 메뉴 -->
-        <!-- <div v-if="isMenuOpen" class="navi">
-            <button class="button-register">회원가입</button>
-            <button class="button-btn">로그인</button>
-            <button class="button-same">호텔</button>
-            <button class="button-same">상품</button>
-            <button class="button-same">게시판</button>
-            <hr>
-            <button class="button-FAQ">FAQ</button>
-        </div> -->
-        <div class="header-title">
-            <a href="#"><img class="header-logo-img" src="/logo_gam.png" alt=""></a>
-            <a href="#"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></a>
-            <div class="header-title-button">
-                <button class="btn bg-clear header-btn">FAQ</button>
-                <button class="btn bg-clear header-btn">회원가입</button>
-                <button class="btn bg-navy header-bg-btn">로그인</button>
-            </div>
-        </div>
-        <div class="header-list">
-            <ul class="header-list-flex">
-                <li class="header-list-hover"><a href="">호텔</a></li>
-                <li class="header-list-hover"><a href="">상품</a></li>
-                <li class="header-list-hover">
-                    <div class="header-list-dropdown">
-                        <a href="" class="header-list-dropbtn">게시판</a>
-                        <div class="header-list-hover header-list-dropdown-content">
-                            <a href="#">리뷰</a>
-                            <a href="#">자유</a>
+       
+            <!-- 햄버거 버튼 -->
+            <!-- <button class="hamburger-btn">버튼버튼</button> -->
+            
+            <!-- 네비게이션 메뉴 -->
+            <!-- <div v-if="isMenuOpen" class="navi">
+                <button class="button-register">회원가입</button>
+                <button class="button-btn">로그인</button>
+                <button class="button-same">호텔</button>
+                <button class="button-same">상품</button>
+                <button class="button-same">게시판</button>
+                <hr>
+                <button class="button-FAQ">FAQ</button>
+            </div> -->
+            <div v-if="flg === '0'">
+                <div class="header-header">
+                    <div class="header-title">
+                        <a href="#"><img class="header-logo-img" src="/logo_gam.png" alt=""></a>
+                        <!-- {{ console.log(flg) }} -->
+                        <a href="#"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></a>
+                        <div class="header-title-button">
+                            <button class="btn bg-clear header-btn">FAQ</button>
+                            <button class="btn bg-clear header-btn">회원가입</button>
+                            <button class="btn bg-navy header-bg-btn">로그인</button>
                         </div>
                     </div>
-                </li>
-            </ul>
-            <div class="header-search"> 
-                <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                <button class="btn bg-navy header-bg-btn">검색</button>
+                    <div class="header-list">
+                        <ul class="header-list-flex">
+                            <li class="header-list-hover"><a href="">호텔</a></li>
+                            <li class="header-list-hover"><a href="">상품</a></li>
+                            <li class="header-list-hover">
+                                <div class="header-list-dropdown">
+                                    <a href="" class="header-list-dropbtn">게시판</a>
+                                    <div class="header-list-hover header-list-dropdown-content">
+                                        <a href="#">리뷰</a>
+                                        <a href="#">자유</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="header-search"> 
+                            <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                            <button class="btn bg-navy header-bg-btn">검색</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <div v-if="flg === '1'">
+            <div class="if-header">
+                <div id="menu">
+                    <!-- 햄버거 버튼 -->
+                    <button class="hamburger" @click="toggleMenu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+
+                    <!-- 메뉴 -->
+                    <div class="nav" v-show="isMenuOpen">
+                        <button>회원가입</button>
+                        <button>로그인</button>
+                        <button>호텔</button>
+                        <button>상품</button>
+                        <p>게시판</p>
+                        <button>리뷰 게시판</button>
+                        <button>자유 게시판</button>
+                    </div>
+                </div>
+
+                <a href="#"><img class="header-title-img-1" src="/short_logo.png" alt=""></a>
+
+                <div> </div>
             </div>
         </div>
     </header>
@@ -72,6 +107,8 @@
 </template>
 
 <script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 // // 창 크기 여부
@@ -99,6 +136,29 @@
 // const toggleMenu = () => {
 //     isMenuOpen.value = !isMenuOpen.value;
 // };
+const flg = ref('0');
+
+const flgSetUp = () => {
+    flg.value = window.innerWidth >= 1000 ? '0' : '1';
+}
+
+onMounted(() => {
+    flgSetUp();
+    window.addEventListener('resize', flgSetUp);
+});
+
+onBeforeUnmount(() => {
+      window.removeEventListener('resize', flgSetUp);
+});
+
+// 메뉴 열림/닫힘 상태
+const isMenuOpen = ref(false)
+
+// 메뉴 토글 함수
+const toggleMenu = () => {
+    isMenuOpen.value = !isMenuOpen.value
+}
+
 </script>
 
 <style>
@@ -156,18 +216,18 @@ input, textarea {
 }
 
 /* 네비게이션 메뉴 -> 현재 생략 */
-.navi {
+/* .navi {
     position: relative;
     width: 200px;
     height: 400px;
     background-color: #01083A;
-}
+} */
 
 /* ************************************ */
 
 /* 헤더헤더 */
 
-header {
+.header-header {
     display: grid;
     grid-template-rows: 100px 50px;
     background-color: #fff;
@@ -176,7 +236,6 @@ header {
     z-index: 1000;
     margin: 0 auto;
     max-width: 1300px;
-    min-width: 600px;
     gap: 15px;
 }
 
@@ -219,6 +278,10 @@ header {
     height: 110px;
     /* min-width: 100px; */
 }
+.header-title-img-1 {
+    width: 110px;
+    height: 110px;
+}
 
 .header-title-img {
     width: 450px;
@@ -246,8 +309,9 @@ header {
     display: flex;
     align-items: center;
     /* margin-left: 20px; */
-    padding: 25px;
+    margin: 25px;
     gap: 20px;
+    background-color: #fff;
 }
 
 /* 호텔, 상품, 게시판 hover */
@@ -413,4 +477,62 @@ footer {
     text-align: center;
     /* width: 400px; */
 }
+@media (max-width: 1000px) {
+    *{ 
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'MinSans-Regular';
+    }
+    @font-face {
+        font-family: 'MinSans-Regular';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .if-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin: 20px;
+    }
+
+    .if-header :nth-child(2){
+        justify-self: center;
+    }
+
+    #menu {
+        position: relative;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 25px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .bar {
+        width: 30px;
+        height: 4px;
+        background-color: #000;
+        border-radius: 2px;
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        background-color: #f8f8f8;
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        width: 200px;
+        height: 100vh;
+        border: 1px solid #ccc;
+    } 
+}
+
 </style>
