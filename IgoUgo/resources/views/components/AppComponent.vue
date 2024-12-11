@@ -247,9 +247,9 @@ header {
     gap: 5px;
 }
 
-/* .header-list-hover {
-    margin-top: 5px;
-} */
+.header-list-hover {
+    background: #fff;
+}
 
 .header-list-hover a {
     color: #01083A;
@@ -350,7 +350,7 @@ footer {
     display: grid;
     grid-template-rows: 140px 60px;
     z-index: 1000;
-    margin-top: 100px;
+    margin-top: 50px;
     gap: 30px;
 }
 
