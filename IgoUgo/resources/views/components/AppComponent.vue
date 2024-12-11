@@ -163,11 +163,13 @@ input, textarea {
 header {
     display: grid;
     grid-template-rows: 100px 50px;
-    width: 100vw;
     background-color: #fff;
-    position: fixed;
-    font-family: 'MapoBackpacking';
+    position: sticky;
+    top: 0;
     z-index: 1000;
+    margin: 0 auto;
+    max-width: 1300px;
+    min-width: 600px;
 }
 .header-title {
     display: grid;

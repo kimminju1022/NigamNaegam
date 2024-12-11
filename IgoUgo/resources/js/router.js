@@ -11,9 +11,14 @@ import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
 import PasswordChkComponent from '../views/components/user/PasswordChkComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
+import MainPageComponent from '../views/components/MainPageComponent.vue';
 
 const routes = [
   // 다른 경로와 컴포넌트 추가 가능
+  {
+    path: '/',
+    component: MainPageComponent,
+  },
   {
     path: '/login',
     component: LoginComponent,
