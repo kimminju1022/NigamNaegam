@@ -269,7 +269,10 @@ header {
 
 /* 메인메인 */
 .main {
-    padding-top: 160px;
+    padding-top: 30px;
+    margin: 0 auto;
+    max-width: 1300px;
+    min-width: 600px;
 }
 
 /* 푸터푸터 */
