@@ -308,7 +308,6 @@ input, textarea {
 .header-list {
     display: flex;
     align-items: center;
-    /* margin-left: 20px; */
     margin: 25px;
     gap: 20px;
     background-color: #fff;
@@ -321,14 +320,10 @@ input, textarea {
     gap: 5px;
 }
 
-.header-list-hover {
-    background: #fff;
-}
-
 .header-list-hover a {
     color: #01083A;
     font-size: 23px;
-    font-weight: 400;
+    font-weight: 500;
     padding: 5px 10px;
     /**/
     position: relative;
@@ -336,7 +331,7 @@ input, textarea {
     text-decoration: none;
     text-transform: uppercase;
     text-align: center;
-    margin-top: 5px;
+    /* margin-top: 5px; */
 }
 
 .header-list-hover a:before, .header-list-hover a:after {
@@ -372,23 +367,24 @@ input, textarea {
 .header-list-dropdown-content{
     display : none;
     position : absolute;
-    z-index : 1; /*다른 요소들보다 앞에 배치*/
+    z-index : 1;
+    top: 0;
+    left: 100%;
 }
 
 .header-list-dropdown-content a{
-    display : block;
-    font-size: 18px;
+    white-space: nowrap; 
+    font-size: 20px;
 }
 
 .header-list-dropdown:hover .header-list-dropdown-content {
-    display: block;
+    display: flex;
 }
 
 /* 헤더 검색바 */
 .header-search {
     display: flex;
     align-items: center;
-    /* margin-right: 10px; */
     gap: 20px;
 }
 
@@ -397,27 +393,24 @@ input, textarea {
     width: 330px;
     height: 35px;
     background-color: #f5f5f5;
-    border-style: none;
     font-size: 16px;
     padding-left: 20px;
 }
 
-/* ************************************ */
+/* *********************************************************** */
 
 /* 메인메인 */
 .main {
     padding: 30px 25px 25px 25px;
     margin: 0 auto;
     max-width: 1300px;
-    /* min-width: 600px; */
 }
 
-/* ************************************ */
+/* *********************************************************** */
 
 /* 푸터푸터 */
 footer {
     height: 230px;
-    /* width: 100vw; */
     min-width: 600px;
     background-color: #01083a;
     position: relative;
