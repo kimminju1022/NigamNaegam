@@ -1,5 +1,19 @@
 <template>
-<h1>여긴 메인페이지</h1>
+<div>
+    <img src="default/main_banner.png">
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
 </template>
 
 <script setup>
