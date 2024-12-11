@@ -7,7 +7,7 @@
         <div class="small-container">
             <h2 class="cat-box-title">카테고리</h2>
             <div class="cat-list">
-                <div >
+                <div class="list-item">
                     <input type="checkbox" name="category" id="food">
                     <label for="food">맛집</label>
                 </div>
@@ -75,10 +75,8 @@
 <style scoped>
 /* 전체를 감싸는 제일 큰 틀 */
 .total-container {
-    margin: 50px 100px;
     display: grid;
     grid-template-columns: 1fr 3fr;
-    
     gap: 1rem;
 }
 
@@ -100,6 +98,12 @@
     border-radius: 10px;
     margin: 1rem 0;
     padding: 20px 30px;
+}
+
+/* 리스트 아이템 */
+.list-item {
+    display: grid;
+    gap: 5px;
 }
 
 /* 지도 관련 */

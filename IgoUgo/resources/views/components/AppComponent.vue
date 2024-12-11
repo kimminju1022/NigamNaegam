@@ -48,7 +48,7 @@
             </div>
             <div class="footer-text">
                 <p>Tel : 053.572.1005</p>
-                <p>후원계좌 : 농협 000-00000-00</p>
+                <p>후원계좌 : IM뱅크 222-8282-222</p>
                 <p>(주)  절어서 한국속으로</p>
                 <p>대표 : 뽀빠이</p>
                 <p>사업자 번호 : 123-45-678</p>
@@ -249,7 +249,7 @@ header {
 
 /* 푸터푸터 */
 footer {
-    height: 200px;
+    height: 230px;
     /* width: 100vw; */
     background-color: #01083a;
     position: relative;
@@ -258,11 +258,16 @@ footer {
     grid-template-rows: 140px 60px;
     z-index: 1000;
     margin-top: 100px;
+    gap: 30px;
 }
 .footer-inner {
-    display: grid;
-    grid-template-columns: 4fr 5fr;
+    padding-top: 40px;
+    /* display: grid;
+    grid-template-columns: 4fr 5fr; */
+    display: flex;
+    justify-content: center;
     align-items: center;
+    gap: 30px;
 }
 .footer-inner > :nth-child(1) {
     justify-self: end;
@@ -279,6 +284,7 @@ footer {
     font-size: 15px;
     letter-spacing: 1px;
     white-space: nowrap;
+    line-height: 1.7rem;
 }
 .footer-bottom {
     margin: 0 auto;
@@ -290,7 +296,8 @@ footer {
 .copy-right {
     font-size: 13px;
     color: #fff;
-    margin: 10px auto;
-    width: 400px;
+    margin: 10px 0;
+    text-align: center;
+    /* width: 400px; */
 }
 </style>
