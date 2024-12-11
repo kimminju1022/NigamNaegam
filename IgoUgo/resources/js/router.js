@@ -65,12 +65,12 @@ const routes = [
     component: PasswordUpdateComponent,
   },
   {
-    path: '/:catchAll(.*)',
-    component: NotFoundComponent,
-  },
-  {
     path: '/hotels/detail',
     component: HotelListDetail,
+  },
+  {
+    path: '/:catchAll(.*)',
+    component: NotFoundComponent,
   },
 ];
 

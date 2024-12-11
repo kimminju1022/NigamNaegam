@@ -8,19 +8,19 @@
             <h2 class="cat-box-title">카테고리</h2>
             <div class="cat-list">
                 <div class="list-item">
-                    <input type="checkbox" name="category" id="food">
+                    <input type="checkbox" name="category" id="food" value="맛집">
                     <label for="food">맛집</label>
                 </div>
                 <div class="list-item">
-                    <input type="checkbox" name="category" id="activity">
+                    <input type="checkbox" name="category" id="activity" value="액티비티">
                     <label for="activity">액티비티</label>
                 </div>
                 <div class="list-item">
-                    <input type="checkbox" name="category" id="shopping">
+                    <input type="checkbox" name="category" id="shopping" value="쇼핑">
                     <label for="shopping">쇼핑</label>
                 </div>
                 <div class="list-item">
-                    <input type="checkbox" name="category" id="healing">
+                    <input type="checkbox" name="category" id="healing" value="힐링">
                     <label for="healing">힐링</label>
                 </div>
             </div>
@@ -89,7 +89,8 @@
                 <p>|</p>
                 <div class="order-list-item">
                     최신순
-                    <img src="img_product/img_update.png" class="img-order">
+                    <span class="order-list-item-update font-bold">NEW</span>
+                    <!-- <img src="img_product/img_update2.png" class="img-order"> -->
                 </div>
                 <p>|</p>
                 <div class="order-list-item">
@@ -188,7 +189,7 @@
 .total-container {
     display: grid;
     grid-template-columns: 1fr 5fr;
-    gap: 1rem;
+    gap: 30px;
     padding: 0 50px;
 }
 
@@ -202,7 +203,7 @@
 .right-small-container {
     /* border: 1px solid #01083A; */
     border-radius: 10px;
-    margin: 1rem 0;
+    margin: 10px 0;
 }
 
 /* 리스트 아이템 */
@@ -287,6 +288,11 @@
 .order-list-item {
     display: flex;
     align-items: center;
+}
+.order-list-item-update {
+    color: #ff0000;
+    font-size: 15px;
+    margin-left: 5px;
 }
 
 /* 카드 관련 */
