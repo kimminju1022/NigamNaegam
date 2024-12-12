@@ -30,7 +30,7 @@
             <input type="radio" class="star" value="5">
         </div>
         <hr>
-        <div class="star-rating">
+        <!-- <div class="star-rating">
             <span
             v-for="star in reversedStars"
             :key="star"
@@ -57,7 +57,7 @@
             </div>
             </div>
         </div>
-        <hr>
+        <hr> -->
     </div>
     <div class="board-create-container">
         <h3>제목</h3>
@@ -75,62 +75,62 @@
  </template>
 
 <script>
-export default {
-    data() {
-        return {
-        rating: 0, // 실제 별점 값
-        hoverRating: 0, // 마우스 오버 시 임시 별점 값
-        stars: [1, 2, 3, 4, 5], // 별의 개수
-        };
-    },
-    computed: {
-  reversedStars() {
-          return [...this.stars].reverse(); // 배열 원본을 유지하면서 뒤집음
-        },
-    },
-    methods: {
-        setRating(star) {
-        this.rating = star; // 클릭한 별점 설정
-        this.submitRating(); // 서버에 전달
-        },
-        hoverRating(star) {
-        this.hoverRating = star; // 마우스 오버 시 임시 별점 표시
-        },
-        resetHover() {
-        this.hoverRating = 0; // 마우스가 떠나면 초기화
-        },
-        submitRating() {
-        // Laravel로 점수 전송
-        fetch("/api/rating", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ rating: this.rating }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("별점 저장 성공:", data);
-        })
-        .catch((error) => {
-          console.error("별점 저장 실패:", error);
-        });
-    },
-  },
-};
-export default {
-  name: "Star-3",
-  data() {
-    return {
-      score: 0,
-    };
-  },
-  methods: {
-    check(index) {
-      this.score = index + 1;
-    },
-  },
-};
+// export default {
+//     data() {
+//         return {
+//         rating: 0, // 실제 별점 값
+//         hoverRating: 0, // 마우스 오버 시 임시 별점 값
+//         stars: [1, 2, 3, 4, 5], // 별의 개수
+//         };
+//     },
+//     computed: {
+//   reversedStars() {
+//           return [...this.stars].reverse(); // 배열 원본을 유지하면서 뒤집음
+//         },
+//     },
+//     methods: {
+//         setRating(star) {
+//         this.rating = star; // 클릭한 별점 설정
+//         this.submitRating(); // 서버에 전달
+//         },
+//         hoverRating(star) {
+//         this.hoverRating = star; // 마우스 오버 시 임시 별점 표시
+//         },
+//         resetHover() {
+//         this.hoverRating = 0; // 마우스가 떠나면 초기화
+//         },
+//         submitRating() {
+//         // Laravel로 점수 전송
+//         fetch("/api/rating", {
+//             method: "POST",
+//             headers: {
+//             "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({ rating: this.rating }),
+//         })
+//         .then((response) => response.json())
+//         .then((data) => {
+//           console.log("별점 저장 성공:", data);
+//         })
+//         .catch((error) => {
+//           console.error("별점 저장 실패:", error);
+//         });
+//     },
+//   },
+// };
+// export default {
+//   name: "Star-3",
+//   data() {
+//     return {
+//       score: 0,
+//     };
+//   },
+//   methods: {
+//     check(index) {
+//       this.score = index + 1;
+//     },
+//   },
+// };
 </script>
 
 <style>
@@ -157,7 +157,7 @@ export default {
       display: flex;
 }
 
-.star {
+/* .star {
     appearance: none;
     padding: 1px;
 }
@@ -178,7 +178,7 @@ export default {
 /* .star:hover ~ .star::after {
     content: '☆';
 } */
-.star-rating span {
+/*.star-rating span {
   font-size: 30px;
   cursor: pointer;
   color: lightgray;
@@ -186,24 +186,24 @@ export default {
 }
 
 .star-rating span.filled {
-  color: gold; /* 채워진 별 */
+  color: gold;  채워진 별 
 }
 
 .star-rating span:hover,
 .star-rating span:hover ~ span {
-  color: gold; /* 마우스 오버 시 별 */
+  color: gold;  마우스 오버 시 별 
 }
 .star-3{
  color: gold;
 }
 @media screen and (max-width: 800px) {
     .board-detail-head {
-        grid-template-columns: none; /* 기존 가로 정렬 해제 */
-        grid-template-rows: auto; /* 세로로 요소 쌓기 */
-        align-items: center; /* 중앙 정렬 */
-        text-align: center; /* 텍스트 중앙 정렬 */
+        grid-template-columns: none; 기존 가로 정렬 해제 
+        grid-template-rows: auto;  세로로 요소 쌓기 
+        align-items: center;  중앙 정렬 
+        text-align: center;  텍스트 중앙정렬 
     }
-}
+} */
 
 
 </style>
