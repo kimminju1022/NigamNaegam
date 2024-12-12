@@ -16,7 +16,14 @@
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password">비밀번호</label>
-                    <span>비밀번호 형식에 맞지 않습니다.</span>
+                    <!-- <span>비밀번호 형식에 맞지 않습니다.</span> -->
+                    <div>
+                        <ul class="password-regex-chk">
+                            <li :class="{test:flg}">대소문자</li>
+                            <li :class="{test:flg}">숫자</li>
+                            <li :class="{test:flg}">특수기호 !, @</li>
+                        </ul>
+                    </div>
                 </div>
                 <input class="input-login" type="password" id="password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
             </div>
@@ -57,6 +64,15 @@
 </template>
 
 <script setup>
+
+// import { ref } from 'vue';
+
+// const flg = ref(false);
+
+// if() {
+//     flg.value = true;
+// }
+
 
 </script>
 
@@ -103,7 +119,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 .login-label-flex {
     display: flex;
@@ -112,18 +128,34 @@ h1 {
     gap: 20px;
 }
 .login-label-flex > label {
-    font-size: 18px;
+    font-size: 19px;
+    font-weight: 500;
 }
 span {
     color: red;
     font-size: 13px;
 }
+
+.password-regex-chk {
+    display: flex;
+    gap: 5px;
+    font-size: 13px;
+}
+
+.password-regex-chk * {
+    color:red;
+}
+
+.password-regex-chk * {
+    color:green;
+}
+
 .input-login {
     /* background: #F5F5F5; */
     /* border-radius: 20px; */
     width: 400px;
     height: 50px;
-    padding: 20px 10px 10px 10px;
+    padding: 5px 10px;
     font-size: 15px;
 }
 .registration-btn {

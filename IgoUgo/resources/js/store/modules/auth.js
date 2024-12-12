@@ -2,40 +2,41 @@ import axios from "../../axios";
 
 export default {
     state: () => ({
+        authFlg: localStorage.getItem('accessToken') ? true : false,
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
     }),
     mutations: {
+        setAuthFlg(state, flg) {
+            state.authFlg = flg;
+        },
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
         },
     },
     actions: {
         /**
-         * 회원가입
+         * 로그인
+         * 
+         * @param {*}   context
+         * @param {*}   userInfo
          */
-        registration(context, userInfo) {
-            const url = '/api/registration';
-            const formData = new FormData();
-
+        login(context, userInfo) {
+            const url = '/api/login';
+            const data = JSON.stringify(userInfo);
 
             axios.post(url, data)
-            .then(() => {
-                alert('회원가입 성공');
-
-                router.replace('/login');
+            .then(response => {
             })
             .catch(error => {
-                console.log(error);
             });
         },
 
         /**
-         * 토큰 만료 후 처리
+         * 로그아웃
          */
+        logout(context, userInfo) {
 
-        /**
-         * 토큰 재발급
-         */
+        },
     },
     getters: {
 

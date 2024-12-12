@@ -2,23 +2,28 @@
     <div class="form-box">
         <h1>로그인</h1>
         <div class="login-form">
+            <!-- v-if 넣어야함 -->
             <p>아이디 혹은 비밀번호가 일치하지 않습니다.</p>
-            <input class="input-login" type="text" placeholder="e-mail">
-            <input class="input-login" type="password" placeholder="password">
+            <input v-model="userInfo.account" class="input-login" type="text" placeholder="e-mail">
+            <input v-model="userInfo.password" class="input-login" type="password" placeholder="password">
         </div>
         <div class="login-btn">
-            <button class="btn bg-navy btn-login">로그인</button>
-            <!-- <button class="btn bg-clear btn-cancel">취소</button> -->
+            <button @click="$store.dispatch('auth/login', userInfo)" class="btn bg-navy btn-login">로그인</button>
             <div class="go-registration">
                 <p>회원이 아니시라면?</p>
-                <button class="btn bg-clear btn-registration">회원가입</button>
+                <router-link to="/registration"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { reactive } from 'vue';
 
+const userInfo = reactive({
+    account: '',
+    password: '',
+});
 </script>
 
 <style scoped>
@@ -60,7 +65,6 @@ h1 {
 .input-login{
     background: #F5F5F5;
     min-width: 350px;
-    /* height: 50px; */
     padding: 15px 20px;
     font-size: 18px;
     border-radius: 20px;
@@ -73,23 +77,12 @@ h1 {
 }
 
 .btn-login {
-    /* max-width: 350px; */
     min-width: 350px;
     height: 50px;
     font-size: 20px;
     font-weight: 500;
     border-radius: 20px;
 }
-
-/* .btn-cancel {
-    margin-top: 30px;
-    width: 400px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: 500;
-    border-radius: 20px;
-    border: 2px solid #01083a;
-} */
 
 .go-registration {
     display: flex;
@@ -107,8 +100,4 @@ h1 {
     font-size: 20px;
     font-weight: 500;
 }
-
-/* .btn-registration:hover {
-    border-bottom: 1px solid #01083a;
-} */
 </style>

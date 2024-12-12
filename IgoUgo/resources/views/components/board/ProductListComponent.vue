@@ -1,53 +1,45 @@
 <template>
 <div class="total-container">
-    <div>
-        <div class="left-small-container map-box">
-            <h2 class="map-box-title" :class="{'test':false}">지도로 보기</h2>
+    <div class="left-container">
+        <div class="left-small-container map-box" :class="{'map-height':flg}">
+            <!-- <h2 class="map-box-title" :class="{'test':false}">지도로 보기</h2> -->
+            <h2 class="map-box-title" :class="{'dis-none': flg}">지도로 보기</h2>
         </div>
         <div class="left-small-container">
             <h2 class="cat-box-title">카테고리</h2>
-            <div class="cat-list">
-                <div class="list-item">
-                    <input type="checkbox" name="category" id="food" value="맛집">
-                    <label for="food">맛집</label>
+            <div class="cat-list" :class="{'cat-list-change':flg}">
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" type="checkbox" name="category" id="food" value="관광지">
+                    <label for="food">관광지</label>
                 </div>
-                <div class="list-item">
-                    <input type="checkbox" name="category" id="activity" value="액티비티">
-                    <label for="activity">액티비티</label>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input type="checkbox" name="category" id="activity" value="문화시설">
+                    <label for="activity">문화시설</label>
                 </div>
-                <div class="list-item">
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input type="checkbox" name="category" id="shopping" value="이벤트">
+                    <label for="shopping">이벤트</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input type="checkbox" name="category" id="healing" value="레포츠">
+                    <label for="healing">레포츠</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
                     <input type="checkbox" name="category" id="shopping" value="쇼핑">
                     <label for="shopping">쇼핑</label>
                 </div>
-                <div class="list-item">
-                    <input type="checkbox" name="category" id="healing" value="힐링">
-                    <label for="healing">힐링</label>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input type="checkbox" name="category" id="healing" value="음식점">
+                    <label for="healing">음식점</label>
                 </div>
             </div>
         </div>
         <div class="left-small-container">
             <h2 class="pri-box-title">가격</h2>
-            <div class="pri-list">
-                <div class="list-item">
-                    <input type="checkbox" name="price" id="price1">
-                    <label for="price1">2만원 이하</label>
-                </div>
-                <div class="list-item">
-                    <input type="checkbox" name="price" id="price2">
-                    <label for="price2">2만원 ~ 4만원</label>
-                </div>
-                <div class="list-item">
-                    <input type="checkbox" name="price" id="price3">
-                    <label for="price3">4만원 ~ 6만원</label>
-                </div>
-                <div class="list-item">
-                    <input type="checkbox" name="price" id="price4">
-                    <label for="price4">6만원 ~ 8만원</label>
-                </div>
-                <div class="list-item">
-                    <input type="checkbox" name="price" id="price5">
-                    <label for="price5">8만원 이상</label>
-                </div>
+            <div class="pri-box">
+                <input type="number" class="pri-input" max="300000000">
+                <p style="text-align: center;">~</p>
+                <input type="number" class="pri-input" max="300000000">
             </div>
         </div>
         <div class="button-position">
@@ -79,9 +71,10 @@
         </div>
         <div class="right-small-container order-box font-default-size">
             <div>
-                <span class="font-bold">정렬 순서 :</span>
+                <span class="font-bold">정렬 순서</span>
             </div>
             <div class="order-list">
+                <p>|</p>
                 <div class="order-list-item">
                     뽀빠이 추천
                     <img src="img_product/img_star.png" class="img-order">
@@ -90,7 +83,6 @@
                 <div class="order-list-item">
                     최신순
                     <span class="order-list-item-update font-bold">NEW</span>
-                    <!-- <img src="img_product/img_update2.png" class="img-order"> -->
                 </div>
                 <p>|</p>
                 <div class="order-list-item">
@@ -106,6 +98,26 @@
         </div>
         <div class="right-small-container">
             <div class="card-list">
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
                 <div class="card">
                     <img src="default/board_default.png" class="img-card">
                     <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
@@ -182,13 +194,22 @@
 </template>
 
 <script setup>
+import { onBeforeMount, ref } from 'vue';
+const flg = ref(false);
+const flgSetup = () => {
+    flg.value = window.innerWidth >= 1000 ? false : true;
+}
+onBeforeMount(() => {
+    flgSetup();
+});
+window.addEventListener('resize', flgSetup);
 </script>
 
 <style scoped>
 /* 전체를 감싸는 제일 큰 틀 */
 .total-container {
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 1fr 6fr;
     gap: 30px;
     padding: 0 50px;
 }
@@ -237,18 +258,34 @@
     gap: 20px;
     margin-top: 10px;
 }
+.cat-input {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #01083A;
+    border-radius: 50%;
+    appearance: none;
+}
 
 /* 가격 관련 */
 .pri-box-title {
     text-align: center;
 }
-.pri-list {
-    /* height: 250px; */
+.pri-box {
+    margin-top: 20px;
+}
+.pri-input {
+    border: 1px solid #01083A;
+    border-radius: 10px;
+    height: 30px;
+    min-width: 150px;
+    padding-left: 20px;
+}
+/* .pri-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-top: 10px;
-}
+} */
 
 /* 버튼 */
 .button-position {
@@ -303,7 +340,6 @@
     margin-top: 50px;
 }
 .card {
-    min-width: 200px;
     height: 300px;
     border: 1px solid #01083A;
     border-radius: 10px;
@@ -314,8 +350,8 @@
     padding: 20px;
 }
 .img-card {
-    width: 190px;
-    height: 190px;
+    min-width: 100px;
+    min-height: 100px;
 }
 
 /* 페이지네이션 */
@@ -368,5 +404,29 @@
 /* 일단 얘는 나중에 글자 크기 조절 */
 .test {
     font-size: 5px;
+}
+
+/* --------------------------------- */
+/* 반응형 구현 */
+.dis-none {
+    display: none;
+}
+.map-height {
+    height: 200px;
+}
+.cat-list-change {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.cat-list-item-change {
+    font-size: 17px;
+}
+/* 미디어쿼리 */
+@media (max-width: 1000px) {
+    .total-container {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
 }
 </style>
