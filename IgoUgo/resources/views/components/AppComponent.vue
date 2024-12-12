@@ -1,6 +1,6 @@
 <template>
     <!-- <header class="header"> -->
-    <header>
+
        
             <!-- 햄버거 버튼 -->
             <!-- <button class="hamburger-btn">버튼버튼</button> -->
@@ -15,28 +15,29 @@
                 <hr>
                 <button class="button-FAQ">FAQ</button>
             </div> -->
-            <div v-if="flg === '0'">
-                <div class="header-header">
+        <div class="header-header" v-if="flg === '0'">
+            <header>
+                <div>
                     <div class="header-title">
-                        <a href="#"><img class="header-logo-img" src="/logo_gam.png" alt=""></a>
+                        <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
                         <!-- {{ console.log(flg) }} -->
-                        <a href="#"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></a>
+                        <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
                         <div class="header-title-button">
                             <button class="btn bg-clear header-btn">FAQ</button>
-                            <button class="btn bg-clear header-btn">회원가입</button>
-                            <button class="btn bg-navy header-bg-btn">로그인</button>
+                            <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
+                            <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                         </div>
                     </div>
                     <div class="header-list">
                         <ul class="header-list-flex">
-                            <li class="header-list-hover"><a href="">호텔</a></li>
-                            <li class="header-list-hover"><a href="">상품</a></li>
+                            <li class="header-list-hover"><router-link to="/hotels">호텔</router-link></li>
+                            <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
                             <li class="header-list-hover">
                                 <div class="header-list-dropdown">
-                                    <a href="" class="header-list-dropbtn">게시판</a>
+                                    <p class="header-list-dropbtn">게시판</p>
                                     <div class="header-list-hover header-list-dropdown-content">
-                                        <a href="#">리뷰</a>
-                                        <a href="#">자유</a>
+                                        <router-link to="/boards">리뷰</router-link>
+                                        <router-link to="/boards">자유</router-link>
                                     </div>
                                 </div>
                             </li>
@@ -47,7 +48,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </header>
+        </div>
 
 
         <div class="v-if-header" v-if="flg === '1'">
@@ -63,19 +65,20 @@
                     <!-- 메뉴 -->
                     <div class="nav" v-show="isMenuOpen">
                         
-                        <div class="app-resist-login-div">
-                            <button class="app-resist-login btn bg-navy">회원가입</button>
-                            <button class="app-resist-login btn bg-navy">로그인</button>
+                        <div class="app-resist-login-div" @click="toggleMenu">
+                            <div class="close close3"></div>
+                            <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
+                            <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
                         </div>
-                        <a class="app-content bg-navy">호텔</a>
-                        <a class="app-content bg-navy">상품</a>
+                        <router-link to="/hotels" class="app-content bg-navy">호텔</router-link>
+                        <router-link to="/products" class="app-content bg-navy">상품</router-link>
                         <p class="app-content bg-navy">게시판</p>
-                        <a class="app-review-board bg-navy">리뷰 게시판</a>
-                        <a class="app-review-board bg-navy">자유 게시판</a>
+                        <router-link to="/boards" class="app-review-board bg-navy">리뷰 게시판</router-link>
+                        <router-link to="/boards" class="app-review-board bg-navy">자유 게시판</router-link>
                     </div>
                 </div>
 
-                <a href="#"><img class="header-title-img-1" src="/short_logo.png" alt=""></a>
+                <router-link to="/"><img class="header-title-img-1" src="/short_logo.png" alt=""></router-link>
 
                 <div> </div>
             </div>
@@ -85,7 +88,7 @@
                 <button class="btn bg-navy header-bg-btn">검색</button>
             </div>
         </div>
-    </header>
+
 
     <main class="main">
         <router-view></router-view>
@@ -218,10 +221,19 @@ const toggleMenu = () => {
 a {
     text-decoration: none;
 }
-
-a:visited {
+/* 
+a:visited {  // a태그 이제 안사용 하는듯? //
     color : #01083A;
-}
+} */
+
+/*  p태그로 바꾸니까 css꺠지는거 고치려다 만거
+    .header-list-dropbtn {
+    text-decoration: none;
+    color: #01083A;
+    font-size: 23px;
+    font-weight: 500;
+    padding: 5px 10px;
+} */
 
 li {
     list-style-type: none;
@@ -564,15 +576,17 @@ footer {
     } 
     .app-resist-login-div {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
+        align-items: center;
         gap: 20px;
         margin-top: 20px;
-        margin-right: 20px;
+        cursor: pointer;
     }
 
     .app-resist-login {
         font-size: 20px;
         gap: 5px;
+        font-weight: 900;
     }
 
     .app-content {
@@ -584,13 +598,18 @@ footer {
     .v-if-header {
         display: grid;
         grid-template-rows: 125px 50px;
+        background-color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        max-width: 1300px;
     }
     .header-search {
         justify-self: center;
     }
     .header-search-bar {
         border-radius: 50px;
-        max-width: 330px;
+        max-width: 500px;
         width: 100%;
         height: 35px;
         background-color: #f5f5f5;
@@ -612,6 +631,12 @@ footer {
 
     .footer-inner {
         justify-self: center;
+    }
+
+    .close3:after {content: "\00d7"; font-size:30pt;line-height:35px;}
+
+    .close3 {
+        color: #fff;
     }
 }
 
