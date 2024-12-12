@@ -4,6 +4,7 @@ import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import UserRegistrationComponent from '../views/components/auth/UserRegistrationComponent.vue';
 import ProductListComponent from '../views/components/board/ProductListComponent.vue';
 import BoardListComponent from '../views/components/board/BoardListComponent.vue';
+import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
 import NotFoundComponent from '../views/NotFoundComponent.vue';
@@ -13,6 +14,7 @@ import PasswordComponent from '../views/components/user/PasswordComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
 import HotelListDetail from '../views/components/board/HotelListDetail.vue';
+
 
 const routes = [
   // 다른 경로와 컴포넌트 추가 가능
@@ -39,6 +41,10 @@ const routes = [
   {
     path: '/boards',
     component: BoardListComponent,
+  },
+  {
+    path: '/boards/detail',
+    component: BoardDetailComponent,
   },
   {
     path: '/boards/create',
