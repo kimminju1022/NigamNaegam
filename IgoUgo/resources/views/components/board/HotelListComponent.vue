@@ -1,40 +1,44 @@
 <template>
-<div class="filter-price">
-    <p class="text-box">필터링</p>
-    <input class="input-box" id="nosmoke" type="checkbox">
-    <label for="nosmoke">금연</label>
+  <div class="filter-price">
+        <div>
+            <p class="text-box">필터링</p>
+            <div class="filter-group">
+                <div>
+                    <input class="input-box" id="nosmoke" type="checkbox">
+                    <label for="nosmoke">금연</label>
+                </div>
+                <div>
+                    <input class="input-box" id="wifi" type="checkbox">
+                    <label for="wifi">무료 Wi-fi</label>
+                </div>
+                <div>
+                    <input class="input-box" id="morning" type="checkbox">
+                    <label for="morning">조식</label>
+                </div>
+                <div>
+                    <input class="input-box" id="parking" type="checkbox">
+                    <label for="parking">주차</label>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p class="text-box">가격</p>
+            <div class="filter-group">
+                <input class="number-input" type="number" max="30000000"> 
+                <span class="span-span">~</span>
+                <input class="number-input" type="number" max="30000000">
+                <button class="btn-margin btn bg-navy header-bg-btn">검색</button>
+            </div>
+        </div>
+  </div>
 
-    <input class="input-box" id="wifi" type="checkbox">
-    <label for="wifi">무료 Wi-fi</label>
-
-    <input class="input-box" id="morning" type="checkbox">
-    <label for="morning">조식</label>
-
-    <input class="input-box" id="parking" type="checkbox">
-    <label for="parking">주차</label>
-
-    <p class="text-box">가격</p>
-    <input class="input-box" id="nosmoke" type="checkbox">
-    <label for="nosmoke">10만원 이하</label>
-
-    <input class="input-box" id="wifi" type="checkbox">
-    <label for="wifi">10만원 - 15만원</label>
-
-    <input class="input-box" id="morning" type="checkbox">
-    <label for="morning">15만원 - 20만원</label>
-
-    <input class="input-box" id="parking" type="checkbox">
-    <label for="parking">20만원이상</label>
-</div>
-
-<!-- 지도 div -->
-<div id="map"></div>
+  <!-- 지도 div -->
+  <div id="map"></div>
 </template>
 
 <script setup>
 import { onMounted, reactive } from 'vue';
 import env from '../../../js/env';
-
 
 let map = reactive(null);
 
@@ -103,40 +107,93 @@ const loadMaker = () => {
 
 <style scoped>
 .filter-price {
-    width: 1000px;
-    height: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
     border: 2px solid #000000;
     border-radius: 20px;
     margin: 25px auto;
-    padding: 20px;
-    font-size: 25px;
+    padding: 10px;
+    font-size: 20px;
 }
 .text-box {
-    width: 100px;
-    height: 50px;
+    width: 80px;
+    height: 30px;
     background-color: #01083a;
     text-align: center;
-    align-content: center;
-    color: #ffff;
+    color: #fff;
     border-radius: 10px;
+    align-content: center;
+    margin: 10px 0;
 }
+
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.filter-group div {
+    display: flex;
+    align-items: center;
+}
+
 .input-box {
-    margin: 20px 5px 20px 50px;
+    margin: 0;
     width: 25px;
     height: 25px;
     border: 1px solid #000000;
     border-radius: 12.5px;
     appearance: none;
     vertical-align: middle;
+}
+.input-box:checked {
+    background-color: #01083a;
+}
 
+label {
+    margin-left: 10px;
+    font-size: 18px;
+    line-height: 25px; /* 라벨과 체크박스의 높이를 맞추기 위해 설정 */
 }
-.kakao-map {
-    width: 100vw;
-    height: 800px;
-}
+
 #map {
     width: 100%;
     height: 800px;
     z-index: 1;  /* 헤더가 맵 위에 올 수 있도록 설정 */
+}
+
+/* 인풋박스 버튼 없애기 */
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.number-input {
+    border: solid 1px #01083a;
+    border-radius: 10px;
+    padding: 5px 5px;
+    width: 30%;
+}
+.span-span {
+    margin: 0 5px;
+}
+.btn-margin {
+    margin-left: 10px;
+}
+
+@media (max-width: 1000px) {
+    #map {
+        width: 80%;
+        height: 400px;
+        z-index: 1;  /* 헤더가 맵 위에 올 수 있도록 설정 */
+        justify-self: center;
+    }
 }
 </style>
