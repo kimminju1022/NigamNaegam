@@ -50,7 +50,7 @@
             </div>
 
 
-        <div v-if="flg === '1'">
+        <div class="v-if-header" v-if="flg === '1'">
             <div class="if-header">
                 <div id="menu">
                     <!-- 햄버거 버튼 -->
@@ -62,19 +62,27 @@
 
                     <!-- 메뉴 -->
                     <div class="nav" v-show="isMenuOpen">
-                        <button>회원가입</button>
-                        <button>로그인</button>
-                        <button>호텔</button>
-                        <button>상품</button>
-                        <p>게시판</p>
-                        <button>리뷰 게시판</button>
-                        <button>자유 게시판</button>
+                        
+                        <div class="app-resist-login-div">
+                            <button class="app-resist-login btn bg-navy">회원가입</button>
+                            <button class="app-resist-login btn bg-navy">로그인</button>
+                        </div>
+                        <a class="app-content bg-navy">호텔</a>
+                        <a class="app-content bg-navy">상품</a>
+                        <p class="app-content bg-navy">게시판</p>
+                        <a class="app-review-board bg-navy">리뷰 게시판</a>
+                        <a class="app-review-board bg-navy">자유 게시판</a>
                     </div>
                 </div>
 
                 <a href="#"><img class="header-title-img-1" src="/short_logo.png" alt=""></a>
 
                 <div> </div>
+            </div>
+
+            <div class="header-search"> 
+                <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                <button class="btn bg-navy header-bg-btn">검색</button>
             </div>
         </div>
     </header>
@@ -84,26 +92,51 @@
     </main>
 
     <!-- <footer class="footer"> -->
-    <footer>
-        <div class="footer-inner">
-            <div>
-                <img class="footer-logo" src="/logo_footer.png" alt="">
-            </div>
-            <div class="footer-text">
-                <p>Tel : 053.572.1005</p>
-                <p>후원계좌 : IM뱅크 222-8282-222</p>
-                <p>(주)  절어서 한국속으로</p>
-                <p>대표 : 뽀빠이</p>
-                <p>사업자 번호 : 123-45-678</p>
-            </div>
+   
+        <div v-if="flg === '0'">
+            <footer>
+                <div class="footer-inner">
+                    <div>
+                        <img class="footer-logo" src="/logo_footer.png" alt="">
+                    </div>
+                    <div class="footer-text">
+                        <p>Tel : 053.572.1005</p>
+                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>(주)  절어서 한국속으로</p>
+                        <p>대표 : 뽀빠이</p>
+                        <p>사업자 번호 : 123-45-678</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <hr class="hr">
+                    <div class="copy-right">
+                        <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <div class="footer-bottom">
-            <hr class="hr">
-            <div class="copy-right">
-                <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
-            </div>
+
+
+        <div v-if="flg === '1'">
+            <footer>
+                <div class="footer-inner">
+                    <div class="footer-text">
+                        <p>Tel : 053.572.1005</p>
+                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>(주)  절어서 한국속으로</p>
+                        <p>대표 : 뽀빠이</p>
+                        <p>사업자 번호 : 123-45-678</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <hr class="hr">
+                    <div class="copy-right">
+                        <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
+                    </div>
+                </div>
+            </footer>
         </div>
-    </footer>
+
 </template>
 
 <script setup>
@@ -156,6 +189,7 @@ const isMenuOpen = ref(false)
 
 // 메뉴 토글 함수
 const toggleMenu = () => {
+
     isMenuOpen.value = !isMenuOpen.value
 }
 
@@ -308,7 +342,7 @@ input, textarea {
 .header-list {
     display: flex;
     align-items: center;
-    margin: 25px;
+    margin: 0 8px;
     gap: 20px;
     background-color: #fff;
 }
@@ -411,7 +445,6 @@ input, textarea {
 /* 푸터푸터 */
 footer {
     height: 230px;
-    min-width: 600px;
     background-color: #01083a;
     position: relative;
     transform: translateY(0%);
@@ -471,26 +504,27 @@ footer {
     /* width: 400px; */
 }
 @media (max-width: 1000px) {
-    *{ 
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'MinSans-Regular';
-    }
     @font-face {
         font-family: 'MinSans-Regular';
         src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
         font-weight: normal;
         font-style: normal;
     }
+    *{ 
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'MinSans-Regular';
+    }
     .if-header {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        margin: 20px;
+        /* margin: 20px; */
     }
 
     .if-header :nth-child(2){
         justify-self: center;
+        align-content: center;
     }
 
     #menu {
@@ -506,6 +540,7 @@ footer {
         background: transparent;
         border: none;
         cursor: pointer;
+        margin: 20px;
     }
 
     .bar {
@@ -518,14 +553,66 @@ footer {
     .nav {
         display: flex;
         flex-direction: column;
-        background-color: #f8f8f8;
+        background-color: #01083a;
         position: absolute;
-        top: -20px;
-        left: -20px;
-        width: 200px;
+        top: 0;
+        left: 0;
+        width: 250px;
         height: 100vh;
         border: 1px solid #ccc;
+        z-index: 100;
     } 
+    .app-resist-login-div {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .app-resist-login {
+        font-size: 20px;
+        gap: 5px;
+    }
+
+    .app-content {
+        font-size: 20px;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+
+    .v-if-header {
+        display: grid;
+        grid-template-rows: 125px 50px;
+    }
+    .header-search {
+        justify-self: center;
+    }
+    .header-search-bar {
+        border-radius: 50px;
+        max-width: 330px;
+        width: 100%;
+        height: 35px;
+        background-color: #f5f5f5;
+        font-size: 16px;
+        padding-left: 20px;
+    }
+    
+    footer {
+        height: 230px;
+        background-color: #01083a;
+        position: relative;
+        transform: translateY(0%);
+        display: grid;
+        grid-template-rows: 140px 60px;
+        z-index: 1000;
+        margin-top: 50px;
+        gap: 30px;
+    }
+
+    .footer-inner {
+        justify-self: center;
+    }
 }
 
 </style>
