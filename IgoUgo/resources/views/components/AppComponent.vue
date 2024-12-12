@@ -1,144 +1,148 @@
 <template>
-    <!-- <header class="header"> -->
 
-       
-            <!-- 햄버거 버튼 -->
-            <!-- <button class="hamburger-btn">버튼버튼</button> -->
-            
-            <!-- 네비게이션 메뉴 -->
-            <!-- <div v-if="isMenuOpen" class="navi">
-                <button class="button-register">회원가입</button>
-                <button class="button-btn">로그인</button>
-                <button class="button-same">호텔</button>
-                <button class="button-same">상품</button>
-                <button class="button-same">게시판</button>
-                <hr>
-                <button class="button-FAQ">FAQ</button>
-            </div> -->
-        <div class="header-header" v-if="flg === '0'">
-            <header>
-                <div>
-                    <div class="header-title">
-                        <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
-                        <!-- {{ console.log(flg) }} -->
-                        <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
-                        <div class="header-title-button">
-                            <button class="btn bg-clear header-btn">FAQ</button>
-                            <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
-                            <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
-                        </div>
+    <!-- header -->
+
+    <div class="header-header" v-if="flg === '0'">
+        <header>
+            <div>
+                <div class="header-title">
+                    <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
+                    <!-- {{ console.log(flg) }} -->
+                    <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
+                    <div class="header-title-button">
+                        <button class="btn bg-clear header-btn">FAQ</button>
+                        <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
+                        <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                     </div>
-                    <div class="header-list">
-                        <ul class="header-list-flex">
-                            <li class="header-list-hover"><router-link to="/hotels">호텔</router-link></li>
-                            <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
-                            <li class="header-list-hover">
-                                <div class="header-list-dropdown">
-                                    <p class="header-list-dropbtn">게시판</p>
-                                    <div class="header-list-hover header-list-dropdown-content">
-                                        <router-link to="/boards">리뷰</router-link>
-                                        <router-link to="/boards">자유</router-link>
-                                    </div>
+                </div>
+                <div class="header-list">
+                    <ul class="header-list-flex">
+                        <li class="header-list-hover"><router-link to="/hotels">호텔</router-link></li>
+                        <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
+                        <li class="header-list-hover">
+                            <div class="header-list-dropdown">
+                                <p class="header-list-dropbtn">게시판</p>
+                                <div class="header-list-hover header-list-dropdown-content">
+                                    <router-link to="/boards">리뷰</router-link>
+                                    <router-link to="/boards">자유</router-link>
                                 </div>
-                            </li>
-                        </ul>
-                        <div class="header-search"> 
-                            <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                            <button class="btn bg-navy header-bg-btn">검색</button>
-                        </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="header-search"> 
+                        <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                        <button class="btn bg-navy header-bg-btn">검색</button>
                     </div>
                 </div>
-            </header>
-        </div>
+            </div>
+        </header>
+    </div>
 
+    <!-- header 반응형 -->
 
-        <div class="v-if-header" v-if="flg === '1'">
-            <div class="if-header">
-                <div id="menu">
-                    <!-- 햄버거 버튼 -->
-                    <button class="hamburger" @click="toggleMenu">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </button>
+    <div class="v-if-header" v-if="flg === '1'">
+        <div class="if-header">
+            <div id="menu">
+                <!-- 햄버거 버튼 -->
+                <button class="hamburger" @click="toggleMenu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
 
-                    <!-- 메뉴 -->
-                    <div class="nav" v-show="isMenuOpen">
-                        
-                        <div class="app-resist-login-div" @click="toggleMenu">
-                            <div class="close close3"></div>
-                            <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
-                            <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
-                        </div>
-                        <router-link to="/hotels" class="app-content bg-navy">호텔</router-link>
-                        <router-link to="/products" class="app-content bg-navy">상품</router-link>
-                        <p class="app-content bg-navy">게시판</p>
-                        <router-link to="/boards" class="app-review-board bg-navy">리뷰 게시판</router-link>
-                        <router-link to="/boards" class="app-review-board bg-navy">자유 게시판</router-link>
+                <!-- 메뉴 -->
+                <div class="nav" v-show="isMenuOpen">
+                    
+                    <div class="app-resist-login-div" @click="toggleMenu">
+                        <div class="close close3"></div>
+                        <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
+                        <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
                     </div>
+                    <ul class="app-content-flex">
+                        <li class="app-content"><router-link to="/hotels">호텔</router-link></li>
+                        <li class="app-content"><router-link to="/products">상품</router-link></li>
+                        <li class="app-content">
+                            <div class="app-content-dropdown">
+                                <p class="app-content-dropbtn">게시판</p>
+                                <div class="app-content app-content-dropdown-content">
+                                    <router-link to="/boards" class="app-review-board">리뷰 게시판</router-link>
+                                    <router-link to="/boards" class="app-review-board">자유 게시판</router-link>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- <router-link to="/hotels" class="app-content bg-navy">호텔</router-link>
+                    <router-link to="/products" class="app-content bg-navy">상품</router-link>
+                    <p class="app-content bg-navy">게시판</p>
+                    <router-link to="/boards" class="app-review-board bg-navy">리뷰 게시판</router-link>
+                    <router-link to="/boards" class="app-review-board bg-navy">자유 게시판</router-link> -->
+
                 </div>
-
-                <router-link to="/"><img class="header-title-img-1" src="/short_logo.png" alt=""></router-link>
-
-                <div> </div>
             </div>
 
-            <div class="header-search"> 
-                <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                <button class="btn bg-navy header-bg-btn">검색</button>
-            </div>
+            <router-link to="/"><img class="header-title-img-1" src="/short_logo.png" alt=""></router-link>
+
+            <div> </div>
         </div>
 
+        <div class="header-search"> 
+            <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+            <button class="btn bg-navy header-bg-btn">검색</button>
+        </div>
+    </div>
+
+    <!-- main -->
 
     <main class="main">
         <router-view></router-view>
     </main>
 
-    <!-- <footer class="footer"> -->
-   
-        <div v-if="flg === '0'">
-            <footer>
-                <div class="footer-inner">
-                    <div>
-                        <img class="footer-logo" src="/logo_footer.png" alt="">
-                    </div>
-                    <div class="footer-text">
-                        <p>Tel : 053.572.1005</p>
-                        <p>후원계좌 : IM뱅크 222-8282-222</p>
-                        <p>(주)  절어서 한국속으로</p>
-                        <p>대표 : 뽀빠이</p>
-                        <p>사업자 번호 : 123-45-678</p>
-                    </div>
+
+    <!-- footer -->
+
+    <div v-if="flg === '0'">
+        <footer>
+            <div class="footer-inner">
+                <div>
+                    <img class="footer-logo" src="/logo_footer.png" alt="">
                 </div>
-                <div class="footer-bottom">
-                    <hr class="hr">
-                    <div class="copy-right">
-                        <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
-                    </div>
+                <div class="footer-text">
+                    <p>Tel : 053.572.1005</p>
+                    <p>후원계좌 : IM뱅크 222-8282-222</p>
+                    <p>(주)  절어서 한국속으로</p>
+                    <p>대표 : 뽀빠이</p>
+                    <p>사업자 번호 : 123-45-678</p>
                 </div>
-            </footer>
-        </div>
+            </div>
+            <div class="footer-bottom">
+                <hr class="hr">
+                <div class="copy-right">
+                    <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
+                </div>
+            </div>
+        </footer>
+    </div>
 
 
-        <div v-if="flg === '1'">
-            <footer>
-                <div class="footer-inner">
-                    <div class="footer-text">
-                        <p>Tel : 053.572.1005</p>
-                        <p>후원계좌 : IM뱅크 222-8282-222</p>
-                        <p>(주)  절어서 한국속으로</p>
-                        <p>대표 : 뽀빠이</p>
-                        <p>사업자 번호 : 123-45-678</p>
-                    </div>
+    <div v-if="flg === '1'">
+        <footer>
+            <div class="footer-inner">
+                <div class="footer-text">
+                    <p>Tel : 053.572.1005</p>
+                    <p>후원계좌 : IM뱅크 222-8282-222</p>
+                    <p>(주)  절어서 한국속으로</p>
+                    <p>대표 : 뽀빠이</p>
+                    <p>사업자 번호 : 123-45-678</p>
                 </div>
-                <div class="footer-bottom">
-                    <hr class="hr">
-                    <div class="copy-right">
-                        <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
-                    </div>
+            </div>
+            <div class="footer-bottom">
+                <hr class="hr">
+                <div class="copy-right">
+                    <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </footer>
+    </div>
 
 </template>
 
@@ -184,7 +188,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-      window.removeEventListener('resize', flgSetUp);
+    window.removeEventListener('resize', flgSetUp);
 });
 
 // 메뉴 열림/닫힘 상태
@@ -322,16 +326,14 @@ input, textarea {
 .header-logo-img {
     width: 110px;
     height: 110px;
-    /* min-width: 100px; */
 }
+
 .header-title-img-1 {
     width: 110px;
-    height: 110px;
 }
 
 .header-title-img {
     width: 450px;
-    /* height: 110px; */
 }
 
 /* 헤더 로그인 버튼 */
@@ -366,7 +368,7 @@ input, textarea {
     gap: 5px;
 }
 
-.header-list-hover a {
+.header-list-hover a, .header-list-hover p {
     color: #01083A;
     font-size: 23px;
     font-weight: 500;
@@ -380,7 +382,10 @@ input, textarea {
     /* margin-top: 5px; */
 }
 
-.header-list-hover a:before, .header-list-hover a:after {
+.header-list-hover a:before
+, .header-list-hover a:after
+, .header-list-hover p:before
+, .header-list-hover p:after {
     content: "";
     transition: 0.3s all ease;
     -webkit-backface-visibility: hidden;
@@ -390,17 +395,22 @@ input, textarea {
     height: 2px;
 }
 
-.header-list-hover a:before {
+.header-list-hover a:before
+, .header-list-hover p:before {
     right: 0;
     top: 0;
 }
 
-.header-list-hover a:after {
+.header-list-hover a:after
+, .header-list-hover p:after {
     left: 0;
     bottom: 0;
 }
 
-.header-list-hover a:hover:before, .header-list-hover a:hover:after {
+.header-list-hover a:hover:before
+, .header-list-hover a:hover:after
+, .header-list-hover p:hover:before
+, .header-list-hover p:hover:after {
     width: 100%;
     background: #01083A;
 }
@@ -591,8 +601,86 @@ footer {
 
     .app-content {
         font-size: 20px;
-        margin-top: 40px;
-        margin-left: 40px;
+        margin-top: 10px;
+        margin-left: 30px;
+    }
+
+
+    /* 햄버거 */
+
+    .app-content-flex {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        gap: 5px;
+    }
+
+    .app-content a, .app-content p {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 500;
+        padding: 5px;
+        /**/
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .app-content a:before
+    , .app-content a:after
+    , .app-content p:before
+    , .app-content p:after {
+        content: "";
+        transition: 0.3s all ease;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        position: absolute;
+        width: 0;
+        height: 2px;
+    }
+
+    .app-content a:before
+    , .app-content p:before {
+        right: 0;
+        top: 0;
+    }
+
+    .app-content a:after
+    , .app-content p:after {
+        left: 0;
+        bottom: 0;
+    }
+
+    .app-content a:hover:before
+    , .app-content a:hover:after
+    , .app-content p:hover:before
+    , .app-content p:hover:after {
+        width: 100%;
+        background: #fff;
+    }
+
+    .app-content-dropdown{
+        position : relative;
+        display : inline-block;
+    }
+
+    .app-content-dropdown-content{
+        display : none;
+        position : absolute;
+        z-index : 1;
+        top: 75%;
+        left: -30%;
+    }
+
+    .app-content-dropdown-content a{
+        display: inline-block;
+        white-space: nowrap; 
+        font-size: 16px;
+    }
+
+    .app-content-dropdown:hover .app-content-dropdown-content {
+        display: block;
     }
 
     .v-if-header {

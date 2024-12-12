@@ -14,70 +14,87 @@ import PasswordComponent from '../views/components/user/PasswordComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
 import HotelListDetail from '../views/components/board/HotelListDetail.vue';
+import { useStore } from 'vuex';
+
+
+const chkAuth = (to, from, next) => {
+    const store = useStore();
+    const authFlg = store.state.user.authFlg;
+    // const noAuthPassFlg = (to.path === '/' || to.path === '/login' || to.path === '/registration');
+    const noAuthPassFlg = (to.path === '/login' || to.path === '/registration');
+    
+    if(authFlg && noAuthPassFlg) {
+        next('/');
+    } else if(!authFlg && !noAuthPassFlg) {
+        next('/login');
+    } else {
+        next();
+    }
+}
 
 
 const routes = [
-  // 다른 경로와 컴포넌트 추가 가능
-  {
-    path: '/',
-    component: MainPageComponent,
-  },
-  {
-    path: '/login',
-    component: LoginComponent,
-  },
-  {
-    path: '/registration',
-    component: UserRegistrationComponent,
-  },
-  {
-    path: '/hotels',
-    component: HotelListComponent,
-  },
-  {
-    path: '/products',
-    component: ProductListComponent,
-  },
-  {
-    path: '/boards',
-    component: BoardListComponent,
-  },
-  {
-    path: '/boards/detail',
-    component: BoardDetailComponent,
-  },
-  {
-    path: '/boards/create',
-    component: BoardCreateComponent,
-  },
-  {
-    path: '/boards/update',
-    component: BoardUpdateComponent,
-  },
-  {
-    path: '/mypage',
-    component: MyPageComponent,
-  },
-  {
-    path: '/mypage/update',
-    component: MyPageUpdateComponent,
-  },
-  {
-    path: '/password',
-    component: PasswordComponent,
-  },
-  {
-    path: '/password/update',
-    component: PasswordUpdateComponent,
-  },
-  {
-    path: '/hotels/detail',
-    component: HotelListDetail,
-  },
-  {
-    path: '/:catchAll(.*)',
-    component: NotFoundComponent,
-  },
+    // 다른 경로와 컴포넌트 추가 가능
+    {
+        path: '/',
+        component: MainPageComponent,
+    },
+    {
+        path: '/login',
+        component: LoginComponent,
+    },
+    {
+        path: '/registration',
+        component: UserRegistrationComponent,
+    },
+    {
+        path: '/hotels',
+        component: HotelListComponent,
+    },
+    {
+        path: '/hotels/detail',
+        component: HotelListDetail,
+    },
+    {
+        path: '/products',
+        component: ProductListComponent,
+    },
+    {
+        path: '/boards',
+        component: BoardListComponent,
+    },
+    {
+        path: '/boards/detail',
+        component: BoardDetailComponent,
+    },
+    {
+        path: '/boards/create',
+        component: BoardCreateComponent,
+    },
+    {
+        path: '/boards/update',
+        component: BoardUpdateComponent,
+    },
+    {
+        path: '/mypage',
+        component: MyPageComponent,
+    },
+    {
+        path: '/mypage/update',
+        component: MyPageUpdateComponent,
+    },
+    {
+        path: '/password',
+        component: PasswordComponent,
+    },
+    {
+        path: '/password/update',
+        component: PasswordUpdateComponent,
+    },
+    {
+        path: '/:catchAll(.*)',
+        component: NotFoundComponent,
+    },
 ];
 
 
