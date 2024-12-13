@@ -12,9 +12,9 @@
             </div>
             <div id="board-search-tb">
                 <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
-                <button class="btn board-search-btn">검색</button>
+                <button class="btn bg-navy board-search-btn">검색</button>
             </div>
-            <button class="btn board-create-btn">작성</button>
+            <button class="btn bg-navy board-create-btn">작성</button>
         </div>
 
     <!-- 리스트항목 -->
@@ -161,20 +161,31 @@ main{
     height: 1.2rem;
     margin-right: 20px;
 }
-
+.board-search-tb{
+    display: grid;
+    align-items: flex-end;
+}
 .board-search {
     margin-left: 20px; 
     background-color: #e9e8e8;
     border-radius: 20px;
     width: 250px;
-    height: 30px;
+    height: 31px;
     text-indent: 20px; 
 }
 
 .board-search-btn{
+    font-size: large;
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
     margin-left: -60px;
 }
 .board-create-btn{
+    font-size: large;
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
     gap: 50px;
 }
 

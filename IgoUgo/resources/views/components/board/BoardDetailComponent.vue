@@ -7,9 +7,10 @@
             <h3>category</h3>
         </div>
         <!-- 버튼영역 -->
-        <div class="board-detail-btn">
-            <a href="#" class="board-btn">수정</a>
-            <a href="#" class="board-btn">삭제</a>
+        <div class="board-detailItem-btn"> 
+            <!-- bg-navy 글자색 안먹어서 board-detail-btn에서 설정함 -->
+            <a href="#" class="btn bg-navy board-detail-btn">수정</a>
+            <a href="#" class="btn bg-navy board-detail-btn">삭제</a>
         </div>
     </header>
     <main>  
@@ -23,24 +24,23 @@
         </div>
         
         <!-- 등록이미지 불러오기 -->
-         <div class="board-detail-img">
-            <img src="../../../../../ex/img/slack.png" alt="test">
-            <img src="../../../../../ex/img/slack.png" alt="test">
-         </div>
-         <hr>
+        <div class="board-detail-img">
+           <img src="../../../../../ex/img/slack.png" alt="test">
+           <img src="../../../../../ex/img/slack.png" alt="test">
+        </div>
+        <hr>
          <!-- 내용 -->
-        <div>
-            <span>내용</span>
-            <p>happy</p>
+        <div class="board-detail-content">
+            <span>loem</span>
         </div>
          <!-- 댓글 -->
-         <div class="board-detail-reply ">
+        <div class="board-detail-reply ">
             <span>댓글</span>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
-            <button class="board-btn">작성</button>
-         </div>
-         <div class="board-detail-replyList">
-            <div class="replyList">
+            <button class="btn bg-navy board-detail-btn">작성</button>
+        </div>
+        <div class="board-detail-replyList">
+            <div class="replyList-head">
                 <span>내용</span>
                 <span>닉네임</span>
                 <span>작성일시</span>
@@ -50,7 +50,7 @@
                 <span>놀라핑</span>
                 <span>24.12.10</span>
             </div>
-         </div>
+        </div>
 
 
     </main>
@@ -64,29 +64,31 @@
 header{
     display: grid;
     grid-template-columns: 5fr 2fr;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin: 30px auto;
     align-items: flex-end;
 }
-.board-detail-category{
+/* main{
+    position: relative;
+} */
+.board-detail-category {
     display: flex;
     align-items: flex-end;
     column-gap: 10px;
 }
-.board-detail-btn{
-    gap: 20px;
-    /* align-items: flex-end; */
-
+.board-detailItem-btn{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    column-gap: 10px;
 }
-.board-btn{
-    /*  왜 넓이지정 안되지? */
-    background-color: #01083a;
-    border-radius: 15px;
-    padding: 5px;
-    font-weight: 500;
-    color: #fff !important;
+.board-detail-btn{
+    font-size: large;
+    border-radius: 20px;
     width: 70px;
+    height: 30px;
+    gap: 50px;
     margin-right: 20px;
+    color: #fff;
 }
 .board-detail-head{
     display: grid;
@@ -100,6 +102,52 @@ header{
     border: none;
     background: transparent;
 }
+.board-detail-img{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px 30px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    
+}
+.board-detail-content{
+    margin-left: 10px;
+}
+.board-detail-replyList{
+    min-width: 800px;
+    width: 1150px;
+    height: 300px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 7fr 1fr 1.5fr;
+    align-items: center;
+    margin-left: 20px;    
+    gap: 30px; 
+    border-bottom: solid #01083a 1px;
+}
+.board-detail-reply{
+    /* position: absolute; */
+    width: 800px;
+    display: grid;
+    /* grid-template-rows: 1fr 1fr auto; */
+    align-items: center;    
+    /* gap: 30px;  */
+    margin: 20px ;
+}
+.board-detail-reply>button{
+    gap: -80px;
+}
+.replyList-head .replyList{
+    min-width: 800px;
+    width: 1150px;
+    display: grid;
+    grid-template-columns: 7fr 1fr 1.5fr;
+    align-items: center;
+    margin-left: 20px;    
+    gap: 30px; 
+    border-bottom: solid #01083a 1px;
+}
 /* @media(max-width: 800px){
     .board-detail-head{
         flex-wrap: wrap;
@@ -107,24 +155,6 @@ header{
         align-items: flex-start; 
     }
 } */
-.board-detail-reply{
-    width: 800px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: center;    
-    gap: 30px; 
-    margin: 50px auto;
-}
-.replyList{
-    min-width: 800px;
-    width: 1200px;
-    display: grid;
-    grid-template-columns: 7fr 1fr 1.5fr;
-    align-items: center;    
-    gap: 30px; 
-    margin: 20px auto;
-    border-bottom: solid #01083a 1px;
-}
 @media(max-width:800px){
     
     /* .board-detail-head {
@@ -154,6 +184,7 @@ header{
     } */
     .board-detail-img{
         max-width: 600px;
+
     }
     .board-detail-reply{
         width: 800px;
