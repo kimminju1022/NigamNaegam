@@ -28,8 +28,18 @@ export default {
             axios.post(url, data)
             .then(response => {
 
-                
-                console.log(response.data);
+                // 토큰 저장
+                localStorage.setItem('accessToken', response.data.accessToken);
+                localStorage.setItem('refreshToken', response.data.refreshToken);
+                localStorage.setItem('userInfo', JSON.stringify(response.data.data));
+                context.commit('setAuthFlg', true);
+                context.commit('setUserInfo', response.data.data);
+
+                alert('어서와 처음이지');
+
+                // 보드 리스트로 이동
+                router.replace('/boards');
+                // console.log(response.data);
                 router.replace('/');
             })
             .catch(error => {
