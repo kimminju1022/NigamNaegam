@@ -1,14 +1,41 @@
+
 <template>
-<div>
+<div class="option">
 
-  <div class="option-select">
-    
-  </div>
-  <!-- 지도 div -->
-  <div id="map">
+    <div class="option-select">
+        <p class="option-title">필터링</p>
+        <div class="option-center">
+            <input class="option-chk-box" id="no-smoke" type="checkbox">
+            <label for="no-smoke">금연</label>
+        </div>
 
-  </div>
+        <div class="option-center">
+            <input class="option-chk-box" id="wifi" type="checkbox">
+            <label for="wifi">무료 Wi-fi</label>
+        </div>
 
+        <div class="option-center">
+            <input class="option-chk-box" id="morning" type="checkbox">
+            <label for="morning">조식</label>
+        </div>
+
+        <div class="option-center">
+            <input class="option-chk-box" id="parking" type="checkbox">
+            <label for="parking">금연</label>
+        </div>
+
+        <p class="option-title">가격</p>
+        <div class="option-center">
+            <input class="price-value" type="number"> 
+            <span class="wave">~</span>
+            <input class="price-value" type="number"> 
+        </div>
+    </div>
+
+    <!-- 지도 div -->
+    <div id="map">
+
+    </div>
 </div>
 </template>
 
@@ -82,15 +109,68 @@ const loadMaker = () => {
 </script>
 
 <style scoped>
-
+.option {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 2%;
+}
+.option-select {
+    border: solid 2px #01083a;
+    border-radius: 20px;
+    padding: 5%;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
 
 #map {
     width: 100%;
-    height: 800px;
+    height: 700px;
     z-index: 1;  /* 헤더가 맵 위에 올 수 있도록 설정 */
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+.price-value {
+    border: solid 1px #01083a;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 150px;
+    padding: 3px;
+}
+.wave {
+    margin: 0 5px;
+}
+.option-title {
+    background-color: #01083a;
+    height: 35px;
+    width: 65px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    margin: auto 0;
+    line-height: 35px;
+    border-radius: 10px;
+}
+label {
+    font-size: 18px;
+}
+.option-chk-box {
+    border-radius: 50%;
+    border: 1px solid #01083a;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-right: 2%;
+}
+.option-center {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+}
 @media (max-width: 1000px) {
     #map {
         width: 80%;
