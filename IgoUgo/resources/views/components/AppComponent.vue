@@ -225,10 +225,11 @@ const toggleMenu = () => {
 a {
     text-decoration: none;
 }
-/* 
-a:visited {  // a태그 이제 안사용 하는듯? //
+
+a:visited {
+      /* // a태그 이제 안사용 하는듯? // */
     color : #01083A;
-} */
+}
 
 /*  p태그로 바꾸니까 css꺠지는거 고치려다 만거
     .header-list-dropbtn {
