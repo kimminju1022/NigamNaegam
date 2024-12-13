@@ -7,7 +7,7 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
-import NotFoundComponent from '../views/NotFoundComponent.vue';
+import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
 import PasswordComponent from '../views/components/user/PasswordComponent.vue';
