@@ -9,70 +9,80 @@
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="email">이메일</label>
-                    <span>이메일 형식에 맞지 않습니다.</span>
+                    <span class="test" :class="test1">이메일 형식에 맞지 않습니다.</span>
                 </div>
-                <input class="input-login" type="text" id="email" placeholder="이메일을 입력해주세요">
+                <input v-model="userInfo.email" class="input-login" type="text" id="email" name="email" placeholder="이메일을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password">비밀번호</label>
                     <!-- <span>비밀번호 형식에 맞지 않습니다.</span> -->
-                    <div>
-                        <ul class="password-regex-chk">
-                            <li :class="{test:flg}">대소문자</li>
-                            <li :class="{test:flg}">숫자</li>
-                            <li :class="{test:flg}">특수기호 !, @</li>
+                    <!-- <div>
+                        <ul class="password-regex">
+                            <li :class="{password-regex-chk:flg}">대소문자</li>
+                            <li :class="{password-regex-chk:flg}">숫자</li>
+                            <li :class="{password-regex-chk:flg}">특수기호 !, @</li>
                         </ul>
-                    </div>
+                    </div> -->
                 </div>
-                <input class="input-login" type="password" id="password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
+                <input v-model="userInfo.password" class="input-login" type="password" id="password" name="password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password_chk">비밀번호 확인</label>
                     <span>비밀번호가 맞지 않습니다.</span>
                 </div>
-                <input class="input-login" type="password" id="password_chk" placeholder="비밀번호 확인">
+                <input v-model="userInfo.password_chk" class="input-login" type="password" id="password_chk" name="password_chk" placeholder="비밀번호 확인">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="name">이름</label>
                     <span>이름 형식에 맞지 않습니다.</span>
                 </div>
-                <input class="input-login" type="text" id="name" placeholder="이름을 입력해주세요">
+                <input v-model="userInfo.name" class="input-login" type="text" id="name" name="name" placeholder="이름을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="nickname">닉네임</label>
                     <span>닉네임 형식에 맞지 않습니다.</span>
                 </div>
-                <input class="input-login" type="text" id="nickname" placeholder="닉네임을 입력해주세요">
+                <input v-model="userInfo.nickname" class="input-login" type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요">
             </div>
             <div class="login-input-box">                
                 <div class="login-label-flex">
                     <label for="tel">전화번호</label>
                     <span>전화번호 형식에 맞지 않습니다.</span>
                 </div>
-                <input class="input-login" type="text" id="tel" placeholder="'-'를 생략하고 숫자만 입력해주세요">
+                <input v-model="userInfo.tel" class="input-login" type="text" id="tel" name="tel" placeholder="'-'를 생략하고 숫자만 입력해주세요">
             </div>
         </div>
         <div class="registration-btn">
-            <button class="btn bg-navy btn-registration">회원가입</button>
-            <button class="btn bg-clear btn-cancel">취소</button>
+            <button @click="$store.dispatch('user/registration', userInfo)" class="btn bg-navy btn-registration">회원가입</button>
+            <button @click="$router.replace('/login')" class="btn bg-clear btn-cancel">취소</button>
         </div>
     </div>
 </template>
 
 <script setup>
 
+import { reactive, ref } from 'vue';
+
 // import { ref } from 'vue';
 
 // const flg = ref(false);
+// const validatePassword = /^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\.[A-Za-z0-9\\-]+/;
 
-// if() {
+// if(validatePassword) {
 //     flg.value = true;
 // }
-
+const userInfo = reactive({
+    email: ''
+    ,password: ''
+    ,password_chk: ''
+    ,name: ''
+    ,nickname: ''
+    ,tel: ''
+});
 
 </script>
 
@@ -136,17 +146,14 @@ span {
     font-size: 13px;
 }
 
-.password-regex-chk {
+.password-regex {
     display: flex;
     gap: 5px;
     font-size: 13px;
+    color:#4c4c4c;
 }
 
-.password-regex-chk * {
-    color:red;
-}
-
-.password-regex-chk * {
+.password-regex-chk {
     color:green;
 }
 
@@ -177,5 +184,14 @@ span {
     font-weight: 500;
     border-radius: 20px;
     border: 2px solid #01083a;
+}
+
+
+.test {
+    color:gray;
+}
+
+.test1 {
+    color: green !important;
 }
 </style>

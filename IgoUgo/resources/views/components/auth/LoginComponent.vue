@@ -3,7 +3,7 @@
         <h1>로그인</h1>
         <div class="login-form">
             <!-- v-if 넣어야함 -->
-            <p>아이디 혹은 비밀번호가 일치하지 않습니다.</p>
+            <p class="test" :class="test1">아이디 혹은 비밀번호가 일치하지 않습니다.</p>
             <input v-model="userInfo.account" class="input-login" type="text" placeholder="e-mail">
             <input v-model="userInfo.password" class="input-login" type="password" placeholder="password">
         </div>
@@ -18,12 +18,24 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref, watch } from 'vue';
+
+
+
+const input = ref('');
+const msg = ref('');
+const color = ref('color: red');
 
 const userInfo = reactive({
-    account: '',
-    password: '',
+    account: ''
+    ,password: ''
 });
+
+watch(input, (val) => {
+    console.log(val);
+});
+
+
 </script>
 
 <style scoped>
@@ -99,5 +111,14 @@ h1 {
     width: 80px;
     font-size: 20px;
     font-weight: 500;
+}
+
+
+.test {
+    color:gray;
+}
+
+.test1 {
+    color: green !important;
 }
 </style>

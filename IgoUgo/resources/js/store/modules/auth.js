@@ -1,6 +1,7 @@
 import axios from "../../axios";
 
 export default {
+    namespaced: true,
     state: () => ({
         authFlg: localStorage.getItem('accessToken') ? true : false,
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
@@ -26,8 +27,31 @@ export default {
 
             axios.post(url, data)
             .then(response => {
+
+                
+                console.log(response.data);
+                router.replace('/');
             })
             .catch(error => {
+                let errorMsgList = [];
+                const errorData = error.response.data;
+
+                if(error.response.status === 422) {
+                    // 유효성 체크 에러
+                    if(errorData.data.account) {
+                        errorMsgList.push(errorData.data.account[0]);
+                    }
+                    if(errorData.data.password) {
+                        errorMsgList.push(errorData.data.password[0]);
+                    }
+                } else if(error.response.status === 401) {
+                    // 비밀번호 오류
+                    errorMsgList.push(errorData.msg);
+                } else {
+                    errorMsgList.push('예기치 못한 오류 발생');
+                }
+                console.log(error);
+                alert(errorMsgList.join('\n'));
             });
         },
 
