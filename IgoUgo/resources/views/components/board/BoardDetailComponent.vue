@@ -60,7 +60,7 @@
 
 </script>
 
-<style>
+<style scoped>
 header{
     display: grid;
     grid-template-columns: 5fr 2fr;

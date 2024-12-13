@@ -1,6 +1,6 @@
 <template>
     <!-- 작동btn -->
-     <div class="board-create-head">
+    <div class="board-create-head">
         <h2>board title</h2>
          <div class="form-box">
              <button class="btn board-create-btn">목록</button>
@@ -74,7 +74,7 @@
 
  </template>
 
-<script>
+<script setup>
 // export default {
 //     data() {
 //         return {
@@ -133,7 +133,7 @@
 // };
 </script>
 
-<style>
+<style scoped>
 .board-create-head{
     
 }
@@ -204,6 +204,4 @@
         text-align: center;  텍스트 중앙정렬 
     }
 } */
-
-
 </style>
