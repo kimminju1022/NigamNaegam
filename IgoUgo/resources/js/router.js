@@ -13,7 +13,7 @@ import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponen
 import PasswordComponent from '../views/components/user/PasswordComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
-import HotelListDetail from '../views/components/board/HotelListDetail.vue';
+import HotelListDetailComponent from '../views/components/board/HotelListDetailComponent.vue';
 import { useStore } from 'vuex';
 
 
@@ -53,7 +53,7 @@ const routes = [
     },
     {
         path: '/hotels/detail',
-        component: HotelListDetail,
+        component: HotelListDetailComponent,
     },
     {
         path: '/products',
