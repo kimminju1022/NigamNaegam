@@ -126,6 +126,7 @@ const loadMaker = () => {
     width: 100%;
     height: 700px;
     z-index: 1;  /* 헤더가 맵 위에 올 수 있도록 설정 */
+    border-radius: 20px;
 }
 
 input::-webkit-outer-spin-button,
