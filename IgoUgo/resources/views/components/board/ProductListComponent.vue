@@ -9,36 +9,38 @@
             <h2 class="cat-box-title">카테고리</h2>
             <div class="cat-list" :class="{'cat-list-change':flg}">
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input class="cat-input" type="checkbox" name="category" id="food" value="관광지">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="food" value="관광지">
                     <label for="food">관광지</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input type="checkbox" name="category" id="activity" value="문화시설">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="activity" value="문화시설">
                     <label for="activity">문화시설</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input type="checkbox" name="category" id="shopping" value="이벤트">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="shopping" value="이벤트">
                     <label for="shopping">이벤트</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input type="checkbox" name="category" id="healing" value="레포츠">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="healing" value="레포츠">
                     <label for="healing">레포츠</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input type="checkbox" name="category" id="shopping" value="쇼핑">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="shopping" value="쇼핑">
                     <label for="shopping">쇼핑</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input type="checkbox" name="category" id="healing" value="음식점">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="healing" value="음식점">
                     <label for="healing">음식점</label>
                 </div>
             </div>
         </div>
         <div class="left-small-container">
             <h2 class="pri-box-title">가격</h2>
-            <div class="pri-box">
+            <div class="pri-box" :class="{'pri-box-change':flg}">
                 <input type="number" class="pri-input" max="300000000">
-                <p style="text-align: center;">~</p>
+                <div class="pri-wave">
+                    <h3>~</h3>
+                </div>
                 <input type="number" class="pri-input" max="300000000">
             </div>
         </div>
@@ -50,7 +52,7 @@
     <div>
         <div class="right-small-container select-result-box">
             <h2><span class="font-blue">200</span> 개의 결과</h2>
-            <div class="select-list font-default-size">
+            <div class="select-list font-default-size" :class="{'dis-none':flg}">
                 <div class="select-list-item">
                     선택사항1
                     <img src="img_product/img_x.png" class="img-x">
@@ -96,6 +98,33 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="right-small-container order-box font-default-size">
+            <div>
+                <span class="font-bold">정렬 순서</span>
+            </div>
+            <div class="order-list">
+                <p>|</p>
+                <div class="order-list-item">
+                    뽀빠이 추천
+                    <img src="img_product/img_star.png" class="img-order">
+                </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    최신순
+                    <span class="order-list-item-update font-bold">NEW</span>
+                </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    베스트셀러
+                    <img src="img_product/img_thumb.png" class="img-order">
+                </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    낮은 가격
+                    <img src="img_product/img_won.png" class="img-order">
+                </div>
+            </div>
+        </div> -->
         <div class="right-small-container">
             <div class="card-list">
                 <div class="card">
@@ -232,6 +261,7 @@ window.addEventListener('resize', flgSetup);
     display: flex;
     gap: 10px;
     font-size: 20px;
+    align-items: center;
 }
 
 /* 지도 관련 */
@@ -241,7 +271,7 @@ window.addEventListener('resize', flgSetup);
     background-position: center;
 }
 .map-box-title {
-    margin-top: 146px;
+    margin-top: 140px;
     background-color: rgba(255, 255, 255, .7);
     text-align: center;
     /* border-radius: 10px; */
@@ -265,6 +295,9 @@ window.addEventListener('resize', flgSetup);
     border-radius: 50%;
     appearance: none;
 }
+.cat-input:checked {
+    background-color: #01083A;
+}
 
 /* 가격 관련 */
 .pri-box-title {
@@ -277,15 +310,12 @@ window.addEventListener('resize', flgSetup);
     border: 1px solid #01083A;
     border-radius: 10px;
     height: 30px;
-    min-width: 150px;
+    min-width: 100px;
     padding-left: 20px;
 }
-/* .pri-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 10px;
-} */
+.pri-wave {
+    text-align: center;
+}
 
 /* 버튼 */
 .button-position {
@@ -299,8 +329,7 @@ window.addEventListener('resize', flgSetup);
 
 /* 선택 결과 관련 */
 .select-result-box {
-    height: 160px;
-    padding-top: 20px;
+    padding: 20px;
 }
 .select-list {
     padding: 20px;
@@ -408,19 +437,37 @@ window.addEventListener('resize', flgSetup);
 
 /* --------------------------------- */
 /* 반응형 구현 */
+/* --------------------------------- */
+
+/* 사라짐 */
 .dis-none {
     display: none;
 }
+
+/* 지도 */
 .map-height {
-    height: 200px;
+    height: 150px;
 }
+
+/* 카테고리 */
 .cat-list-change {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
-.cat-list-item-change {
-    font-size: 17px;
+.cat-input-change {
+    width: 16px;
+    height: 16px;
 }
+.cat-list-item-change {
+    font-size: 16px;
+}
+
+/* 가격 */
+.pri-box-change {
+    display: flex;
+    gap: 5px;
+}
+
 /* 미디어쿼리 */
 @media (max-width: 1000px) {
     .total-container {
