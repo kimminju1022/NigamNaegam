@@ -318,6 +318,7 @@ input, textarea {
 .header-title-button {
     display: flex;
     gap: 25px;
+    align-items: center;
 }
 
 .header-list > :last-child {

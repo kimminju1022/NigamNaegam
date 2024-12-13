@@ -107,12 +107,7 @@
     </div>
     
     <div>
-        <!-- 여기는 진짜 광고 -->
-        <div class="main-ppl-container">
-            <img src="default/board_default.png" class="main-ppl-ex">
-            <img src="default/profile_default.png" class="main-ppl-ex">
-            <img src="default/board_default.png" class="main-ppl-ex">
-        </div>
+        <img src="default/gongzi.png">
     </div>
 </div>
 </template>
