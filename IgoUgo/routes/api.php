@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -23,6 +24,9 @@ Route::get('/test-data', [TestController::class, 'index']);
 
 // 호텔리스트 라우터
 Route::get('/hotels', [ApiController::class, 'hotelProducts']);
+
+// 상품리스트 라우터
+Route::get('/products', [ProductController::class, 'productData']);
 
 // 로그인
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

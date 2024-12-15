@@ -126,88 +126,95 @@
             </div>
         </div> -->
         <div class="right-small-container">
-            <div class="card-list">
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
+            <div v-if="loading">데이터 불러오는 중...</div>
+            <div v-else-if="error">{{ error }}</div>
+            <div v-else>
+                <div v-for="item in items" :key="item">
+                    <p>{{ item.title }}</p>
                 </div>
             </div>
+            <!-- <div class="card-list">
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+            </div> -->
             <div class="pagination">
                 <a href="#"><button class="btn bg-clear"><</button></a>
                 <a href="#"><button class="btn bg-clear">1</button></a>
@@ -224,6 +231,8 @@
 
 <script setup>
 import { onBeforeMount, ref } from 'vue';
+import axios from 'axios';
+
 const flg = ref(false);
 const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
@@ -232,6 +241,28 @@ onBeforeMount(() => {
     flgSetup();
 });
 window.addEventListener('resize', flgSetup);
+
+// export default {
+//     data() {
+//         return {
+//             items: [], // tourAPI 데이터
+//             loading: true, // 로딩 상태
+//             error: null, // 에러 메시지
+//         };
+//     },
+
+//     mounted() {
+//         // Axios로 API 호출
+//         axios.get('/products')
+//         .then((response) => {
+//             this.items = response.data;
+//             this.loading = false;
+//         })
+//         .catch((error) => {
+//             this.loading = false;
+//         })
+//     },
+// };
 </script>
 
 <style scoped>
