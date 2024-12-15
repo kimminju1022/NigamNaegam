@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// 테스트용 라우터
 Route::get('/test-data', [TestController::class, 'index']);
+
+// 호텔리스트 라우터
+Route::get('/hotels', [ApiController::class, 'hotelProducts']);
+

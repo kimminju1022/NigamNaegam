@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HotelListComponent from '../views/components/board/HotelListComponent.vue';
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import UserRegistrationComponent from '../views/components/auth/UserRegistrationComponent.vue';
 import ProductListComponent from '../views/components/board/ProductListComponent.vue';
@@ -14,7 +13,9 @@ import PasswordComponent from '../views/components/user/PasswordComponent.vue';
 import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
 import HotelListDetailComponent from '../views/components/board/HotelListDetailComponent.vue';
+import HotelListComponent from '../views/components/board/HotelListComponent.vue';
 import { useStore } from 'vuex';
+import HotelMapComponent from '../views/components/board/HotelMapComponent.vue';
 
 
 const chkAuth = (to, from, next) => {
@@ -49,11 +50,15 @@ const routes = [
     },
     {
         path: '/hotels',
-        component: HotelListComponent,
+        component: HotelListComponent
     },
     {
         path: '/hotels/detail',
         component: HotelListDetailComponent,
+    },
+    {
+        path: '/hotels/map',
+        component: HotelMapComponent,
     },
     {
         path: '/products',
