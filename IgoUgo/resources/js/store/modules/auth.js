@@ -1,8 +1,10 @@
 import axios from "../../axios";
+import router from '../../router';
 
 export default {
     namespaced: true,
     state: () => ({
+        accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
         authFlg: localStorage.getItem('accessToken') ? true : false,
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
     }),
@@ -13,6 +15,10 @@ export default {
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
         },
+        setAccessToken(state, accessToken) {
+            state.accessToken = accessToken;
+            localStorage.setItem('accessToken', accessToken);
+        }
     },
     actions: {
         /**
@@ -25,6 +31,9 @@ export default {
             const url = '/api/login';
             const data = JSON.stringify(userInfo);
 
+            // console.log(userInfo,data);
+
+            
             axios.post(url, data)
             .then(response => {
 
@@ -37,9 +46,6 @@ export default {
 
                 alert('어서와 처음이지');
 
-                // 보드 리스트로 이동
-                router.replace('/boards');
-                // console.log(response.data);
                 router.replace('/');
             })
             .catch(error => {
@@ -48,8 +54,8 @@ export default {
 
                 if(error.response.status === 422) {
                     // 유효성 체크 에러
-                    if(errorData.data.account) {
-                        errorMsgList.push(errorData.data.account[0]);
+                    if(errorData.data.email) {
+                        errorMsgList.push(errorData.data.email[0]);
                     }
                     if(errorData.data.password) {
                         errorMsgList.push(errorData.data.password[0]);
@@ -62,6 +68,8 @@ export default {
                 }
                 console.log(error);
                 alert(errorMsgList.join('\n'));
+
+                // console.log(error);
             });
         },
 
@@ -69,7 +77,30 @@ export default {
          * 로그아웃
          */
         logout(context, userInfo) {
+            const url = '/api/logout';
+            const config = {
+                headers: {
+                    // content-type은 axios 불러와서 생략
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                } // bearer token 세팅
+            }
 
+            axios.post(url, null, config)
+            .then(response => {
+                alert('로그아웃 완료');
+            })
+            .catch(error => {
+                alert('문제가 발생하여 로그아웃 처리');
+            })
+            .finally(() => {
+                localStorage.clear();
+    
+                // state 초기화
+                context.commit('setAuthFlg', false);
+                context.commit('setUserInfo', {});
+    
+                router.replace('/');
+            });
         },
     },
     getters: {

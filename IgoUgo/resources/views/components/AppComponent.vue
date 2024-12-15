@@ -9,10 +9,14 @@
                     <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
                     <!-- {{ console.log(flg) }} -->
                     <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
-                    <div class="header-title-button">
+                    <div v-if="!$store.state.auth.authFlg" class="header-title-button">
                         <button class="btn bg-clear header-btn">FAQ</button>
                         <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
                         <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
+                    </div>
+                    <div v-else class="header-title-button">
+                        <button class="btn bg-clear header-btn">FAQ</button>
+                        <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
                     </div>
                 </div>
                 <div class="header-list">
@@ -55,8 +59,13 @@
                     
                     <div class="app-resist-login-div" @click="toggleMenu">
                         <div class="close close3"></div>
-                        <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
-                        <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
+                        <div v-if="!$store.state.auth.authFlg">
+                            <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
+                            <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
+                        </div>
+                        <div v-else>
+                            <button @click="$store.dispatch('auth/logout')" class="app-resist-login btn bg-navy">로그아웃</button>
+                        </div>
                     </div>
                     <ul class="app-content-flex">
                         <li class="app-content"><router-link to="/hotels">호텔</router-link></li>
@@ -94,6 +103,8 @@
     <!-- main -->
 
     <main class="main">
+        <!-- TODO : 나중에 버튼 제거 -->
+        <button @click="$store.dispatch('user/chkTokenAndContinueProcess', () => {console.log('테스트')})" >토큰 만료 체크</button>
         <router-view></router-view>
     </main>
 
@@ -353,6 +364,16 @@ input, textarea {
     justify-content: center;
 }
 
+/* 헤더 로그아웃 버튼 */
+.header-logout {
+    font-size: 18px;
+    width: 80px;
+    height: 35px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* 헤더 2 -> 호텔, 상품, 게시판, 검색바 */
 .header-list {

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
-import UserRegistrationComponent from '../views/components/auth/UserRegistrationComponent.vue';
+import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
 import ProductListComponent from '../views/components/board/ProductListComponent.vue';
 import BoardListComponent from '../views/components/board/BoardListComponent.vue';
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
@@ -14,8 +14,8 @@ import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComp
 import MainPageComponent from '../views/components/MainPageComponent.vue';
 import HotelListDetailComponent from '../views/components/board/HotelListDetailComponent.vue';
 import HotelListComponent from '../views/components/board/HotelListComponent.vue';
-import { useStore } from 'vuex';
 import HotelMapComponent from '../views/components/board/HotelMapComponent.vue';
+import { useStore } from 'vuex';
 
 
 const chkAuth = (to, from, next) => {
@@ -27,6 +27,7 @@ const chkAuth = (to, from, next) => {
     if(authFlg && noAuthPassFlg) {
         next('/');
     } else if(!authFlg && !noAuthPassFlg) {
+        alert('로그인 후 이용가능');
         next('/login');
     } else {
         next();
@@ -43,10 +44,12 @@ const routes = [
     {
         path: '/login',
         component: LoginComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/registration',
         component: UserRegistrationComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/hotels',
@@ -75,26 +78,32 @@ const routes = [
     {
         path: '/boards/create',
         component: BoardCreateComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/boards/update',
         component: BoardUpdateComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/mypage',
         component: MyPageComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/mypage/update',
         component: MyPageUpdateComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/password',
         component: PasswordComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/password/update',
         component: PasswordUpdateComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/:catchAll(.*)',

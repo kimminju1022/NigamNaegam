@@ -9,7 +9,8 @@
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="email">이메일</label>
-                    <span class="test" :class="test1">이메일 형식에 맞지 않습니다.</span>
+                    <!-- <span class="test" :class="test1">이메일 형식에 맞지 않습니다.</span> -->
+                    <span>이메일 형식에 맞지 않습니다.</span>
                 </div>
                 <input v-model="userInfo.email" class="input-login" type="text" id="email" name="email" placeholder="이메일을 입력해주세요">
             </div>
@@ -53,7 +54,7 @@
                     <label for="tel">전화번호</label>
                     <span>전화번호 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.tel" class="input-login" type="text" id="tel" name="tel" placeholder="'-'를 생략하고 숫자만 입력해주세요">
+                <input v-model="userInfo.phone" class="input-login" type="text" id="phone" name="phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
             </div>
         </div>
         <div class="registration-btn">
@@ -65,7 +66,7 @@
 
 <script setup>
 
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 
 // import { ref } from 'vue';
 
@@ -81,7 +82,7 @@ const userInfo = reactive({
     ,password_chk: ''
     ,name: ''
     ,nickname: ''
-    ,tel: ''
+    ,phone: ''
 });
 
 </script>
