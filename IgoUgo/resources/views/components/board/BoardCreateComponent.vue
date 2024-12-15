@@ -1,53 +1,38 @@
 <template>
-    <!-- 작동btn -->
+    <!-- 작동btn  [목록과 취소가 같은것 아닐까?] -->
     <div class="board-create-head">
         <h2>board title</h2>
-         <div class="form-box">
-             <button class="btn bg-navy board-create-btn">목록</button>
-             <button class="btn bg-navy board-create-btn">취소</button>
-             <button class="btn bg-navy board-create-btn">완료</button>
-         </div>
-     </div>
-    <!-- 선택박스 -->
+        <div class="form-box">
+            <router-link to="/boards"><button class="btn bg-navy board-create-btn">목록</button></router-link>
+            <router-link to="/boards"><button class="btn bg-navy board-create-btn">취소</button></router-link>
+            <router-link to="/boards"><button class="btn bg-navy board-create-btn">완료</button></router-link>
+        </div>
+        <!-- 선택박스 -->
+    </div>
     <hr>
     <div class="select-boardType">
         <h3>게시판</h3>
         <select v-model="SelectedBoardCategory" name="board-categories" id="board-categories">
-             <option value="1">리뷰게시판</option>
-             <option value="2">자유게시판</option>
+            <option value="1">리뷰게시판</option>
+            <option value="2">자유게시판</option>
         </select>
     </div>
     <hr>
     <div class="select-categories">
-        <h3 for="board-category">카테고리</h3>
-        <select name="sub-categories" id="board-categories">
-            <option disabled hidden selected>--유형선택--</option>
-            <option value="0">맛집</option>
-            <option value="1">액티비티</option>
-            <option value="2">힐링</option>
-            <option value="3">쇼핑</option>        
-        </select>
-        <h3 for="board-category">지역</h3>
-        <select name="sub-categories" id="board-categories">
-            <option disabled hidden selected>--지역선택--</option>
-            <option value="0">서울</option>
-            <option value="1">인천</option>
-            <option value="2">대전</option>
-            <option value="3">세종</option>        
-            <option value="4">대구</option>
-            <option value="5">광주</option>
-            <option value="6">부산</option>
-            <option value="7">울산</option>
-            <option value="8">경기</option>
-            <option value="9">강원</option>
-            <option value="10">충북</option>
-            <option value="11">충남</option>        
-            <option value="12">경북</option>
-            <option value="13">경남</option>
-            <option value="14">전북</option>
-            <option value="15">전남</option>        
-            <option value="16">제주</option>        
-        </select>
+        <h3 for="board-category">방문정보</h3>
+        <div id="board-search-tb">
+            <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+            <button class="btn bg-navy board-search-btn">검색</button>
+        </div>  
+        <!-- 모달 -->
+        <div class="board-create-modal">
+            <div class="board-create-modal-content">
+                <h2>shopName</h2>
+                <h4>adress</h4>
+                <p>content</p>
+                <!-- 지도 넣어? 말어? -->
+            </div>
+        </div>
         <div class="board-create-evaluation">
             <h3 style="margin-right: 20px;">별점</h3>
             <input type="radio" class="star" value="1">
@@ -96,14 +81,26 @@
         <div class="board-create-file">
             <h3>파일첨부</h3>
             <input type="file" name="file" accept="imge/*">
-        </div>
-               
+        </div>            
     </div>
-     <!-- 내용 -->
+    <!-- 내용 -->
 
- </template>
+</template>
 
 <script setup>
+// 모달
+// export default {
+//     name:'modal',
+//     data(){
+//         return{
+//             modalopen : false,
+
+            
+//         }
+//     }
+// }
+
+// 별점
 // export default {
 //     data() {
 //         return {
@@ -163,6 +160,9 @@
 </script>
 
 <style scoped>
+div{
+    box-sizing: border-box;
+}
 h3{
     font-size: 1.5rem;
 }
@@ -196,8 +196,34 @@ h3{
     height: 30px;
     font-size: large;
 }
+.board-search-tb{
+    display: inline-flex;
+    justify-content:end;
+    margin: 10px 20px;
+    align-items: flex-end;
+}
+.board-search {
+    margin-left: 20px; 
+    background-color: #e9e8e8;
+    border-radius: 20px;
+    width: 250px;
+    height: 31px;
+    text-indent: 20px; 
+}
+
+.board-search-btn{
+    font-size: large;
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
+    margin-left: -60px;
+}
 .board-create-btn{
-    
+    font-size: large;
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
+    gap: 50px;
 }
 .select-boardType, .select-categories, .board-create-title{
     display: inline-flex;
@@ -236,6 +262,24 @@ h3{
       display: flex;
 }
 
+/* 모달 */
+/* 모달 시 메인 배경 */
+.board-create-modal{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(197, 198, 198, 0.374);
+    position: fixed;
+    padding: 20px;
+}
+/* 모달 디자인 */
+.board-create-modal-content{
+    width: 50%;
+    background-color: azure;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* 별점 */
 /* .star {
     appearance: none;
     padding: 1px;
@@ -265,15 +309,15 @@ h3{
 }
 
 .star-rating span.filled {
-  color: gold;  채워진 별 
+color: gold;  채워진 별 
 }
 
 .star-rating span:hover,
 .star-rating span:hover ~ span {
-  color: gold;  마우스 오버 시 별 
+color: gold;  마우스 오버 시 별 
 }
 .star-3{
- color: gold;
+color: gold;
 }
 @media screen and (max-width: 800px) {
     .board-detail-head {

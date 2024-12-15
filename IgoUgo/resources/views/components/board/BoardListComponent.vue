@@ -1,22 +1,43 @@
 <template>
     <main>
+        <h2>게시판명</h2>
         <div class="board-head">
             <div class="board-category">
                 <select name="select-category" id="select-category">
-                    <option value="none" selected>카테고리</option>
-                    <option value="1">맛집</option>
-                    <option value="2">액티비티</option>
-                    <option value="3">힐링</option>
-                    <option value="4">쇼핑</option>        
+                    <option disabled hidden selected>--유형선택--</option>
+                    <option value="0">맛집</option>
+                    <option value="1">액티비티</option>
+                    <option value="2">힐링</option>
+                    <option value="3">쇼핑</option>       
+                </select>
+                <select name="select-category" id="select-category">
+                    <option disabled hidden selected>--지역선택--</option>
+                    <option value="0">서울</option>
+                    <option value="1">인천</option>
+                    <option value="2">대전</option>
+                    <option value="3">세종</option>        
+                    <option value="4">대구</option>
+                    <option value="5">광주</option>
+                    <option value="6">부산</option>
+                    <option value="7">울산</option>
+                    <option value="8">경기</option>
+                    <option value="9">강원</option>
+                    <option value="10">충북</option>
+                    <option value="11">충남</option>        
+                    <option value="12">경북</option>
+                    <option value="13">경남</option>
+                    <option value="14">전북</option>
+                    <option value="15">전남</option>        
+                    <option value="16">제주</option>        
                 </select>
             </div>
             <div id="board-search-tb">
                 <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
                 <button class="btn bg-navy board-search-btn">검색</button>
             </div>
-            <button class="btn bg-navy board-create-btn">작성</button>
+            <router-link to="/boards/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
         </div>
-
+        
     <!-- 리스트항목 -->
         <div class="board-list">
             <!-- 리스트 헤드 -->
@@ -139,8 +160,43 @@
 <script setup>
 
 </script>
+<style scoped>                                                                                                          
+.scroll{
+    display: inline-block;
+    width: 100px;
+    height: 200px;  
+    padding: 20px;
+    overflow-y: scroll;
+    border: 1px solid black;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Nanum Gothic';
+    background-color: #01083a55;
+}
 
-<style scoped>
+/*** Box1 스크롤바 설정 ***/
+/* 스크롤바 설정*/
+#select-category::-webkit-scrollbar{
+    width: 10px;
+}
+#select-category::-webkit-scrollbar:vertical {
+    width: 10px;
+}
+#select-category::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+/* 스크롤바 막대 설정*/
+#select-category::-webkit-scrollbar-thumb{
+    background-color: rgba(239, 242, 247, 0.1);
+    border-radius: 10px;
+    border: 2px solid #1f2845;;
+}
+/* 스크롤바 뒷 배경 설정*/
+#select-category::-webkit-scrollbar-track{
+    border-radius: 10px;
+    background-color: #1f2845;
+}
+/*  */
 main{
     align-items: center;
 }
@@ -149,20 +205,35 @@ main{
     /* display: flex; */
     /* justify-content: space-between; */
     display: grid;
-    grid-template-columns: 1fr 7fr 1fr;
+    grid-template-columns: 2fr 7fr 1fr;
     align-items: center;    
     gap: 30px; 
     margin: 50px auto;
+    min-width: 800px;
 }
 
 .board-category{
     border-radius: 10px;
-    line-height: 1.2rem;
     height: 1.2rem;
-    margin-right: 20px;
+    display: inline-flex;
+    justify-content:end;
+    margin: 10px 20px;
+    gap: 30px;
 }
+
+#board-li-item:nth-child(-n+5){
+    font-weight: 500;
+    font-size: 1.2rem;
+    background-color: rgb(224, 239, 239);
+}
+#board-li-item>p:nth-child(3){
+    text-align: left;
+}
+
 .board-search-tb{
-    display: grid;
+    display: inline-flex;
+    justify-content:end;
+    margin: 10px 20px;
     align-items: flex-end;
 }
 .board-search {
@@ -206,7 +277,13 @@ main{
     letter-spacing: 0.3rem;
     border-bottom: double #01083a 5px;
 }
+#select-category{
+    width: 200px;
+    border: none;
+    border-bottom: solid 1px #01083a;
+    text-align: center;
 
+}
 #board-li-item{
     display: grid;
     grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
@@ -214,7 +291,6 @@ main{
     min-width: 750px;
     width: 1150px;
     height: 30px;
-    border-bottom: solid #01083a 1px;
     margin-top: 10px;
 }
 
@@ -240,5 +316,35 @@ main{
 .pagination button:hover, .pagination button:active {
     color: #fff;
     background: #01083a;
+}
+
+@media (max-width: 320px) {
+    /* main {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        flex-direction: column;
+        height: 100vh;
+        width: 80%;
+    } */
+    main {
+        width: 90%;
+        height: 100vh; 
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .board-list {
+    display: none; 
+    }
+
+    .board-item:nth-child(2),
+    .board-item:nth-child(3),
+    .board-item:nth-child(4){
+        display: inline-block;
+        overflow: hidden;
+    }
 }
 </style>

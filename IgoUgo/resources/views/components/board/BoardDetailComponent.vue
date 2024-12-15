@@ -8,8 +8,8 @@
         </div>
         <!-- 버튼영역 -->
         <div class="board-detailItem-btn"> 
-            <!-- bg-navy 글자색 안먹어서 board-detail-btn에서 설정함 -->
             <a href="#" class="btn bg-navy board-detail-btn">수정</a>
+            <a href="#" onclick="swal('알림창1')">클릭</a>
             <a href="#" class="btn bg-navy board-detail-btn">삭제</a>
         </div>
     </header>
@@ -25,15 +25,15 @@
         
         <!-- 등록이미지 불러오기 -->
         <div class="board-detail-img">
-           <img src="../../../../../ex/img/slack.png" alt="test">
-           <img src="../../../../../ex/img/slack.png" alt="test">
+            <img src="../../../../../ex/img/slack.png" alt="test">
+            <img src="../../../../../ex/img/slack.png" alt="test">
         </div>
         <hr>
-         <!-- 내용 -->
+        <!-- 내용 -->
         <div class="board-detail-content">
             <span>loem</span>
         </div>
-         <!-- 댓글 -->
+        <!-- 댓글 -->
         <div class="board-detail-reply ">
             <span>댓글</span>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
@@ -158,13 +158,13 @@ header{
 @media(max-width:800px){
     
     /* .board-detail-head {
-       grid-template-columns: 1fr;  한 줄로 정렬 
-       grid-template-rows: repeat(5, auto);  각 요소가 한 줄씩 차지 
-       justify-items: center;  요소를 가운데 정렬 
-       text-align: center;
-       gap: 10px;
+        grid-template-columns: 1fr;  한 줄로 정렬 
+        grid-template-rows: repeat(5, auto);  각 요소가 한 줄씩 차지 
+        justify-items: center;  요소를 가운데 정렬 
+        text-align: center;
+        gap: 10px;
    }  */
-   .board-detail-head {
+    .board-detail-head {
         display: flex; /* Flexbox로 전환 */
         grid-row: span 3;
         grid-column: span 1;
