@@ -2,9 +2,7 @@
     <div class="form-box">
         <h1>로그인</h1>
         <div class="login-form">
-            <!-- v-if 넣어야함 -->
-            <!-- <p class="test" :class="test1">아이디 혹은 비밀번호가 일치하지 않습니다.</p> -->
-            <p>아이디 혹은 비밀번호가 일치하지 않습니다.</p>
+            <p v-for="msg in $store.state.auth.errorMsgList" :key="msg">{{ msg }}</p>
             <input v-model="userInfo.email" class="input-login" type="text" placeholder="e-mail">
             <input v-model="userInfo.password" class="input-login" type="password" placeholder="password">
         </div>
@@ -19,24 +17,14 @@
 </template>
 
 <script setup>
-// import { reactive, ref, watch } from 'vue';
 import { reactive } from 'vue';
 
-
-
-// const input = ref('');
-// const msg = ref('');
-// const color = ref('color: red');
+// const store = useStore();
 
 const userInfo = reactive({
     email: ''
     ,password: ''
 });
-
-// watch(input, (val) => {
-//     console.log(val);
-// });
-
 
 </script>
 

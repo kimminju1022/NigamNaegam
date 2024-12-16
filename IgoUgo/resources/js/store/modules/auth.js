@@ -7,6 +7,7 @@ export default {
         accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
         authFlg: localStorage.getItem('accessToken') ? true : false,
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
+        errorMsgList: [],
     }),
     mutations: {
         setAuthFlg(state, flg) {
@@ -18,7 +19,10 @@ export default {
         setAccessToken(state, accessToken) {
             state.accessToken = accessToken;
             localStorage.setItem('accessToken', accessToken);
-        }
+        },
+        setErrorMsgList(state, msgList) {
+            state.errorMsgList = msgList;
+        },
     },
     actions: {
         /**
@@ -32,7 +36,7 @@ export default {
             const data = JSON.stringify(userInfo);
 
             // console.log(userInfo,data);
-
+            context.commit('setErrorMsgList', []);
             
             axios.post(url, data)
             .then(response => {
@@ -51,25 +55,26 @@ export default {
             .catch(error => {
                 let errorMsgList = [];
                 const errorData = error.response.data;
-
                 if(error.response.status === 422) {
                     // 유효성 체크 에러
                     if(errorData.data.email) {
-                        errorMsgList.push(errorData.data.email[0]);
+                        // errorMsgList.push(errorData.data.email[0]);
+                        errorMsgList.push('이메일이 유효하지 않습니다.');
                     }
                     if(errorData.data.password) {
-                        errorMsgList.push(errorData.data.password[0]);
+                        // errorMsgList.push(errorData.data.password[0]);
+                        errorMsgList.push('비밀번호가 유효하지 않습니다.');
                     }
+                    
                 } else if(error.response.status === 401) {
                     // 비밀번호 오류
                     errorMsgList.push(errorData.msg);
                 } else {
                     errorMsgList.push('예기치 못한 오류 발생');
                 }
-                console.log(error);
-                alert(errorMsgList.join('\n'));
 
-                // console.log(error);
+                // alert(errorMsgList.join('\n'));
+                context.commit('setErrorMsgList', errorMsgList);
             });
         },
 

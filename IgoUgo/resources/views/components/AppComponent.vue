@@ -104,7 +104,7 @@
 
     <main class="main">
         <!-- TODO : 나중에 버튼 제거 -->
-        <button @click="$store.dispatch('user/chkTokenAndContinueProcess', () => {console.log('테스트')})" >토큰 만료 체크</button>
+        <!-- <button @click="$store.dispatch('user/chkTokenAndContinueProcess', () => {console.log('테스트')})" >토큰 만료 체크</button> -->
         <router-view></router-view>
     </main>
 

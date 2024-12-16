@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function store(UserRequest $request) {
-        // $insertData = $request->only('email', 'name', 'nickname', 'phone');
         $insertData['user_email'] = $request->email;
         $insertData['user_name'] = $request->name;
         $insertData['user_nickname'] = $request->nickname;

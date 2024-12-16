@@ -9,50 +9,54 @@
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="email">이메일</label>
-                    <!-- <span class="test" :class="test1">이메일 형식에 맞지 않습니다.</span> -->
-                    <span>이메일 형식에 맞지 않습니다.</span>
+                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <span v-if="emailError" class="error-message">{{ emailError }}</span>
                 </div>
                 <input v-model="userInfo.email" class="input-login" type="text" id="email" name="email" placeholder="이메일을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password">비밀번호</label>
-                    <!-- <span>비밀번호 형식에 맞지 않습니다.</span> -->
-                    <!-- <div>
+                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <div>
                         <ul class="password-regex">
-                            <li :class="{password-regex-chk:flg}">대소문자</li>
-                            <li :class="{password-regex-chk:flg}">숫자</li>
-                            <li :class="{password-regex-chk:flg}">특수기호 !, @</li>
+                            <li :style="color1">{{ msg1 }}</li> <!-- 대소문자 -->
+                            <li :style="color2">{{ msg2 }}</li> <!-- 숫자 -->
+                            <li :style="color3">{{ msg3 }}</li> <!-- 특수기호 -->
                         </ul>
-                    </div> -->
+                    </div>
                 </div>
                 <input v-model="userInfo.password" class="input-login" type="password" id="password" name="password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password_chk">비밀번호 확인</label>
-                    <span>비밀번호가 맞지 않습니다.</span>
+                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <span v-if="passwordChkError">비밀번호가 맞지 않습니다.</span>
                 </div>
                 <input v-model="userInfo.password_chk" class="input-login" type="password" id="password_chk" name="password_chk" placeholder="비밀번호 확인">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="name">이름</label>
-                    <span>이름 형식에 맞지 않습니다.</span>
+                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <span v-if="nameError" >이름 형식에 맞지 않습니다.</span>
                 </div>
                 <input v-model="userInfo.name" class="input-login" type="text" id="name" name="name" placeholder="이름을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="nickname">닉네임</label>
-                    <span>닉네임 형식에 맞지 않습니다.</span>
+                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <span v-if="nicknameError" >닉네임 형식에 맞지 않습니다.</span>
                 </div>
                 <input v-model="userInfo.nickname" class="input-login" type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요">
             </div>
             <div class="login-input-box">                
                 <div class="login-label-flex">
-                    <label for="tel">전화번호</label>
-                    <span>전화번호 형식에 맞지 않습니다.</span>
+                    <label for="phone">전화번호</label>
+                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <span v-if="phoneError" >전화번호 형식에 맞지 않습니다.</span>
                 </div>
                 <input v-model="userInfo.phone" class="input-login" type="text" id="phone" name="phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
             </div>
@@ -66,16 +70,8 @@
 
 <script setup>
 
-import { reactive } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
-// import { ref } from 'vue';
-
-// const flg = ref(false);
-// const validatePassword = /^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\.[A-Za-z0-9\\-]+/;
-
-// if(validatePassword) {
-//     flg.value = true;
-// }
 const userInfo = reactive({
     email: ''
     ,password: ''
@@ -83,6 +79,97 @@ const userInfo = reactive({
     ,name: ''
     ,nickname: ''
     ,phone: ''
+});
+
+const emailError = ref('');
+const passwordError = ref('');
+const passwordChkError = ref('');
+const nameError = ref('');
+const nicknameError = ref('');
+const phoneError = ref('');
+
+const msg1 = ref('✔ 대소문자');
+const msg2 = ref('✔ 숫자');
+const msg3 = ref('✔ 특수기호');
+
+const color1 = reactive({color: 'red'});
+const color2 = reactive({color: 'red'});
+const color3 = reactive({color: 'red'});
+
+// 이메일 유효성 검사 함수
+const validateEmail = (email) => {
+    if (!email) {
+        return ''; // input 비어 있을 때 메시지 숨김
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email) ? '' : '이메일 형식에 맞지 않습니다.';
+};
+
+const validatePassword = (password) => {
+    const passwordRegex1 = /^.*[a-zA-Z].*$/;
+    const passwordRegex2 = /^.*[0-9].*$/;
+    const passwordRegex3 = /^.*[!@].*$/;
+
+    if (passwordRegex1.test(password)) {
+        color1.color = 'green';
+    } else {
+        color1.color = 'red';
+    }
+    if (passwordRegex2.test(password)) {
+        color2.color = 'green';
+    } else {
+        color2.color = 'red';
+    }
+    if (passwordRegex3.test(password)) {
+        color3.color = 'green';
+    } else {
+        color3.color = 'red';
+    }
+}
+
+const validatePasswordChk = (password_chk, password) => {
+    if (password_chk != password) {
+        return '비밀번호가 맞지 않습니다.';
+    } else {
+        return '';
+    }
+}
+
+const validateName = (name) => {
+    if (!name) {
+        return ''; // input 비어 있을 때 메시지 숨김
+    }
+
+    const nameRegex = /^[a-zA-Z가-힣]+$/;
+    return nameRegex.test(name) ? '' : '이름 형식에 맞지 않습니다.';
+};
+
+const validateNickname = (nickname) => {
+    if (!nickname) {
+        return ''; // input 비어 있을 때 메시지 숨김
+    }
+
+    const nicknameRegex = /^[0-9a-zA-Z가-힣]+$/;
+    return nicknameRegex.test(nickname) ? '' : '닉네임 형식에 맞지 않습니다.';
+};
+
+const validatePhone = (phone) => {
+    if (!phone) {
+        return ''; // input 비어 있을 때 메시지 숨김
+    }
+
+    const phoneRegex = /^[0-9]+$/;
+    return phoneRegex.test(phone) ? '' : '전화번호 형식에 맞지 않습니다.';
+};
+
+watch(userInfo, (newObj) => {
+    emailError.value = validateEmail(newObj.email);
+    passwordError.value = validatePassword(newObj.password);
+    passwordChkError.value = validatePasswordChk(newObj.password_chk, newObj.password);
+    nameError.value = validateName(newObj.name);
+    nicknameError.value = validateNickname(newObj.nickname);
+    phoneError.value = validatePhone(newObj.phone);
 });
 
 </script>
