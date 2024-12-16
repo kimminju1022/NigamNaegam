@@ -235,6 +235,7 @@ main{
 }
 #board-li-item>p:nth-child(3){
     text-align: left;
+    overflow: hidden;
 }
 
 .board-search-tb{
@@ -328,33 +329,29 @@ main{
     background: #01083a;
 }
 
-@media (max-width: 320px) {
-    /* main {
+@media screen and (max-width: 320px) {
+    .board-li-title > span:nth-child(2),
+    .board-li-title > span:nth-child(3),
+    .board-li-title > span:nth-child(4) { 
+        display: block; /* 2, 3, 4번째 요소만 보이게 */ 
+    } 
+    .board-category{
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        flex-direction: column;
-        height: 100vh;
-        width: 80%;
-    } */
-    main {
-        width: 90%;
-        height: 100vh; 
-        margin: 0 auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        text-align: end;
     }
+    .board-li-title{
+        display: grid;
+        grid-template-columns: 1fr 5fr 1.5fr;
+    }
+    .board-li-title > span {
+        display: none;
+    }
+    .board-head{
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;    
+    gap: 30px; 
+    margin: 50px auto;}
 
-    .board-list {
-    display: none; 
-    }
-
-    .board-item:nth-child(2),
-    .board-item:nth-child(3),
-    .board-item:nth-child(4){
-        display: inline-block;
-        overflow: hidden;
-    }
 }
 </style>
