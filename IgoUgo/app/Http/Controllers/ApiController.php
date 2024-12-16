@@ -25,7 +25,7 @@ class ApiController extends Controller
 
         $resultCode = $hotels->header('resultCode');
 
-        Log::debug($serviceKey);
+        // Log::debug($serviceKey);
 
         if($hotels->failed() && $resultCode !== '0000') {
             throw new \Exception('API 받아오기 실패'. $hotels->status());

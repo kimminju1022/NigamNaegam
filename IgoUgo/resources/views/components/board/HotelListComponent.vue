@@ -6,7 +6,6 @@
             <h2 class="map-box-title" :class="{'dis-none': flg}">지도로 보기</h2>
         </div>
         <div class="left-small-container">
-            <h2 class="cat-box-title">시설</h2>
             <div class="cat-list" :class="{'cat-list-change':flg}">
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
                     <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="accomcountlodging" value="0">
@@ -22,7 +21,7 @@
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
                     <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="chkcooking" value="3">
-                    <label for="chkcooking">객실 내 취사여부</label>
+                    <label for="chkcooking">객실 내 취사</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
                     <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="foodplace" value="4">
@@ -32,25 +31,48 @@
                     <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="pickup" value="5">
                     <label for="pickup">픽업서비스</label>
                 </div>
+                <h2 class="cat-box-title">객실수</h2>
+                <h2 class="cat-box-title">객실유형</h2>
+                <h2 class="cat-box-title">부대시설 (기타)</h2>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="parkinglodging" value="음식점">
-                    <label for="parkinglodging">주차시설</label>
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="barbecue" value="음식점">
+                    <label for="barbecue">바베큐장</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="parkinglodging" value="음식점">
-                    <label for="parkinglodging">주차시설</label>
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="beauty" value="음식점">
+                    <label for="beauty">뷰티시설</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="parkinglodging" value="음식점">
-                    <label for="parkinglodging">주차시설</label>
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="campfire" value="음식점">
+                    <label for="campfire">캠프파이어</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="parkinglodging" value="음식점">
-                    <label for="parkinglodging">주차시설</label>
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="bicycle" value="음식점">
+                    <label for="bicycle">자전거대여</label>
                 </div>
                 <div class="list-item" :class="{'cat-list-item-change':flg}">
-                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="parkinglodging" value="음식점">
-                    <label for="parkinglodging">주차시설</label>
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="fitness" value="음식점">
+                    <label for="fitness">휘트니스센터</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="bicycle" value="음식점">
+                    <label for="bicycle">노래방여부</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="publicbath" value="음식점">
+                    <label for="publicbath">공용샤워실</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="publicpc" value="음식점">
+                    <label for="publicpc">공용 PC실</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="sauna" value="음식점">
+                    <label for="sauna">사우나실</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="sports" value="음식점">
+                    <label for="sports">스포츠시설</label>
                 </div>
             </div>
         </div>
@@ -212,18 +234,36 @@ onMounted(async() => {
 }
 
 /* 작은 틀 */
+.right-small-container {
+    /* border: 1px solid #01083A; */
+    border-radius: 10px;
+    margin: 10px 0;
+}
 .left-small-container {
     border: 1px solid #01083A;
     border-radius: 10px;
     margin: 1rem 0;
     padding: 20px;
     min-width: 200px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    clip-path: inset(0 round 11px); 
 }
-.right-small-container {
-    /* border: 1px solid #01083A; */
-    border-radius: 10px;
-    margin: 10px 0;
+
+/* 스크롤바 커스텀 */
+.left-small-container::-webkit-scrollbar {
+    width: 7px;
+    display: contents;
 }
+.left-small-container::-webkit-scrollbar-thumb {
+    background-color: #e6e6e6;
+    border-radius: 3.5px;
+}
+.left-small-container::-webkit-scrollbar-track {
+    background-color: #fff;
+    margin: 10px;
+}
+
 
 /* 리스트 아이템 */
 .list-item {
