@@ -3,7 +3,7 @@
         <h2>게시판명</h2>
         <div class="board-head">
             <div class="board-category">
-                <select name="select-category" id="select-category">
+                <select name="select-category" id="select-category" class="bg-clear btn">
                     <option disabled hidden selected>--유형선택--</option>
                     <option value="0">맛집</option>
                     <option value="1">액티비티</option>
@@ -199,6 +199,7 @@
 /*  */
 main{
     align-items: center;
+
 }
 
 .board-head{
@@ -262,6 +263,7 @@ main{
 
 .board-list{
     height: 500px;
+    width: 100%;
     /* justify-content: center;
     align-content: center; */
 }
@@ -269,8 +271,7 @@ main{
     display: grid;
     grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
     text-align: center;
-    min-width: 750px;
-    width: 1150px;
+    width: 100%;
     height: 40px;
     font-weight: 600;
     font-size: 1.2rem;
@@ -279,17 +280,15 @@ main{
 }
 #select-category{
     width: 200px;
-    border: none;
-    border-bottom: solid 1px #01083a;
+    height: 50px;
     text-align: center;
-
+    border-radius: 10px;
 }
 #board-li-item{
     display: grid;
     grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
     text-align: center;
-    min-width: 750px;
-    width: 1150px;
+    width: 100%;
     height: 30px;
     margin-top: 10px;
 }
