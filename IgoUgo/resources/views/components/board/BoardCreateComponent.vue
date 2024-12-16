@@ -12,7 +12,8 @@
     <hr>
     <div class="select-boardType">
         <h3>게시판</h3>
-        <select v-model="SelectedBoardCategory" name="board-categories" id="board-categories">
+        <select name="board-categories" id="board-categories">
+            <!-- v-model="SelectedBoardCategory"  -->
             <option value="1">리뷰게시판</option>
             <option value="2">자유게시판</option>
         </select>
@@ -21,7 +22,8 @@
     <div class="select-categories">
         <h3 for="board-category">방문정보</h3>
         <div id="board-search-tb">
-            <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+            <input class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+            <!-- v-model="search" -->
             <button class="btn bg-navy board-search-btn">검색</button>
         </div>  
         <!-- 모달 -->

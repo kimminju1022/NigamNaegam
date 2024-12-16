@@ -3,15 +3,15 @@
         <h2>게시판명</h2>
         <div class="board-head">
             <div class="board-category">
-                <select name="select-category" id="select-category" class="bg-clear btn">
-                    <option disabled hidden selected>--유형선택--</option>
+                <select name="select-category" class="bg-clear btn select-category">
+                    <option disabled hidden selected>카테고리</option>
                     <option value="0">맛집</option>
                     <option value="1">액티비티</option>
                     <option value="2">힐링</option>
                     <option value="3">쇼핑</option>       
                 </select>
-                <select name="select-category" id="select-category">
-                    <option disabled hidden selected>--지역선택--</option>
+                <select name="select-category" class="bg-clear btn select-category">
+                    <option disabled hidden selected>지역</option>
                     <option value="0">서울</option>
                     <option value="1">인천</option>
                     <option value="2">대전</option>
@@ -159,6 +159,12 @@
 </template>
 <script setup>
 
+import { onBeforeMount } from 'vue';
+
+// 비포마운트처리
+// onBeforeMount(() => {
+//     console.log('보드다');
+// });
 </script>
 <style scoped>                                                                                                          
 .scroll{
@@ -176,23 +182,23 @@
 
 /*** Box1 스크롤바 설정 ***/
 /* 스크롤바 설정*/
-#select-category::-webkit-scrollbar{
+select-category::-webkit-scrollbar{
     width: 10px;
 }
-#select-category::-webkit-scrollbar:vertical {
+.select-category::-webkit-scrollbar:vertical {
     width: 10px;
 }
-#select-category::-webkit-scrollbar:horizontal {
+.select-category::-webkit-scrollbar:horizontal {
     height: 10px;
 }
 /* 스크롤바 막대 설정*/
-#select-category::-webkit-scrollbar-thumb{
+.select-category::-webkit-scrollbar-thumb{
     background-color: rgba(239, 242, 247, 0.1);
     border-radius: 10px;
     border: 2px solid #1f2845;;
 }
 /* 스크롤바 뒷 배경 설정*/
-#select-category::-webkit-scrollbar-track{
+.select-category::-webkit-scrollbar-track{
     border-radius: 10px;
     background-color: #1f2845;
 }
@@ -203,9 +209,9 @@ main{
 }
 
 .board-head{
-    /* display: flex; */
+    display: flex;
     /* justify-content: space-between; */
-    display: grid;
+    /* display: grid; */
     grid-template-columns: 2fr 7fr 1fr;
     align-items: center;    
     gap: 30px; 
@@ -278,11 +284,16 @@ main{
     letter-spacing: 0.3rem;
     border-bottom: double #01083a 5px;
 }
-#select-category{
-    width: 200px;
-    height: 50px;
+.select-category{
+    width: 100px;
+    height: 30px;
     text-align: center;
-    border-radius: 10px;
+    border: solid #01083a 1px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+}
+.select-category>option{
+    border: none;
 }
 #board-li-item{
     display: grid;

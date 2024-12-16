@@ -6,26 +6,51 @@
             <h3>category    ></h3>
             <h3>category</h3>
         </div>
+        
     </header>
     <main>  
-        <!-- 상세 글머리_정보불러오기-->
-        <div class="board-update-head">
+        <div class="board-update-detail">
+            <!-- 상세 글머리_정보불러오기-->
             <input type="text" id="board-update-title">
-            <div class="board-update-evaluation">
-                <h3 style="margin-right: 20px;">별점</h3>
-                <input type="radio" class="star" value="1">
-                <input type="radio" class="star" value="2">
-                <input type="radio" class="star" value="3">
-                <input type="radio" class="star" value="4">
-                <input type="radio" class="star" value="5">
+            <!-- 버튼영역 -->
+            <div class="board-updateItem-btn"> 
+                <router-link to="/boards"><button class="btn bg-clear board-update-btn">목록</button></router-link>
+                <router-link to="/boards/update"><button class="btn bg-clear board-update-btn">취소</button></router-link>
+                <a href="#" class="btn bg-navy board-update-btn">완료</a>
+            </div>  
+        </div>
+
+        <div class="board-update-head">
+            <select name="" id="">
+                <option  disabled hidden selected>확인게시글</option>
+                <option value="0">리뷰게시판</option>
+                <option value="1">자유게시판</option>
+            </select>
+
+           <div class="board-update-evaluation">
+                <h3>선택업체명</h3>
+                <button class="btn bg-navy board-search-btn">검색</button>
+                <!-- 모달검색 -->
+
+                <!-- 별점 -->
+                <div class="star-update">
+                    <h3 style="margin-right: 20px;">별점</h3>
+                    <input type="radio" class="star" value="1">
+                    <input type="radio" class="star" value="2">
+                    <input type="radio" class="star" value="3">
+                    <input type="radio" class="star" value="4">
+                    <input type="radio" class="star" value="5">
+                </div>
             </div>            
             <span>최초 작성일 : 2024.12.05</span>
         </div>
         <!-- 리뷰게시판(value=1)경우 검색창활성화 -->
-        <input type="text" placeholder="주소 혹은 상호를 입력해 주세요">
-        <button class="btn bg-navy board-search-btn">검색</button>
-        <!-- 등록이미지 불러오기 -->
-        <div class="board-create-file">
+       
+        <!-- 내용 -->
+        <textarea name="board-update-content" id="board-update-content">값불러오기</textarea>
+        <hr>
+         <!-- 등록이미지 불러오기 -->
+         <div class="board-create-file">
             <h3>파일첨부</h3>
             <input type="file" name="file" accept="imge/*">
         </div>
@@ -33,20 +58,12 @@
             <img src="../../../../../ex/img/slack.png" alt="test">
             <img src="../../../../../ex/img/slack.png" alt="test">
         </div>
-        <hr>
-        <!-- 내용 -->
-        <div class="board-update-content">
-            <textarea name="board-update-content" id="board-update-content">값불러오기</textarea>
-        </div>
-            <!-- 버튼영역 -->
-        <div class="board-updateItem-btn"> 
-            <a href="#" class="btn bg-navy board-update-btn">완료</a>
-            <router-link to="/boards/update"><button class="btn bg-navy board-update-btn">취소</button></router-link>
-        </div>
+        <hr>     
     </main>
 </template>
 
 <script setup>
+
 
 </script>
 
@@ -60,10 +77,31 @@ header{
 /* main{
     position: relative;
 } */
-.board-update-category {
+.board-update-detail{
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    justify-content: center;
+    text-align: start;
+    align-items: flex-end;
+    column-gap: 20px;
+    padding-bottom: 10px;
+    margin: 20PX auto;
+    border-bottom: double #01083a 3px;
+}
+ .board-update-evaluation{
+    display: grid;
+    grid-template-columns: 7fr 2fr 4fr;
+    justify-content: center;
+    text-align: start;
+    /* margin-bottom: 30px; */
+    align-items: flex-end;
+    column-gap: 20px;
+ }
+
+.board-update-category, .board-create-file {
     display: flex;
     align-items: flex-end;
-    column-gap: 10px;
+    column-gap: 20px;
 }
 .board-updateItem-btn{
     display: flex;
@@ -74,19 +112,22 @@ header{
 .board-update-btn{
     font-size: large;
     border-radius: 20px;
+    border: solid 1px #01083a;
     width: 70px;
     height: 30px;
     gap: 50px;
-    margin-right: 20px;
-    color: #fff;
+    margin-right: 20px;    
 }
 .board-update-head{
     display: grid;
-    grid-template-columns: 7fr 2fr 2fr 1fr 1fr;
+    grid-template-columns: 1fr 6fr 2fr;
     justify-content: center;
     text-align: start;
     margin-bottom: 30px;
+    padding-bottom: 20px;
     align-items: flex-end;
+    column-gap: 20px;
+    border-bottom: solid #01083a 1px;
 }
 .board-update-head>button{
     border: none;
@@ -100,26 +141,36 @@ header{
     margin-left: -60px;
 }
 #board-update-title{
-    border: none;
-    border-bottom: double #01083a 5px;
     text-align: left;
     font-weight: 600;
     font-size: 1.5rem;
+    width: 100%;
+    padding-left: 10px;
+}
+.star-update{
+        display: flex;
+        justify-content: center;
+        align-items: center;
 }
 .board-update-img{
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin: 10px 30px;
     padding: 10px;
     justify-content: center;
     align-items: center;
-    
 }
-.board-update-content{
+#board-update-content{
     padding: 20px;
     width: 90%;
-    min-height: 500px;
-    max-height: 1000px;
+    min-height: 300px;
+    height: 500px;
+    /* vertical-align: baseline;   */
+    box-sizing: content-box;  
+    /* resize: none; */
+    position: relative;
+    -webkit-text-size-adjust: none;
 }
 
 /* @media(max-width: 800px){
@@ -146,6 +197,11 @@ header{
         align-items: center; /* 가로 중앙 정렬 */
         text-align: center; /* 텍스트 중앙 정렬 */
         gap: 10px; /* 요소 간 간격 */
+    }
+    .star-update{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     /* header{
