@@ -4,26 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     public function productData(Request $request) {
-        $url = 'http://apis.data.go.kr/B551011/KorService1/searchFestival1';
+        // $url = 'http://apis.data.go.kr/B551011/KorService1/searchFestival1';
+        $url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1';
         $serviceKey = env('API_KEY');
+        // Log::debug($serviceKey);
 
         // HTTP 요청
-        $response = Http::get($url, [
-            'numOfRows' => 16,
+        $festivals = Http::get($url, [
+            'serviceKey' => $serviceKey,
+            'numOfRows' => 20,
             'pageNo' => 1,
             'MobileOS' => 'ETC',
             'MobileApp' => 'IgoUgo',
             '_type' => 'json',
-            'listYN' => 'Y',
-            'eventStartDate' => '20241201',
+            // 'eventStartDate' => '20000101',
+            // 'contentTypeId' => '12'
         ]);
 
-        if($response->successful()) {
-            return response()->json($response->json());
+        $resultCode = $festivals->header('resultCode');
+
+        if($festivals->failed() && $resultCode !== '0000') {
+            throw new \Exception('API 받아오기 실패'. $festivals->status());
         }
+        
+        return response()->json($festivals->json());
     }
 }

@@ -126,89 +126,16 @@
             </div>
         </div> -->
         <div class="right-small-container">
-            <div v-if="loading">데이터 불러오는 중...</div>
-            <div v-else-if="error">{{ error }}</div>
-            <div v-else>
-                <div v-for="item in items" :key="item">
-                    <p>{{ item.title }}</p>
+            <!-- <div v-else-if="error">{{ error }}</div> -->
+            <div v-if="productItems.length > 0" class="card-list">
+                <div v-for="item in productItems" :key="item" class="card">
+                    <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
+                    <p class="font-bold card-title">{{ item.title }}</p>
                 </div>
             </div>
+            <div v-else>상품 데이터를 불러오는 중...</div>
+
             <!-- <div class="card-list">
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
-                <div class="card">
-                    <img src="default/board_default.png" class="img-card">
-                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
-                    <p>₩ 30,000</p>
-                </div>
                 <div class="card">
                     <img src="default/board_default.png" class="img-card">
                     <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
@@ -230,7 +157,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import axios from 'axios';
 
 const flg = ref(false);
@@ -242,27 +169,32 @@ onBeforeMount(() => {
 });
 window.addEventListener('resize', flgSetup);
 
-// export default {
-//     data() {
-//         return {
-//             items: [], // tourAPI 데이터
-//             loading: true, // 로딩 상태
-//             error: null, // 에러 메시지
-//         };
-//     },
+// API
+const productItems = ref([]);
 
-//     mounted() {
-//         // Axios로 API 호출
-//         axios.get('/products')
-//         .then((response) => {
-//             this.items = response.data;
-//             this.loading = false;
-//         })
-//         .catch((error) => {
-//             this.loading = false;
-//         })
-//     },
-// };
+// 마운트된 후
+onMounted(() => {
+    // Axios로 API 호출
+    axios.get('http://localhost:8000/api/products')
+    .then((response) => {
+        productItems.value = response.data.response.body.items.item;
+        // response.data.response.body.items.item.forEach(item => {
+        //     const TITLE = document.getElementById('title');
+        //     TITLE.textContent = item.title;
+        //     // console.log(item.title);
+        // });
+    })
+    .catch((error) => {
+        console.error(error);
+    })
+});
+// data() {
+//     return {
+//         items: [], // tourAPI 데이터
+//         loading: true, // 로딩 상태
+//         error: null, // 에러 메시지
+//     };
+// }
 </script>
 
 <style scoped>
@@ -403,15 +335,23 @@ window.addEventListener('resize', flgSetup);
     height: 300px;
     border: 1px solid #01083A;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+    display: grid;
+    padding: 15px;
+    margin: 0 auto;
+}
+.card-title {
+    width: 175px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
 }
 .img-card {
-    min-width: 100px;
-    min-height: 100px;
+    width: 175px;
+    height: 185px;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    border-radius: 5px;
 }
 
 /* 페이지네이션 */
@@ -445,9 +385,6 @@ window.addEventListener('resize', flgSetup);
 }
 .font-bold {
     font-weight: 900;
-}
-.font-mar {
-    margin: 10px 0;
 }
 
 /* 기타 등등 */

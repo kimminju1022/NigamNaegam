@@ -171,7 +171,7 @@
             <div  v-if="publicData.length > 0" class="card-list">
                 <div v-for="item in publicData" :key="item" class="card">
                     <img :src="item.firstimage" @error="setDefaultImage" class="img-card">
-                    <p class="font-bold font-mar">{{ item.title }}</p>
+                    <p class="font-bold card-title">{{ item.title }}</p>
                     <p>₩ 30,000</p>
                 </div>
             </div>
@@ -382,16 +382,21 @@ onMounted(async() => {
     height: 300px;
     border: 1px solid #01083A;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
+    display: grid;
+    padding: 15px;
+    margin: 0 auto;
+}
+.card-title {
+    width: 175px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
 }
 .img-card {
     /* min-width: 100px;
     min-height: 100px; */
-    width: 185px;
+    width: 175px;
     height: 185px;
     object-fit: cover;
     background-repeat: no-repeat;
@@ -432,9 +437,6 @@ onMounted(async() => {
 }
 .font-bold {
     font-weight: 900;
-}
-.font-mar {
-    margin: 10px 0;
 }
 
 /* 기타 등등 */
