@@ -44,12 +44,12 @@ const routes = [
     {
         path: '/login',
         component: LoginComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/registration',
         component: UserRegistrationComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/hotels',
@@ -78,32 +78,32 @@ const routes = [
     {
         path: '/boards/create',
         component: BoardCreateComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/boards/update',
         component: BoardUpdateComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/mypage',
         component: MyPageComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/mypage/update',
         component: MyPageUpdateComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/password',
         component: PasswordComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/password/update',
         component: PasswordUpdateComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/:catchAll(.*)',
