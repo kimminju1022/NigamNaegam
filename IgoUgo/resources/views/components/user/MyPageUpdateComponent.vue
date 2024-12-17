@@ -24,8 +24,9 @@
             </div>
         </div>
         <div class="my-profile-update-btn">
+            <!-- 수정버튼 button @click? -->
             <button class="btn bg-navy btn-update">수정</button>
-            <button class="btn bg-navy btn-update">취소</button>
+            <router-link to="/myPage"><button class="btn bg-navy btn-update">취소</button></router-link>
         </div>
     </div>
 </template>

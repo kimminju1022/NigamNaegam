@@ -86,12 +86,12 @@ const routes = [
         // beforeEnter: chkAuth,
     },
     {
-        path: '/mypage',
+        path: '/myPage',
         component: MyPageComponent,
         // beforeEnter: chkAuth,
     },
     {
-        path: '/mypage/update',
+        path: '/myPage/update',
         component: MyPageUpdateComponent,
         // beforeEnter: chkAuth,
     },

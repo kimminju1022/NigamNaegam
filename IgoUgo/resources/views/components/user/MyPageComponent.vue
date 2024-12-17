@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="my-profile-update-btn">
-                <button class="btn bg-navy btn-update">수정</button>
+                <router-link to="/myPage/update"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
         <!-- <div v-if="isMobileView">
@@ -89,31 +89,31 @@
                     <hr>
                     <div class="question-content">
                         <p>5</p>
-                        <p>대기</p>
+                        <p class="reply-yet">대기</p>
                         <a href="">대표가 정말 뽀빠이인가요?</a>
                         <p>2024-12-05</p>
                     </div>
                     <div class="question-content">
                         <p>4</p>
-                        <p>대기</p>
+                        <p class="reply-yet">대기</p>
                         <a href="">깁스는 언제 풀 수 있을까요?</a>
                         <p>2024-12-05</p>
                     </div>
                     <div class="question-content">
                         <p>3</p>
-                        <p>완료</p>
+                        <p class="reply-done">완료</p>
                         <a href="">충격파 치료가 그렇게 아픈가요?</a>
                         <p>2024-12-05</p>
                     </div>
                     <div class="question-content">
                         <p>2</p>
-                        <p>완료</p>
+                        <p class="reply-done">완료</p>
                         <a href="">여백의 미가 진정한 미인가요?</a>
                         <p>2024-12-05</p>
                     </div>
                     <div class="question-content">
                         <p>1</p>
-                        <p>완료</p>
+                        <p class="reply-done">완료</p>
                         <a href="">세븐밸리 살려내라</a>
                         <p>2024-12-05</p>
                     </div>
@@ -130,6 +130,10 @@
             </div>
         </div>
         
+        <div>
+            
+            <button class="btn bg-clear btn-exit">회원 탈퇴  ></button>
+        </div>
     </div>
 </template>
 
@@ -261,6 +265,15 @@ onUnmounted(() => {
     color: #01083a;
 }
 
+/* 탈퇴 버튼 */
+
+.btn-exit {
+    font-size: 15px;  
+    padding: 7px 15px;
+    border-radius: 50px; 
+    color: #929292; 
+}
+
 /* **************************************** */
 
 /* 1:1 문의내역 */
@@ -277,6 +290,7 @@ onUnmounted(() => {
     max-width: 1250px;
     min-width: 500px;
     margin-bottom: 30px;
+    /* color: #01083a; */
 }
 
 .question-title {
@@ -303,6 +317,14 @@ onUnmounted(() => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.reply-yet {
+    color: red;
+}
+
+.reply-done {
+    color: blue;
 }
 
 /* 페이지네이션 */
