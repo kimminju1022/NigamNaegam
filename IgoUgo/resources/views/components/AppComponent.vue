@@ -17,6 +17,7 @@
                     <div v-else class="header-title-button">
                         <button class="btn bg-clear header-btn">FAQ</button>
                         <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
+                        <router-link to="/myPage"><img :src="$store.state.auth.userInfo.user_profile" alt=""></router-link>
                     </div>
                 </div>
                 <div class="header-list">
@@ -63,8 +64,9 @@
                             <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
                             <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
                         </div>
-                        <div v-else>
+                        <div v-else class="app-resist-logout">
                             <button @click="$store.dispatch('auth/logout')" class="app-resist-login btn bg-navy">로그아웃</button>
+                            <router-link to="/myPage"><img :src="$store.state.auth.userInfo.user_profile" alt=""></router-link>
                         </div>
                     </div>
                     <ul class="app-content-flex">
@@ -330,6 +332,13 @@ input, textarea {
     display: flex;
     gap: 25px;
     align-items: center;
+}
+
+.header-title-button img {
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #01083A; 
 }
 
 .header-list > :last-child {
@@ -616,10 +625,22 @@ footer {
         cursor: pointer;
     }
 
+    .app-resist-login-div img {
+    background-color: #fff;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    }
+
     .app-resist-login {
         font-size: 20px;
         gap: 5px;
         font-weight: 900;
+    }
+
+    .app-resist-logout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
     }
 
     .app-content {

@@ -1,26 +1,32 @@
 <template>
     <div class="my-page">
-        <div>
-            <div class="my-profile-box">
-                <div class="my-profile-img">
-                    <img src="/logo_gam.png" alt="">
-                </div>
-                <div class="my-profile-content">
-                    <div class="profile-item">
-                        <p class="bg-navy">이메일</p>
-                        <p>admin@admin.com</p>
+        <div class="my-profile">
+            <div class="my-profile-bg">
+                <div class="my-profile-box">
+                    <div class="my-profile-img">
+                        <img src="/logo_gam.png" alt="">
                     </div>
-                    <div class="profile-item">
-                        <p class="bg-navy">이름</p>
-                        <p>김그린</p>
-                    </div>
-                    <div class="profile-item">
-                        <p class="bg-navy">닉네임</p>
-                        <p>그린컴퓨터</p>
-                    </div>
-                    <div class="profile-item">
-                        <p class="bg-navy">전화번호</p>
-                        <p>010-2345-6789</p>
+                    <div class="my-profile-content">
+                        <div class="profile-item">
+                            <p class="bg-navy">이메일</p>
+                            <!-- <p>admin@admin.com</p> -->
+                            <input v-model="userInfo.email" name="email" readonly>
+                        </div>
+                        <div class="profile-item">
+                            <p class="bg-navy">이름</p>
+                            <!-- <p>김그린</p> -->
+                            <input v-model="userInfo.name" name="name" readonly>
+                        </div>
+                        <div class="profile-item">
+                            <p class="bg-navy">닉네임</p>
+                            <!-- <p>그린컴퓨터</p> -->
+                            <input v-model="userInfo.nickname" name="nickname" readonly>
+                        </div>
+                        <div class="profile-item">
+                            <p class="bg-navy">전화번호</p>
+                            <!-- <p>010-2345-6789</p> -->
+                            <input v-model="userInfo.phone" name="phone" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,7 +82,7 @@
             </div>
         </div> -->
         <!-- <div v-else> -->
-        <div>
+        <div class="my-question">
             <div class="question-box">
                 <h3>나의 문의 내역</h3>
                 <div class="question-content-box">
@@ -130,34 +136,30 @@
             </div>
         </div>
         
-        <div>
-            
-            <button class="btn bg-clear btn-exit">회원 탈퇴  ></button>
+        <div class="user-delete-button">
+            <button @click="openModal" class="btn bg-clear btn-exit">회원 탈퇴  ></button>
+        </div>
+
+        <!-- 회원 탈퇴 모달 -->
+        <div v-show="modalFlg" class="delete-container">
+            <div class="delete-box">
+                <div class="delete-text">
+                    <img src="/default/icon_x.png" alt="">
+                    <p>탈퇴하셔도 작성한 게시물이 자동으로 삭제되지 않습니다.</p>
+                    <p>정말로 탈퇴하시겠습니까?</p>
+                </div>
+                <div class="delete-btn">
+                    <button class="btn bg-clear">탈퇴</button>
+                    <button @click="closeModal" class="btn bg-clear">취소</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-// import { onBeforeUnmount, onMounted, ref } from 'vue';
-
-// const flg = ref('0');
-
-// const flgSetUp = () => {
-//     flg.value = window.innerWidth > 390 ? '0' : '1';
-// }
-
-// onMounted(() => {
-//     flgSetUp();
-//     window.addEventListener('resize', flgSetUp);
-// });
-
-// onBeforeUnmount(() => {
-//     window.removeEventListener('resize', flgSetUp);
-// });
-
-
-// **************************************************************************************
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, reactive } from 'vue';
+import { useStore } from 'vuex';
 
 // 반응형 상태를 저장하는 변수
 const isMobileView = ref(false);
@@ -178,6 +180,32 @@ onUnmounted(() => {
     window.removeEventListener('resize', checkScreenWidth);
 });
 
+
+const store =  useStore();
+
+const userInfo = reactive({
+    email: store.state.auth.userInfo.user_email
+    ,name: store.state.auth.userInfo.user_name
+    ,nickname: store.state.auth.userInfo.user_nickname
+    ,phone: store.state.auth.userInfo.user_phone
+});
+
+// 탈퇴 softDelete
+
+// Modal
+const modalFlg = ref(false);
+const openModal = () => {
+    modalFlg.value = true;
+}
+const closeModal = () => {
+    modalFlg.value = false;
+}
+
+// // const deleteModalFlg = ref(false);
+// const deletemodal = (id) => {
+//     store.dispatch('board/destroyBoard', id);
+//     // deleteModalFlg.value = true;
+// }
 </script>
 
 <style scoped>
@@ -190,18 +218,25 @@ onUnmounted(() => {
     width: 100%;
 }
 
-.my-page > div {
+.my-page > div  {
     width: 100%;
 }
 
+/* .my-page > .my-profile, .my-page > .my-question  {
+    width: 100%;
+} */
+
 /* 프로필 */
+.my-profile-bg {
+    background-color: rgb(133, 177, 218, 0.2);
+}
 
 .my-profile-box {
     display: grid;
     grid-template-columns: 1fr 1fr;
     place-items: center;
     padding: 20px;
-    background: rgba(133, 177, 218, 0.2);
+    /* background-color: rgb(133, 177, 218, 0.2); */
 }
 
 .my-profile-img {
@@ -244,6 +279,7 @@ onUnmounted(() => {
     text-align: center;
     font-size: 18px;
     border-bottom: 2px solid #01083a;
+    background-color: transparent;
 }
 
 /* 수정 버튼 */
@@ -351,6 +387,66 @@ onUnmounted(() => {
     background: #01083a;
 }
 
+/* 회원 탈퇴 모달 */
+.delete-container {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    font-size: 20px;
+}
+
+.delete-box {
+    width: 50%;
+    max-width: 700px;
+    background: #fff;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+}
+
+.delete-text {
+    display: grid;
+    grid-template-rows: 3fr 1fr 1fr;
+    place-items: center;
+}
+
+.delete-text img {
+    width: 100px;
+    height: 100px;
+}
+
+.delete-btn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    gap: 10px;
+}
+
+.delete-btn button {
+    font-size: 18px;
+}
+
+.delete-btn button:nth-child(1):hover {
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.delete-btn button:nth-child(2):hover {
+    /* color: red; */
+    font-size: 25px;
+    font-weight: bold;
+}
 
 /* 반응형 미디어쿼리 */
 

@@ -17,7 +17,7 @@
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password">비밀번호</label>
-                    <!-- 유효성 검사 실패 시에만 메시지 표시 -->
+                    <!-- 유효성 검사 실패 시 메시지 컬러 red -> green -->
                     <div>
                         <ul class="password-regex">
                             <li :style="color1">{{ msg1 }}</li> <!-- 대소문자 -->
