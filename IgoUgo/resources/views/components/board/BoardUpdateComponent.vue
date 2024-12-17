@@ -27,7 +27,7 @@
                 <option value="1">자유게시판</option>
             </select>
 
-           <div class="board-update-evaluation">
+            <div class="board-update-evaluation">
                 <h3>선택업체명</h3>
                 <button @click="openModal" class="btn bg-navy board-search-btn">검색</button>
                 <!-- 모달검색 -->
@@ -59,12 +59,11 @@
             <span>최초 작성일 : 2024.12.05</span>
         </div>
         <!-- 리뷰게시판(value=1)경우 검색창활성화 -->
-       
         <!-- 내용 -->
         <textarea name="board-update-content" id="board-update-content">값불러오기</textarea>
         <hr>
-         <!-- 등록이미지 불러오기 -->
-         <div class="board-create-file">
+        <!-- 등록이미지 불러오기 -->
+        <div class="board-create-file">
             <h3>파일첨부</h3>
             <input type="file" name="file" accept="imge/*">
         </div>
@@ -123,7 +122,7 @@ header{
     margin: 20PX auto;
     border-bottom: double #01083a 3px;
 }
- .board-update-evaluation{
+.board-update-evaluation{
     display: grid;
     grid-template-columns: 7fr 2fr 4fr;
     justify-content: center;
@@ -131,7 +130,7 @@ header{
     /* margin-bottom: 30px; */
     align-items: flex-end;
     column-gap: 20px;
- }
+}
 
 .board-update-category, .board-create-file {
     display: flex;
@@ -214,7 +213,7 @@ header{
         align-items: flex-start; 
     }
 } */
-@media screen and (max-width:800px){
+@media screen and (max-width:1000px){
     
     /* .board-update-head {
         grid-template-columns: 1fr;  한 줄로 정렬 
@@ -318,6 +317,10 @@ header{
         color: #fff;
         cursor: pointer;
         transition: box-shadow 0.2s;
+    }
+    .board-update-img{
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
     }
 }
 </style>

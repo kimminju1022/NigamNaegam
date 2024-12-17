@@ -35,6 +35,15 @@
                 <!-- 지도 넣어? 말어? -->
             <!-- </div>
         </div> -->
+        <div v-if="isModalOpen" class="modal-overlay" @click="closeModal">
+        <div class="modal-content" @click.stop>
+            <h2>검색 결과</h2>
+            <!-- 모달 내부 검색 내용 -->
+            <input v-model="searchText" type="text" />
+            </div>
+    </div>
+
+<button @click="closeModal">닫기</button>
         <div class="board-create-evaluation">
             <h3 style="margin-right: 20px;">별점</h3>
             <input type="radio" class="star" value="1">
@@ -103,10 +112,11 @@ const doneConfirm = () =>{
     const userResponse = confirm('작성을 완료하시겠습니까?');
     if (userResponse) {
         router.push('/boards/detail');
+        // 이때, post로 정보 전달해줘야함...어떻게?
     }
 }
 
-// 모달
+// 모달 시러시러 예쁜모달 만들고 싶다...별점똥 좋아요똥똥
 // export default {
 //     name:'modal',
 //     data(){
@@ -277,7 +287,7 @@ h3{
 }
 
 .board-create-evaluation{
-      display: flex;
+    display: flex;
 }
 
 /* 모달 */
@@ -296,6 +306,32 @@ h3{
     border-radius: 10px;
     padding: 20px;
 }
+    .modal-content {
+
+
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+
+    text-align: center;
+    width: 300px;
+    }
+
+    /* 버튼 스타일 */
+    button {
+    margin: 10px;
+
+
+    padding: 10px 20px;
+
+
+    font-size: 16px;
+    cursor: pointer;
+    }
 
 /* 별점 */
 /* .star {
@@ -337,12 +373,13 @@ color: gold;  마우스 오버 시 별
 .star-3{
 color: gold;
 }
+*/
 @media screen and (max-width: 800px) {
     .board-detail-head {
-        grid-template-columns: none; 기존 가로 정렬 해제 
-        grid-template-rows: auto;  세로로 요소 쌓기 
-        align-items: center;  중앙 정렬 
-        text-align: center;  텍스트 중앙정렬 
+        grid-template-columns: none; /*기존 가로 정렬 해제 */
+        grid-template-rows: auto;  /*세로로 요소 쌓기 */
+        align-items: center;  /*중앙 정렬 */
+        text-align: center;  /*텍스트 중앙정렬 */
     }
-} */
+}
 </style>
