@@ -292,20 +292,20 @@ main{
     display: inline-flex;
     /* float: right; */
     justify-content:end;
-    margin: 10px 20px;
     align-items: flex-end;
 }
 .board-search {
-    margin-left: 20px; 
+    margin-right: -20px; 
     background-color: #e9e8e8;
     border-radius: 20px;
-    width: 250px;
+    width: 300px;
     height: 31px;
     text-indent: 20px; 
 }
 
 .board-search-btn{
     font-size: large;
+    float: right;
     border-radius: 20px;
     width: 70px;
     height: 30px;
