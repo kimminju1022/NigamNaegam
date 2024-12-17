@@ -27,14 +27,14 @@
             <button class="btn bg-navy board-search-btn">검색</button>
         </div>  
         <!-- 모달 -->
-        <div class="board-create-modal">
+        <!-- <div class="board-create-modal">
             <div class="board-create-modal-content">
                 <h2>shopName</h2>
                 <h4>adress</h4>
-                <p>content</p>
+                <p>content</p> -->
                 <!-- 지도 넣어? 말어? -->
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
         <div class="board-create-evaluation">
             <h3 style="margin-right: 20px;">별점</h3>
             <input type="radio" class="star" value="1">
@@ -243,7 +243,6 @@ h3{
     border-radius: 20px;
     margin: 10px;
     padding: 20px;
-    background-color: rgba(255, 254, 248, 0.836);
     resize: none;
     align-items: center;
 }

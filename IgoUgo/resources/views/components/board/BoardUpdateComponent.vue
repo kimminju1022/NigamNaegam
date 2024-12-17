@@ -16,13 +16,13 @@
             <div class="board-updateItem-btn"> 
                 <router-link to="/boards"><button class="btn bg-clear board-update-btn">목록</button></router-link>
                 <router-link to="/boards/update"><button class="btn bg-clear board-update-btn">취소</button></router-link>
-                <a href="#" class="btn bg-navy board-update-btn">완료</a>
+                <a href="#" class="btn bg-navy board-update-btn"><p>완료</p></a>
             </div>  
         </div>
 
         <div class="board-update-head">
             <select name="" id="">
-                <option  disabled hidden selected>확인게시글</option>
+                <option  disabled hidden selected></option>
                 <option value="0">리뷰게시판</option>
                 <option value="1">자유게시판</option>
             </select>
@@ -180,7 +180,7 @@ header{
         align-items: flex-start; 
     }
 } */
-@media(max-width:800px){
+@media screen and (max-width:320px){
     
     /* .board-update-head {
         grid-template-columns: 1fr;  한 줄로 정렬 
@@ -191,8 +191,8 @@ header{
    }  */
     .board-update-head {
         display: flex; /* Flexbox로 전환 */
-        grid-row: span 3;
-        grid-column: span 1;
+        grid-row: span 4;
+        grid-column: span 3;
         flex-direction: column; /* 세로 정렬 */
         align-items: center; /* 가로 중앙 정렬 */
         text-align: center; /* 텍스트 중앙 정렬 */

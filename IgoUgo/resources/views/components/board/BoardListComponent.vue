@@ -35,7 +35,6 @@
                 <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
                 <button class="btn bg-navy board-search-btn">검색</button>
             </div>
-            <router-link to="/boards/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
         </div>
         
     <!-- 리스트항목 -->
@@ -142,20 +141,67 @@
                     <p>25</p>
                     <p>80</p>
                 </div>
+                <div id="board-li-item">
+                    <p>5</p>
+                    <p>공지</p>
+                    <p>12월 여행 주의 사항</p>
+                    <p>라라핑</p>
+                    <p>2024.12.11</p>
+                    <p>2</p>
+                    <p>50</p>
+                </div>
+                <div id="board-li-item">
+                    <p>4</p>
+                    <p>공지</p>
+                    <p>11월 단풍놀이 명소 전국 Top 20</p>
+                    <p>차나핑</p>
+                    <p>2024.11.11</p>
+                    <p>20</p>
+                    <p>50</p>
+                </div>
+                <div id="board-li-item">
+                    <p>3</p>
+                    <p>공지</p>
+                    <p>11월 여행 주의 사항</p>
+                    <p>라라핑</p>
+                    <p>2024.11.11</p>
+                    <p>2</p>
+                    <p>30</p>
+                </div>
+                <div id="board-li-item">
+                    <p>2</p>
+                    <p>공지</p>
+                    <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
+                    <p>믿어핑</p>
+                    <p>2024.11.01</p>
+                    <p>2</p>
+                    <p>50</p>
+                </div>
+                <div id="board-li-item">
+                    <p>1</p>
+                    <p>공지</p>
+                    <p>10월 여행 주의 사항</p>
+                    <p>차캐핑</p>
+                    <p>2024.12.11</p>
+                    <p>10</p>
+                    <p>30</p>
+                </div>
             </div>
         </div>
     </main>
 <!-- 페이지네이션 -->
-
-    <div class="pagination">
-        <a href="#"><button class="btn bg-clear"><</button></a>
-        <a href="#"><button class="btn bg-clear">1</button></a>
-        <a href="#"><button class="btn bg-clear">2</button></a>
-        <a href="#"><button class="btn bg-clear">3</button></a>
-        <a href="#"><button class="btn bg-clear">4</button></a>
-        <a href="#"><button class="btn bg-clear">5</button></a>
-        <a href="#"><button class="btn bg-clear">></button></a>
-    </div>
+    <footer>
+        <div class="pagination">
+            <a href="#"><button class="btn bg-clear"><</button></a>
+            <a href="#"><button class="btn bg-clear">1</button></a>
+            <a href="#"><button class="btn bg-clear">2</button></a>
+            <a href="#"><button class="btn bg-clear">3</button></a>
+            <a href="#"><button class="btn bg-clear">4</button></a>
+            <a href="#"><button class="btn bg-clear">5</button></a>
+            <a href="#"><button class="btn bg-clear">></button></a>
+        </div>
+        <router-link to="/boards/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
+    </footer>
 </template>
 <script setup>
 
@@ -166,7 +212,11 @@ import { onBeforeMount } from 'vue';
 //     console.log('보드다');
 // });
 </script>
-<style scoped>                                                                                                          
+<style scoped>  
+footer{
+    height: 30px;
+    display: inline;
+}                                                                                      
 .scroll{
     display: inline-block;
     width: 100px;
@@ -210,9 +260,9 @@ main{
 
 .board-head{
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     /* display: grid; */
-    grid-template-columns: 2fr 7fr 1fr;
+    grid-template-columns: 2fr 7fr;
     align-items: center;    
     gap: 30px; 
     margin: 50px auto;
@@ -238,8 +288,9 @@ main{
     overflow: hidden;
 }
 
-.board-search-tb{
+#board-search-tb{
     display: inline-flex;
+    /* float: right; */
     justify-content:end;
     margin: 10px 20px;
     align-items: flex-end;
@@ -258,18 +309,18 @@ main{
     border-radius: 20px;
     width: 70px;
     height: 30px;
-    margin-left: -60px;
 }
 .board-create-btn{
+    float: right;
     font-size: large;
     border-radius: 20px;
     width: 70px;
     height: 30px;
-    gap: 50px;
+    margin-top: -30px;
 }
 
 .board-list{
-    height: 500px;
+    height: auto;
     width: 100%;
     /* justify-content: center;
     align-content: center; */
@@ -306,12 +357,11 @@ main{
 }
 
 .pagination {
-    /* margin: 0 auto; */
-    /* text-align: center; */
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    margin-top: 30px;
 }
 
 .pagination button {
