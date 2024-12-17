@@ -8,9 +8,8 @@
         </div>
         <!-- 버튼영역 -->
         <div class="board-detailItem-btn"> 
-            <a href="#" class="btn bg-navy board-detail-btn">수정</a>
-            <!-- <a href="#" onclick="swal('알림창1')">클릭</a> -->
-            <a href="#" class="btn bg-navy board-detail-btn">삭제</a>
+            <button class="btn bg-navy board-detail-btn" @click="detailConfirm">수정</button>
+            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm">삭제</button>
         </div>
     </header>
     <main>  
@@ -20,8 +19,9 @@
             <p>★★★☆☆</p>
             <span>작성자 : 닉네임</span>
             <span>2024.12.05</span>
-            <span>💗 :  20</span>
-            <span>조회 : 50</span>
+            <button>💗  :</button>
+            <span> {{ loveIt[0] }}</span>
+            <span>조회 : {{ absolve[1]++ }}</span>
             <button>🚨 신고</button>
         </div>
         
@@ -42,7 +42,7 @@
                 <span>댓글</span>
                 <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
                 <button class="btn bg-navy board-detail-btn">작성</button>
-                <span>총 댓글 : </span>
+                <span>총 댓글 : {{ 댓글수[0] }}</span>
             </div>
             <hr>
             <div class="board-detail-replyList">
@@ -119,12 +119,24 @@
 
 <script setup>
 import { onBeforeMount } from 'vue';
+import router from '../../../js/router'
+// // 비포마운트처리
+// onBeforeMount(()=>{
+//     console.log('')
+// })
+const detailConfirm = () => {
+    const userResponse = confirm('해당 글을 수정 하시겠습니까?');
+      if (userResponse) {
+        router.push('/boards/update');
+    }
+}
 
-// 비포마운트처리
-onBeforeMount(()=>{
-    console.log('')
-})
-
+const deleteConfirm = () => {
+    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n 삭제 시 게시글을 되돌릴 수 없습니다');
+      if (userResponse) {
+        router.push('/boards');
+    }
+}
 </script>
 
 <style scoped>

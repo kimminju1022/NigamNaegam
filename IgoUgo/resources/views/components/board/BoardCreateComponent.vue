@@ -3,9 +3,9 @@
     <div class="board-create-head">
         <h2>board title</h2>
         <div class="form-box">
-            <router-link to="/boards"><button class="btn bg-navy board-create-btn">목록</button></router-link>
-            <router-link to="/boards"><button class="btn bg-navy board-create-btn">취소</button></router-link>
-            <router-link to="/boards"><button class="btn bg-navy board-create-btn">완료</button></router-link>
+            <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link>
+            <button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button>
+            <button class="btn bg-navy board-create-btn" @click="doneConfirm">완료</button>
         </div>
         <!-- 선택박스 -->
     </div>
@@ -90,6 +90,22 @@
 </template>
 
 <script setup>
+import router from '../../../js/router';
+
+
+const cancelConfirm = () =>{
+    const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
+    if (userResponse) {
+        router.push('/boards');
+    }
+}
+const doneConfirm = () =>{
+    const userResponse = confirm('작성을 완료하시겠습니까?');
+    if (userResponse) {
+        router.push('/boards/detail');
+    }
+}
+
 // 모달
 // export default {
 //     name:'modal',
@@ -222,6 +238,7 @@ h3{
 }
 .board-create-btn{
     font-size: large;
+    border: #01083a solid 1px;
     border-radius: 20px;
     width: 70px;
     height: 30px;

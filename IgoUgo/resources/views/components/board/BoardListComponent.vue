@@ -51,50 +51,52 @@
             </div>
             <!-- 리스트 목록 -->
             <div class="board-li-items">
-                <div id="board-li-item">
-                    <p>5</p>
-                    <p>공지</p>
-                    <p>12월 여행 주의 사항</p>
-                    <p>라라핑</p>
-                    <p>2024.12.11</p>
-                    <p>2</p>
-                    <p>50</p>
-                </div>
-                <div id="board-li-item">
-                    <p>4</p>
-                    <p>공지</p>
-                    <p>11월 단풍놀이 명소 전국 Top 20</p>
-                    <p>차나핑</p>
-                    <p>2024.11.11</p>
-                    <p>20</p>
-                    <p>50</p>
-                </div>
-                <div id="board-li-item">
-                    <p>3</p>
-                    <p>공지</p>
-                    <p>11월 여행 주의 사항</p>
-                    <p>라라핑</p>
-                    <p>2024.11.11</p>
-                    <p>2</p>
-                    <p>30</p>
-                </div>
-                <div id="board-li-item">
-                    <p>2</p>
-                    <p>공지</p>
-                    <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
-                    <p>믿어핑</p>
-                    <p>2024.11.01</p>
-                    <p>2</p>
-                    <p>50</p>
-                </div>
-                <div id="board-li-item">
-                    <p>1</p>
-                    <p>공지</p>
-                    <p>10월 여행 주의 사항</p>
-                    <p>차캐핑</p>
-                    <p>2024.12.11</p>
-                    <p>10</p>
-                    <p>30</p>
+                <div id="board-li-notice" >
+                    <div id="board-li-item">
+                        <p>5</p>
+                        <p>공지</p>
+                        <p>12월 여행 주의 사항</p>
+                        <p>라라핑</p>
+                        <p>2024.12.11</p>
+                        <p>2</p>
+                        <p>50</p>
+                    </div>
+                    <div id="board-li-item">
+                        <p>4</p>
+                        <p>공지</p>
+                        <p>11월 단풍놀이 명소 전국 Top 20</p>
+                        <p>차나핑</p>
+                        <p>2024.11.11</p>
+                        <p>20</p>
+                        <p>50</p>
+                    </div>
+                    <div id="board-li-item">
+                        <p>3</p>
+                        <p>공지</p>
+                        <p>11월 여행 주의 사항</p>
+                        <p>라라핑</p>
+                        <p>2024.11.11</p>
+                        <p>2</p>
+                        <p>30</p>
+                    </div>
+                    <div id="board-li-item">
+                        <p>2</p>
+                        <p>공지</p>
+                        <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
+                        <p>믿어핑</p>
+                        <p>2024.11.01</p>
+                        <p>2</p>
+                        <p>50</p>
+                    </div>
+                    <div id="board-li-item">
+                        <p>1</p>
+                        <p>공지</p>
+                        <p>10월 여행 주의 사항</p>
+                        <p>차캐핑</p>
+                        <p>2024.12.11</p>
+                        <p>10</p>
+                        <p>30</p>
+                    </div>
                 </div>
                 <div id="board-li-item">
                     <p>22</p>
@@ -278,10 +280,11 @@ main{
     gap: 30px;
 }
 
-#board-li-item:nth-child(-n+5){
+#board-li-notice {
     font-weight: 500;
     font-size: 1.2rem;
-    background-color: rgb(224, 239, 239);
+    background-color: #eeeeeec0;
+    padding: 10px;
 }
 #board-li-item>p:nth-child(3){
     text-align: left;
@@ -295,12 +298,14 @@ main{
     align-items: flex-end;
 }
 .board-search {
-    margin-right: -20px; 
-    background-color: #e9e8e8;
+    /* margin-right: -22px;  */
+    border: #01083a solid 1px;
+    color: #01083a;
     border-radius: 20px;
     width: 300px;
     height: 31px;
     text-indent: 20px; 
+    margin-right: 30px;
 }
 
 .board-search-btn{
@@ -308,7 +313,7 @@ main{
     float: right;
     border-radius: 20px;
     width: 70px;
-    height: 30px;
+    height: 32px;
 }
 .board-create-btn{
     float: right;
