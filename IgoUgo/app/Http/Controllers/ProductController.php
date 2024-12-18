@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    public function productData(Request $request) {
+    public function productData() {
         // $url = 'http://apis.data.go.kr/B551011/KorService1/searchFestival1';
         $url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1';
         $serviceKey = env('API_KEY');
@@ -17,13 +17,12 @@ class ProductController extends Controller
         // HTTP 요청
         $festivals = Http::get($url, [
             'serviceKey' => $serviceKey,
-            'numOfRows' => 20,
+            'numOfRows' => 10,
             'pageNo' => 1,
             'MobileOS' => 'ETC',
             'MobileApp' => 'IgoUgo',
             '_type' => 'json',
             // 'eventStartDate' => '20000101',
-            // 'contentTypeId' => '12'
         ]);
 
         $resultCode = $festivals->header('resultCode');

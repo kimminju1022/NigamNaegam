@@ -10,7 +10,7 @@ class ApiController extends Controller
 {
     public function hotelProducts()
     {
-        $url = 'http://apis.data.go.kr/B551011/KorService1/searchStay1';
+        $url = 'http://apis.data.go.kr/B551011/KorService1/searchFestival1';
         $serviceKey = env('API_KEY');
         // LOG::debug($serviceKey);
 
@@ -21,6 +21,7 @@ class ApiController extends Controller
             'MobileOS' => 'ETC',
             'MobileApp' => 'IgoUgo',
             '_type' => 'json',
+            'eventStartDate' => '20000101',
         ]);
 
         $resultCode = $hotels->header('resultCode');
