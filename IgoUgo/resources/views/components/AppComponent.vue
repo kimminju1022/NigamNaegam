@@ -17,7 +17,8 @@
                     <div v-else class="header-title-button">
                         <button class="btn bg-clear header-btn">FAQ</button>
                         <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
-                        <router-link to="/user"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
+                        <!-- <router-link :to="`/user/${user.user_id}`"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link> -->
+                        <router-link :to="`/user/${user.user_id}`"><img :src="user.user_profile" alt=""></router-link>
                     </div>
                 </div>
                 <div class="header-list">
@@ -160,7 +161,8 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
@@ -212,6 +214,10 @@ const toggleMenu = () => {
 
     isMenuOpen.value = !isMenuOpen.value
 }
+
+const store = useStore();
+// const id = computed(()=> store.state.user.userInfo.user_id);
+const user = computed(()=> store.state.user.userInfo);
 
 </script>
 

@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="my-profile-update-btn">
-                <router-link to="/user/update"><button class="btn bg-navy">수정</button></router-link>
+                <router-link :to="`/user/${store.state.user.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
         <!-- <div v-if="isMobileView">
@@ -162,7 +162,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, reactive } from 'vue';
+import { ref, onMounted, onUnmounted, computed} from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
 // 반응형 상태를 저장하는 변수
 const isMobileView = ref(false);
 
@@ -197,6 +201,10 @@ const closeModal = () => {
 //     store.dispatch('board/destroyBoard', id);
 //     // deleteModalFlg.value = true;
 // }
+
+
+
+
 </script>
 
 <style scoped>

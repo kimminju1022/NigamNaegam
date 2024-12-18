@@ -106,22 +106,22 @@ const routes = [
         // beforeEnter: chkAuth,
     },
     {
-        path: '/user',
+        path: '/user/:id',
         component: MyPageComponent,
         // beforeEnter: chkAuth,
     },
     {
-        path: '/user/update',
+        path: '/user/:id/edit',
         component: MyPageUpdateComponent,
         // beforeEnter: chkAuth,
     },
     {
-        path: '/password',
+        path: '/password/:id',
         component: PasswordComponent,
         // beforeEnter: chkAuth,
     },
     {
-        path: '/password/update',
+        path: '/password/:id/edit',
         component: PasswordUpdateComponent,
         // beforeEnter: chkAuth,
     },

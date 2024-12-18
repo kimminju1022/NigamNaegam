@@ -3,34 +3,35 @@
         <div class="my-profile-bg">
             <div class="my-profile-box">
                 <div class="my-profile-img">
-                    <img :src="$store.state.user.userInfo.profile">
-                    <!-- <input v-model="userUpdate.profile" type="file" name="profile" id=""> -->
+                    <!-- <img :src="$store.state.user.userInfo.profile"> -->
+                    <img :src="userInfo.profile">
+                    <!-- <input v-model="userInfo.profile" type="file" name="profile" id="profile"> -->
                 </div>
                 <div class="my-profile-content">
                     <div class="profile-item">
                         <p class="bg-navy">이메일</p>
-                        <input v-model="userUpdate.email" class="input-update" name="email" readonly>
+                        <input v-model="userInfo.email" class="input-update" name="email" readonly>
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">이름</p>
-                        <input v-model="userUpdate.name" class="input-update" name="name">
+                        <input v-model="userInfo.name" class="input-update" name="name">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">닉네임</p>
-                        <input v-model="userUpdate.nickname" class="input-update" name="nickname">
+                        <input v-model="userInfo.nickname" class="input-update" name="nickname">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">전화번호</p>
-                        <input v-model="userUpdate.phone" class="input-update" name="phone">
+                        <input v-model="userInfo.phone" class="input-update" name="phone">
                     </div>
                 </div>
             </div>
         </div>
         <div class="my-profile-update-btn">
             <!-- 수정버튼 button @click? -->
-            <button class="btn bg-navy btn-update">완료</button>
-            <!-- <button @click="$store.dispatch('user/update', userInfo)" class="btn bg-navy btn-update">완료</button> -->
-            <router-link to="/user"><button class="btn bg-navy btn-update">취소</button></router-link>
+            <!-- <button class="btn bg-navy btn-update">완료</button> -->
+            <button @click="$store.dispatch('user/updateUser', userInfo)" class="btn bg-navy btn-update">완료</button>
+            <button @click="backToUser" class="btn bg-navy btn-update">취소</button>
         </div>
     </div>
 </template>
@@ -38,17 +39,24 @@
 <script setup>
 
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store =  useStore();
+const router = useRouter();
 
-const userUpdate = reactive({
+const userInfo = reactive({
     email: store.state.user.userInfo.user_email
     ,name: store.state.user.userInfo.user_name
     ,nickname: store.state.user.userInfo.user_nickname
     ,phone: store.state.user.userInfo.user_phone
     ,profile: store.state.user.userInfo.user_profile
+    ,user_id: store.state.user.userInfo.user_id
 });
+
+const backToUser = () => {
+    router.replace(`/user/${store.state.user.userInfo.user_id}`);
+};
 
 </script>
 
