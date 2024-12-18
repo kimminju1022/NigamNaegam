@@ -6,7 +6,7 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
-import BoardQuestionComponent from '../views/components/board/boardQuestionComponent.vue';
+import BoardQuestionComponent from '../views/components/board/BoardQuestionComponent.vue';
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
@@ -22,7 +22,6 @@ import { useStore } from 'vuex';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.user.authFlg;
-    // const noAuthPassFlg = (to.path === '/' || to.path === '/login' || to.path === '/registration');
     const noAuthPassFlg = (to.path === '/login' || to.path === '/registration');
     
     if(authFlg && noAuthPassFlg) {
@@ -91,12 +90,12 @@ const routes = [
         component: BoardQuestionComponent,
     },
     {
-        path: '/myPage',
+        path: '/user',
         component: MyPageComponent,
         // beforeEnter: chkAuth,
     },
     {
-        path: '/myPage/update',
+        path: '/user/update',
         component: MyPageUpdateComponent,
         // beforeEnter: chkAuth,
     },

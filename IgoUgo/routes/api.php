@@ -41,4 +41,10 @@ Route::middleware('my.auth')->group(function() {
     // 토큰 재발급
     Route::post('/reissue', [AuthController::class, 'reissue'])->name('auth.reissue');
     
+    // 마이페이지 접근
+    Route::get('/user/{id}', [AuthController::class, 'userChk'])->name('auth.userChk');
+
+
+    // Route::get('/post/{id}/edit', [PostController::class, 'edit']); // 수정 페이지 데이터 조회
+    // Route::put('/post/{id}', [PostController::class, 'update']); // 수정된 데이터 저장
 });
