@@ -1,6 +1,6 @@
 <template>
     <main>
-        <h2>게시판명</h2>
+        <h2>문의게시판</h2>
         <div class="board-head">
            <div id="board-search-tb">
                 <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
@@ -13,12 +13,10 @@
             <!-- 리스트 헤드 -->
             <div class="board-Qli-title">
                 <span>번호</span>
-                <span>지역</span>
+                <span>답변상태</span>
                 <span>제목</span>
                 <span>닉네임</span>
                 <span>작성일자</span>
-                <span>좋아요</span>
-                <span>조회수</span>
             </div>
             <!-- 리스트 목록 -->
             <div class="board-Qli-items">
@@ -26,11 +24,9 @@
                     <div id="board-Qli-item">
                         <p>5</p>
                         <p>공지</p>
-                        <p>12월 여행 주의 사항</p>
+                        <p>파일업로드 오류 시 간단해결방법</p>
                         <p>라라핑</p>
                         <p>2024.12.11</p>
-                        <p>2</p>
-                        <p>50</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>4</p>
@@ -38,8 +34,6 @@
                         <p>11월 단풍놀이 명소 전국 Top 20</p>
                         <p>차나핑</p>
                         <p>2024.11.11</p>
-                        <p>20</p>
-                        <p>50</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>3</p>
@@ -47,8 +41,6 @@
                         <p>11월 여행 주의 사항</p>
                         <p>라라핑</p>
                         <p>2024.11.11</p>
-                        <p>2</p>
-                        <p>30</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>2</p>
@@ -56,8 +48,6 @@
                         <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
                         <p>믿어핑</p>
                         <p>2024.11.01</p>
-                        <p>2</p>
-                        <p>50</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>1</p>
@@ -65,8 +55,6 @@
                         <p>10월 여행 주의 사항</p>
                         <p>차캐핑</p>
                         <p>2024.12.11</p>
-                        <p>10</p>
-                        <p>30</p>
                     </div>
                 </div>
                 <div id="board-Qli-item">
@@ -75,8 +63,6 @@
                     <p>경복궁 야경과 함께하는 겨울 낭만코스</p>
                     <p>햅삐햅삐햅삐</p>
                     <p>2024.12.11</p>
-                    <p>5</p>
-                    <p>8</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>21</p>
@@ -84,8 +70,6 @@
                     <p>루미나리에 반짝이는 겨울 낭만코스</p>
                     <p>오징어</p>
                     <p>2024.12.08</p>
-                    <p>15</p>
-                    <p>58</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>20</p>
@@ -93,8 +77,6 @@
                     <p>과메기 익어가는 마을</p>
                     <p>과메기</p>
                     <p>2024.12.02</p>
-                    <p>35</p>
-                    <p>38</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>19</p>
@@ -102,8 +84,6 @@
                     <p>환상의 나라 에버랜드보다 롯데월드</p>
                     <p>루팡</p>
                     <p>2024.12.02</p>
-                    <p>5</p>
-                    <p>8</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>18</p>
@@ -111,8 +91,6 @@
                     <p>가로수길 가득메운 커피로드</p>
                     <p>햅삐햅삐햅삐</p>
                     <p>2024.11.28</p>
-                    <p>25</p>
-                    <p>80</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>5</p>
@@ -120,8 +98,6 @@
                     <p>12월 여행 주의 사항</p>
                     <p>라라핑</p>
                     <p>2024.12.11</p>
-                    <p>2</p>
-                    <p>50</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>4</p>
@@ -129,8 +105,6 @@
                     <p>11월 단풍놀이 명소 전국 Top 20</p>
                     <p>차나핑</p>
                     <p>2024.11.11</p>
-                    <p>20</p>
-                    <p>50</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>3</p>
@@ -138,8 +112,6 @@
                     <p>11월 여행 주의 사항</p>
                     <p>라라핑</p>
                     <p>2024.11.11</p>
-                    <p>2</p>
-                    <p>30</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>2</p>
@@ -147,8 +119,6 @@
                     <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
                     <p>믿어핑</p>
                     <p>2024.11.01</p>
-                    <p>2</p>
-                    <p>50</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>1</p>
@@ -156,8 +126,6 @@
                     <p>10월 여행 주의 사항</p>
                     <p>차캐핑</p>
                     <p>2024.12.11</p>
-                    <p>10</p>
-                    <p>30</p>
                 </div>
             </div>
         </div>
