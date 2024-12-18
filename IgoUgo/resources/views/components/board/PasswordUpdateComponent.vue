@@ -31,101 +31,80 @@
                     <div id="board-Qli-item">
                         <p>4</p>
                         <p>공지</p>
-                        <p>11월 단풍놀이 명소 전국 Top 20</p>
+                        <p>로그인 에러 시 문의방법</p>
                         <p>차나핑</p>
                         <p>2024.11.11</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>3</p>
                         <p>공지</p>
-                        <p>11월 여행 주의 사항</p>
+                        <p>게시글 수정 오류 해결방법</p>
                         <p>라라핑</p>
                         <p>2024.11.11</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>2</p>
                         <p>공지</p>
-                        <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
+                        <p>자주 질문하는 오류 해결방법</p>
                         <p>믿어핑</p>
                         <p>2024.11.01</p>
                     </div>
                     <div id="board-Qli-item">
                         <p>1</p>
                         <p>공지</p>
-                        <p>10월 여행 주의 사항</p>
+                        <p>민원 해결 절차 안내</p>
                         <p>차캐핑</p>
                         <p>2024.12.11</p>
                     </div>
                 </div>
                 <div id="board-Qli-item">
                     <p>22</p>
-                    <p>서울</p>
-                    <p>경복궁 야경과 함께하는 겨울 낭만코스</p>
+                    <p>답변완료</p>
+                    <p>게시글 오류</p>
                     <p>햅삐햅삐햅삐</p>
                     <p>2024.12.11</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>21</p>
-                    <p>포항</p>
-                    <p>루미나리에 반짝이는 겨울 낭만코스</p>
+                    <p>답변완료</p>
+                    <p>비밀번호 오류</p>
                     <p>오징어</p>
                     <p>2024.12.08</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>20</p>
-                    <p>포항</p>
-                    <p>과메기 익어가는 마을</p>
+                    <p>답변대기</p>
+                    <p>신고글 재게시</p>
                     <p>과메기</p>
                     <p>2024.12.02</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>19</p>
-                    <p>서울</p>
-                    <p>환상의 나라 에버랜드보다 롯데월드</p>
+                    <p>답변완료</p>
+                    <p>메인에 보이는 여행지 사진 포토스팟 문의</p>
                     <p>루팡</p>
                     <p>2024.12.02</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>18</p>
-                    <p>서울</p>
-                    <p>가로수길 가득메운 커피로드</p>
+                    <p>답변대기</p>
+                    <p>너네 일 너무 잘 하는거 아니야 이렇게 잘 하면</p>
                     <p>햅삐햅삐햅삐</p>
                     <p>2024.11.28</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>5</p>
-                    <p>공지</p>
-                    <p>12월 여행 주의 사항</p>
+                    <p>답변완료</p>
+                    <p>답변을 확인할 수 없어요</p>
                     <p>라라핑</p>
                     <p>2024.12.11</p>
                 </div>
                 <div id="board-Qli-item">
                     <p>4</p>
-                    <p>공지</p>
-                    <p>11월 단풍놀이 명소 전국 Top 20</p>
+                    <p>답변완료</p>
+                    <p>마이페이지 프로필 수정 문의</p>
                     <p>차나핑</p>
                     <p>2024.11.11</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>3</p>
-                    <p>공지</p>
-                    <p>11월 여행 주의 사항</p>
-                    <p>라라핑</p>
-                    <p>2024.11.11</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>2</p>
-                    <p>공지</p>
-                    <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
-                    <p>믿어핑</p>
-                    <p>2024.11.01</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>1</p>
-                    <p>공지</p>
-                    <p>10월 여행 주의 사항</p>
-                    <p>차캐핑</p>
-                    <p>2024.12.11</p>
                 </div>
             </div>
         </div>
@@ -271,7 +250,7 @@ main{
 }
 .board-Qli-title{
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 5fr 1.5fr 1.5fr;
     text-align: center;
     width: 100%;
     height: 40px;
@@ -293,7 +272,7 @@ main{
 }
 #board-Qli-item{
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 5fr 1.5fr 1.5fr;
     text-align: center;
     width: 100%;
     height: 30px;

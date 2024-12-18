@@ -1,37 +1,30 @@
 <template>
     <!-- 작동btn  [목록과 취소가 같은것 아닐까?] -->
     <div class="board-create-head">
-        <h2 style="margin: 30px 0; font-size: 3rem;">board title</h2>
+        <h2 style="margin: 30px 0; font-size: 3rem;">FAQ</h2>
         <div class="form-box">
-            <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link>
             <button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button>
             <button class="btn bg-navy board-create-btn" @click="doneConfirm">완료</button>
         </div>
         <!-- 선택박스 -->
     </div>
-    <hr>
-    <div class="select-boardType">
-        <h3 style="font-size: 1.5rem;">게시판</h3>
-        <select name="board-categories" id="board-categories">
-            <!-- v-model="SelectedBoardCategory"  -->
-            <option value="1">리뷰게시판</option>
-            <option value="2">자유게시판</option>
-        </select>
-    </div>
-    <hr>
+    <hr style="border: solid #01083a 2px;">
     <div class="board-create-container">
         <div class="board-create-title">
             <h3>제목</h3>
             <input type="text" name="title" placeholder="제목을 적어주세요" maxlength="100">
         </div>
         <hr>
-        <textarea name="content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
+        <textarea name="content" placeholder="어떤점이 궁금하신가요? 문의사항을 적어주세요" maxlength="2000"></textarea>
         <hr>
         <div class="board-create-file">
             <h3 class="board-create-fileChoice">파일첨부</h3>
             <input type="file" name="file" accept="imge/*">
-            <!--미리보기 삭제기능추가 -->
         </div>            
+        <!--미리보기 삭제기능추가 -->
+        <div>
+            사진미리보기
+        </div>
         <hr>
     </div>
     <!-- 내용 -->
@@ -45,13 +38,13 @@ import router from '../../../js/router';
 const cancelConfirm = () =>{
     const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
     if (userResponse) {
-        router.push('/boards');
+        router.push('/boards/question');
     }
 }
 const doneConfirm = () =>{
     const userResponse = confirm('작성을 완료하시겠습니까?');
     if (userResponse) {
-        router.push('/boards/detail');
+        router.push('/boards/question/detail');
         // 이때, post로 정보 전달해줘야함...어떻게?
     }
 }
@@ -152,7 +145,7 @@ const doneConfirm = () =>{
     gap: 20px;
     justify-content:flex-end;
     align-items: flex-end;
-    
+    margin: 10px auto 30px auto;
 }
 /* .form-box>button{
     border-radius: 20px;

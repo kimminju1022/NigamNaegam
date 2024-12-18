@@ -27,24 +27,22 @@
                 <option value="1">자유게시판</option>
             </select>
 
-           <div class="board-update-evaluation">
+            <div class="board-update-evaluation">
                 <h3>선택업체명</h3>
                 <button @click="openModal" class="btn bg-navy board-search-btn">검색</button>
                 <!-- 모달검색 -->
-                <div v-show="modalFlg" class="board-search-container">
+                <!-- <div v-show="modalFlg" class="board-search-container">
                     <div class="searchItem">
                         <input type="text" maxlength="100">
                         <hr>
-                        <input type="text">
-                        <button>검색</button>
+                        <p>내용</p>
                         <hr>
-                        <li></li>
                         <div class="etc-box">
                             <span>작성자</span>
                             <button @click="closeModal">닫기</button>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!--모달 팝업-->
                 
                 <!-- 별점 -->
@@ -60,12 +58,11 @@
             <span>최초 작성일 : 2024.12.05</span>
         </div>
         <!-- 리뷰게시판(value=1)경우 검색창활성화 -->
-       
         <!-- 내용 -->
         <textarea name="board-update-content" id="board-update-content">값불러오기</textarea>
         <hr>
-         <!-- 등록이미지 불러오기 -->
-         <div class="board-create-file">
+        <!-- 등록이미지 불러오기 -->
+        <div class="board-create-file">
             <h3>파일첨부</h3>
             <input type="file" name="file" accept="imge/*">
         </div>
@@ -88,7 +85,19 @@ const updateConfirm = () => {
         alert('수정을 계속 진행합니다.');
     }
 }
+// 모달
+const modal = document.querySelector('.modal');
+const modalOpen = document.querySelector('.modal_btn');
+const modalClose = document.querySelector('.close_btn');
 
+//열기 버튼을 눌렀을 때 모달팝업이 열림
+modalOpen.addEventListener('click',function(){
+    modal.style.display = 'block';
+});
+//닫기 버튼을 눌렀을 때 모달팝업이 닫힘
+modalClose.addEventListener('click',function(){
+    modal.style.display = 'none';
+});
 </script>
 
 <style scoped>

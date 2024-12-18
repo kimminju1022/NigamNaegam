@@ -6,7 +6,6 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
-import BoardQuestionComponent from '../views/components/board/BoardQuestionComponent.vue';
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
@@ -17,7 +16,10 @@ import HotelListDetailComponent from '../views/components/board/HotelListDetailC
 import HotelListComponent from '../views/components/board/HotelListComponent.vue';
 import HotelMapComponent from '../views/components/board/HotelMapComponent.vue';
 import { useStore } from 'vuex';
-
+import QuestionComponent from '../views/components/question/QuestionListComponent.vue';
+import QuestionCreateComponent from '../views/components/question/QuestionCreateComponent.vue';
+import QuestionDetailComponent from '../views/components/question/QuestionDetailComponent.vue';
+import QuestionEditComponent from '../views/components/question/QuestionEditComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -72,7 +74,7 @@ const routes = [
         component: BoardListComponent,
     },
     {
-        path: '/boards/detail',
+        path: '/boards/:id',
         component: BoardDetailComponent,
     },
     {
@@ -81,13 +83,27 @@ const routes = [
         // beforeEnter: chkAuth,
     },
     {
-        path: '/boards/update',
+        path: '/boards/edit',
         component: BoardUpdateComponent,
         // beforeEnter: chkAuth,
     },
     {
-        path: '/boards/question',
-        component: BoardQuestionComponent,
+        path: '/question',
+        component: QuestionComponent,
+    },
+    {
+        path: '/question/create',
+        component: QuestionCreateComponent,
+        // beforeEnter: chkAuth,
+    },
+    {
+        path: '/question/:id',
+        component: QuestionDetailComponent,
+    },
+    {
+        path: '/question/edit',
+        component: QuestionEditComponent,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/user',
