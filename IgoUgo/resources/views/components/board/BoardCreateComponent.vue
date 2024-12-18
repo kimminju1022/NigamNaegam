@@ -11,7 +11,7 @@
     </div>
     <hr>
     <div class="select-boardType">
-        <h3>게시판</h3>
+        <h3 style="font-size: 1.5rem;">게시판</h3>
         <select name="board-categories" id="board-categories">
             <!-- v-model="SelectedBoardCategory"  -->
             <option value="1">리뷰게시판</option>
@@ -43,7 +43,7 @@
             </div>
     </div>
 
-<button @click="closeModal">닫기</button>
+<!-- <button @click="closeModal">닫기</button> -->
         <div class="board-create-evaluation">
             <h3 style="margin-right: 20px;">별점</h3>
             <input type="radio" class="star" value="1">
@@ -90,7 +90,7 @@
         <hr>
         <textarea name="content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
         <div class="board-create-file">
-            <h3>파일첨부</h3>
+            <h3 class="board-create-fileChoice">파일첨부</h3>
             <input type="file" name="file" accept="imge/*">
         </div>            
     </div>
@@ -188,12 +188,7 @@ const doneConfirm = () =>{
 </script>
 
 <style scoped>
-div{
-    box-sizing: border-box;
-}
-h3{
-    font-size: 1.5rem;
-}
+
 .board-create-head{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -208,22 +203,22 @@ h3{
 
 .form-box{
     /* display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3,1fr);
     margin-top: 20px;
     margin-bottom: 30px;
+    text-align: center;
     align-items: flex-end;
     justify-content: left; */
     display: inline-flex;
     gap: 20px;
     justify-content:end;
-
 }
-.form-box>button{
+/* .form-box>button{
     border-radius: 20px;
     width: 60px;
     height: 30px;
     font-size: large;
-}
+} */
 .board-search-tb{
     display: inline-flex;
     justify-content:end;
@@ -253,10 +248,11 @@ h3{
     width: 70px;
     height: 30px;
     gap: 50px;
+    text-align: center;
 }
 .select-boardType, .select-categories, .board-create-title{
     display: inline-flex;
-    justify-content:end;
+    justify-content:flex-end;
     margin: 10px 20px;
 }
 .board-create-title>input{
@@ -306,32 +302,21 @@ h3{
     border-radius: 10px;
     padding: 20px;
 }
-    .modal-content {
+.modal-content {
 
 
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+background: white;
+padding: 20px;
+border-radius: 10px;
 
 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 
-    text-align: center;
-    width: 300px;
-    }
+text-align: center;
+width: 300px;
+}
 
-    /* 버튼 스타일 */
-    button {
-    margin: 10px;
-
-
-    padding: 10px 20px;
-
-
-    font-size: 16px;
-    cursor: pointer;
-    }
 
 /* 별점 */
 /* .star {
