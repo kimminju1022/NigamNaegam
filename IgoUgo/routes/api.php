@@ -28,10 +28,8 @@ Route::get('/hotels', [ApiController::class, 'hotelProducts']);
 // 상품리스트 라우터
 Route::get('/products', [ProductController::class, 'productData']);
 
-// 로그인
+// 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-
-// 회원가입
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
 // 인증필요 라우트 그룹
@@ -41,10 +39,8 @@ Route::middleware('my.auth')->group(function() {
     // 토큰 재발급
     Route::post('/reissue', [AuthController::class, 'reissue'])->name('auth.reissue');
     
-    // 마이페이지 접근
-    Route::get('/user/{id}', [AuthController::class, 'userChk'])->name('auth.userChk');
-
-
-    // Route::get('/post/{id}/edit', [PostController::class, 'edit']); // 수정 페이지 데이터 조회
-    // Route::put('/post/{id}', [PostController::class, 'update']); // 수정된 데이터 저장
+    // 마이페이지 관련
+    Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
 });

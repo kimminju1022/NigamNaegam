@@ -88,7 +88,7 @@ const nameError = ref('');
 const nicknameError = ref('');
 const phoneError = ref('');
 
-const msg1 = ref('✔ 대소문자');
+const msg1 = ref('✔ 문자');
 const msg2 = ref('✔ 숫자');
 const msg3 = ref('✔ 특수기호');
 
@@ -109,7 +109,7 @@ const validateEmail = (email) => {
 const validatePassword = (password) => {
     const passwordRegex1 = /^.*[a-zA-Z].*$/;
     const passwordRegex2 = /^.*[0-9].*$/;
-    const passwordRegex3 = /^.*[!@].*$/;
+    const passwordRegex3 = /^.*[!@#$%^&*].*$/;
 
     if (passwordRegex1.test(password)) {
         color1.color = 'green';
@@ -175,12 +175,6 @@ watch(userInfo, (newObj) => {
 </script>
 
 <style scoped>
-@font-face {
-    font-family: 'SUITE-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
 input {
     border-bottom: 1px solid #01083a;
     background: transparent;
@@ -246,8 +240,6 @@ span {
 }
 
 .input-login {
-    /* background: #F5F5F5; */
-    /* border-radius: 20px; */
     width: 400px;
     height: 50px;
     padding: 5px 10px;
@@ -272,14 +264,5 @@ span {
     font-weight: 500;
     border-radius: 20px;
     border: 2px solid #01083a;
-}
-
-
-.test {
-    color:gray;
-}
-
-.test1 {
-    color: green !important;
 }
 </style>

@@ -31,7 +31,7 @@ export default {
                 router.replace('/login');
             })
             .catch(error => {
-                // console.log(error.response.data);
+                console.log(error.response.data);
                 alert('회원가입 실패');
             });
         },
@@ -84,6 +84,31 @@ export default {
                 console.error(error);
             });
         },
+        
+
+        // 마이페이지
+        showUser() {
+            const url = '/api/user';
+            const data = JSON.stringify(userInfo);
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                } // bearer token 세팅
+            }
+
+            axios(url, data, config)
+            .then(response => {
+                console.log(response);
+                }
+            )
+            .catch(error => {
+                console.error(error);
+            });
+        },
+
+        updateUser() {
+
+        }
     },
     getters: {
 

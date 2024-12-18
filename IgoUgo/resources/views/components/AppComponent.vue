@@ -17,7 +17,7 @@
                     <div v-else class="header-title-button">
                         <button class="btn bg-clear header-btn">FAQ</button>
                         <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
-                        <router-link to="/user"><img :src="$store.state.auth.userInfo.user_profile" alt=""></router-link>
+                        <router-link to="/user"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
                     </div>
                 </div>
                 <div class="header-list">
@@ -66,7 +66,7 @@
                         </div>
                         <div v-else class="app-resist-logout">
                             <button @click="$store.dispatch('auth/logout')" class="app-resist-login btn bg-navy">로그아웃</button>
-                            <router-link to="/user"><img :src="$store.state.auth.userInfo.user_profile" alt=""></router-link>
+                            <router-link to="/user"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
                         </div>
                     </div>
                     <ul class="app-content-flex">

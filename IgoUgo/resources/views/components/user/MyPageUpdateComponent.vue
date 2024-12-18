@@ -3,7 +3,8 @@
         <div class="my-profile-bg">
             <div class="my-profile-box">
                 <div class="my-profile-img">
-                    <img src="/logo_gam.png" alt="">
+                    <img :src="$store.state.user.userInfo.profile">
+                    <!-- <input v-model="userUpdate.profile" type="file" name="profile" id=""> -->
                 </div>
                 <div class="my-profile-content">
                     <div class="profile-item">
@@ -28,7 +29,8 @@
         <div class="my-profile-update-btn">
             <!-- 수정버튼 button @click? -->
             <button class="btn bg-navy btn-update">완료</button>
-            <router-link to="/myPage"><button class="btn bg-navy btn-update">취소</button></router-link>
+            <!-- <button @click="$store.dispatch('user/update', userInfo)" class="btn bg-navy btn-update">완료</button> -->
+            <router-link to="/user"><button class="btn bg-navy btn-update">취소</button></router-link>
         </div>
     </div>
 </template>
@@ -41,10 +43,11 @@ import { useStore } from 'vuex';
 const store =  useStore();
 
 const userUpdate = reactive({
-    email: store.state.auth.userInfo.user_email
-    ,name: store.state.auth.userInfo.user_name
-    ,nickname: store.state.auth.userInfo.user_nickname
-    ,phone: store.state.auth.userInfo.user_phone
+    email: store.state.user.userInfo.user_email
+    ,name: store.state.user.userInfo.user_name
+    ,nickname: store.state.user.userInfo.user_nickname
+    ,phone: store.state.user.userInfo.user_phone
+    ,profile: store.state.user.userInfo.user_profile
 });
 
 </script>
@@ -54,6 +57,7 @@ const userUpdate = reactive({
     width: 100%;
     margin-top: 30px;
     margin-bottom: 80px;
+    margin-top: 70px;
 }
 
 .my-page > div {

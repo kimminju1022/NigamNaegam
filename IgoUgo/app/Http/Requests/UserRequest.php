@@ -17,7 +17,7 @@ class UserRequest extends FormRequest
     {
         $rules = [
             'email' => ['required', 'between:5,20', 'regex:/^[0-9a-zA-Z\-]+@[a-z]+\.[a-z\-]+$/']
-            ,'password' => ['required', 'between:5,20', 'regex:/^[0-9a-zA-Z!@]+$/']
+            ,'password' => ['required', 'between:5,20', 'regex:/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{5,}$/']
         ];
 
         // 로그인
@@ -29,10 +29,25 @@ class UserRequest extends FormRequest
         else if($this->routeIs('user.store')) {
             $rules['email'][] = 'unique:users,user_email';
             $rules['password_chk'] = ['same:password'];
-            $rules['name'] = ['required', 'between:1, 20', 'regex:/^[a-zA-Z가-힣]+$/u'];
-            $rules['nickname'] = ['required', 'between:1, 50', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
-            $rules['phone'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
+            $rules['name'] = ['required', 'between:2, 20', 'regex:/^[a-zA-Z가-힣]+$/u'];
+            // $rules['nickname'] = ['required', 'between:1, 50', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
+            // $rules['phone'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
+
+            // unique?
+            $rules['nickname'] = ['required', 'between:1, 50', 'unique:users,user_nickname', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
+            $rules['phone'] = ['required', 'between:11,15', 'unique:users,user_phone', 'regex:/^[0-9]+$/u'];
         }
+        
+
+        // 유저 업데이트
+        else if($this->routeIs('user.update')) {
+            $rules['name'] = ['required', 'between:2, 20', 'regex:/^[a-zA-Z가-힣]+$/u'];
+            $rules['nickname'] = ['required', 'between:1, 50', 'unique:users,user_nickname', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
+            $rules['phone'] = ['required', 'between:11,15', 'unique:users,user_phone', 'regex:/^[0-9]+$/u'];
+
+            unset($rules['email']);
+            unset($rules['password']);
+        }  
 
         return $rules;
     }

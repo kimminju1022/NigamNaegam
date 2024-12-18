@@ -281,7 +281,9 @@ window.addEventListener('resize', flgSetup);
 }
 
 .banner-slide1 {
+    /* background-color: #faba90; */
     background-color: #faba90;
+    width: 100%;
 }
 .banner-slide2 {
     background-color: #025B00;

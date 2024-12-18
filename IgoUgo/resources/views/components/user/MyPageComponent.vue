@@ -4,34 +4,38 @@
             <div class="my-profile-bg">
                 <div class="my-profile-box">
                     <div class="my-profile-img">
-                        <img src="/logo_gam.png" alt="">
+                        <img :src="$store.state.user.userInfo.user_profile" alt="">
                     </div>
                     <div class="my-profile-content">
                         <div class="profile-item">
                             <p class="bg-navy">이메일</p>
                             <!-- <p>admin@admin.com</p> -->
-                            <input v-model="userInfo.email" name="email" readonly>
+                            <!-- <input v-model="userInfo.email" name="email" readonly> -->
+                            <p>{{ $store.state.user.userInfo.user_email }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">이름</p>
                             <!-- <p>김그린</p> -->
-                            <input v-model="userInfo.name" name="name" readonly>
+                            <!-- <input v-model="userInfo.name" name="name" readonly>s -->
+                            <p>{{ $store.state.user.userInfo.user_name }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">닉네임</p>
                             <!-- <p>그린컴퓨터</p> -->
-                            <input v-model="userInfo.nickname" name="nickname" readonly>
+                            <!-- <input v-model="userInfo.nickname" name="nickname" readonly> -->
+                            <p>{{ $store.state.user.userInfo.user_nickname }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">전화번호</p>
                             <!-- <p>010-2345-6789</p> -->
-                            <input v-model="userInfo.phone" name="phone" readonly>
+                            <!-- <input v-model="userInfo.phone" name="phone" readonly> -->
+                            <p>{{ $store.state.user.userInfo.user_phone }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="my-profile-update-btn">
-                <router-link to="/myPage/update"><button class="btn bg-navy">수정</button></router-link>
+                <router-link to="/user/update"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
         <!-- <div v-if="isMobileView">
@@ -159,8 +163,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, reactive } from 'vue';
-import { useStore } from 'vuex';
-
 // 반응형 상태를 저장하는 변수
 const isMobileView = ref(false);
 
@@ -179,17 +181,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('resize', checkScreenWidth);
 });
-
-
-const store =  useStore();
-
-const userInfo = reactive({
-    email: store.state.auth.userInfo.user_email
-    ,name: store.state.auth.userInfo.user_name
-    ,nickname: store.state.auth.userInfo.user_nickname
-    ,phone: store.state.auth.userInfo.user_phone
-});
-
 // 탈퇴 softDelete
 
 // Modal
@@ -216,6 +207,7 @@ const closeModal = () => {
     place-items: center;
     gap: 70px;
     width: 100%;
+    margin-top: 70px;
 }
 
 .my-page > div  {
@@ -228,7 +220,7 @@ const closeModal = () => {
 
 /* 프로필 */
 .my-profile-bg {
-    background-color: rgb(133, 177, 218, 0.2);
+    background-color: rgb(133, 177, 218, 0.2) !important;
 }
 
 .my-profile-box {
