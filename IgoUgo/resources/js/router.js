@@ -6,6 +6,7 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
+import boardQuestionComponent from '../views/components/board/boardQuestionComponent.vue';
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
@@ -83,6 +84,11 @@ const routes = [
     {
         path: '/boards/update',
         component: BoardUpdateComponent,
+        // beforeEnter: chkAuth,
+    },
+    {
+        path: '/boards/question',
+        component: boardQuestionComponent,
         // beforeEnter: chkAuth,
     },
     {
