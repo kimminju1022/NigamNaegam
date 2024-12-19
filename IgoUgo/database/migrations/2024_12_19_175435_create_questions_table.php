@@ -14,8 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id();
+            $table->id('que_id');
+            $table->biginteger('board_id');
+            $table->string('que_content',2000)->nullable(false);
+            $table->char('que_status',1)->nullable(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
