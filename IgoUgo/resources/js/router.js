@@ -74,6 +74,10 @@ const routes = [
         component: BoardListComponent,
     },
     {
+        path: '/boards/update',
+        component: BoardUpdateComponent,
+    },
+    {
         path: '/boards/:id',
         component: BoardDetailComponent,
     },
