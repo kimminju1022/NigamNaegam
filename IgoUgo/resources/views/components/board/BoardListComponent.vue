@@ -209,10 +209,12 @@
 
 import { onBeforeMount, ref } from 'vue';
 
+const store = useStore();
+
 // 비포마운트처리
-// onBeforeMount(() => {
-//     console.log('보드다');
-// });
+onBeforeMount(() => {
+    store.dispatch('board/getBoardListPagenation')
+});
 
 
 const keyword = ref('');

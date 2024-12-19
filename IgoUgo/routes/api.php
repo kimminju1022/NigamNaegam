@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BoardController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TestController;
@@ -32,6 +33,10 @@ Route::get('/products', [ProductController::class, 'productData']);
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
+// 게시판용 라우터
+Route::get('/boards',[BoardController::class, 'index'])->name('get.index');
+
+
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
     // 로그아웃
@@ -43,4 +48,6 @@ Route::middleware('my.auth')->group(function() {
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
+    
 });
+
