@@ -10,16 +10,31 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = 'prod_id';
+    protected $table = 'products';
+    protected $primaryKey = 'product_id';
     
-    protected $fillable = [
-        'prod_title'
-        ,'prod_img'
-        ,'prod_content'
-        ,'prod_price'
-        ,'prod_address'
-        ,'prod_latitude'
-        ,'prod_longitude'
+    protected $guarded = [
+        'title'
+        ,'addr1'
+        ,'addr2'
+        ,'tel'
+        ,'areacode'
+        ,'booktour'
+        ,'cat1'
+        ,'cat2'
+        ,'cat3'
+        ,'contentid'
+        ,'contenttypeid'
+        ,'firstimage'
+        ,'firstimage2'
+        ,'cpyrhtdivcd'
+        ,'mapx'
+        ,'mapy'
+        ,'mlevel'
+        ,'sigungucode'
+        ,'zipcode'
+        ,'createdtime'
+        ,'modifiedtime'
     ];
 
     /**

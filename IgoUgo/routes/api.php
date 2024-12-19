@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
@@ -20,10 +20,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 // 테스트용 라우터
-Route::get('/test-data', [TestController::class, 'index']);
+Route::get('/testdata', [TestController::class, 'index']);
 
 // 호텔리스트 라우터
-Route::get('/hotels', [ApiController::class, 'hotelProducts']);
+Route::get('/hotels', [HotelController::class, 'hotels']);
 
 // 상품리스트 라우터
 Route::get('/products', [ProductController::class, 'productData']);

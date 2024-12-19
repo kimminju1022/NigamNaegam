@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Hotel extends Model
+class festival extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'hotels';
-    protected $primaryKey = 'hotel_id';
+    protected $table = 'festivals';
+    protected $primaryKey = 'festival_id';
     
     protected $guarded = [
         'title'
@@ -19,10 +19,7 @@ class Hotel extends Model
         ,'addr2'
         ,'tel'
         ,'areacode'
-        ,'benikia'
         ,'booktour'
-        ,'goodstay'
-        ,'hanok'
         ,'cat1'
         ,'cat2'
         ,'cat3'
@@ -35,6 +32,8 @@ class Hotel extends Model
         ,'mapy'
         ,'mlevel'
         ,'sigungucode'
+        ,'eventstartdate'
+        ,'eventenddate'
         ,'createdtime'
         ,'modifiedtime'
     ];

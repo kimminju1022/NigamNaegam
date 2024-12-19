@@ -168,10 +168,10 @@
             </div>
         </div> -->
         <div class="right-small-container">
-            <div  v-if="publicData.length > 0" class="card-list">
-                <div v-for="item in publicData" :key="item" class="card">
+            <div v-if="hotels.length > 0" class="card-list">
+                <div v-for="item in hotels" :key="item" class="card">
                     <img :src="item.firstimage" @error="setDefaultImage" class="img-card">
-                    <p class="font-bold card-title">{{ item.title }}</p>
+                    <p class="font-bold cardv-title">{{ item.title }}</p>
                     <p>₩ 30,000</p>
                 </div>
             </div>
@@ -210,12 +210,14 @@ const setDefaultImage = (event) => {
 }
 
 // API 받아온거 axios로 불러오기기
-const publicData = ref([]);
+const hotels = ref([]);
 
 onMounted(async() => {
     try {
-        const response = await axios.get('http://localhost:8000/api/hotels');
-        publicData.value = response.data.response.body.items.item;
+        const response = await axios.get('/api/hotels');
+        // 안나와서 찍어봤는데 어웨이트 적어야됨...
+        // console.log(response.data);
+        hotels.value = response.data;
     } catch (error) {
         console.error(error);
     }
