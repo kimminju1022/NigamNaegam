@@ -33,9 +33,11 @@ Route::get('/products', [ProductController::class, 'productData']);
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
-// 게시판용 라우터
-Route::get('/boards',[BoardController::class, 'index'])->name('get.index');
+// 리뷰/자유 게시판용 라우터
+Route::get('/boards',[BoardController::class, 'index'])->name('board.index');
 
+// 문의 게시판용 라우터
+Route::get('/question',[BoardController::class, 'index'])->name('board.index');
 
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
@@ -49,5 +51,8 @@ Route::middleware('my.auth')->group(function() {
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    // 게시판 관련
+    Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
+    Route::put('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
 });
 

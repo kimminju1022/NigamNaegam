@@ -213,7 +213,7 @@ const store = useStore();
 
 // 비포마운트처리
 onBeforeMount(() => {
-    store.dispatch('board/getBoardListPagenation')
+    store.dispatch('board/getBoardListPagenation');
 });
 
 
