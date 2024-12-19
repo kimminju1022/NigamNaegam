@@ -12,6 +12,7 @@ use MyToken;
 class UserController extends Controller
 {
     public function store(UserRequest $request) {
+        Log::debug('user request : ', $request->all());
         $insertData['user_email'] = $request->user_email;
         $insertData['user_name'] = $request->user_name;
         $insertData['user_nickname'] = $request->user_nickname;
@@ -88,10 +89,16 @@ class UserController extends Controller
 
     // 유저 탈퇴
     public function destroy(Request $request) {
+        // Log::debug('user update request : ', $request->all());
         $id = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+        
+        // Log::debug('user id request : ', ['id' => $id]);
         $user = User::find($id);
 
+        // Log::debug('user id request : ', ['user' => $user]);
         $user->delete();
+        // refreshToken 갱신
+        MyToken::updateRefreshToken($user, null);   
 
         $responseData = [
             'success' => true

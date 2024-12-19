@@ -42,15 +42,16 @@ Route::get('/question',[BoardController::class, 'index'])->name('board.index');
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
     // 로그아웃
-    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::post('/logout', [AuthController::class, 'logout']);
     // 토큰 재발급
-    Route::post('/reissue', [AuthController::class, 'reissue'])->name('auth.reissue');
+    Route::post('/reissue', [AuthController::class, 'reissue']);
     
     // 유저 관련
-    Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
-    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::get('/user/{id}/edit', [UserController::class, 'edit']);
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::delete('/user/{id}', [UserController::class, 'destroy']);
+
     // 게시판 관련
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
     Route::put('/boards/{id}',[BoardController::class, 'update'])->name('board.update');

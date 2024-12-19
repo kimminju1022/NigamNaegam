@@ -17,14 +17,14 @@ export default {
             const url = '/api/registration';
 
             const formData = new FormData();
-            formData.append('email', userInfo.email);
-            formData.append('password', userInfo.password);
-            formData.append('password_chk', userInfo.password_chk);
-            formData.append('name', userInfo.name);
-            formData.append('nickname', userInfo.nickname);
-            formData.append('phone', userInfo.phone);
+            formData.append('user_email', userInfo.user_email);
+            formData.append('user_password', userInfo.user_password);
+            formData.append('user_password_chk', userInfo.user_password_chk);
+            formData.append('user_name', userInfo.user_name);
+            formData.append('user_nickname', userInfo.user_nickname);
+            formData.append('user_phone', userInfo.user_phone);
 
-            axios.put(url, formData)
+            axios.post(url, formData)
             .then(() => {
                 alert('회원가입 성공');
 
@@ -90,8 +90,9 @@ export default {
             const data = JSON.stringify(userInfo);
             const config = {
                 headers: {
+                    'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                } // bearer token 세팅
+                }
             }
 
             axios.put(url, data, config)
@@ -110,17 +111,15 @@ export default {
         },
 
         destroyUser(context, userInfo) {
-            console.log(userInfo);
+            // console.log(userInfo);
             const url = `/api/user/${userInfo.user_id}`;
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
-
-            console.log(url);
-            console.log(userInfo);
-            console.log(userInfo.user_id);
+            // console.log(url);
+            // console.log(userInfo);
 
             axios.delete(url, config)
             .then(response => {

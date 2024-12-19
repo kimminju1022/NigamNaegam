@@ -28,10 +28,8 @@ class UserRequest extends FormRequest
         // 회원가입
         else if($this->routeIs('user.store')) {
             $rules['user_email'][] = 'unique:users,user_email';
-            $rules['user_password_chk'] = ['same:password'];
+            $rules['user_password_chk'] = ['same:user_password'];
             $rules['user_name'] = ['required', 'between:2, 20', 'regex:/^[a-zA-Z가-힣]+$/u'];
-            // $rules['nickname'] = ['required', 'between:1, 50', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
-            // $rules['phone'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
 
             // unique?
             $rules['user_nickname'] = ['required', 'between:1, 50', 'unique:users,user_nickname', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];

@@ -12,7 +12,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="emailError" class="error-message">{{ emailError }}</span>
                 </div>
-                <input v-model="userInfo.email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요">
+                <input v-model="userInfo.user_email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -26,7 +26,7 @@
                         </ul>
                     </div>
                 </div>
-                <input v-model="userInfo.password" class="input-login" type="password" id="password" name="user_password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
+                <input v-model="userInfo.user_password" class="input-login" type="password" id="password" name="user_password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -34,7 +34,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="passwordChkError">비밀번호가 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.password_chk" class="input-login" type="password" id="password_chk" name="user_password_chk" placeholder="비밀번호 확인">
+                <input v-model="userInfo.user_password_chk" class="input-login" type="password" id="password_chk" name="user_password_chk" placeholder="비밀번호 확인">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -42,7 +42,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="nameError" >이름 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.name" class="input-login" type="text" id="name" name="user_name" placeholder="이름을 입력해주세요">
+                <input v-model="userInfo.user_name" class="input-login" type="text" id="name" name="user_name" placeholder="이름을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -50,7 +50,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="nicknameError" >닉네임 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.nickname" class="input-login" type="text" id="nickname" name="user_nickname" placeholder="닉네임을 입력해주세요">
+                <input v-model="userInfo.user_nickname" class="input-login" type="text" id="nickname" name="user_nickname" placeholder="닉네임을 입력해주세요">
             </div>
             <div class="login-input-box">                
                 <div class="login-label-flex">
@@ -58,7 +58,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="phoneError" >전화번호 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.phone" class="input-login" type="text" id="phone" name="user_phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
+                <input v-model="userInfo.user_phone" class="input-login" type="text" id="phone" name="user_phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
             </div>
         </div>
         <div class="registration-btn">
@@ -73,12 +73,12 @@
 import { reactive, ref, watch } from 'vue';
 
 const userInfo = reactive({
-    email: ''
-    ,password: ''
-    ,password_chk: ''
-    ,name: ''
-    ,nickname: ''
-    ,phone: ''
+    user_email: ''
+    ,user_password: ''
+    ,user_password_chk: ''
+    ,user_name: ''
+    ,user_nickname: ''
+    ,user_phone: ''
 });
 
 const emailError = ref('');
@@ -97,79 +97,79 @@ const color2 = reactive({color: 'red'});
 const color3 = reactive({color: 'red'});
 
 // 이메일 유효성 검사 함수
-const validateEmail = (email) => {
-    if (!email) {
+const validateEmail = (user_email) => {
+    if (!user_email) {
         return ''; // input 비어 있을 때 메시지 숨김
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email) ? '' : '이메일 형식에 맞지 않습니다.';
+    return emailRegex.test(user_email) ? '' : '이메일 형식에 맞지 않습니다.';
 };
 
-const validatePassword = (password) => {
+const validatePassword = (user_password) => {
     const passwordRegex1 = /^.*[a-zA-Z].*$/;
     const passwordRegex2 = /^.*[0-9].*$/;
     const passwordRegex3 = /^.*[!@#$%^&*].*$/;
 
-    if (passwordRegex1.test(password)) {
+    if (passwordRegex1.test(user_password)) {
         color1.color = 'green';
     } else {
         color1.color = 'red';
     }
-    if (passwordRegex2.test(password)) {
+    if (passwordRegex2.test(user_password)) {
         color2.color = 'green';
     } else {
         color2.color = 'red';
     }
-    if (passwordRegex3.test(password)) {
+    if (passwordRegex3.test(user_password)) {
         color3.color = 'green';
     } else {
         color3.color = 'red';
     }
 }
 
-const validatePasswordChk = (password_chk, password) => {
-    if (password_chk != password) {
+const validatePasswordChk = (user_password_chk, user_password) => {
+    if (user_password_chk != user_password) {
         return '비밀번호가 맞지 않습니다.';
     } else {
         return '';
     }
 }
 
-const validateName = (name) => {
-    if (!name) {
+const validateName = (user_name) => {
+    if (!user_name) {
         return ''; // input 비어 있을 때 메시지 숨김
     }
 
     const nameRegex = /^[a-zA-Z가-힣]+$/;
-    return nameRegex.test(name) ? '' : '이름 형식에 맞지 않습니다.';
+    return nameRegex.test(user_name) ? '' : '이름 형식에 맞지 않습니다.';
 };
 
-const validateNickname = (nickname) => {
-    if (!nickname) {
+const validateNickname = (user_nickname) => {
+    if (!user_nickname) {
         return ''; // input 비어 있을 때 메시지 숨김
     }
 
     const nicknameRegex = /^[0-9a-zA-Z가-힣]+$/;
-    return nicknameRegex.test(nickname) ? '' : '닉네임 형식에 맞지 않습니다.';
+    return nicknameRegex.test(user_nickname) ? '' : '닉네임 형식에 맞지 않습니다.';
 };
 
-const validatePhone = (phone) => {
-    if (!phone) {
+const validatePhone = (user_phone) => {
+    if (!user_phone) {
         return ''; // input 비어 있을 때 메시지 숨김
     }
 
     const phoneRegex = /^[0-9]+$/;
-    return phoneRegex.test(phone) ? '' : '전화번호 형식에 맞지 않습니다.';
+    return phoneRegex.test(user_phone) ? '' : '전화번호 형식에 맞지 않습니다.';
 };
 
 watch(userInfo, (newObj) => {
-    emailError.value = validateEmail(newObj.email);
-    passwordError.value = validatePassword(newObj.password);
-    passwordChkError.value = validatePasswordChk(newObj.password_chk, newObj.password);
-    nameError.value = validateName(newObj.name);
-    nicknameError.value = validateNickname(newObj.nickname);
-    phoneError.value = validatePhone(newObj.phone);
+    emailError.value = validateEmail(newObj.user_email);
+    passwordError.value = validatePassword(newObj.user_password);
+    passwordChkError.value = validatePasswordChk(newObj.user_password_chk, newObj.user_password);
+    nameError.value = validateName(newObj.user_name);
+    nicknameError.value = validateNickname(newObj.user_nickname);
+    phoneError.value = validatePhone(newObj.user_phone);
 });
 
 </script>

@@ -1,116 +1,112 @@
 <template>
-<header>
-    
+    <header>
+        <!-- header -->
 
-    <!-- header -->
-
-    <div class="header-header" v-if="flg === '0'">
-        <header>
-            <div>
-                <div class="header-title">
-                    <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
-                    <!-- {{ console.log(flg) }} -->
-                    <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
-                    <div v-if="!$store.state.auth.authFlg" class="header-title-button">
-                        <button class="btn bg-clear header-btn">FAQ</button>
-                        <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
-                        <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
-                    </div>
-                    <div v-else class="header-title-button">
-                        <button class="btn bg-clear header-btn">FAQ</button>
-                        <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
-                        <!-- <router-link :to="`/user/${user.user_id}`"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link> -->
-                        <router-link :to="`/user/${user.user_id}`"><img :src="user.user_profile" alt=""></router-link>
-                    </div>
-                </div>
-                <div class="header-list">
-                    <ul class="header-list-flex">
-                        <li class="header-list-hover"><router-link to="/hotels">호텔</router-link></li>
-                        <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
-                        <li class="header-list-hover">
-                            <div class="header-list-dropdown">
-                                <p class="header-list-dropbtn">게시판</p>
-                                <div class="header-list-hover header-list-dropdown-content">
-                                    <router-link to="/boards">리뷰</router-link>
-                                    <router-link to="/boards">자유</router-link>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="header-search"> 
-                        <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                        <button class="btn bg-navy header-bg-btn">검색</button>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </div>
-
-    <!-- header 반응형 -->
-
-    <div class="v-if-header" v-if="flg === '1'">
-        <div class="if-header">
-            <div id="menu">
-                <!-- 햄버거 버튼 -->
-                <button class="hamburger" @click="toggleMenu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-
-                <!-- 메뉴 -->
-                <div class="nav" v-show="isMenuOpen">
-                    
-                    <div class="app-resist-login-div" @click="toggleMenu">
-                        <div class="close close3"></div>
-                        <div v-if="!$store.state.auth.authFlg">
-                            <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
-                            <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
+        <div class="header-header" v-if="flg === '0'">
+            <!-- <header> --> <!-- 이거 지워도 되나 -->                
+                <div>
+                    <div class="header-title">
+                        <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
+                        <!-- {{ console.log(flg) }} -->
+                        <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
+                        <div v-if="!$store.state.auth.authFlg" class="header-title-button">
+                            <button class="btn bg-clear header-btn">FAQ</button>
+                            <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
+                            <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                         </div>
-                        <div v-else class="app-resist-logout">
-                            <button @click="$store.dispatch('auth/logout')" class="app-resist-login btn bg-navy">로그아웃</button>
-                            <router-link to="/user"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
+                        <div v-else class="header-title-button">
+                            <button class="btn bg-clear header-btn">FAQ</button>
+                            <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
+                            <!-- <router-link :to="`/user/${user.user_id}`"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link> -->
+                            <router-link :to="`/user/${user.user_id}`"><img :src="user.user_profile" alt=""></router-link>
                         </div>
                     </div>
-                    <ul class="app-content-flex">
-                        <li class="app-content"><router-link to="/hotels">호텔</router-link></li>
-                        <li class="app-content"><router-link to="/products">상품</router-link></li>
-                        <li class="app-content">
-                            <div class="app-content-dropdown">
-                                <p class="app-content-dropbtn">게시판</p>
-                                <div class="app-content app-content-dropdown-content">
-                                    <router-link to="/boards" class="app-review-board">리뷰 게시판</router-link>
-                                    <router-link to="/boards" class="app-review-board">자유 게시판</router-link>
+                    <div class="header-list">
+                        <ul class="header-list-flex">
+                            <li class="header-list-hover"><router-link to="/hotels">호텔</router-link></li>
+                            <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
+                            <li class="header-list-hover">
+                                <div class="header-list-dropdown">
+                                    <p class="header-list-dropbtn">게시판</p>
+                                    <div class="header-list-hover header-list-dropdown-content">
+                                        <router-link to="/boards">리뷰</router-link>
+                                        <router-link to="/boards">자유</router-link>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- <router-link to="/hotels" class="app-content bg-navy">호텔</router-link>
-                    <router-link to="/products" class="app-content bg-navy">상품</router-link>
-                    <p class="app-content bg-navy">게시판</p>
-                    <router-link to="/boards" class="app-review-board bg-navy">리뷰 게시판</router-link>
-                    <router-link to="/boards" class="app-review-board bg-navy">자유 게시판</router-link> -->
-
+                            </li>
+                        </ul>
+                        <div class="header-search"> 
+                            <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                            <button class="btn bg-navy header-bg-btn">검색</button>
+                        </div>
+                    </div>
                 </div>
+            <!-- </header> -->
+        </div>
+
+        <!-- header 반응형 -->
+
+        <div class="v-if-header" v-if="flg === '1'">
+            <div class="if-header">
+                <div id="menu">
+                    <!-- 햄버거 버튼 -->
+                    <button class="hamburger" @click="toggleMenu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+
+                    <!-- 메뉴 -->
+                    <div class="nav" v-show="isMenuOpen">
+                        
+                        <div class="app-resist-login-div" @click="toggleMenu">
+                            <div class="close close3"></div>
+                            <div v-if="!$store.state.auth.authFlg">
+                                <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
+                                <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
+                            </div>
+                            <div v-else class="app-resist-logout">
+                                <button @click="$store.dispatch('auth/logout')" class="app-resist-login btn bg-navy">로그아웃</button>
+                                <router-link to="/user"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
+                            </div>
+                        </div>
+                        <ul class="app-content-flex">
+                            <li class="app-content"><router-link to="/hotels">호텔</router-link></li>
+                            <li class="app-content"><router-link to="/products">상품</router-link></li>
+                            <li class="app-content">
+                                <div class="app-content-dropdown">
+                                    <p class="app-content-dropbtn">게시판</p>
+                                    <div class="app-content app-content-dropdown-content">
+                                        <router-link to="/boards" class="app-review-board">리뷰 게시판</router-link>
+                                        <router-link to="/boards" class="app-review-board">자유 게시판</router-link>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- <router-link to="/hotels" class="app-content bg-navy">호텔</router-link>
+                        <router-link to="/products" class="app-content bg-navy">상품</router-link>
+                        <p class="app-content bg-navy">게시판</p>
+                        <router-link to="/boards" class="app-review-board bg-navy">리뷰 게시판</router-link>
+                        <router-link to="/boards" class="app-review-board bg-navy">자유 게시판</router-link> -->
+
+                    </div>
+                </div>
+
+                <router-link to="/"><img class="header-title-img-1" src="/short_logo.png" alt=""></router-link>
+
+                <div> </div>
             </div>
 
-            <router-link to="/"><img class="header-title-img-1" src="/short_logo.png" alt=""></router-link>
-
-            <div> </div>
+            <div class="header-search"> 
+                <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                <button class="btn bg-navy header-bg-btn">검색</button>
+            </div>
         </div>
-
-        <div class="header-search"> 
-            <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-            <button class="btn bg-navy header-bg-btn">검색</button>
-        </div>
-    </div>
-</header>
+    </header>
 
     <!-- main -->
 
     <main class="main">
-        <!-- TODO : 나중에 버튼 제거 -->
-        <!-- <button @click="$store.dispatch('user/chkTokenAndContinueProcess', () => {console.log('테스트')})" >토큰 만료 체크</button> -->
         <router-view></router-view>
     </main>
 
