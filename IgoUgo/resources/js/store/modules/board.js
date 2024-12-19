@@ -16,7 +16,7 @@ export default {
         getBoardListPagenation(context){
             const url = '/api/boards';
             const config = {
-                a:{
+                headers:{
                     'Authorization':'bearer' + localStorage.getItem('accessToken'),
                 }
             }

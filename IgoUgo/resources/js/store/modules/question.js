@@ -15,16 +15,17 @@ export default {
                 */
         getQuestListPagenation(context){
             const url = '/api/question';
-            const config = {
-                a:{
-                    'Authorization':'bearer' + localStorage.getItem('accessToken'),
+                const config = {
+                    headers:{
+                        'Authorization':'bearer' + localStorage.getItem('accessToken'),
+                    }
                 }
-            }
-            axios.get(url)
-            .then()
-            .catch();
-    },
-    getters: {
+                axios.get(url)
+                .then()
+                .catch();
+        },
+        getters: {
 
-    },
+        },
+    }
 }
