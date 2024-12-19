@@ -1,8 +1,75 @@
 <template>
 <div class="total-container">
-    
+    <!-- <div class="left-container">
+        <div class="left-small-container map-box" :class="{'map-height':flg}">
+            <h2 class="map-box-title" :class="{'dis-none': flg}">지도로 보기</h2>
+        </div>
+        <div class="left-small-container">
+            <h2 class="cat-box-title">카테고리</h2>
+            <div class="cat-list" :class="{'cat-list-change':flg}">
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="food" value="관광지">
+                    <label for="food">관광지</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="activity" value="문화시설">
+                    <label for="activity">문화시설</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="shopping" value="이벤트">
+                    <label for="shopping">이벤트</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="healing" value="레포츠">
+                    <label for="healing">레포츠</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="shopping" value="쇼핑">
+                    <label for="shopping">쇼핑</label>
+                </div>
+                <div class="list-item" :class="{'cat-list-item-change':flg}">
+                    <input class="cat-input" :class="{'cat-input-change':flg}" type="checkbox" name="category" id="healing" value="음식점">
+                    <label for="healing">음식점</label>
+                </div>
+            </div>
+        </div>
+        <div class="left-small-container">
+            <h2 class="pri-box-title">가격</h2>
+            <div class="pri-box" :class="{'pri-box-change':flg}">
+                <input type="number" class="pri-input" max="300000000">
+                <div class="pri-wave">
+                    <h3>~</h3>
+                </div>
+                <input type="number" class="pri-input" max="300000000">
+            </div>
+        </div>
+        <div class="button-position">
+            <button class="btn bg-navy button-wide">적용</button>
+        </div>
+    </div> -->
 
     <div>
+        <!-- <div class="right-small-container select-result-box">
+            <h2><span class="font-blue">200</span> 개의 결과</h2>
+            <div class="select-list font-default-size" :class="{'dis-none':flg}">
+                <div class="select-list-item">
+                    선택사항1
+                    <img src="img_product/img_x.png" class="img-x">
+                </div>
+                <div class="select-list-item">
+                    선택사항2
+                    <img src="img_product/img_x.png" class="img-x">
+                </div>
+                <div class="select-list-item">
+                    선택사항3
+                    <img src="img_product/img_x.png" class="img-x">
+                </div>
+                <div class="select-list-item">
+                    전체 해제
+                    <img src="img_product/img_x.png" class="img-x">
+                </div>
+            </div>
+        </div> -->
         <div class="right-small-container order-box font-default-size">
             <div>
                 <span class="font-bold">정렬 순서</span>
@@ -40,7 +107,13 @@
             </div>
             <div v-else>상품 데이터를 불러오는 중...</div>
 
-            
+            <!-- <div class="card-list">
+                <div class="card">
+                    <img src="default/board_default.png" class="img-card">
+                    <p class="font-bold font-mar">3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+                    <p>₩ 30,000</p>
+                </div>
+            </div> -->
             <div class="pagination">
                 <a href="#"><button class="btn bg-clear"><</button></a>
                 <a href="#"><button class="btn bg-clear">1</button></a>
