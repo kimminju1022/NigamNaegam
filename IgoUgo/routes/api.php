@@ -44,10 +44,10 @@ Route::middleware('my.auth')->group(function() {
     // 토큰 재발급
     Route::post('/reissue', [AuthController::class, 'reissue'])->name('auth.reissue');
     
-    // 마이페이지 관련
+    // 유저 관련
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
-    
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 });
 
