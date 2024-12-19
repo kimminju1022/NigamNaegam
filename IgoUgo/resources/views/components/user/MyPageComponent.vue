@@ -4,38 +4,38 @@
             <div class="my-profile-bg">
                 <div class="my-profile-box">
                     <div class="my-profile-img">
-                        <img :src="$store.state.user.userInfo.user_profile" alt="">
+                        <img :src="$store.state.auth.userInfo.user_profile" alt="">
                     </div>
                     <div class="my-profile-content">
                         <div class="profile-item">
                             <p class="bg-navy">이메일</p>
                             <!-- <p>admin@admin.com</p> -->
                             <!-- <input v-model="userInfo.email" name="email" readonly> -->
-                            <p>{{ $store.state.user.userInfo.user_email }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_email }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">이름</p>
                             <!-- <p>김그린</p> -->
                             <!-- <input v-model="userInfo.name" name="name" readonly>s -->
-                            <p>{{ $store.state.user.userInfo.user_name }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_name }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">닉네임</p>
                             <!-- <p>그린컴퓨터</p> -->
                             <!-- <input v-model="userInfo.nickname" name="nickname" readonly> -->
-                            <p>{{ $store.state.user.userInfo.user_nickname }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_nickname }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">전화번호</p>
                             <!-- <p>010-2345-6789</p> -->
                             <!-- <input v-model="userInfo.phone" name="phone" readonly> -->
-                            <p>{{ $store.state.user.userInfo.user_phone }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_phone }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="my-profile-update-btn">
-                <router-link :to="`/user/${store.state.user.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
+                <router-link :to="`/user/${$store.state.auth.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
         <!-- <div v-if="isMobileView">
@@ -153,7 +153,8 @@
                     <p>정말로 탈퇴하시겠습니까?</p>
                 </div>
                 <div class="delete-btn">
-                    <button class="btn bg-clear">탈퇴</button>
+                    <button @click="deletemodal(userInfo)" class="btn bg-clear">탈퇴</button>
+                    <!-- <button class="btn bg-clear">탈퇴</button> -->
                     <button @click="closeModal" class="btn bg-clear">취소</button>
                 </div>
             </div>
@@ -166,6 +167,7 @@ import { ref, onMounted, onUnmounted, computed} from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const userInfo = computed(()=> store.state.auth.userInfo);
 
 // 반응형 상태를 저장하는 변수
 const isMobileView = ref(false);
@@ -185,7 +187,8 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('resize', checkScreenWidth);
 });
-// 탈퇴 softDelete
+
+
 
 // Modal
 const modalFlg = ref(false);
@@ -196,11 +199,12 @@ const closeModal = () => {
     modalFlg.value = false;
 }
 
-// // const deleteModalFlg = ref(false);
-// const deletemodal = (id) => {
-//     store.dispatch('board/destroyBoard', id);
-//     // deleteModalFlg.value = true;
-// }
+// 탈퇴
+// const deleteModalFlg = ref(false);
+const deletemodal = (userInfo) => {
+    store.dispatch('user/destroyUser', userInfo);
+    // deleteModalFlg.value = true;
+}
 
 
 
@@ -397,8 +401,10 @@ const closeModal = () => {
     top: 0;
     left: 0;
     width: 100%;
+    /* height: 100vh-150px; */
     height: 100vh;
     font-size: 20px;
+    z-index: 2;
 }
 
 .delete-box {
@@ -412,6 +418,7 @@ const closeModal = () => {
     align-items: center;
     justify-content: center;
     padding-top: 30px;
+    z-index: 3;
 }
 
 .delete-text {

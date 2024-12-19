@@ -15,7 +15,7 @@ class AuthController extends Controller
 {
     // 로그인
     public function login(UserRequest $request) {
-        $userInfo = User::where('user_email', $request->email)->first();
+        $userInfo = User::where('user_email', $request->user_email)->first();
 
         // 비밀번호 체크
         if(!(Hash::check($request->password, $userInfo->user_password))) {

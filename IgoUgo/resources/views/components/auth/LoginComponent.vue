@@ -3,8 +3,8 @@
         <h1>로그인</h1>
         <div class="login-form">
             <p v-for="msg in $store.state.auth.errorMsgList" :key="msg">{{ msg }}</p>
-            <input v-model="userInfo.email" class="input-login" type="text" placeholder="e-mail">
-            <input v-model="userInfo.password" class="input-login" type="password" placeholder="password">
+            <input v-model="userInfo.user_email" class="input-login" type="text" placeholder="e-mail" name="user_email">
+            <input v-model="userInfo.user_password" class="input-login" type="password" placeholder="password" name="user_password">
         </div>
         <div class="login-btn">
             <button @click="$store.dispatch('auth/login', userInfo)" class="btn bg-navy btn-login">로그인</button>
@@ -22,8 +22,8 @@ import { reactive } from 'vue';
 // const store = useStore();
 
 const userInfo = reactive({
-    email: ''
-    ,password: ''
+    user_email: ''
+    ,user_password: ''
 });
 
 </script>

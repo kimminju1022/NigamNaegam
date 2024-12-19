@@ -4,12 +4,12 @@ import router from '../../router';
 export default {
     namespaced: true,
     state: () => ({
-        userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
+        // userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
     }),
     mutations: {
-        setUserInfo(state, userInfo) {
-            state.userInfo = userInfo;
-        },
+        // setUserInfo(state, userInfo) {
+        //     state.userInfo = userInfo;
+        // },
     },
     actions: {
         // 회원가입
@@ -84,45 +84,53 @@ export default {
                 console.error(error);
             });
         },
-        
 
-        // 마이페이지
-        // showUser() {
-        //     const url = '/api/user';
-        //     const data = JSON.stringify(userInfo);
-        //     const config = {
-        //         headers: {
-        //             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-        //         } // bearer token 세팅
-        //     }
-
-        //     axios(url, data, config)
-        //     .then(response => {
-        //         console.log(response);
-        //         }
-        //     )
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
-        // },
-
-        updateUser(userInfo) {
-            // const url = `/api/user/${userInfo.user_id}`;
-            const url = `/api/use/:id`;
+        updateUser(context, userInfo) {
+            const url = `/api/user/${userInfo.user_id}`;
             const data = JSON.stringify(userInfo);
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 } // bearer token 세팅
             }
-            
+
             axios.put(url, data, config)
             .then(response => {
-                console.log(response);
+                // console.log(response.data.userInfo);
+
+                context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
+                localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
+
+                router.replace(`/user/${userInfo.user_id}`);
                 }
             )
             .catch(error => {
+                console.error(error.response.data);
+            });
+        },
+
+        destroyUser(context, userInfo) {
+            console.log(userInfo);
+            const url = `/api/user/${userInfo.user_id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+
+            console.log(url);
+            console.log(userInfo);
+            console.log(userInfo.user_id);
+
+            axios.delete(url, config)
+            .then(response => {
+                alert('삭제 성공');
+
+                router.replace('/');
+            })
+            .catch(error => {
                 console.error(error);
+                alert('삭제 실패');
             });
         }
     },

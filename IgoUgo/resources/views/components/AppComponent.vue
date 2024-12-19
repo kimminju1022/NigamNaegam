@@ -220,7 +220,7 @@ const toggleMenu = () => {
 
 const store = useStore();
 // const id = computed(()=> store.state.user.userInfo.user_id);
-const user = computed(()=> store.state.user.userInfo);
+const user = computed(()=> store.state.auth.userInfo);
 
 </script>
 

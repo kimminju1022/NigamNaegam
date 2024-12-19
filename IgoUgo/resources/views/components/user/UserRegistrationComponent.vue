@@ -12,7 +12,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="emailError" class="error-message">{{ emailError }}</span>
                 </div>
-                <input v-model="userInfo.email" class="input-login" type="text" id="email" name="email" placeholder="이메일을 입력해주세요">
+                <input v-model="userInfo.email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -26,7 +26,7 @@
                         </ul>
                     </div>
                 </div>
-                <input v-model="userInfo.password" class="input-login" type="password" id="password" name="password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
+                <input v-model="userInfo.password" class="input-login" type="password" id="password" name="user_password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -34,7 +34,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="passwordChkError">비밀번호가 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.password_chk" class="input-login" type="password" id="password_chk" name="password_chk" placeholder="비밀번호 확인">
+                <input v-model="userInfo.password_chk" class="input-login" type="password" id="password_chk" name="user_password_chk" placeholder="비밀번호 확인">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -42,7 +42,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="nameError" >이름 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.name" class="input-login" type="text" id="name" name="name" placeholder="이름을 입력해주세요">
+                <input v-model="userInfo.name" class="input-login" type="text" id="name" name="user_name" placeholder="이름을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -50,7 +50,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="nicknameError" >닉네임 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.nickname" class="input-login" type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요">
+                <input v-model="userInfo.nickname" class="input-login" type="text" id="nickname" name="user_nickname" placeholder="닉네임을 입력해주세요">
             </div>
             <div class="login-input-box">                
                 <div class="login-label-flex">
@@ -58,7 +58,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="phoneError" >전화번호 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.phone" class="input-login" type="text" id="phone" name="phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
+                <input v-model="userInfo.phone" class="input-login" type="text" id="phone" name="user_phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
             </div>
         </div>
         <div class="registration-btn">

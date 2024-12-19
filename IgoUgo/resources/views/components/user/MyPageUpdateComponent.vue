@@ -2,27 +2,30 @@
     <div class="my-page">
         <div class="my-profile-bg">
             <div class="my-profile-box">
-                <div class="my-profile-img">
-                    <!-- <img :src="$store.state.user.userInfo.profile"> -->
-                    <img :src="userInfo.profile">
-                    <!-- <input v-model="userInfo.profile" type="file" name="profile" id="profile"> -->
+                <div>
+                    <div class="my-profile-img">
+                        <!-- <img :src="$store.state.user.userInfo.profile"> -->
+                        <img :src="userInfo.user_profile">
+                        <!-- <input v-model="userInfo.profile" type="file" name="user_profile" id="profile"> -->
+                    </div>
+                    <input @change="setFile" type="file" name="user_profile" accept="image/*">
                 </div>
                 <div class="my-profile-content">
                     <div class="profile-item">
                         <p class="bg-navy">이메일</p>
-                        <input v-model="userInfo.email" class="input-update" name="email" readonly>
+                        <input v-model="userInfo.user_email" class="input-update" name="user_email" readonly>
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">이름</p>
-                        <input v-model="userInfo.name" class="input-update" name="name">
+                        <input v-model="userInfo.user_name" class="input-update" name="user_name">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">닉네임</p>
-                        <input v-model="userInfo.nickname" class="input-update" name="nickname">
+                        <input v-model="userInfo.user_nickname" class="input-update" name="user_nickname">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">전화번호</p>
-                        <input v-model="userInfo.phone" class="input-update" name="phone">
+                        <input v-model="userInfo.user_phone" class="input-update" name="user_phone">
                     </div>
                 </div>
             </div>
@@ -38,24 +41,37 @@
 
 <script setup>
 
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store =  useStore();
 const router = useRouter();
 
-const userInfo = reactive({
-    email: store.state.user.userInfo.user_email
-    ,name: store.state.user.userInfo.user_name
-    ,nickname: store.state.user.userInfo.user_nickname
-    ,phone: store.state.user.userInfo.user_phone
-    ,profile: store.state.user.userInfo.user_profile
-    ,user_id: store.state.user.userInfo.user_id
-});
+// const userInfo = reactive({
+//     email: store.state.user.userInfo.user_email
+//     ,name: store.state.user.userInfo.user_name
+//     ,nickname: store.state.user.userInfo.user_nickname
+//     ,phone: store.state.user.userInfo.user_phone
+//     ,profile: store.state.user.userInfo.user_profile
+//     // ,profile: null
+//     ,user_id: store.state.user.userInfo.user_id
+//     // email: store.state.user.userInfo.user_email
+//     // ,name: store.state.user.userInfo.user_name
+//     // ,nickname: store.state.user.userInfo.user_nickname
+//     // ,phone: store.state.user.userInfo.user_phone
+//     // ,profile: store.state.user.userInfo.user_profile
+//     // // ,profile: null
+//     // ,user_id: store.state.user.userInfo.user_id
+// });
+const userInfo = computed(() => store.state.auth.userInfo);
+
+const setFile = (e) => {
+    userInfo.profile = e.target.files[0];
+}
 
 const backToUser = () => {
-    router.replace(`/user/${store.state.user.userInfo.user_id}`);
+    router.replace(`/user/${store.state.auth.userInfo.user_id}`);
 };
 
 </script>
