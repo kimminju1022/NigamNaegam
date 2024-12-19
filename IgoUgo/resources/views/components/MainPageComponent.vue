@@ -70,13 +70,13 @@
                     <div class="banner-slide banner-slide4"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img4.png">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img4.jpg">
                         <div class="banner-content-right">
                             <div class="banner-content-title title4">
-                                <p>겨울에 야외 스파</p>
-                                <p>어때요?</p>
+                                <p>숨겨진</p>
+                                <p>일출 맛집</p>
                             </div>
-                            <div class="banner-content-text">덕구온천</div>
+                            <div class="banner-content-text title4-text">해동용궁사</div>
                         </div>
                     </div>
                 </swiper-slide>
@@ -84,18 +84,18 @@
                     <div class="banner-slide banner-slide5"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img5.jpg">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img5.png">
                         <div class="banner-content-right">
                             <div class="banner-content-title title5">
-                                <p>숨겨진</p>
-                                <p>일출 맛집</p>
+                                <p>겨울에 야외 스파</p>
+                                <p>어때요?</p>
                             </div>
-                            <div class="banner-content-text">해동용궁사</div>
+                            <div class="banner-content-text title5-text">덕구온천</div>
                         </div>
                     </div>
                 </swiper-slide>
-                <!-- <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div> -->
+                <button class="swiper-button-prev btn bg-clear"><</button>
+                <button class="swiper-button-next btn bg-clear">></button>
                 <div class="swiper-pagination"></div>
                 <div class="swiper-scrollbar">
                     <div class="swiper-scrollbar-drag"></div>
@@ -290,10 +290,10 @@
     /* ***** swiper CSS ***** */
     /* swiper 전체 */
     .swiper {
-        /* width: 100%; */
-        width: 100vw;
+        width: 100%;
+        /* width: 100vw; */
         height: 100%;
-        overflow: visible;
+        /* overflow: visible; */
     }
     /* swiper 내부 */
     .swiper-slide {
@@ -316,7 +316,7 @@
         height: 25%;
     }
     .banner-content-flex {
-        width: 80%;
+        width: 90%;
         display: flex;
         position: absolute;
         gap: 50px;
@@ -327,6 +327,7 @@
         /* border-radius: 30px; */
         object-fit: cover;
         margin-top: 20px;
+        box-shadow: 5px 5px 10px rgba(76, 76, 76, .7);
     }
     .banner-content-right {
         display: flex;
@@ -337,7 +338,6 @@
         width: 100%;
     }
     .banner-content-text {
-        /* text-align: end; */
         color: #fff;
         font-weight: 500;
     }
@@ -345,62 +345,109 @@
         color: #fff;
         margin-bottom: 10px;
     }
+    /* 슬라이드 타이틀 */
     .title1 > p {
         font-family: 'TTHakgyoansimMulgyeolB';
-        font-size: 20px;
+        font-size: 65px;
     }
     .title2 > p {
         font-family: 'PyeongChangPeace-Bold';
-        font-size: 20px;
+        font-size: 55px;
     }
     .title3 > p {
         font-family: 'SF_HambakSnow';
-        font-size: 20px;
+        font-size: 65px;
     }
     .title4 > p {
-        font-family: 'SuseongHyejeong';
-        font-size: 20px;
+        font-family: 'EF_MACHO';
+        font-size: 65px;
+        color: #6170e2;
+    }
+    .title4 + .title4-text {
+        color: #6170e2;
     }
     .title5 > p {
-        font-family: 'EF_MACHO';
-        /* font-weight: 900; */
-        font-size: 20px;
+        font-family: 'SuseongHyejeong';
+        font-size: 65px;
+        color: #4c4c4c;
     }
-    
+    .title5 + .title5-text {
+        color: #4c4c4c;
+    }
+    /* 슬라이드 배경 */
     .banner-slide1 {
-        background-color: rgba(255, 168, 93, 0.7);
+        /* background-color: rgba(255, 168, 93, 0.7); */
+        background-image: url('/img_main/back1.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
     }
     .banner-slide2 {
-        background-color: #025B00;
+        /* background-color: #025B00; */
+        background-image: url('/img_main/back2.jpg');
+        background-repeat: no-repeat;
+        /* background-position: center; */
+        background-size: cover;
     }
     .banner-slide3 {
-        background-color: #99bff2;
+        /* background-color: #99bff2; */
+        background-image: url('/img_main/back3.jpg');
+        background-repeat: no-repeat;
+        /* background-position: center; */
+        background-size: cover
     }
     .banner-slide4 {
-        background-color: #d7bda6;
+        /* background-color: rgba(255, 211, 88, 0.8); */
+        background-image: url('/img_main/back4.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
     }
     .banner-slide5 {
-        background-color: rgba(255, 211, 88, 0.8);
+        /* background-color: #d7bda6; */
+        background-image: url('/img_main/back5.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover
     }
-    .swiper-button-prev, .swiper-button-next {
-        color: #01083a;
+    /* 화살표 */
+    .swiper-button-next::after, .swiper-button-prev::after {
+        display: none;
     }
+    .swiper-button-prev {
+        /* color: #01083a; */
+        width: 30px;
+        height: 20px;
+        font-size: 20px;
+        margin-left: 1050px;
+        margin-top: 156px;
+    }
+    .swiper-button-next {
+        /* color: #01083a; */
+        width: 30px;
+        height: 20px;
+        font-size: 20px;
+        margin-right: 50px;
+        margin-top: 156px;
+    }
+
     /* 페이지네이션 */
     .swiper-pagination {
         color: #01083a;
-        margin-bottom: 55px;
-        margin-left: 150px;
+        margin-bottom: 65px;
+        margin-left: 1090px;
+        width: 70px;
     }
     /* 스크롤 */
     .swiper-scrollbar {
-        width: 450px;
-        height: 15px;
+        width: 500px;
+        height: 10px;
         background-color: transparent;
         border-top: 1px solid #01083a;
         border-bottom: 1px solid #01083a;
         border-radius: 0;
         margin-bottom: 40px;
-        margin-left: 750px;
+        margin-left: 700px;
     }
     .swiper-scrollbar > .swiper-scrollbar-drag {
         background-color: #01083a;
