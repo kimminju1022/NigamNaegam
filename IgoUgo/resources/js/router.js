@@ -1,25 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useStore } from 'vuex';
+// 메인
+import MainPageComponent from '../views/components/MainPageComponent.vue';
+// 로그인 관련
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
+// 호텔
+import HotelListComponent from '../views/components/board/HotelListComponent.vue';
+import HotelMapComponent from '../views/components/board/HotelMapComponent.vue';
+import HotelListDetailComponent from '../views/components/board/HotelListDetailComponent.vue';
+// 상품
+import ProductMainComponent from '../views/components/board/ProductMainComponent.vue';
 import ProductListComponent from '../views/components/board/ProductListComponent.vue';
+// 게시판
 import BoardListComponent from '../views/components/board/BoardListComponent.vue';
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
-import NotFoundComponent from '../views/components/NotFoundComponent.vue';
-import MyPageComponent from '../views/components/user/MyPageComponent.vue';
-import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
-import PasswordComponent from '../views/components/user/PasswordComponent.vue';
-import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
-import MainPageComponent from '../views/components/MainPageComponent.vue';
-import HotelListDetailComponent from '../views/components/board/HotelListDetailComponent.vue';
-import HotelListComponent from '../views/components/board/HotelListComponent.vue';
-import HotelMapComponent from '../views/components/board/HotelMapComponent.vue';
-import { useStore } from 'vuex';
+// 문의게시판
 import QuestionComponent from '../views/components/question/QuestionListComponent.vue';
 import QuestionCreateComponent from '../views/components/question/QuestionCreateComponent.vue';
 import QuestionDetailComponent from '../views/components/question/QuestionDetailComponent.vue';
 import QuestionEditComponent from '../views/components/question/QuestionEditComponent.vue';
+// 유저
+import MyPageComponent from '../views/components/user/MyPageComponent.vue';
+import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
+import PasswordComponent from '../views/components/user/PasswordComponent.vue';
+import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
+// 기타
+import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -58,24 +67,24 @@ const routes = [
         component: HotelListComponent
     },
     {
-        path: '/hotels/detail',
-        component: HotelListDetailComponent,
-    },
-    {
         path: '/hotels/map',
         component: HotelMapComponent,
     },
     {
+        path: '/hotels/detail',
+        component: HotelListDetailComponent,
+    },
+    {
         path: '/products',
+        component: ProductMainComponent,
+    },
+    {
+        path: '/products/list',
         component: ProductListComponent,
     },
     {
         path: '/boards',
         component: BoardListComponent,
-    },
-    {
-        path: '/boards/update',
-        component: BoardUpdateComponent,
     },
     {
         path: '/boards/:id',
@@ -85,6 +94,10 @@ const routes = [
         path: '/boards/create',
         component: BoardCreateComponent,
         // beforeEnter: chkAuth,
+    },
+    {
+        path: '/boards/update',
+        component: BoardUpdateComponent,
     },
     {
         path: '/boards/edit',

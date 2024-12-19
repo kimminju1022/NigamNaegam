@@ -27,7 +27,7 @@ Route::get('/testdata', [TestController::class, 'index']);
 Route::get('/hotels', [HotelController::class, 'hotels']);
 
 // 상품리스트 라우터
-Route::get('/products', [ProductController::class, 'productData']);
+Route::get('/products/list', [ProductController::class, 'productData']);
 
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

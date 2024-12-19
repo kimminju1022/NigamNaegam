@@ -34,7 +34,7 @@
             <!-- <div v-else-if="error">{{ error }}</div> -->
             <div v-if="productItems.length > 0" class="card-list">
                 <div v-for="item in productItems" :key="item" class="card">
-                    <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
+                    <img :src="item.firstimage" @error="e => e.target.src='/default/board_default.png'" class="img-card">
                     <p class="font-bold card-title">{{ item.title }}</p>
                 </div>
             </div>
@@ -65,16 +65,8 @@ const flgSetup = () => {
 }
 onBeforeMount(() => {
     flgSetup();
-});
-window.addEventListener('resize', flgSetup);
-
-// API
-const productItems = ref([]);
-
-// 마운트된 후
-onMounted(() => {
     // Axios로 API 호출
-    axios.get('http://localhost:8000/api/products')
+    axios.get('/api/products/list')
     .then((response) => {
         productItems.value = response.data.response.body.items.item;
         // response.data.response.body.items.item.forEach(item => {
@@ -86,6 +78,14 @@ onMounted(() => {
     .catch((error) => {
         console.error(error);
     })
+});
+window.addEventListener('resize', flgSetup);
+
+// API
+const productItems = ref([]);
+
+// 마운트된 후
+onMounted(() => {
 });
 // data() {
 //     return {
