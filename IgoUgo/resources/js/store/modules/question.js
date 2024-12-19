@@ -24,8 +24,8 @@ export default {
                 .then()
                 .catch();
         },
-        getters: {
-
-        },
-    }
+    },
+    getters: {
+    
+    },
 }
