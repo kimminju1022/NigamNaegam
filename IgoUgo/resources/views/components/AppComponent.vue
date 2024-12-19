@@ -1,4 +1,6 @@
 <template>
+<header>
+    
 
     <!-- header -->
 
@@ -102,6 +104,7 @@
             <button class="btn bg-navy header-bg-btn">검색</button>
         </div>
     </div>
+</header>
 
     <!-- main -->
 
@@ -297,13 +300,20 @@ input, textarea {
 
 /* 헤더헤더 */
 
+header {
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
 .header-header {
     display: grid;
     grid-template-rows: 100px 50px;
     background-color: #fff;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    /* z-index: 1; */
     margin: 0 auto;
     max-width: 1300px;
     gap: 15px;
@@ -510,7 +520,7 @@ footer {
     transform: translateY(0%);
     display: grid;
     grid-template-rows: 140px 60px;
-    z-index: 1000;
+    z-index: 1;
     margin-top: 50px;
     gap: 30px;
 }
