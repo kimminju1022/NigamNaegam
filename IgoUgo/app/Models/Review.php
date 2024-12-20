@@ -11,6 +11,8 @@ class Review extends Model
 
     protected $primaryKey = 'review_id';
 
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *

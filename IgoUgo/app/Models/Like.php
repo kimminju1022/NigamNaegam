@@ -11,6 +11,8 @@ class Like extends Model
     
     protected $primaryKey = 'like_id';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'board_id'
         ,'user_id'

@@ -11,6 +11,8 @@ class HotelInfo extends Model
 
     protected $primaryKey = 'hotel_info_id';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'hotel_id',
         'hc_id',
