@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\BoardsCategory;
+use App\Models\BoardCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +19,7 @@ class BoardFactory extends Factory
     public function definition()
     {
         $user = User::select('user_id')->inRandomOrder()->first();
-        $bc_type = BoardsCategory::select('bc_id')->inRandomOrder()->first();
+        $bc_type = BoardCategory::select('bc_id')->inRandomOrder()->first();
 
         $date = $this->faker->dateTimeBetween($user->created_at);
 

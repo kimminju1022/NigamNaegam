@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Reviews;
+use App\Models\Review;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ReviewsSeeder extends Seeder
+class ReviewSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,7 +18,7 @@ class ReviewsSeeder extends Seeder
         $total = 200;
         $interval = 50;
         for($i = 0; $i < $total; $i += $interval){
-            Reviews::factory($interval)->create();
+            Review::factory($interval)->create();
         }
     }
 }

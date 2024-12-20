@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\BoardsCategory;
+use App\Models\BoardCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BoardsCategorySeeder extends Seeder
+class BoardCategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class BoardsCategorySeeder extends Seeder
      */
     public function run()
     {
-        BoardsCategory::insert([
+        BoardCategory::insert([
             ['bc_type' => '0', 'bc_name' => '리뷰게시판']
             ,['bc_type' => '1', 'bc_name' => '자유게시판']
             ,['bc_type' => '2', 'bc_name' => '문의게시판']

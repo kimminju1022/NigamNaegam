@@ -18,8 +18,8 @@ class HotelInfoFactory extends Factory
      */
     public function definition()
     {
-        $hotel = Hotel::select('user_id')->inRandomOrder()->first();
-        $hotel_cat = HotelCategory::select('bc_id')->inRandomOrder()->first();
+        $hotel = Hotel::select('hotel_id')->inRandomOrder()->first();
+        $hotel_cat = HotelCategory::select('hc_id')->inRandomOrder()->first();
 
         return [
             'hotel_id' => $hotel->hotel_id,

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('addr1', 255)->nullable();
             $table->string('addr2', 255)->nullable();
             $table->string('tel', 50)->nullable();
-            $table->string('areacode', 3)->nullable();
+            $table->string('area_code', 3)->nullable();
             $table->boolean('benikia')->default(false);
             $table->boolean('booktour')->default(false);
             $table->boolean('goodstay')->default(false);
@@ -50,6 +50,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('public_api_data');
+        Schema::dropIfExists('hotels');
     }
 };

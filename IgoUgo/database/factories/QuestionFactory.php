@@ -18,14 +18,14 @@ class QuestionFactory extends Factory
      */
     public function definition()
     {
-        $arr =['답변대기', '답변완료']; 
+        // $arr =['답변대기', '답변완료']; 
         $board = Board::select('board_id')->inRandomOrder()->first();
         $date = $this->faker->dateTimeBetween($board->created_at);
 
         return [
             'board_id' => $board->board_id
             ,'que_content' => $this->faker->realText(rand(10, 100))
-            ,'que_status' => Arr::random($arr)
+            ,'que_status' => rand(0, 1)
             ,'created_at' => $date
             ,'updated_at' => $date
         ];

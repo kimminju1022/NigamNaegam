@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('festivals', function (Blueprint $table) {
-            $table->id('product_id');
+            $table->id('festival_id');
             $table->string('title', 100);
             $table->string('addr1', 255)->nullable();
             $table->string('addr2', 255)->nullable();
             $table->string('tel', 255)->nullable();
-            $table->string('areacode', 3)->nullable();
+            $table->string('area_code', 3)->nullable();
             $table->boolean('booktour')->default(false);
             $table->char('cat1', 3)->nullable();
             $table->char('cat2', 5)->nullable();

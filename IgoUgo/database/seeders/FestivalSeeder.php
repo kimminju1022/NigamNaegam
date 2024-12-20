@@ -38,7 +38,7 @@ class FestivalSeeder extends Seeder
                 'addr1' => data_get($item, 'addr1') !== '' ? data_get($item, 'addr1') : null,
                 'addr2' => data_get($item, 'addr2') !== '' ? data_get($item, 'addr2') : null,
                 'tel' => data_get($item, 'tel') !== '' ? data_get($item, 'tel') : null,
-                'areacode' => data_get($item, 'areacode') !== '' ? data_get($item, 'areacode') : null,
+                'area_code' => data_get($item, 'areacode') !== '' ? data_get($item, 'areacode') : null,
                 'booktour' => data_get($item, 'booktour') !== '' ? data_get($item, 'booktour') : false,
                 'cat1' => data_get($item, 'cat1') !== '' ? data_get($item, 'cat1') : null,
                 'cat2' => data_get($item, 'cat2') !== '' ? data_get($item, 'cat2') : null,
