@@ -18,7 +18,7 @@ class Board extends Model
         'board_title',
         'board_content',
         'board_img1',
-        'board_img_2',
+        'board_img2',
         'view_cnt',
     ];
 
