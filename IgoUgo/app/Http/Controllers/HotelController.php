@@ -14,7 +14,7 @@ class HotelController extends Controller
                   ->orWhere('cat3', 'B02011100');
         })
         ->whereNotNull('firstimage')
-        ->limit(30)
+        ->limit(32)
         ->get();
 
         return response()->json($hotels);

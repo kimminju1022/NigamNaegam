@@ -1,36 +1,39 @@
 <template>
-    <div class="total-container">
-        
-    
+    <div class="total-container"> 
         <div>
-            <div class="right-small-container order-box font-default-size">
+            <div class="categorty-name">
+                <span>호텔</span>
+            </div>
+            <div class="order-box font-default-size">
                 <div>
                     <span class="font-bold">정렬 순서</span>
                 </div>
-                <div class="order-list">
-                    <p>|</p>
-                    <div class="order-list-item">
-                        뽀빠이 추천
-                        <img src="img_product/img_star.png" class="img-order">
-                    </div>
-                    <p>|</p>
-                    <div class="order-list-item">
-                        최신순
-                        <span class="order-list-item-update font-bold">NEW</span>
-                    </div>
-                    <p>|</p>
-                    <div class="order-list-item">
-                        베스트셀러
-                        <img src="img_product/img_thumb.png" class="img-order">
-                    </div>
-                    <p>|</p>
-                    <div class="order-list-item">
-                        낮은 가격
-                        <img src="img_product/img_won.png" class="img-order">
-                    </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    <p>에디터 추천</p>
+                    <img src="img_product/img_star.png" class="img-order">
+                </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    <p>최신순</p>
+                    <span class="order-list-item-update font-bold">NEW</span>
+                </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    <p>별점순</p>
+                    <img src="img_product/img_thumb.png" class="img-order">
+                </div>
+                <p>|</p>
+                <div class="order-list-item">
+                    <p>필터</p>
+                    <img src="img_product/img_filter.png" class="img-order">
+                </div>
+                <div class="order-list-item">
+                    <img src="img_product/img_placeholder.png" class="img-order">
+                    <p>지도 보기</p>
                 </div>
             </div>
-            <div class="right-small-container">
+            <div>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div v-if="hotels.length > 0" class="card-list">
                     <div v-for="item in hotels" :key="item" class="card">
@@ -100,16 +103,24 @@
     } */
     
     /* 작은 틀 */
-    .left-small-container {
+    /* .left-small-container {
         border: 1px solid #01083A;
         border-radius: 10px;
         margin: 1rem 0;
         padding: 20px;
-    }
-    .right-small-container {
-        /* border: 1px solid #01083A; */
+    } */
+    /* .right-small-container {
+        border: 1px solid #01083A;
         border-radius: 10px;
         margin: 10px 0;
+    }
+    .right-small-container:last-child {
+        margin-left: 0;
+    } */
+    /* 카테고리 이름 */
+    .categorty-name {
+        font-size: 50px;
+        margin-bottom: 30px;
     }
     
     /* 리스트 아이템 */
@@ -203,10 +214,13 @@
         display: flex;
         gap: 20px;
     }
-    .order-list {
+    .order-box :last-child {
+        justify-items: flex-end;
+    }
+    /* .order-list {
         display: flex;
         gap: 20px;
-    }
+    } */
     .order-list-item {
         display: flex;
         align-items: center;
@@ -220,20 +234,30 @@
     /* 카드 관련 */
     .card-list {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-        /* column-gap: 15px; */
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        column-gap: 15px;
         row-gap: 40px;
         margin-top: 50px;
     }
     .card {
         height: 250px;
-        width: 200px;
+        width: 300px;
         border: 1px solid #e9e9e9;
         border-radius: 10px;
         display: grid;
         grid-template-rows: 185px 65px;
         margin: 0 auto;
         justify-items: center;
+        /* 호버효과 css */
+        position: relative;
+        transition: 0.2s ease-in-out;
+        /* flex: 1; */
+    }
+    /* 카드호버 */
+    .card:hover {
+        transform: translateY(-10px);
+        cursor: pointer;
+        box-shadow: 1px 1px 20px #ddd;
     }
     .card-title {
         width: 80%;
