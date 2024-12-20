@@ -17,4 +17,15 @@ class question extends Model
         'que_content',
         'que_status',
     ];
+
+    /**
+     * TimeZone format when serializing JSON
+     * 
+     * @param \DateTimeInterface $date
+     * 
+     * @return String('Y-m-d H:i:s)
+     */
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

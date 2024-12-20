@@ -14,7 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('hotel_categories', function (Blueprint $table) {
-            $table->id();
+            $table->id('hc_id');
+            $table->bigInteger('hotel_id', 20)->unsigned();
+            $table->boolean('pool')->default(false);
+            $table->boolean('grill')->default(false);
+            $table->boolean('fire')->default(false);
+            $table->boolean('beauty')->default(false);
+            $table->boolean('fitness')->default(false);
+            $table->boolean('pickup')->default(false);
             $table->timestamps();
         });
     }
