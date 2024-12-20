@@ -90,7 +90,7 @@ export default {
             const data = JSON.stringify(userInfo);
             const config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    // 'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
@@ -102,10 +102,12 @@ export default {
                 context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
                 localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
 
+
                 router.replace(`/user/${userInfo.user_id}`);
                 }
             )
             .catch(error => {
+                alert('수정 실패');
                 console.error(error.response.data);
             });
         },
