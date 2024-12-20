@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class HotelInfo extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'hotel_info_id';
+
+    protected $fillable = [
+        'hotel_id',
+        'hc_id',
+    ];
 }

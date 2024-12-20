@@ -20,10 +20,14 @@ class CommentFactory extends Factory
     {
         $user = User::select('user_id')->inRandomOrder()->first();
         $board = Board::select('board_id')->inRandomOrder()->first();
+        $date = $this->faker->dateTimeBetween($board->created_at);
+
         return [
             'user_id' => $user->user_id,
             'board_id' => $board->board_id,
             'comment_content' => $this->faker->realText(rand(10, 200)),
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 }
