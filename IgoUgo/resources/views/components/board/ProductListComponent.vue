@@ -11,7 +11,7 @@
                 <p>|</p>
                 <div class="order-list-item">
                     뽀빠이 추천
-                    <img src="img_product/img_star.png" class="img-order">
+                    <img src="/img_product/img_star.png" class="img-order">
                 </div>
                 <p>|</p>
                 <div class="order-list-item">
@@ -21,12 +21,12 @@
                 <p>|</p>
                 <div class="order-list-item">
                     베스트셀러
-                    <img src="img_product/img_thumb.png" class="img-order">
+                    <img src="/img_product/img_thumb.png" class="img-order">
                 </div>
                 <p>|</p>
                 <div class="order-list-item">
                     낮은 가격
-                    <img src="img_product/img_won.png" class="img-order">
+                    <img src="/img_product/img_won.png" class="img-order">
                 </div>
             </div>
         </div>

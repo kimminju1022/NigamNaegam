@@ -28,11 +28,12 @@
                     <div class="banner-slide banner-slide1"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img1.png">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img1.png">
                         <div class="banner-content-right">
                             <div class="banner-content-title title1">
-                                <p>푸른 뱀의 해가</p>
-                                <p>밝았습니다!</p>
+                                <!-- <p>푸른 뱀의 해가</p>
+                                <p>밝았습니다!</p> -->
+                                <img src="/img_main/title1.png" class="banner-text-img">
                             </div>
                             <div class="banner-content-text">호미곶</div>
                         </div>
@@ -42,11 +43,12 @@
                     <div class="banner-slide banner-slide2"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img2.png">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img2.png">
                         <div class="banner-content-right">
                             <div class="banner-content-title title2">
-                                <p>GRAND</p>
-                                <p>SANTA EXPRESS</p>
+                                <!-- <p>GRAND</p>
+                                <p>SANTA EXPRESS</p> -->
+                                <img src="/img_main/title2.png" class="banner-text-img">
                             </div>
                             <div class="banner-content-text">파라다이스 시티 호텔</div>
                         </div>
@@ -56,11 +58,12 @@
                     <div class="banner-slide banner-slide3"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img3.png">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img3.png">
                         <div class="banner-content-right">
                             <div class="banner-content-title title3">
-                                <p>한국의</p>
-                                <p>대표 설산</p>
+                                <!-- <p>한국의</p>
+                                <p>대표 설산</p> -->
+                                <img src="/img_main/title3.png" class="banner-text-img-small">
                             </div>
                             <div class="banner-content-text">덕유산</div>
                         </div>
@@ -70,11 +73,12 @@
                     <div class="banner-slide banner-slide4"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img4.jpg">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img4.jpg">
                         <div class="banner-content-right">
                             <div class="banner-content-title title4">
-                                <p>숨겨진</p>
-                                <p>일출 맛집</p>
+                                <!-- <p>숨겨진</p>
+                                <p>일출 맛집</p> -->
+                                <img src="/img_main/title4.png" class="banner-text-img-small">
                             </div>
                             <div class="banner-content-text title4-text">해동용궁사</div>
                         </div>
@@ -84,11 +88,12 @@
                     <div class="banner-slide banner-slide5"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="img_main/slide_img5.png">
+                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img5.png">
                         <div class="banner-content-right">
                             <div class="banner-content-title title5">
-                                <p>겨울에 야외 스파</p>
-                                <p>어때요?</p>
+                                <!-- <p>겨울에 야외 스파</p>
+                                <p>어때요?</p> -->
+                                <img src="/img_main/title5.png" class="banner-text-img">
                             </div>
                             <div class="banner-content-text title5-text">덕구온천</div>
                         </div>
@@ -239,41 +244,41 @@
     
     <style scoped>
     /* 폰트 종류 */
-    @font-face {
-        /* 학교안심 물결 */
+    /* 학교안심 물결 */
+    /* @font-face {
         font-family: 'TTHakgyoansimMulgyeolB';
         src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimMulgyeolB.woff2') format('woff2');
         font-weight: 700;
         font-style: normal;
-    }
-    @font-face {
-        /* 평창평화체 */
+    } */
+    /* 평창평화체 */
+    /* @font-face {
         font-family: 'PyeongChangPeace-Bold';
         src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
         font-weight: 700;
         font-style: normal;
-    }
-    @font-face {
-        /* SF함박눈 */
+    } */
+    /* SF함박눈 */
+    /* @font-face {
         font-family: 'SF_HambakSnow';
         src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/SF_HambakSnow.woff') format('woff');
         font-weight: normal;
         font-style: normal;
-    }
-    @font-face {
-        /* 수성혜정체 */
+    } */
+    /* 수성혜정체 */
+    /* @font-face {
         font-family: 'SuseongHyejeong';
         src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205-2@1.0/SuseongHyejeong.woff2') format('woff2');
         font-weight: normal;
         font-style: normal;
-    }
-    @font-face {
-        /* 마초체 */
+    } */
+    /* 마초체 */
+    /* @font-face {
         font-family: 'EF_MACHO';
         src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/EF_MACHO.woff2') format('woff2');
         font-weight: normal;
         font-style: normal;
-    }
+    } */
     
     /* 전체를 감싸는 컨테이너 */
     .main-page-container {
@@ -346,33 +351,42 @@
         margin-bottom: 10px;
     }
     /* 슬라이드 타이틀 */
-    .title1 > p {
+    /* .title1 > p {
         font-family: 'TTHakgyoansimMulgyeolB';
         font-size: 65px;
-    }
-    .title2 > p {
+    } */
+    /* .title2 > p {
         font-family: 'PyeongChangPeace-Bold';
         font-size: 55px;
-    }
-    .title3 > p {
+    } */
+    /* .title3 > p {
         font-family: 'SF_HambakSnow';
         font-size: 65px;
-    }
-    .title4 > p {
+    } */
+    /* .title4 > p {
         font-family: 'EF_MACHO';
         font-size: 65px;
         color: #6170e2;
-    }
+    } */
     .title4 + .title4-text {
         color: #6170e2;
     }
-    .title5 > p {
+    /* .title5 > p {
         font-family: 'SuseongHyejeong';
         font-size: 65px;
         color: #4c4c4c;
-    }
+    } */
     .title5 + .title5-text {
         color: #4c4c4c;
+    }
+    /* 텍스트 이미지 */
+    .banner-text-img {
+        width: 500px;
+        height: 150px;
+    }
+    .banner-text-img-small {
+        width: 300px;
+        height: 150px;
     }
     /* 슬라이드 배경 */
     .banner-slide1 {
