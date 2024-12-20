@@ -26,5 +26,11 @@ class UserSeeder extends Seeder
         foreach($data as $item) {
             User::create($item);
         }
+
+        // $total = 200;
+        // $interval = 50;
+        // for($i = 0; $i < $total; $i += $interval){
+        //     User::factory($interval)->create();
+        // }
     }
 }

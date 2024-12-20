@@ -17,17 +17,20 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        // $date = $this->faker->dateTimeBetween('-1 years');
 
-        // return [
-        //     'name' => $this->faker->name()
-        //     ,'email' => $this->faker->unique()->safeEmail()
-        //     ,'email_verified_at' => now()
-        //     ,'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
-        //     ,'remember_token' => Str::random(10)
-        //     ,'created_at' => $date
-        //     ,'updated_at' => $date
-        // ];
+
+        $date = $this->faker->dateTimeBetween('-1 years');
+
+        return [
+            'user_email' => $this->faker->unique()->safeEmail()
+            ,'user_password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+            ,'user_name' => $this->faker->name()
+            ,'user_nickname' => $this->faker->unique()->name()
+            ,'user_phone' => $this->faker->unique()->phoneNumber()
+            ,'refresh_token' => Str::random(10)
+            ,'created_at' => $date
+            ,'updated_at' => $date
+        ];
     }
 
     /**
