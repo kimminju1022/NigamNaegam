@@ -12,6 +12,6 @@ class Like extends Model
     protected $fillable = [
         'board_id'
         ,'user_id'
-        ,'like_cnt'
+        ,'like_flg'
     ];
 }

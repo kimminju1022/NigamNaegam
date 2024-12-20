@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ReviewCategory extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'rc_id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'rc_name',
+        'rc_type',
+    ];
 }
