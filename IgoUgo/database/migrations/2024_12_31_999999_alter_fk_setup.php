@@ -13,26 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('hotel_category_links', function(Blueprint $table) {
-            $table->foreign('hotel_id')->references('hotel_id')->on('hotels');
-            $table->foreign('hc_type')->references('hc_type')->on('hotel_categories');
-        });
-
-        Schema::table('product_category_links', function(Blueprint $table) {
-            $table->foreign('prod_id')->references('prod_id')->on('products');
-            $table->foreign('cc_type')->references('cc_type')->on('content_categories');
-        });
-
         Schema::table('boards', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('bc_id')->references('bc_id')->on('board_categories');
-            $table->foreign('local_id')->references('local_id')->on('locals');
-            $table->foreign('cc_id')->references('cc_id')->on('content_categories');
         });
         
-        Schema::table('question_boards', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('bc_id')->references('bc_id')->on('board_categories');
+        Schema::table('questions', function(Blueprint $table) {
+            $table->foreign('board_id')->references('board_id')->on('boards');
         });
 
         Schema::table('comments', function(Blueprint $table) {
@@ -43,6 +30,20 @@ return new class extends Migration
         Schema::table('likes', function(Blueprint $table) {
             $table->foreign('board_id')->references('board_id')->on('boards');
             $table->foreign('user_id')->references('user_id')->on('users');
+        });
+
+        Schema::table('reviews',  function(Blueprint $table) {
+            $table->foreign('board_id')->references('board_id')->on('boards');
+            $table->foreign('area_id')->references('area_id')->on('areas');
+            $table->foreign('rc_id')->references('rc_id')->on('review_categories');
+        });
+
+        Schema::table('hotels', function(Blueprint $table) {
+            $table->foreign('areacode')->references('areacode')->on('areas');
+        });
+
+        Schema::table('products', function(Blueprint $table) {
+            $table->foreign('areacode')->references('areacode')->on('areas');
         });
     }
 
@@ -53,36 +54,37 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('hotel_category_links', function(Blueprint $table) {
-            $table->dropForeign(['hotel_id']);
-            $table->dropForeign(['hc_type']);
-        });
-
-        Schema::table('product_category_links', function(Blueprint $table) {
-            $table->dropForeign(['prod_id']);
-            $table->dropForeign(['cc_type']);
-        });
-
         Schema::table('boards', function(Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropForeign(['bc_id']);
-            $table->dropForeign(['local_id']);
-            $table->dropForeign(['cc_id']);
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('bc_id')->references('bc_id')->on('board_categories');
         });
-
-        Schema::table('question_boards', function(Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropForeign(['bc_id']);
+        
+        Schema::table('questions', function(Blueprint $table) {
+            $table->foreign('board_id')->references('board_id')->on('boards');
         });
 
         Schema::table('comments', function(Blueprint $table) {
-            $table->dropForeign(['board_id']);
-            $table->dropForeign(['user_id']);
+            $table->foreign('board_id')->references('board_id')->on('boards');
+            $table->foreign('user_id')->references('user_id')->on('users');
         });
 
         Schema::table('likes', function(Blueprint $table) {
-            $table->dropForeign(['board_id']);
-            $table->dropForeign(['user_id']);
+            $table->foreign('board_id')->references('board_id')->on('boards');
+            $table->foreign('user_id')->references('user_id')->on('users');
+        });
+
+        Schema::table('reviews',  function(Blueprint $table) {
+            $table->foreign('board_id')->references('board_id')->on('boards');
+            $table->foreign('area_id')->references('area_id')->on('areas');
+            $table->foreign('rc_id')->references('rc_id')->on('review_categories');
+        });
+
+        Schema::table('hotels', function(Blueprint $table) {
+            $table->foreign('areacode')->references('areacode')->on('areas');
+        });
+
+        Schema::table('products', function(Blueprint $table) {
+            $table->foreign('areacode')->references('areacode')->on('areas');
         });
     }
 };
