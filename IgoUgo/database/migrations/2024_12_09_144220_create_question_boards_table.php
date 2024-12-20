@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('question_boards', function (Blueprint $table) {
-            $table->id('qb_id');
-            $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('bc_id')->unsigned();
-            $table->string('qb_title', 100);
-            $table->string('qb_content', 2000);
-            $table->string('qb_img', 100)->default('/default/board_default.png');
-            $table->string('qb_reply', 2000)->nullable();
-            $table->char('qb_status', 1)->default(0);
-            $table->timestamp('qb_reply_created_at')->nullable();
+        Schema::create('questions', function (Blueprint $table) {
+            $table->id('que_id');
+            $table->string('que_content', 2000)->nullable();
+            $table->char('que_status', 1)->default(0);
             $table->timestamps();
             $table->softDeletes();
+            $table->bigInteger('board_id')->unsigned();
         });
     }
 
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_boards');
+        Schema::dropIfExists('questions');
     }
 };

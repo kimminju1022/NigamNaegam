@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Like extends Model
 {
+    use HasFactory;
+    
     protected $primaryKey = 'like_id';
 
     protected $fillable = [

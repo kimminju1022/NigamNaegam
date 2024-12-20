@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('board_categories', function (Blueprint $table) {
             $table->id('bc_id');
-            $table->char('bc_type', 1);
+            $table->char('bc_type', 1)->unique();
             $table->string('bc_name', 20);
         });
     }

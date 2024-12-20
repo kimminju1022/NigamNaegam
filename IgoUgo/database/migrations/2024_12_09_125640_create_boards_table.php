@@ -17,14 +17,13 @@ return new class extends Migration
             $table->id('board_id');
             $table->string('board_title', 100);
             $table->string('board_content', 2000);
-            $table->string('board_img', 100)->default('/default/board_default.png');
-            $table->integer('board_star');
+            $table->string('board_img1', 100)->default('/default/board_default.png');
+            $table->string('board_img2', 100)->default('/default/board_default.png');
+            $table->bigInteger('view_cnt')->default(0);
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('bc_id')->unsigned();
-            $table->bigInteger('local_id')->unsigned();
-            $table->bigInteger('cc_id')->unsigned();
         });
     }
 

@@ -9,9 +9,10 @@ class Area extends Model
 {
     use HasFactory;
 
+    protected $table = 'areas';
     protected $primaryKey = 'area_id';
 
-    protected $fillable = [
+    protected $guarded = [
         'code',
         'name',
         'rnum',
