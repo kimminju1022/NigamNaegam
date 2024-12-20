@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
-class BoardController extends Controller
+class QuestionController extends Controller
 {
     //action-Method
     public function index(){

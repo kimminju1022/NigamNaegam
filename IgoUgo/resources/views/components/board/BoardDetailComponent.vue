@@ -23,7 +23,7 @@
             <!-- <span> {{ loveIt[0] }}</span> -->
             <span>조회 : </span>
             <!-- {{ absolve[1]++ }} -->
-            <button>🚨 신고</button>
+            <button @click="boardNotify">🚨 신고</button>
         </div>
         
         <!-- 등록이미지 불러오기 -->
@@ -43,8 +43,8 @@
                 <span>댓글</span>
                 <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
                 <button class="btn bg-navy board-detail-btn">작성</button>
-                <span>총 댓글 : </span>
-                <!-- {{ 댓글수[0] }} -->
+                <span>총 댓글 :</span>
+                <!-- {{ 댓글수[0] }} 아이템을 어떻게 불러와야할 지 모르겠어 tatal값을 계산해서 넣어야 할텐데 모르겠어 -->
             </div>
             <hr>
             <div class="board-detail-replyList">
@@ -53,55 +53,10 @@
                     <span>닉네임</span>
                     <span>작성일시</span>
                 </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름1</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름2</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름3</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름1</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름2</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름3</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
-                </div>
-                <div class="replyList">
-                    <span>여기 가보고 깜짝 놀라 자지러지듯 소리지름</span>
-                    <span>놀라핑</span>
-                    <span>24.12.10</span>
+                <div v-for="item in boardReply" :key="item" class="replyList">
+                    <span>{{ item.comment_content }}</span>
+                    <span>{{ item.user_nickname }}</span>
+                    <span>{{ item.created_at }}</span>
                 </div>
             </div>
             <!-- 페이지네이션 -->
@@ -122,23 +77,33 @@
 <script setup>
 import { onBeforeMount } from 'vue';
 import router from '../../../js/router'
-// // 비포마운트처리
-// onBeforeMount(()=>{
-//     console.log('')
-// })
+// 비포마운트처리
+onBeforeMount(()=>{
+    console.log('')
+})
 const detailConfirm = () => {
     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
-      if (userResponse) {
+    if (userResponse) {
         router.push('/boards/update');
     }
 }
 
 const deleteConfirm = () => {
     const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n 삭제 시 게시글을 되돌릴 수 없습니다');
-      if (userResponse) {
+    if (userResponse) {
         router.push('/boards');
     }
 }
+
+const boardNotify= () => {
+    const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
+    if (userResponse) {
+        router.push('/boards/');
+    } else {
+    }
+}
+
+
 </script>
 
 <style scoped>

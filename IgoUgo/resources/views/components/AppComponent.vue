@@ -29,8 +29,8 @@
                                 <div class="header-list-dropdown">
                                     <p class="header-list-dropbtn">게시판</p>
                                     <div class="header-list-hover header-list-dropdown-content">
-                                        <router-link to="/boards">리뷰</router-link>
-                                        <router-link to="/boards">자유</router-link>
+                                        <a @click="redirectBoards('0')">리뷰</a>
+                                        <a @click="redirectBoards('1')">자유</a>
                                     </div>
                                 </div>
                             </li>
@@ -162,6 +162,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
+import router from '../../js/router';
 
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
@@ -218,6 +219,12 @@ const store = useStore();
 // const id = computed(()=> store.state.user.userInfo.user_id);
 const user = computed(()=> store.state.auth.userInfo);
 
+// ---------- 게시판 이동 관련 start ----------
+const redirectBoards = bcType => {
+    store.commit('board/setBcType', bcType);
+    router.push('/boards');
+}
+// ---------- 게시판 이동 관련 end ----------
 </script>
 
 <style>
@@ -242,6 +249,7 @@ const user = computed(()=> store.state.auth.userInfo);
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 a:visited {

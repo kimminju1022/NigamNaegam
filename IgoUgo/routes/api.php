@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -55,5 +56,10 @@ Route::middleware('my.auth')->group(function() {
     // 게시판 관련
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
     Route::put('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
+    // 댓글관련 생성예정
+
+    // 질문게시판 관련
+    Route::get('/question/{id}/edit',[QuestionController::class, 'edit'])->name('question.edit');
+    Route::put('/question/{id}',[QuestionController::class, 'update'])->name('question.update');
 });
 

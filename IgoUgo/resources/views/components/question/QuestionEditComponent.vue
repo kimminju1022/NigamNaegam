@@ -80,7 +80,7 @@ import router from '../../../js/router';
 const updateConfirm = () => {
     const userResponse = confirm('수정 페이지에서 벗어납니다. 수정을 취소하시겠습니까?');
     if (userResponse) {
-        router.push('/boards/detail');
+        router.push('/boards/');
     } else {
         alert('수정을 계속 진행합니다.');
     }

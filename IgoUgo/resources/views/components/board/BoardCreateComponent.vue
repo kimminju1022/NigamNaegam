@@ -1,7 +1,7 @@
 <template>
     <!-- 작동btn  [목록과 취소가 같은것 아닐까?] -->
     <div class="board-create-head">
-        <h2>자유게시판</h2>
+        <h2>{{ item.bc_type }} ></h2>
         <div class="form-box">
             <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link>
             <button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button>
@@ -12,7 +12,7 @@
     <!-- 선택박스 -->
     <div class="board-selectContainer">
         <div class="select-boardType">
-            <h3>게시판</h3>
+            <h3></h3>
             <select name="board-categories" id="board-categories">
                 <!-- v-model="SelectedBoardCategory"  -->
                 <option value="1">리뷰게시판</option>
@@ -52,6 +52,10 @@
                     <option value="16">제주</option>
                 </select>
             </h3>
+            <div v-for="searchItem in searchKeyword" id="board-search-tb">
+                <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+                <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
+            </div>
             <!-- 별점 -->
             <div class="board-starGrade">
                 <h3>별점</h3>
@@ -132,6 +136,12 @@ const changeImage = (event) => {
         }
         reader.readAsDataURL(file)
     }
+}
+// 검색관련
+const searchItem= ref<String>('')
+
+const searchKeyword = (event) => {
+
 }
 
 // 모달 시러시러 예쁜모달 만들고 싶다...별점똥 좋아요똥똥
@@ -244,7 +254,7 @@ const changeImage = (event) => {
 .board-create-file>img{
     height: 200px;
 }
-.board-search-tb{
+#board-search-tb{
     display: inline-flex;
     justify-content:end;
     margin: 10px 20px;

@@ -29,7 +29,7 @@
 
             <div class="board-update-evaluation">
                 <h3>선택업체명</h3>
-                <button @click="openModal" class="btn bg-navy board-search-btn">검색</button>
+                <div v-for="item in boardUpdate" :key="item" @click="openModal(item.title)" class="btn bg-navy board-search-btn">검색</div>
                 <!-- 모달검색 -->
                 <div v-show="modalFlg" class="board-search-container">
                     <div class="searchItem">
@@ -88,6 +88,17 @@ const updateConfirm = () => {
         alert('수정을 계속 진행합니다.');
     }
 }
+
+// -------검색모달 start
+const modalFlg = ref(false);
+const openModal = (id) => {
+    console.log(id);
+    modalFlg.value = true;
+}
+const closeModal = () => {
+    modalFlg.value = false;
+}
+// -------검색모달 end
 
 </script>
 

@@ -1,6 +1,9 @@
 <template>
     <main>
-        <h2 style="margin: 30px 0; font-size: 3rem;">게시판명</h2>
+        <h2 style="margin: 30px 0; font-size: 3rem;">
+            <!-- {{ item.bc_type }} -->
+            <!-- <p v-show=""></p> -->
+        </h2>
         <div class="board-head">
             <div class="board-category">
                 <select name="select-category" class="bg-clear btn select-category">
@@ -98,95 +101,14 @@
                         <p>30</p>
                     </div>
                 </div>
-                <div id="board-li-item">
-                    <p>22</p>
-                    <p>서울</p>
-                    <p>경복궁 야경과 함께하는 겨울 낭만코스</p>
-                    <p>햅삐햅삐햅삐</p>
-                    <p>2024.12.11</p>
-                    <p>5</p>
-                    <p>8</p>
-                </div>
-                <div id="board-li-item">
-                    <p>21</p>
-                    <p>포항</p>
-                    <p>루미나리에 반짝이는 겨울 낭만코스</p>
-                    <p>오징어</p>
-                    <p>2024.12.08</p>
-                    <p>15</p>
-                    <p>58</p>
-                </div>
-                <div id="board-li-item">
-                    <p>20</p>
-                    <p>포항</p>
-                    <p>과메기 익어가는 마을</p>
-                    <p>과메기</p>
-                    <p>2024.12.02</p>
-                    <p>35</p>
-                    <p>38</p>
-                </div>
-                <div id="board-li-item">
-                    <p>19</p>
-                    <p>서울</p>
-                    <p>환상의 나라 에버랜드보다 롯데월드</p>
-                    <p>루팡</p>
-                    <p>2024.12.02</p>
-                    <p>5</p>
-                    <p>8</p>
-                </div>
-                <div id="board-li-item">
-                    <p>18</p>
-                    <p>서울</p>
-                    <p>가로수길 가득메운 커피로드</p>
-                    <p>햅삐햅삐햅삐</p>
-                    <p>2024.11.28</p>
-                    <p>25</p>
-                    <p>80</p>
-                </div>
-                <div id="board-li-item">
-                    <p>5</p>
-                    <p>공지</p>
-                    <p>12월 여행 주의 사항</p>
-                    <p>라라핑</p>
-                    <p>2024.12.11</p>
-                    <p>2</p>
-                    <p>50</p>
-                </div>
-                <div id="board-li-item">
-                    <p>4</p>
-                    <p>공지</p>
-                    <p>11월 단풍놀이 명소 전국 Top 20</p>
-                    <p>차나핑</p>
-                    <p>2024.11.11</p>
-                    <p>20</p>
-                    <p>50</p>
-                </div>
-                <div id="board-li-item">
-                    <p>3</p>
-                    <p>공지</p>
-                    <p>11월 여행 주의 사항</p>
-                    <p>라라핑</p>
-                    <p>2024.11.11</p>
-                    <p>2</p>
-                    <p>30</p>
-                </div>
-                <div id="board-li-item">
-                    <p>2</p>
-                    <p>공지</p>
-                    <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
-                    <p>믿어핑</p>
-                    <p>2024.11.01</p>
-                    <p>2</p>
-                    <p>50</p>
-                </div>
-                <div id="board-li-item">
-                    <p>1</p>
-                    <p>공지</p>
-                    <p>10월 여행 주의 사항</p>
-                    <p>차캐핑</p>
-                    <p>2024.12.11</p>
-                    <p>10</p>
-                    <p>30</p>
+                <div v-for="item in boardList" :key="item" id="board-li-item">
+                    <p>{{ item.bc_id }}</p>
+                    <p>{{ item.area_name }}</p>
+                    <router-link :to="'/boards/' + item.bc_id"><p>{{ item.board_title }}</p></router-link>
+                    <p>{{ item.user_nickname }}</p>
+                    <p>{{ item.created_at }}</p>
+                    <p>{{ item.like_flg }}</p>
+                    <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
         </div>
@@ -207,13 +129,21 @@
 </template>
 <script setup>
 
-import { onBeforeMount, ref } from 'vue';
+import { computed,onBeforeMount, ref } from 'vue';
+import { useStore } from 'vuex'; // 스토어쓰니까 이거 선언해 줘야해
 
 const store = useStore();
 
-// 비포마운트처리
+// boardlist
+const boardList = computed(() => store.state.board.boardList);
+
+// beforemount
 onBeforeMount(() => {
-    store.dispatch('board/getBoardListPagenation');
+    // console.log('나온다아아아아앙')
+    // 백앤드로 요청 보내는 액션메소드
+    if(store.state.board.boardList.length<1){
+        store.dispatch('board/getBoardListPagination');
+    }
 });
 
 
