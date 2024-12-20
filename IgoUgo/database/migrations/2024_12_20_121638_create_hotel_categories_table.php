@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('boards', function (Blueprint $table) {
-            $table->id();
-            
-            $table->timestamps();
+        Schema::create('hotel_categories', function (Blueprint $table) {
+            $table->id('hc_id');
+            $table->integer('hc_type');
+            $table->string('hc_name', 10);
         });
     }
 
