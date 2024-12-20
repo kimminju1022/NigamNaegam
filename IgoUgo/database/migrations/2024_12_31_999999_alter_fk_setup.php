@@ -51,7 +51,7 @@ return new class extends Migration
             $table->foreign('area_code')->references('area_code')->on('areas');
         });
 
-        Schema::table('fetivals', function(Blueprint $table) {
+        Schema::table('festivals', function(Blueprint $table) {
             $table->foreign('area_code')->references('area_code')->on('areas');
         });
     }
