@@ -39,11 +39,16 @@ return new class extends Migration
         });
 
         Schema::table('hotels', function(Blueprint $table) {
-            $table->foreign('areacode')->references('areacode')->on('areas');
+            $table->foreign('area_code')->references('area_code')->on('areas');
+        });
+
+        Schema::table('hotel_infos', function(Blueprint $table) {
+            $table->foreign('hotel_id')->references('hotel_id')->on('hotels');
+            $table->foreign('hc_id')->references('hc_id')->on('hotel_categories');
         });
 
         Schema::table('products', function(Blueprint $table) {
-            $table->foreign('areacode')->references('areacode')->on('areas');
+            $table->foreign('area_code')->references('area_code')->on('areas');
         });
     }
 
@@ -80,11 +85,16 @@ return new class extends Migration
         });
 
         Schema::table('hotels', function(Blueprint $table) {
-            $table->foreign('areacode')->references('areacode')->on('areas');
+            $table->foreign('area_code')->references('area_code')->on('areas');
+        });
+
+        Schema::table('hotel_infos', function(Blueprint $table) {
+            $table->foreign('hotel_id')->references('hotel_id')->on('hotels');
+            $table->foreign('hc_id')->references('hc_id')->on('hotel_categories');
         });
 
         Schema::table('products', function(Blueprint $table) {
-            $table->foreign('areacode')->references('areacode')->on('areas');
+            $table->foreign('area_code')->references('area_code')->on('areas');
         });
     }
 };

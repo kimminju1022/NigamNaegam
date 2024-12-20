@@ -13,8 +13,8 @@ class Area extends Model
     protected $primaryKey = 'area_id';
 
     protected $guarded = [
-        'code',
-        'name',
-        'rnum',
+        'area_code',
+        'area_name',
+        'area_rnum',
     ];
 }

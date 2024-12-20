@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Comment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CommentSeeder extends Seeder
+class HotelInfoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +14,6 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        $total = 200;
-        $interval = 50;
-        for($i = 0; $i < $total; $i += $interval){
-            Comment::factory($interval)->create();
-        }
+        //
     }
 }

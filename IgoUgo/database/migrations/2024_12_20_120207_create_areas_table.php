@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id('area_id');
-            $table->string('code');
-            $table->string('name');
-            $table->integer('rnum');
+            $table->string('area_code', 3)->unique()->nullable();
+            $table->string('area_name', 50);
+            $table->integer('area_rnum');
         });
     }
 
