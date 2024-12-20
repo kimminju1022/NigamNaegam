@@ -1,36 +1,50 @@
 <template>
     <div class="total-container"> 
         <div>
-            <div class="categorty-name">
-                <span>호텔</span>
+            <div class="category-name">
+                <span class="name-hotel">호텔</span>
+            </div>
+            <div class="right-small-container select-result-box">
+                <h2><span class="font-blue">200</span> 개의 결과</h2>
+                <div class="select-list font-default-size" :class="{'dis-none':flg}">
+                    <div v-for="filter in selectedFilters" :key="filter.value" class="select-list-item">
+                        <p>{{ filter.name }}</p>
+                        <img src="img_product/img_x.png" class="img-x">
+                    </div>
+                </div>
             </div>
             <div class="order-box font-default-size">
-                <div>
-                    <span class="font-bold">정렬 순서</span>
+                
+                <div class="order-box-first">
+                    <div>
+                        <span class="font-bold">정렬 순서</span>
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <p>에디터 추천</p>
+                        <img src="img_product/img_star.png" class="img-order">
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <p>최신순</p>
+                        <span class="order-list-item-update font-bold">NEW</span>
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <p>별점순</p>
+                        <img src="img_product/img_thumb.png" class="img-order">
+                    </div>
                 </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    <p>에디터 추천</p>
-                    <img src="img_product/img_star.png" class="img-order">
-                </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    <p>최신순</p>
-                    <span class="order-list-item-update font-bold">NEW</span>
-                </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    <p>별점순</p>
-                    <img src="img_product/img_thumb.png" class="img-order">
-                </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    <p>필터</p>
-                    <img src="img_product/img_filter.png" class="img-order">
-                </div>
-                <div class="order-list-item">
-                    <img src="img_product/img_placeholder.png" class="img-order">
-                    <p>지도 보기</p>
+                <div class="order-box-last">
+                    <div @click="isVisible = true" class="order-list-item">
+                        <p class >필터</p>
+                        <img src="img_product/img_filter.png" class="img-order">
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <img src="img_product/img_placeholder.png" class="img-map">
+                        <p>지도 보기</p>
+                    </div>
                 </div>
             </div>
             <div>
@@ -55,13 +69,157 @@
                 </div>
             </div>
         </div>
+    </div> 
+
+    <!-- 모달모달 -->
+    <div v-if="isVisible" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-x-button">
+                <img @click="isVisible = false" class="modal_x_img" src="/img_product/img_x.png" alt="">
+            </div>
+            <p class="modal-region-text1 font-bold">지역</p>
+
+            <div class="modal-region">
+                <div>
+                    <input value="seoul" @change="updateFilters('seoul', $event)" class="modal-input" type="checkbox" id="seoul">
+                    <label for="seoul">서울</label>
+                </div>
+
+                <div>
+                    <input value="Incheon" @change="updateFilters('Incheon', $event)" class="modal-input" type="checkbox" id="Incheon">
+                    <label for="Incheon">인천</label>
+                </div>
+
+                <div>
+                    <input value="daejeon" @change="updateFilters('daejeon', $event)" class="modal-input" type="checkbox" id="daejeon">
+                    <label for="daejeon">대전</label>
+                </div>
+
+                <div>
+                    <input value="daegu" @change="updateFilters('daegu', $event)" class="modal-input" type="checkbox" id="daegu">
+                    <label for="daegu">대구</label>
+                </div>
+
+                <div>
+                    <input value="gwangju" @change="updateFilters('gwangju', $event)" class="modal-input" type="checkbox" id="gwangju">
+                    <label for="gwangju">광주</label>
+                </div>
+
+                <div>
+                    <input value="부산" @change="updateFilters('busan', $event)" class="modal-input" type="checkbox" id="busan">
+                    <label for="busan">부산</label>
+                </div>
+
+                <div>
+                    <input value="ulsan" @change="updateFilters('ulsan', $event)" class="modal-input" type="checkbox" id="ulsan">
+                    <label for="ulsan">울산</label>
+                </div>
+
+                <div>
+                    <input value="Sejong" @change="updateFilters('Sejong', $event)" class="modal-input" type="checkbox" id="Sejong">
+                    <label for="Sejong">세종</label>
+                </div>
+
+                <div>
+                    <input value="gyeonggido" @change="updateFilters('gyeonggido', $event)" class="modal-input" type="checkbox" id="gyeonggido">
+                    <label for="gyeonggido">경기도</label>
+                </div>
+
+                <div>
+                    <input value="gangwondo" @change="updateFilters('gangwondo', $event)" class="modal-input" type="checkbox" id="gangwondo">
+                    <label for="gangwondo">강원도</label>
+                </div>
+
+                <div>
+                    <input value="chungcheongbugdo" @change="updateFilters('chungcheongbugdo', $event)" class="modal-input" type="checkbox" id="chungcheongbugdo">
+                    <label for="chungcheongbugdo">충청북도</label>
+                </div>
+                
+                <div>
+                    <input value="chungcheongnamdo" @change="updateFilters('chungcheongnamdo', $event)" class="modal-input" type="checkbox" id="chungcheongnamdo">
+                    <label for="chungcheongnamdo">충청남도</label>
+                </div>
+
+                <div>
+                    <input value="gyeongsangbugdo" @change="updateFilters('gyeongsangbugdo', $event)" class="modal-input" type="checkbox" id="gyeongsangbugdo">
+                    <label for="gyeongsangbugdo">경상북도</label>
+                </div>
+
+                <div>
+                    <input value="gyeongsangnamdo" @change="updateFilters('gyeongsangnamdo', $event)" class="modal-input" type="checkbox" id="gyeongsangnamdo">
+                    <label for="gyeongsangnamdo">경상남도</label>
+                </div>
+
+                <div>
+                    <input value="jeonlabugdo" @change="updateFilters('jeonlabugdo', $event)" class="modal-input" type="checkbox" id="jeonlabugdo">
+                    <label for="jeonlabugdo">전라북도</label>
+                </div>
+
+                <div>
+                    <input value="jeonlanamdo" @change="updateFilters('jeonlanamdo', $event)" class="modal-input" type="checkbox" id="jeonlanamdo">
+                    <label for="jeonlanamdo">전라남도</label>
+                </div>
+
+                <div>
+                    <input value="jejudo" @change="updateFilters('jejudo', $event)" class="modal-input" type="checkbox" id="jejudo">
+                    <label for="jeju">제주도</label>
+                </div>
+            </div>
+
+            <p class="modal-region-text2 font-bold">카테고리</p>
+            <div class="modal-region">
+                <div>
+                    <input class="modal-input" type="checkbox" id="pool">
+                    <label for="pool">수영장</label>
+                </div>
+                <div>
+                    <input class="modal-input" type="checkbox" id="grill">
+                    <label for="grill">바베큐장</label>
+                </div>
+                <div>
+                    <input class="modal-input" type="checkbox" id="fire">
+                    <label for="fire">캠프파이어</label>
+                </div>
+                <div>
+                    <input class="modal-input" type="checkbox" id="beauty">
+                    <label for="beauty">뷰티시설</label>
+                </div>
+                <div>
+                    <input class="modal-input" type="checkbox" id="fitness">
+                    <label for="fitness">피트니스</label>
+                </div>
+                <div>
+                    <input class="modal-input" type="checkbox" id="pickup">
+                    <label for="pickup">픽업서비스</label>
+                </div>
+            </div>
+
+        </div>
     </div>
-    </template>
+</template>
     
-    <script setup>
+<script setup>
     import { onBeforeMount, onMounted, ref } from 'vue';
     import axios from 'axios';
-    
+
+    // 카테카테고리고리
+    const selectedFilters = ref([]);
+
+    function updateFilters(filter, event) {
+        if (event.target.checked) {
+            selectedFilters.value.push({name: filter, value: filter});
+        } else {
+            selectedFilters.value = selectedFilters.value.filter(
+                (item) => item.value !== filter
+            );
+        }
+    }
+
+
+    // 모달모달
+    const isVisible = ref(false);
+
+    // 반응형
     const flg = ref(false);
     const flgSetup = () => {
         flg.value = window.innerWidth >= 1000 ? false : true;
@@ -91,109 +249,15 @@
     //         error: null, // 에러 메시지
     //     };
     // }
-    </script>
+</script>
     
-    <style scoped>
-    /* 전체를 감싸는 제일 큰 틀 */
-    /* .total-container {
-        display: grid;
-        grid-template-columns: 1fr 6fr;
-        gap: 30px;
-        padding: 0 50px;
-    } */
-    
-    /* 작은 틀 */
-    /* .left-small-container {
-        border: 1px solid #01083A;
-        border-radius: 10px;
-        margin: 1rem 0;
-        padding: 20px;
-    } */
-    /* .right-small-container {
-        border: 1px solid #01083A;
-        border-radius: 10px;
-        margin: 10px 0;
-    }
-    .right-small-container:last-child {
-        margin-left: 0;
-    } */
-    /* 카테고리 이름 */
-    .categorty-name {
+<style scoped>
+    .name-hotel {
         font-size: 50px;
-        margin-bottom: 30px;
     }
-    
-    /* 리스트 아이템 */
-    .list-item {
-        display: flex;
-        gap: 10px;
-        font-size: 20px;
-        align-items: center;
+    .category-name {
+        padding-bottom: 10px;
     }
-    
-    /* 지도 관련 */
-    .map-box {
-        /* height: 200px; */
-        background-image: url('/default/map_example.png');
-        background-position: center;
-    }
-    .map-box-title {
-        margin-top: 140px;
-        background-color: rgba(255, 255, 255, .7);
-        text-align: center;
-        /* border-radius: 10px; */
-    }
-    
-    /* 카테고리 관련 */
-    .cat-box-title {
-        text-align: center;
-    }
-    .cat-list {
-        display: flex;
-        flex-direction: column;
-        /* justify-content: space-around; */
-        gap: 20px;
-        margin-top: 10px;
-    }
-    .cat-input {
-        width: 20px;
-        height: 20px;
-        border: 1px solid #01083A;
-        border-radius: 50%;
-        appearance: none;
-    }
-    .cat-input:checked {
-        background-color: #01083A;
-    }
-    
-    /* 가격 관련 */
-    .pri-box-title {
-        text-align: center;
-    }
-    .pri-box {
-        margin-top: 20px;
-    }
-    .pri-input {
-        border: 1px solid #01083A;
-        border-radius: 10px;
-        height: 30px;
-        min-width: 100px;
-        padding-left: 20px;
-    }
-    .pri-wave {
-        text-align: center;
-    }
-    
-    /* 버튼 */
-    .button-position {
-        text-align: center;
-    }
-    .button-wide {
-        min-width: 150px;
-        font-size: 1.5rem;
-        border-radius: 10px;
-    }
-    
     /* 선택 결과 관련 */
     .select-result-box {
         padding: 20px;
@@ -213,17 +277,24 @@
     .order-box {
         display: flex;
         gap: 20px;
-    }
-    .order-box :last-child {
-        justify-items: flex-end;
+        justify-content: space-between;
     }
     /* .order-list {
         display: flex;
         gap: 20px;
     } */
+    .order-box-first {
+        display: flex;
+        gap: 20px;
+    }
+    .order-box-last {
+        display: flex;
+        gap: 20px;
+    }
     .order-list-item {
         display: flex;
         align-items: center;
+        cursor: pointer;
     }
     .order-list-item-update {
         color: #ff0000;
@@ -237,7 +308,7 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         column-gap: 15px;
         row-gap: 40px;
-        margin-top: 50px;
+        margin-top: 40px;
     }
     .card {
         height: 250px;
@@ -319,6 +390,11 @@
         height: 20px;
         margin-left: 5px;
     }
+    .img-map {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
     /* 일단 얘는 나중에 글자 크기 조절 */
     .test {
         font-size: 5px;
@@ -356,6 +432,52 @@
         display: flex;
         gap: 5px;
     }
+
+    /* 모달모달 */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+    }
+    .modal-content {
+        width: 450px;
+        background-color: white;
+        padding: 20px 30px 40px 30px;
+        border-radius: 10px;
+    }
+    .modal-region-text1 {
+        font-size: 20px;
+        padding-bottom: 30px;
+    }
+    .modal-region-text2 {
+        font-size: 20px;
+        padding: 30px 0;
+    }
+    .modal-region {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        row-gap: 15px;
+    }
+    .modal-input {
+        margin-right: 5px;
+    }
+    .modal-x-button {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .modal_x_img {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
     
     /* 미디어쿼리 */
     @media (max-width: 1000px) {
@@ -365,4 +487,4 @@
             padding: 0;
         }
     }
-    </style>
+</style>
