@@ -7,9 +7,9 @@
             <div class="right-small-container select-result-box">
                 <h2><span class="font-blue">200</span> 개의 결과</h2>
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
-                    <div v-for="filter in selectedFilters" :key="filter.value" class="select-list-item">
-                        <p>{{ filter.name }}</p>
-                        <img src="img_product/img_x.png" class="img-x">
+                    <div v-for="value in selectedFilters" :key="value" class="select-list-item">
+                        <p>{{ value }}</p>
+                        <img @click="closefilter(value)" src="img_product/img_x.png" class="img-x">
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="order-box-last">
-                    <div @click="isVisible = true" class="order-list-item">
+                    <div @click="openmodal" class="order-list-item">
                         <p class >필터</p>
                         <img src="img_product/img_filter.png" class="img-order">
                     </div>
@@ -59,13 +59,9 @@
     
                 
                 <div class="pagination">
-                    <a href="#"><button class="btn bg-clear"><</button></a>
-                    <a href="#"><button class="btn bg-clear">1</button></a>
-                    <a href="#"><button class="btn bg-clear">2</button></a>
-                    <a href="#"><button class="btn bg-clear">3</button></a>
-                    <a href="#"><button class="btn bg-clear">4</button></a>
-                    <a href="#"><button class="btn bg-clear">5</button></a>
-                    <a href="#"><button class="btn bg-clear">></button></a>
+                    <button @click="changePage(current_page - 1)" class="btn bg-clear"><</button>
+                    <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ 'active-page': page === current_page, 'btn bg-clear': true }">{{ page }}</button>
+                    <button @click="changePage(current_page + 1)" class="btn bg-clear">></button>
                 </div>
             </div>
         </div>
@@ -75,93 +71,93 @@
     <div v-if="isVisible" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-x-button">
-                <img @click="isVisible = false" class="modal_x_img" src="/img_product/img_x.png" alt="">
+                <img @click="closemodal" class="modal_x_img" src="/img_product/img_x.png" alt="">
             </div>
             <p class="modal-region-text1 font-bold">지역</p>
 
             <div class="modal-region">
                 <div>
-                    <input value="seoul" @change="updateFilters('seoul', $event)" class="modal-input" type="checkbox" id="seoul">
+                    <input :value="category[0].name" :checked="selectedFilters.includes('서울')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="seoul">
                     <label for="seoul">서울</label>
                 </div>
 
                 <div>
-                    <input value="Incheon" @change="updateFilters('Incheon', $event)" class="modal-input" type="checkbox" id="Incheon">
+                    <input value="인천" :checked="selectedFilters.includes('인천')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="Incheon">
                     <label for="Incheon">인천</label>
                 </div>
 
                 <div>
-                    <input value="daejeon" @change="updateFilters('daejeon', $event)" class="modal-input" type="checkbox" id="daejeon">
+                    <input value="대전" :checked="selectedFilters.includes('대전')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="daejeon">
                     <label for="daejeon">대전</label>
                 </div>
 
                 <div>
-                    <input value="daegu" @change="updateFilters('daegu', $event)" class="modal-input" type="checkbox" id="daegu">
+                    <input value="대구" :checked="selectedFilters.includes('대구')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="daegu">
                     <label for="daegu">대구</label>
                 </div>
 
                 <div>
-                    <input value="gwangju" @change="updateFilters('gwangju', $event)" class="modal-input" type="checkbox" id="gwangju">
+                    <input value="광주" :checked="selectedFilters.includes('광주')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gwangju">
                     <label for="gwangju">광주</label>
                 </div>
 
                 <div>
-                    <input value="부산" @change="updateFilters('busan', $event)" class="modal-input" type="checkbox" id="busan">
+                    <input value="부산" :checked="selectedFilters.includes('부산')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="busan">
                     <label for="busan">부산</label>
                 </div>
 
                 <div>
-                    <input value="ulsan" @change="updateFilters('ulsan', $event)" class="modal-input" type="checkbox" id="ulsan">
+                    <input value="울산" :checked="selectedFilters.includes('울산')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="ulsan">
                     <label for="ulsan">울산</label>
                 </div>
 
                 <div>
-                    <input value="Sejong" @change="updateFilters('Sejong', $event)" class="modal-input" type="checkbox" id="Sejong">
+                    <input value="세종" :checked="selectedFilters.includes('세종')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="Sejong">
                     <label for="Sejong">세종</label>
                 </div>
 
                 <div>
-                    <input value="gyeonggido" @change="updateFilters('gyeonggido', $event)" class="modal-input" type="checkbox" id="gyeonggido">
+                    <input value="경기도" :checked="selectedFilters.includes('경기도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gyeonggido">
                     <label for="gyeonggido">경기도</label>
                 </div>
 
                 <div>
-                    <input value="gangwondo" @change="updateFilters('gangwondo', $event)" class="modal-input" type="checkbox" id="gangwondo">
+                    <input value="강원도" :checked="selectedFilters.includes('강원도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gangwondo">
                     <label for="gangwondo">강원도</label>
                 </div>
 
                 <div>
-                    <input value="chungcheongbugdo" @change="updateFilters('chungcheongbugdo', $event)" class="modal-input" type="checkbox" id="chungcheongbugdo">
+                    <input value="충청북도" :checked="selectedFilters.includes('충청북도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="chungcheongbugdo">
                     <label for="chungcheongbugdo">충청북도</label>
                 </div>
                 
                 <div>
-                    <input value="chungcheongnamdo" @change="updateFilters('chungcheongnamdo', $event)" class="modal-input" type="checkbox" id="chungcheongnamdo">
+                    <input value="충청남도" :checked="selectedFilters.includes('충청남도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="chungcheongnamdo">
                     <label for="chungcheongnamdo">충청남도</label>
                 </div>
 
                 <div>
-                    <input value="gyeongsangbugdo" @change="updateFilters('gyeongsangbugdo', $event)" class="modal-input" type="checkbox" id="gyeongsangbugdo">
+                    <input value="경상북도" :checked="selectedFilters.includes('경상북도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gyeongsangbugdo">
                     <label for="gyeongsangbugdo">경상북도</label>
                 </div>
 
                 <div>
-                    <input value="gyeongsangnamdo" @change="updateFilters('gyeongsangnamdo', $event)" class="modal-input" type="checkbox" id="gyeongsangnamdo">
+                    <input value="경상남도" :checked="selectedFilters.includes('경상남도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gyeongsangnamdo">
                     <label for="gyeongsangnamdo">경상남도</label>
                 </div>
 
                 <div>
-                    <input value="jeonlabugdo" @change="updateFilters('jeonlabugdo', $event)" class="modal-input" type="checkbox" id="jeonlabugdo">
+                    <input value="전라북도" :checked="selectedFilters.includes('전라북도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="jeonlabugdo">
                     <label for="jeonlabugdo">전라북도</label>
                 </div>
 
                 <div>
-                    <input value="jeonlanamdo" @change="updateFilters('jeonlanamdo', $event)" class="modal-input" type="checkbox" id="jeonlanamdo">
+                    <input value="전라남도" :checked="selectedFilters.includes('전라남도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="jeonlanamdo">
                     <label for="jeonlanamdo">전라남도</label>
                 </div>
 
                 <div>
-                    <input value="jejudo" @change="updateFilters('jejudo', $event)" class="modal-input" type="checkbox" id="jejudo">
+                    <input value="제주도" :checked="selectedFilters.includes('제주도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="jejudo">
                     <label for="jeju">제주도</label>
                 </div>
             </div>
@@ -169,27 +165,27 @@
             <p class="modal-region-text2 font-bold">카테고리</p>
             <div class="modal-region">
                 <div>
-                    <input class="modal-input" type="checkbox" id="pool">
+                    <input value="수영장" :checked="selectedFilters.includes('수영장')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="pool">
                     <label for="pool">수영장</label>
                 </div>
                 <div>
-                    <input class="modal-input" type="checkbox" id="grill">
+                    <input value="바베큐장" :checked="selectedFilters.includes('바베큐장')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="grill">
                     <label for="grill">바베큐장</label>
                 </div>
                 <div>
-                    <input class="modal-input" type="checkbox" id="fire">
+                    <input value="캠프파이어" :checked="selectedFilters.includes('캠프파이어')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="fire">
                     <label for="fire">캠프파이어</label>
                 </div>
                 <div>
-                    <input class="modal-input" type="checkbox" id="beauty">
+                    <input value="뷰티시설" :checked="selectedFilters.includes('뷰티시설')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="beauty">
                     <label for="beauty">뷰티시설</label>
                 </div>
                 <div>
-                    <input class="modal-input" type="checkbox" id="fitness">
+                    <input value="피트니스" :checked="selectedFilters.includes('피트니스')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="fitness">
                     <label for="fitness">피트니스</label>
                 </div>
                 <div>
-                    <input class="modal-input" type="checkbox" id="pickup">
+                    <input value="픽업서비스" :checked="selectedFilters.includes('픽업서비스')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="pickup">
                     <label for="pickup">픽업서비스</label>
                 </div>
             </div>
@@ -199,25 +195,49 @@
 </template>
     
 <script setup>
-    import { onBeforeMount, onMounted, ref } from 'vue';
+    import { computed, onBeforeMount, onMounted, ref} from 'vue';
     import axios from 'axios';
 
     // 카테카테고리고리
-    const selectedFilters = ref([]);
-
-    function updateFilters(filter, event) {
+    const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+    
+    function updateFilters(event) {
+        // console.log(event);
+        const value = event.target.value;
+        // console.log(value);
         if (event.target.checked) {
-            selectedFilters.value.push({name: filter, value: filter});
+            selectedFilters.value.push(value);
         } else {
             selectedFilters.value = selectedFilters.value.filter(
-                (item) => item.value !== filter
+                (item) => item !== value
             );
         }
+        localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+        // console.log(localStorage.getItem('selectedFilters'));
+        applyFilters();
     }
 
+    function closefilter(value) {
+        selectedFilters.value = selectedFilters.value.filter(
+            (item) => item !== value
+        );
+        localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+    }
+
+    window.onbeforeunload = function() {
+        localStorage.clear();
+    };
 
     // 모달모달
     const isVisible = ref(false);
+
+    function openmodal() {
+        isVisible.value = true;
+    }
+        
+    function closemodal() {
+        isVisible.value = false;
+    }
 
     // 반응형
     const flg = ref(false);
@@ -229,26 +249,68 @@
     });
     window.addEventListener('resize', flgSetup);
     
-    // API
-    const hotels = ref([]);
     
     // 마운트된 후
     onMounted(async() => {
+        await loadHotels()
+        // console.log(hotels)
+    });
+    
+    // 호텔 불러오기
+    const hotels = ref([]);
+    let current_page = ref(1)
+
+    async function loadHotels() {
         try {
-            const response = await axios.get('/api/hotels');
-            // console.log(response.data);
-            hotels.value = response.data
+            const response = await axios.get(`/api/hotels?page=${current_page.value}`);
+            // console.log(response.data.data);
+            hotels.value = response.data.data
         } catch (error) {
             console.error(error);
         }
+    }
+
+    // 페이지네이션
+
+    // 페이지 버튼 계산
+    const pages = computed(() => {
+        const pageCount = 5;
+        const startPage = Math.max(current_page.value - Math.floor(pageCount / 2), 1);
+        // 만약 current_page.value가 5면? 5 빼기 5/2=2(나머지버림)  3이나오니까 max에서 3이반환됨됨
+        const endPage = Math.min(startPage + pageCount - 1, 46);
+        // 3이 반환되서 5랑 더하면 8이됨 8이 나오니까 8-1 해서 min에서 7이 반환됨
+
+        return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+        // Array에서 i를쓰면 0에서 부터 반복됨
+        // 7-3에 +1 이니까 5가출력됨 5개의 공간을가진 배열이 만들어지고 5 i는 1씩상승하고 i가 증가할 때마다 startPage 값에 더해지는 구조
+        // 3이니까 3+0 은 3 3+1은 4... 해서 배열에 3 4 5 6 7 결국 현제페이지인 5가 가운데 오도록 작동
     });
-    // data() {
-    //     return {
-    //         items: [], // tourAPI 데이터
-    //         loading: true, // 로딩 상태
-    //         error: null, // 에러 메시지
-    //     };
-    // }
+
+    // 페이지 변경
+    function changePage(page) {
+        if (page < 1 || page > 46) {
+            return 
+            // page가 1이하거나 46이상이면 작동안하고 리턴시켜버려서 함수를 나가버리기기
+        }
+        current_page.value = page;
+        loadHotels()
+    }
+
+    // 컨트롤러로 데이터 전송하는법?
+    const category = ref([
+        { id: 1, name: '서울' },
+    ]);
+
+    async function applyFilters() { 
+        try {
+            await axios.get('/api/filters', {
+            filters: selectedFilters.value
+            });
+        } catch {
+            console.error(error);
+        }
+    }
+
 </script>
     
 <style scoped>
@@ -263,11 +325,16 @@
         padding: 20px;
     }
     .select-list {
+        display: flex;
+        flex-wrap: wrap;
         padding: 20px;
         display: flex;
         gap: 20px;
     }
     .select-list-item {
+        display: flex;
+        justify-content: space-between;
+        max-width: 130px;
         border: 1px solid #01083A;
         border-radius: 20px;
         padding: 10px;
@@ -367,6 +434,9 @@
         color: #fff;
         background: #01083a;
     }
+    .active-page {
+        font-weight: 900;
+    }
     
     /* 폰트 관련 */
     .font-default-size {
@@ -384,6 +454,8 @@
         width: 12px;
         height: 12px;
         margin-left: 10px;
+        align-self: center;
+        cursor: pointer;
     }
     .img-order { 
         width: 20px;

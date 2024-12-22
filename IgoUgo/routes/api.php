@@ -26,6 +26,7 @@ Route::get('/testdata', [TestController::class, 'index']);
 
 // 호텔리스트 라우터
 Route::get('/hotels', [HotelController::class, 'hotels']);
+Route::get('/filters', [HotelController::class, 'filterHotels']);
 
 // 상품리스트 라우터
 Route::get('/products/list', [ProductController::class, 'productData']);
