@@ -2,11 +2,10 @@
     <div class="my-page">
         <div class="my-profile-bg">
             <div class="my-profile-box">
-                <div>
+                <div class="my-profile-img-box">
                     <div class="my-profile-img">
-                        <!-- <img :src="$store.state.user.userInfo.profile"> -->
-                        <img :src="userInfo.user_profile">
-                        <!-- <input v-model="userInfo.profile" type="file" name="user_profile" id="profile"> -->
+                        <img :src="preview || userInfo.user_profile">
+                        <!-- <img :src="preview"> -->
                     </div>
                     <input @change="setFile" type="file" name="user_profile" accept="image/*">
                 </div>
@@ -31,8 +30,6 @@
             </div>
         </div>
         <div class="my-profile-update-btn">
-            <!-- 수정버튼 button @click? -->
-            <!-- <button class="btn bg-navy btn-update">완료</button> -->
             <button @click="$store.dispatch('user/updateUser', userInfo)" class="btn bg-navy btn-update">완료</button>
             <button @click="backToUser" class="btn bg-navy btn-update">취소</button>
         </div>
@@ -41,39 +38,25 @@
 
 <script setup>
 
-import { computed, reactive } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store =  useStore();
 const router = useRouter();
 
-// const userInfo = reactive({
-//     email: store.state.user.userInfo.user_email
-//     ,name: store.state.user.userInfo.user_name
-//     ,nickname: store.state.user.userInfo.user_nickname
-//     ,phone: store.state.user.userInfo.user_phone
-//     ,profile: store.state.user.userInfo.user_profile
-//     // ,profile: null
-//     ,user_id: store.state.user.userInfo.user_id
-//     // email: store.state.user.userInfo.user_email
-//     // ,name: store.state.user.userInfo.user_name
-//     // ,nickname: store.state.user.userInfo.user_nickname
-//     // ,phone: store.state.user.userInfo.user_phone
-//     // ,profile: store.state.user.userInfo.user_profile
-//     // // ,profile: null
-//     // ,user_id: store.state.user.userInfo.user_id
-// });
 const userInfo = computed(() => store.state.auth.userInfo);
 
+const preview = ref('');
+
 const setFile = (e) => {
-    userInfo.profile = e.target.files[0];
+    userInfo.user_profile = e.target.files[0];
+    preview.value = URL.createObjectURL(userInfo.user_profile);
 }
 
 const backToUser = () => {
-    router.replace(`/user/${store.state.auth.userInfo.user_id}`);
+    router.replace(`/user/${userInfo.user_id}`);
 };
-
 </script>
 
 <style scoped>
@@ -81,7 +64,7 @@ const backToUser = () => {
     width: 100%;
     margin-top: 30px;
     margin-bottom: 80px;
-    margin-top: 70px;
+    margin-top: 100px;
 }
 
 .my-page > div {
@@ -101,11 +84,22 @@ const backToUser = () => {
     /* background-color: rgb(133, 177, 218, 0.2); */
 }
 
+/* .my-profile-img-box {
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+} */
+
+.my-profile-img-box > input {
+    width: 200px;
+}
+
 .my-profile-img {
     background: #fff;
     padding: 10px;
     text-align: center;
     border-radius: 50%;
+    width: 220px;
+    height: 220px;
 }
 
 .my-profile-img > img {
@@ -135,7 +129,7 @@ const backToUser = () => {
 }
 
 .profile-item :nth-child(2) {
-    min-width: 200px;
+    min-width: 300px;
     padding: 10px 15px;
     font-weight: 500;
     text-align: center;

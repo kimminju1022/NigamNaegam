@@ -1,30 +1,57 @@
 <template>
     <div class="password">
         <h1>비밀번호 변경</h1>
+        <!-- <div class="password-err" v-if="errorMsgList.length"> -->
         <div class="password-err">
-            <p>비밀번호가 맞지 않습니다.</p>
+            <p v-for="msg in $store.state.user.errorMsgList" :key="msg">{{ msg }}</p>
         </div>
+        <!-- <div class="password-err">
+            <p>비밀번호가 맞지 않습니다.</p>
+        </div> -->
         <div class="password-item">
             <p class="bg-navy">현재 비밀번호</p>
-            <input placeholder="비밀번호 입력">
+            <input v-model="user.currentPassword" type="password" name="currentPassword" placeholder="비밀번호 입력">
         </div>
         <div class="password-item">
             <p class="bg-navy">변경할 비밀번호</p>
-            <input placeholder="비밀번호 입력">
+            <input v-model="user.newPassword" type="password" name="newPassword" placeholder="비밀번호 입력">
         </div>
         <div class="password-item">
             <p class="bg-navy">변경할 비밀번호 확인</p>
-            <input placeholder="비밀번호 입력">
+            <input v-model="user.newPasswordChk" type="password" name="newPasswordChk" placeholder="비밀번호 입력">
         </div>
         <div class="my-profile-chk-btn">
-            <button class="btn bg-navy btn-chk">변경</button>
-            <button class="btn bg-clear btn-chk">취소</button>
+            <!-- TODO : 버튼 디자인좀 -->
+            <button @click="$store.dispatch('user/updateUserPW', user)" class="btn bg-clear">변경</button>
+            <!-- <button @click="backToUser" class="btn bg-clear btn-chk">취소</button> -->
+            <router-link :to="`/user/${$store.state.auth.userInfo.user_id}`"><button class="btn bg-clear">취소</button></router-link>
         </div>
     </div>
 </template>
 
 <script setup>
+import { computed, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const store = useStore();
+const router = useRouter();
+
+const userInfo = computed(()=> store.state.auth.userInfo);
+
+const user = reactive({
+    user_id: userInfo.value.user_id
+    // ,user_password: userInfo.value.user_password
+    ,currentPassword: ''
+    ,newPassword: ''
+    ,newPasswordChk: ''
+});
+
+const errorMsgList = ref({});
+
+// const backToUser = () => {
+//     router.replace(`/user/${userInfo.user_id}`);
+// };
 </script>
 
 <style scoped>
@@ -37,7 +64,7 @@
 
 .password h1 {
     color: #01083a;
-    margin: 50px auto;
+    margin: 60px auto;
     font-size: 3rem;
 }
 
@@ -89,8 +116,12 @@
     border-radius: 50px;
 }
 
-.my-profile-chk-btn button:hover {
-    background-color: rgb(133, 177, 218);
+.my-profile-chk-btn :nth-child(1):hover {
+    color: #f00;
+    font-weight: 600;
+}
+.my-profile-chk-btn :nth-child(2):hover {
     color: #01083a;
+    font-weight: 600;
 }
 </style>

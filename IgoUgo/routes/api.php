@@ -53,6 +53,9 @@ Route::middleware('my.auth')->group(function() {
     Route::get('/user/{id}/edit', [UserController::class, 'edit']);
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
+    Route::post('/password/{id}', [UserController::class, 'chkPW']);
+    // Route::get('/password/{id}/edit', [UserController::class, 'editPW']);
+    Route::put('/password/{id}', [UserController::class, 'updatePW'])->name('userPW.update');
 
     // 게시판 관련
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');

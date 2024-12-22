@@ -35,6 +35,7 @@
                 </div>
             </div>
             <div class="my-profile-update-btn">
+                <router-link :to="`/password/${$store.state.auth.userInfo.user_id}`"><button class="btn bg-clear">비밀번호 변경</button></router-link>
                 <router-link :to="`/user/${$store.state.auth.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
@@ -189,7 +190,6 @@ onUnmounted(() => {
 });
 
 
-
 // Modal
 const modalFlg = ref(false);
 const openModal = () => {
@@ -200,15 +200,9 @@ const closeModal = () => {
 }
 
 // 탈퇴
-// const deleteModalFlg = ref(false);
 const deletemodal = (userInfo) => {
     store.dispatch('user/destroyUser', userInfo);
-    // deleteModalFlg.value = true;
 }
-
-
-
-
 </script>
 
 <style scoped>
@@ -248,6 +242,8 @@ const deletemodal = (userInfo) => {
     padding: 10px;
     text-align: center;
     border-radius: 50%;
+    width: 220px;
+    height: 220px;
 }
 
 .my-profile-img > img {
@@ -300,7 +296,12 @@ const deletemodal = (userInfo) => {
     border-radius: 50px;  
 }
 
-.my-profile-update-btn button:hover {
+.my-profile-update-btn :nth-child(1) button:hover {
+    color: #01083a;
+    font-weight: 600;
+}
+
+.my-profile-update-btn :nth-child(2) button:hover {
     background-color: rgb(133, 177, 218);
     color: #01083a;
 }

@@ -17,7 +17,6 @@
                         <div v-else class="header-title-button">
                             <button class="btn bg-clear header-btn">FAQ</button>
                             <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
-                            <!-- <router-link :to="`/user/${user.user_id}`"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link> -->
                             <router-link :to="`/user/${user.user_id}`"><img :src="user.user_profile" alt=""></router-link>
                         </div>
                     </div>
@@ -83,12 +82,6 @@
                                 </div>
                             </li>
                         </ul>
-                        <!-- <router-link to="/hotels" class="app-content bg-navy">호텔</router-link>
-                        <router-link to="/products" class="app-content bg-navy">상품</router-link>
-                        <p class="app-content bg-navy">게시판</p>
-                        <router-link to="/boards" class="app-review-board bg-navy">리뷰 게시판</router-link>
-                        <router-link to="/boards" class="app-review-board bg-navy">자유 게시판</router-link> -->
-
                     </div>
                 </div>
 
@@ -216,7 +209,6 @@ const toggleMenu = () => {
 }
 
 const store = useStore();
-// const id = computed(()=> store.state.user.userInfo.user_id);
 const user = computed(()=> store.state.auth.userInfo);
 
 // ---------- 게시판 이동 관련 start ----------

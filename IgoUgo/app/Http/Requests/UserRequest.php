@@ -41,10 +41,23 @@ class UserRequest extends FormRequest
             $rules['user_name'] = ['required', 'between:2,20', 'regex:/^[a-zA-Z가-힣]+$/u'];
             $rules['user_nickname'] = ['required', 'between:1,50', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
             $rules['user_phone'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
-            // $rules['user_profile'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
+            $rules['user_profile'] = ['required', 'image'];
 
             unset($rules['user_email']);
             unset($rules['user_password']);
+        }
+
+        // 유저 비밀번호 업데이트
+        else if($this->routeIs('userPW.update')) {
+            $rules['currentPassword'] = ['required', 'between:5,20', 'regex:/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{5,}$/'];
+            $rules['newPassword'] = ['required', 'between:5,20', 'regex:/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{5,}$/'];
+            $rules['newPasswordChk'] = ['same:newPassword'];
+
+            unset($rules['user_email']);
+            unset($rules['user_name']);
+            unset($rules['user_nickname']);
+            unset($rules['user_phone']);
+            unset($rules['user_profile']);
         }
 
         return $rules;

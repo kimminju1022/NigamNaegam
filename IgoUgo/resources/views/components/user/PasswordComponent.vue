@@ -2,19 +2,27 @@
     <div class="password">
         <h1>비밀번호 확인</h1>
         <div class="password-err">
-            <p>비밀번호가 맞지 않습니다.</p>
+            <!-- <p v-if="user.user_password !== userInfo.user_password">비밀번호가 맞지 않습니다.</p> -->
+            <p v-for="errMsg in $store.state.user.errorMsgList" :key="errMsg">{{ errMsg }}</p>
         </div>
         <div class="password-item">
             <p class="bg-navy">현재 비밀번호</p>
-            <input placeholder="비밀번호 입력">
+            <input v-model="userInfo.user_password" type="password" name="user_password" placeholder="비밀번호 입력">
         </div>
         <div class="my-profile-chk-btn">
-            <button class="btn bg-navy btn-chk">확인</button>
+            <button @click="$store.dispatch('user/chkPW', userInfo)" class="btn bg-navy btn-chk">확인</button>
         </div>
     </div>
 </template>
 
 <script setup>
+import { computed, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const errorMsgList = ref('');
+
+const store = useStore();
+const userInfo = computed(()=> store.state.auth.userInfo);
 
 </script>
 
@@ -28,7 +36,7 @@
 
 .password h1 {
     color: #01083a;
-    margin: 50px auto;
+    margin: 60px auto;
     font-size: 3rem;
 }
 

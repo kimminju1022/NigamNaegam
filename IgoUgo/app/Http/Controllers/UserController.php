@@ -34,7 +34,6 @@ class UserController extends Controller
     public function show($id) {
         $userInfo = User::find($id);
 
-        // return response()->json($userInfo); 
         $responseData = [
             'success' => true
             ,'msg' => '유저 정보 획득 성공'
@@ -44,7 +43,7 @@ class UserController extends Controller
         return response()->json($responseData, 200);
     }
 
-    // 유저 수정페이지로
+    // 유저 수정페이지로 이동
     public function edit($id) {
         $userInfo = User::find($id);
     
@@ -57,7 +56,7 @@ class UserController extends Controller
         return response()->json($responseData, 200);
     }
 
-    // 유저 수정 업데이트
+    // 유저 정보 업데이트
     public function update(UserRequest $request) {
         // Log::debug('user update request', $request->all());
 
@@ -65,14 +64,20 @@ class UserController extends Controller
 
         $userInfo = User::find($id);
         
+        // $insertData['img'] = '/'.$request->file('file')->store('img');
+
         if($userInfo->user_name !== $request->user_name) {
             $userInfo->user_name = $request->user_name;
-        } else if($userInfo->user_nickname !== $request->user_nickname) {
+        }
+        if($userInfo->user_nickname !== $request->user_nickname) {
             $userInfo->user_nickname = $request->user_nickname;
-        } else if($userInfo->user_phone !== $request->user_phone) {
+        }
+        if($userInfo->user_phone !== $request->user_phone) {
             $userInfo->user_phone = $request->user_phone;
-        } else if($userInfo->user_profile !== $request->user_profile) {
-            $userInfo->user_profile = $request->user_profile;
+        }
+        if($request->hasFile('user_profile')) {
+            $userProfile = '/'.$request->file('user_profile')->store('img');
+            $userInfo->user_profile = $userProfile;
         }
 
         $userInfo->save();
@@ -106,5 +111,58 @@ class UserController extends Controller
         ];
 
         return response()->json($responseData, 200);
+    }
+
+    // 유저 비밀번호 확인 -> 수정페이지로 이동
+    public function chkPW(UserRequest $request) {
+
+        $id = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => '사용자를 찾을 수 없습니다.'], 404);
+        }
+
+        // 비밀번호 체크
+        if (Hash::check($request->input('user_password'), $user->user_password)) {
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['message' => '비밀번호가 틀렸습니다.'], 422);
+        }
+    }
+
+    // 유저 비밀번호 수정페이지로 이동
+    // public function editPW() {
+
+    // }
+
+    // 유저 비밀번호 업데이트
+    public function updatePW(UserRequest $request) {
+
+        $id = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => '사용자를 찾을 수 없습니다.'], 404);
+        }
+
+        if (!Hash::check($request->currentPassword, $user->user_password)) {
+            return response()->json(['message' => '현재 비밀번호가 일치하지 않습니다.'], 400);
+        }
+
+        if ($request->newPassword !== $request->newPasswordChk) {
+            return response()->json(['message' => '새 비밀번호와 비밀번호 확인이 일치하지 않습니다.'], 400);
+        }
+
+        // 새 비밀번호 해싱 후 저장
+        $user->user_password = Hash::make($request->newPassword);
+
+        // 비밀번호 변경
+        $user->save();
+
+        // 변경 성공 메시지 반환
+        return response()->json(['message' => '비밀번호가 성공적으로 변경되었습니다.']);
     }
 }
