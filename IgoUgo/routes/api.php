@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductMainController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,9 @@ Route::get('/testdata', [TestController::class, 'index']);
 // 호텔리스트 라우터
 Route::get('/hotels', [HotelController::class, 'hotels']);
 Route::get('/filters', [HotelController::class, 'filterHotels']);
+
+// 상품메인 라우터
+Route::get('/products', [ProductMainController::class, 'getFilteredProducts']);
 
 // 상품리스트 라우터
 Route::get('/products/list', [ProductController::class, 'productData']);
