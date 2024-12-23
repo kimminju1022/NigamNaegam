@@ -75,6 +75,7 @@ export default {
 
                 // alert(errorMsgList.join('\n'));
                 context.commit('setErrorMsgList', errorMsgList);
+                alert('아이디 또는 비밀번호가 틀렸습니다.');
             });
         },
 
@@ -107,44 +108,6 @@ export default {
                 router.replace('/');
             });
         },
-
-        // chkPW(context, userInfo) {
-        //     const url = `/api/password/${userInfo.user_id}`;
-        //     const data = JSON.stringify(userInfo);
-        //     const config = {
-        //         headers: {
-        //             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-        //         }
-        //     }
-
-        //     context.commit('setErrorMsgList', []);
-
-        //     console.log(url);
-        //     console.log(userInfo);
-        //     console.log(data);
-
-        //     axios.post(url, data)
-        //     .then(response => {
-        //         router.replace(`/password/${userInfo.user_id}/edit`);
-        //     })
-        //     .catch(error => {
-        //         let errorMsgList = [];
-        //         const errorData = error.response.data;
-
-        //         if(error.response.status === 422) {
-        //             if(errorData.data.passwor) {
-        //                 errorMsgList.push('비밀번호가 유효하지 않습니다.');
-        //             }
-        //         } else if(error.response.status === 401) {
-        //             // 비밀번호 오류
-        //             errorMsgList.push(errorData.msg);
-        //         } else {
-        //             errorMsgList.push('예기치 못한 오류 발생');
-        //         }
-                
-        //         context.commit('setErrorMsgList', errorMsgList);
-        //     });
-        // }
     },
     getters: {
 

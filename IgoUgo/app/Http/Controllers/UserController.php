@@ -63,9 +63,9 @@ class UserController extends Controller
         $id = MyToken::getValueInPayload($request->bearerToken(), 'idt');
 
         $userInfo = User::find($id);
-        
-        // $insertData['img'] = '/'.$request->file('file')->store('img');
 
+        // $insertData['img'] = '/'.$request->file('file')->store('img');
+    
         if($userInfo->user_name !== $request->user_name) {
             $userInfo->user_name = $request->user_name;
         }
@@ -87,7 +87,6 @@ class UserController extends Controller
             ,'msg' => '유저 정보 업데이트 성공'
             ,'userInfo' => $userInfo->toArray()
         ];
-
 
         return response()->json($responseData, 200);
     }

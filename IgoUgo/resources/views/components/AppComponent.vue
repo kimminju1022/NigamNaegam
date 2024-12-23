@@ -16,7 +16,8 @@
                         </div>
                         <div v-else class="header-title-button">
                             <button class="btn bg-clear header-btn">FAQ</button>
-                            <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button>
+                            <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button>
+                            <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button> -->
                             <router-link :to="`/user/${user.user_id}`"><img :src="user.user_profile" alt=""></router-link>
                         </div>
                     </div>
@@ -350,7 +351,8 @@ header {
     border-radius: 50px;
     width: 50px;
     height: 50px;
-    border: 2px solid #01083A; 
+    /* border: 2px solid #01083A; */
+    border: 2px solid #01083a18;
 }
 
 .header-list > :last-child {
@@ -395,7 +397,10 @@ header {
     align-items: center;
     justify-content: center;
 }
-
+.bg-logout {
+    background-color: #c9c9c9;
+    /* color: red; */
+}
 /* 헤더 2 -> 호텔, 상품, 게시판, 검색바 */
 .header-list {
     display: flex;

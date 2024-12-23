@@ -4,39 +4,31 @@
             <div class="my-profile-bg">
                 <div class="my-profile-box">
                     <div class="my-profile-img">
-                        <img :src="$store.state.auth.userInfo.user_profile" alt="">
+                        <img :src="$store.state.user.userInfo.user_profile" alt="">
                     </div>
                     <div class="my-profile-content">
                         <div class="profile-item">
                             <p class="bg-navy">이메일</p>
-                            <!-- <p>admin@admin.com</p> -->
-                            <!-- <input v-model="userInfo.email" name="email" readonly> -->
-                            <p>{{ $store.state.auth.userInfo.user_email }}</p>
+                            <p>{{ $store.state.user.userInfo.user_email }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">이름</p>
-                            <!-- <p>김그린</p> -->
-                            <!-- <input v-model="userInfo.name" name="name" readonly>s -->
-                            <p>{{ $store.state.auth.userInfo.user_name }}</p>
+                            <p>{{ $store.state.user.userInfo.user_name }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">닉네임</p>
-                            <!-- <p>그린컴퓨터</p> -->
-                            <!-- <input v-model="userInfo.nickname" name="nickname" readonly> -->
-                            <p>{{ $store.state.auth.userInfo.user_nickname }}</p>
+                            <p>{{ $store.state.user.userInfo.user_nickname }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">전화번호</p>
-                            <!-- <p>010-2345-6789</p> -->
-                            <!-- <input v-model="userInfo.phone" name="phone" readonly> -->
-                            <p>{{ $store.state.auth.userInfo.user_phone }}</p>
+                            <p>{{ $store.state.user.userInfo.user_phone }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="my-profile-update-btn">
-                <router-link :to="`/password/${$store.state.auth.userInfo.user_id}`"><button class="btn bg-clear">비밀번호 변경</button></router-link>
-                <router-link :to="`/user/${$store.state.auth.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
+                <router-link :to="`/password/${$store.state.user.userInfo.user_id}`"><button class="btn bg-clear">비밀번호 변경</button></router-link>
+                <router-link :to="`/user/${$store.state.user.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
         <!-- <div v-if="isMobileView">
@@ -168,7 +160,7 @@ import { ref, onMounted, onUnmounted, computed} from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-const userInfo = computed(()=> store.state.auth.userInfo);
+const userInfo = computed(()=> store.state.user.userInfo);
 
 // 반응형 상태를 저장하는 변수
 const isMobileView = ref(false);
@@ -368,30 +360,6 @@ const deletemodal = (userInfo) => {
     color: blue;
 }
 
-/* 페이지네이션 */
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    min-width: 340px;
-}
-
-.pagination button {
-    font-size: 20px;
-    border-radius: 50px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    /* border: 2px solid #01083a; */
-}
-
-.pagination button:hover, .pagination button:active {
-    color: #fff;
-    background: #01083a;
-}
-
 /* 회원 탈퇴 모달 */
 .delete-container {
     position: fixed;
@@ -468,6 +436,12 @@ const deletemodal = (userInfo) => {
         gap: 70px;
         width: 100%;
     }
+    
+    /* 프로필 */
+    .my-profile-bg {
+        background-color: rgb(133, 177, 218, 0.2) !important;
+    }
+    
     .my-profile-box {
         display: flex;
         flex-direction: column;
@@ -519,17 +493,15 @@ const deletemodal = (userInfo) => {
         padding: 10px 5px;
     }
 
-    .my-profile-update-btn button {
-        font-size: 15px;  
-        padding: 5px 10px;
-        border-radius: 50px;  
+    .my-profile-update-btn :nth-child(1) button:hover {
+        color: #01083a;
+        font-weight: 600;
     }
 
-    .my-profile-update-btn button:hover {
+    .my-profile-update-btn :nth-child(2) button:hover {
         background-color: rgb(133, 177, 218);
         color: #01083a;
     }
-
     
     /* 1:1 문의내역 */
 

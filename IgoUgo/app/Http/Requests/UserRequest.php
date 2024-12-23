@@ -5,9 +5,15 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserRequest extends FormRequest
 {
+    // public function __construct(Request $request)
+    // {
+    //     Log::debug('tt', $request->all());
+    // }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -48,7 +54,7 @@ class UserRequest extends FormRequest
         }
 
         // 유저 비밀번호 업데이트
-        else if($this->routeIs('userPW.update')) {
+        else if($this->routeIs('password.update')) {
             $rules['currentPassword'] = ['required', 'between:5,20', 'regex:/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{5,}$/'];
             $rules['newPassword'] = ['required', 'between:5,20', 'regex:/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{5,}$/'];
             $rules['newPasswordChk'] = ['same:newPassword'];
@@ -58,6 +64,7 @@ class UserRequest extends FormRequest
             unset($rules['user_nickname']);
             unset($rules['user_phone']);
             unset($rules['user_profile']);
+            unset($rules['user_password']);
         }
 
         return $rules;

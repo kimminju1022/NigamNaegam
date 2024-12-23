@@ -4,59 +4,58 @@
             <div class="my-profile-box">
                 <div class="my-profile-img-box">
                     <div class="my-profile-img">
-                        <img :src="preview || userInfo.user_profile">
-                        <!-- <img :src="preview"> -->
+                        <img :src="preview || userData.userInfo.user_profile">
                     </div>
                     <input @change="setFile" type="file" name="user_profile" accept="image/*">
                 </div>
                 <div class="my-profile-content">
                     <div class="profile-item">
                         <p class="bg-navy">이메일</p>
-                        <input v-model="userInfo.user_email" class="input-update" name="user_email" readonly>
+                        <input v-model="userData.userInfo.user_email" class="input-update" name="user_email" readonly>
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">이름</p>
-                        <input v-model="userInfo.user_name" class="input-update" name="user_name">
+                        <input v-model="userData.userInfo.user_name" class="input-update" name="user_name">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">닉네임</p>
-                        <input v-model="userInfo.user_nickname" class="input-update" name="user_nickname">
+                        <input v-model="userData.userInfo.user_nickname" class="input-update" name="user_nickname">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">전화번호</p>
-                        <input v-model="userInfo.user_phone" class="input-update" name="user_phone">
+                        <input v-model="userData.userInfo.user_phone" class="input-update" name="user_phone">
                     </div>
                 </div>
             </div>
         </div>
         <div class="my-profile-update-btn">
-            <button @click="$store.dispatch('user/updateUser', userInfo)" class="btn bg-navy btn-update">완료</button>
-            <button @click="backToUser" class="btn bg-navy btn-update">취소</button>
+            <button @click="$store.dispatch('user/updateUser', userData)" class="btn bg-navy btn-update">완료</button>
+            <router-link :to="`/user/${$store.state.user.userInfo.user_id}`"><button @click="backToUser" class="btn bg-navy btn-update">취소</button></router-link>
+            <!-- <button @click="backToUser" class="btn bg-navy btn-update">취소</button> -->
         </div>
     </div>
 </template>
 
 <script setup>
 
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, reactive, ref } from 'vue';
+// import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store =  useStore();
-const router = useRouter();
+// const router = useRouter();
 
-const userInfo = computed(() => store.state.auth.userInfo);
+const userData = reactive({
+    userInfo: store.state.user.userInfo,
+    file: null,
+});
 
 const preview = ref('');
 
 const setFile = (e) => {
-    userInfo.user_profile = e.target.files[0];
-    preview.value = URL.createObjectURL(userInfo.user_profile);
+    userData.file = e.target.files[0];
+    preview.value = URL.createObjectURL(userData.file);
 }
-
-const backToUser = () => {
-    router.replace(`/user/${userInfo.user_id}`);
-};
 </script>
 
 <style scoped>
@@ -100,6 +99,9 @@ const backToUser = () => {
     border-radius: 50%;
     width: 220px;
     height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .my-profile-img > img {
@@ -107,6 +109,7 @@ const backToUser = () => {
     max-height: 200px;
     border-radius: 50%;
     /* background: #000; */
+    object-fit: cover;
 }
 
 .my-profile-content {

@@ -102,32 +102,39 @@ export default {
         },
 
         // 유저 정보 업데이트
-        updateUser(context, userInfo) {
-            const url = `/api/user/${userInfo.user_id}`;
+        updateUser(context, userData) {
+            const url = `/api/user/${userData.userInfo.user_id}`;
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
+
+            // console.log(userInfo);
             
             const formData = new FormData();
 
-            formData.append('user_name', userInfo.user_name);
-            formData.append('user_nickname', userInfo.user_nickname);
-            formData.append('user_phone', userInfo.user_phone);
-            if (userInfo.user_profile) {
-                formData.append('user_profile', userInfo.user_profile);
+            formData.append('user_name', userData.userInfo.user_name);
+            formData.append('user_nickname', userData.userInfo.user_nickname);
+            formData.append('user_phone', userData.userInfo.user_phone);
+            if (userData.file) {
+                formData.append('user_profile', userData.file);
             }
 
-            axios.put(url, formData, config)
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(key, value);
+            // }
+            
+            axios.post(url, formData, config)
             .then(response => {
                 // console.log(response.data.userInfo);
                 // console.log(response.formData.userInfo);
                 
                 // context.commit('setUserUnshift', response.userInfo);
 
-                context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
+                context.commit('setUserInfo', response.data.userInfo);
+                // context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
                 localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
 
 
@@ -137,8 +144,8 @@ export default {
             .catch(error => {
                 alert('수정 실패');
                 console.error(error);
-                console.error(error.response.data.data);
-                console.error(error.response.formData);
+                // console.error(error.response.data.data);
+                // console.error(error.response.formData);
             });
         },
 
@@ -169,7 +176,6 @@ export default {
         // 유저 비밀번호 확인
         chkPW(context, userInfo) {
             const url = `/api/password/${userInfo.user_id}`;
-            // const url = '/api/password/' + userInfo.user_id;
             const data = JSON.stringify(userInfo);
             const config = {
                 headers: {
@@ -178,10 +184,6 @@ export default {
             }
 
             context.commit('setErrorMsgList', []);
-
-            // console.log(url);
-            // console.log(userInfo);
-            // console.log(data);
 
             axios.post(url, data, config)
             .then(response => {
@@ -198,8 +200,6 @@ export default {
                     }
                 } 
                 else if(error.response.status === 401) {
-                    // 비밀번호 오류
-                    // errorMsgList.push(errorData.msg);
                     errorMsgList.push('비밀번호가 틀렸습니다.');
                 } 
                 else {
@@ -213,21 +213,17 @@ export default {
 
         // 유저 비밀번호 업데이트
         updateUserPW(context, userInfo) {
-            const url = `/api/user/${userInfo.user_id}`;
-            const data = JSON.stringify(userInfo);
-            // const data = {
-            //     currentPassword: userInfo.currentPassword,
-            //     newPassword: userInfo.newPassword,
-            //     newPasswordChk: userInfo.newPasswordChk,
-            // };
+            const url = `/api/password/${userInfo.user_id}`;
+            const data = {
+                currentPassword: userInfo.currentPassword,
+                newPassword: userInfo.newPassword,
+                newPasswordChk: userInfo.newPasswordChk,
+            };
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
-
-            // console.log(url);
-            // console.log(data);
 
             axios.put(url, data, config)
             .then(response => {
@@ -237,19 +233,28 @@ export default {
                 // router.replace(`/user/${userInfo.user_id}`);
 
                 localStorage.clear();
+                // localStorage.removeItem('accessToken');
     
-                // state 초기화
                 context.commit('setAuthFlg', false);
                 context.commit('setUserInfo', {});
     
                 router.replace('/login');
             })
             .catch(error => {
+                console.log(error.response);
                 let errorMsgList = [];
                 // const errorData = error.response.data;
 
-                if (error.response && error.response.data) {
-                    errorMsgList.push(error.response.data.message || '비밀번호 변경에 실패했습니다.');
+                if(error.response.status === 422) {
+                    alert('비밀번호가 유효하지 않습니다.');
+                    errorMsgList.push('비밀번호가 유효하지 않습니다.');
+                    
+                } else if(error.response.status === 401) {
+                    alert('현재 비밀번호가 올바르지 않습니다.');
+                    errorMsgList.push('현재 비밀번호가 올바르지 않습니다.');
+                } else {
+                    alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    errorMsgList.push('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
                 }
                 
                 context.commit('setErrorMsgList', errorMsgList);

@@ -31,23 +31,22 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
-const router = useRouter();
+// const router = useRouter();
 
 const userInfo = computed(()=> store.state.auth.userInfo);
 
 const user = reactive({
     user_id: userInfo.value.user_id
-    // ,user_password: userInfo.value.user_password
     ,currentPassword: ''
     ,newPassword: ''
     ,newPasswordChk: ''
 });
 
-const errorMsgList = ref({});
+// const errorMsgList = ref({});
 
 // const backToUser = () => {
 //     router.replace(`/user/${userInfo.user_id}`);
@@ -120,7 +119,7 @@ const errorMsgList = ref({});
     color: #f00;
     font-weight: 600;
 }
-.my-profile-chk-btn :nth-child(2):hover {
+.my-profile-chk-btn :nth-child(2) button:hover {
     color: #01083a;
     font-weight: 600;
 }

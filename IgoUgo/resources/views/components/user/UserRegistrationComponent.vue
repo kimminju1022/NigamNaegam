@@ -42,7 +42,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="nameError" >이름 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.user_name" class="input-login" type="text" id="name" name="user_name" placeholder="이름을 입력해주세요">
+                <input v-model="userInfo.user_name" class="input-login" type="text" id="name" name="user_name" placeholder="이름을 입력해주세요(2 ~ 20글자)">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
