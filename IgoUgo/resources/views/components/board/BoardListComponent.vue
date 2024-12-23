@@ -155,10 +155,10 @@ const keywordSearch = () => {
     
 }
  */
-return{
-    boardList,
-    keyword,
-}
+// return{
+//     boardList,
+//     keyword,
+// }
 </script>
 <style scoped>  
 footer{
