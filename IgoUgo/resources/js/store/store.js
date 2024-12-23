@@ -3,6 +3,8 @@ import user from './modules/user';
 import auth from './modules/auth';
 import board from './modules/board';
 import question from './modules/question';
+import hotel from './modules/hotel';
+import pagination from './modules/pagination';
 
 export default createStore({
     modules: {
@@ -10,5 +12,7 @@ export default createStore({
         auth,
         board,
         question,
+        hotel,
+        pagination,
     }
 })

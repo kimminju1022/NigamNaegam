@@ -49,20 +49,16 @@
             </div>
             <div>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
-                <div v-if="hotels.length > 0" class="card-list">
+                <div class="card-list">
                     <div v-for="item in hotels" :key="item" class="card">
                         <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
                         <p class="font-bold card-title">{{ item.title }}</p>
                     </div>
                 </div>
-                <div v-else>상품 데이터를 불러오는 중...</div>
-    
-                
-                <div class="pagination">
-                    <button @click="changePage(current_page - 1)" class="btn bg-clear"><</button>
-                    <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ 'active-page': page === current_page, 'btn bg-clear': true }">{{ page }}</button>
-                    <button @click="changePage(current_page + 1)" class="btn bg-clear">></button>
-                </div>
+                <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
+
+                <!-- 페이지네이션 -->
+                <PaginationComponent :actionName="actionName" :serchData="serchData" />
             </div>
         </div>
     </div> 
@@ -77,115 +73,115 @@
 
             <div class="modal-region">
                 <div>
-                    <input :value="category[0].name" :checked="selectedFilters.includes('서울')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="seoul">
+                    <input v-model="serchData.chkLocal" value="서울" @change="updateFilters()" class="modal-input" type="checkbox" id="seoul">
                     <label for="seoul">서울</label>
                 </div>
-
+<!-- 
                 <div>
-                    <input value="인천" :checked="selectedFilters.includes('인천')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="Incheon">
+                    <input v-model="serchData.chkLocal" value="인천" @change="updateFilters()" class="modal-input" type="checkbox" id="Incheon">
                     <label for="Incheon">인천</label>
                 </div>
 
                 <div>
-                    <input value="대전" :checked="selectedFilters.includes('대전')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="daejeon">
+                    <input v-model="serchData.chkLocal" value="대전" @change="updateFilters()" class="modal-input" type="checkbox" id="daejeon">
                     <label for="daejeon">대전</label>
                 </div>
 
                 <div>
-                    <input value="대구" :checked="selectedFilters.includes('대구')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="daegu">
+                    <input v-model="serchData.chkLocal" value="대구" @change="updateFilters()" class="modal-input" type="checkbox" id="daegu">
                     <label for="daegu">대구</label>
                 </div>
 
                 <div>
-                    <input value="광주" :checked="selectedFilters.includes('광주')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gwangju">
+                    <input v-model="serchData.chkLocal" value="광주" @change="updateFilters()" class="modal-input" type="checkbox" id="gwangju">
                     <label for="gwangju">광주</label>
                 </div>
 
                 <div>
-                    <input value="부산" :checked="selectedFilters.includes('부산')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="busan">
+                    <input v-model="serchData.chkLocal" value="부산" @change="updateFilters()" class="modal-input" type="checkbox" id="busan">
                     <label for="busan">부산</label>
                 </div>
 
                 <div>
-                    <input value="울산" :checked="selectedFilters.includes('울산')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="ulsan">
+                    <input v-model="serchData.chkLocal" value="울산" @change="updateFilters()" class="modal-input" type="checkbox" id="ulsan">
                     <label for="ulsan">울산</label>
                 </div>
 
                 <div>
-                    <input value="세종" :checked="selectedFilters.includes('세종')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="Sejong">
+                    <input v-model="serchData.chkLocal" value="세종" @change="updateFilters()" class="modal-input" type="checkbox" id="Sejong">
                     <label for="Sejong">세종</label>
                 </div>
 
                 <div>
-                    <input value="경기도" :checked="selectedFilters.includes('경기도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gyeonggido">
+                    <input v-model="serchData.chkLocal" value="경기도"  @change="updateFilters()" class="modal-input" type="checkbox" id="gyeonggido">
                     <label for="gyeonggido">경기도</label>
                 </div>
 
                 <div>
-                    <input value="강원도" :checked="selectedFilters.includes('강원도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gangwondo">
+                    <input v-model="serchData.chkLocal" value="강원도"  @change="updateFilters()" class="modal-input" type="checkbox" id="gangwondo">
                     <label for="gangwondo">강원도</label>
                 </div>
 
                 <div>
-                    <input value="충청북도" :checked="selectedFilters.includes('충청북도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="chungcheongbugdo">
+                    <input v-model="serchData.chkLocal" value="충청북도" @change="updateFilters()" class="modal-input" type="checkbox" id="chungcheongbugdo">
                     <label for="chungcheongbugdo">충청북도</label>
                 </div>
                 
                 <div>
-                    <input value="충청남도" :checked="selectedFilters.includes('충청남도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="chungcheongnamdo">
+                    <input v-model="serchData.chkLocal" value="충청남도" @change="updateFilters()" class="modal-input" type="checkbox" id="chungcheongnamdo">
                     <label for="chungcheongnamdo">충청남도</label>
                 </div>
 
                 <div>
-                    <input value="경상북도" :checked="selectedFilters.includes('경상북도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gyeongsangbugdo">
+                    <input v-model="serchData.chkLocal" value="경상북도" @change="updateFilters()" class="modal-input" type="checkbox" id="gyeongsangbugdo">
                     <label for="gyeongsangbugdo">경상북도</label>
                 </div>
 
                 <div>
-                    <input value="경상남도" :checked="selectedFilters.includes('경상남도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="gyeongsangnamdo">
+                    <input v-model="serchData.chkLocal" value="경상남도" @change="updateFilters()" class="modal-input" type="checkbox" id="gyeongsangnamdo">
                     <label for="gyeongsangnamdo">경상남도</label>
                 </div>
 
                 <div>
-                    <input value="전라북도" :checked="selectedFilters.includes('전라북도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="jeonlabugdo">
+                    <input v-model="serchData.chkLocal" value="전라북도" @change="updateFilters()" class="modal-input" type="checkbox" id="jeonlabugdo">
                     <label for="jeonlabugdo">전라북도</label>
                 </div>
 
                 <div>
-                    <input value="전라남도" :checked="selectedFilters.includes('전라남도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="jeonlanamdo">
+                    <input v-model="serchData.chkLocal" value="전라남도" @change="updateFilters()" class="modal-input" type="checkbox" id="jeonlanamdo">
                     <label for="jeonlanamdo">전라남도</label>
                 </div>
 
                 <div>
-                    <input value="제주도" :checked="selectedFilters.includes('제주도')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="jejudo">
+                    <input v-model="serchData.chkLocal" value="제주도"  @change="updateFilters()" class="modal-input" type="checkbox" id="jejudo">
                     <label for="jeju">제주도</label>
-                </div>
+                </div> -->
             </div>
 
             <p class="modal-region-text2 font-bold">카테고리</p>
             <div class="modal-region">
                 <div>
-                    <input value="수영장" :checked="selectedFilters.includes('수영장')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="pool">
+                    <input value="수영장"  @change="updateFilters()" class="modal-input" type="checkbox" id="pool">
                     <label for="pool">수영장</label>
                 </div>
                 <div>
-                    <input value="바베큐장" :checked="selectedFilters.includes('바베큐장')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="grill">
+                    <input value="바베큐장" @change="updateFilters()" class="modal-input" type="checkbox" id="grill">
                     <label for="grill">바베큐장</label>
                 </div>
                 <div>
-                    <input value="캠프파이어" :checked="selectedFilters.includes('캠프파이어')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="fire">
+                    <input value="캠프파이어" @change="updateFilters()" class="modal-input" type="checkbox" id="fire">
                     <label for="fire">캠프파이어</label>
                 </div>
                 <div>
-                    <input value="뷰티시설" :checked="selectedFilters.includes('뷰티시설')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="beauty">
+                    <input value="뷰티시설" @change="updateFilters()" class="modal-input" type="checkbox" id="beauty">
                     <label for="beauty">뷰티시설</label>
                 </div>
                 <div>
-                    <input value="피트니스" :checked="selectedFilters.includes('피트니스')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="fitness">
+                    <input value="피트니스" @change="updateFilters()" class="modal-input" type="checkbox" id="fitness">
                     <label for="fitness">피트니스</label>
                 </div>
                 <div>
-                    <input value="픽업서비스" :checked="selectedFilters.includes('픽업서비스')" @change="updateFilters($event)" class="modal-input" type="checkbox" id="pickup">
+                    <input value="픽업서비스" @change="updateFilters()" class="modal-input" type="checkbox" id="pickup">
                     <label for="pickup">픽업서비스</label>
                 </div>
             </div>
@@ -195,122 +191,141 @@
 </template>
     
 <script setup>
-    import { computed, onBeforeMount, onMounted, ref} from 'vue';
-    import axios from 'axios';
+import { computed, onBeforeMount, reactive, ref} from 'vue';
+import { useStore } from 'vuex';
+import PaginationComponent from '../PaginationComponent.vue';
 
-    // 카테카테고리고리
-    const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+const store = useStore();
+
+// 호텔 리스트 관련
+const hotels = computed(() => store.state.hotel.hotelList);
+const actionName = 'hotel/getHotelsPagination';
+
+// 필터 관련
+const serchData = reactive({
+    page: store.state.pagination.currentPage,
+    chkLocal: [],
+    category: [],
+});
+const localList = [];
+
+// 반응형
+const flg = ref(false);
+const flgSetup = () => {
+    flg.value = window.innerWidth >= 1000 ? false : true;
+}
+onBeforeMount(async () => {
+    flgSetup(); // 리사이즈 이벤트
+    await store.dispatch(actionName, serchData);
+});
+window.addEventListener('resize', flgSetup);
+
+
+// 카테카테고리고리
+const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+
+function updateFilters() {
+    store.dispatch(actionName, serchData);
+}
+
+function closefilter(value) {
+    selectedFilters.value = selectedFilters.value.filter(
+        (item) => item !== value
+    );
+    localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+}
+
+window.onbeforeunload = function() {
+    localStorage.clear();
+};
+
+// 모달모달
+const isVisible = ref(false);
+
+function openmodal() {
+    isVisible.value = true;
+}
     
-    function updateFilters(event) {
-        // console.log(event);
-        const value = event.target.value;
-        // console.log(value);
-        if (event.target.checked) {
-            selectedFilters.value.push(value);
-        } else {
-            selectedFilters.value = selectedFilters.value.filter(
-                (item) => item !== value
-            );
-        }
-        localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
-        // console.log(localStorage.getItem('selectedFilters'));
-        applyFilters();
-    }
+function closemodal() {
+    isVisible.value = false;
+}
 
-    function closefilter(value) {
-        selectedFilters.value = selectedFilters.value.filter(
-            (item) => item !== value
-        );
-        localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
-    }
+// 컨트롤러로 데이터 전송하는법?
+// const category = ref([
+//     { id: 1, name: '서울' },
+// ]);
 
-    window.onbeforeunload = function() {
-        localStorage.clear();
-    };
+// async function applyFilters() { 
+//     try {
+//         await axios.get('/api/filters', {
+//         filters: selectedFilters.value
+//         });
+//     } catch {
+//         console.error(error);
+//     }
+// }
 
-    // 모달모달
-    const isVisible = ref(false);
 
-    function openmodal() {
-        isVisible.value = true;
-    }
-        
-    function closemodal() {
-        isVisible.value = false;
-    }
 
-    // 반응형
-    const flg = ref(false);
-    const flgSetup = () => {
-        flg.value = window.innerWidth >= 1000 ? false : true;
-    }
-    onBeforeMount(() => {
-        flgSetup();
-    });
-    window.addEventListener('resize', flgSetup);
+// ----------------------------------------------------------------------------    
+// // 마운트된 후
+// onMounted(async() => {
+//     await loadHotels()
+//     // console.log(hotels)
+// });
+
+// // 호텔 불러오기
+// const hotels = ref([]);
+// let current_page = ref(1)
+
+// async function loadHotels() {
+//     try {
+//         const response = await axios.get(`/api/hotels?page=${current_page.value}`);
+//         // console.log(response.data.data);
+//         hotels.value = response.data.data
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+
+// // 페이지네이션
+
+// // 페이지 버튼 계산
+// // function maxPage() {
+// //     loadHotels();
+// //     console.log(hotels.value.per_page);
+// //     return hotels.value.per_page;
+// // }
+
+
+// const pages = computed(() => {
+//     // maxPage()
+//     const totalPages = 46;
+//     const pageCount = 5;
+//     const startPage = Math.max(current_page.value - Math.floor(pageCount / 2), 1);
+//     // 만약 current_page.value가 5면? 5 빼기 5/2=2(나머지버림)  3이나오니까 max에서 3이반환됨됨
+//     const endPage = Math.min(startPage + pageCount - 1, totalPages);
+//     // 3이 반환되서 5랑 더하면 8이됨 8이 나오니까 8-1 해서 min에서 7이 반환됨
+//     const adjustedStartPage = Math.max(endPage - pageCount + 1, 1);
+//     // 7-3+1 해서 5이된다 
     
-    
-    // 마운트된 후
-    onMounted(async() => {
-        await loadHotels()
-        // console.log(hotels)
-    });
-    
-    // 호텔 불러오기
-    const hotels = ref([]);
-    let current_page = ref(1)
+//     return Array.from({ length: Math.min(pageCount, totalPages) }, (_, i) => adjustedStartPage + i)
+//     // Array에서 i를쓰면 0에서 부터 반복됨
+//     // 7-3에 +1 이니까 5가출력됨 5개의 공간을가진 배열이 만들어지고 5 i는 1씩상승하고 i가 증가할 때마다 startPage 값에 더해지는 구조
+//     // 3이니까 3+0 은 3 3+1은 4... 해서 배열에 3 4 5 6 7 결국 현제페이지인 5가 가운데 오도록 작동
+// });
 
-    async function loadHotels() {
-        try {
-            const response = await axios.get(`/api/hotels?page=${current_page.value}`);
-            // console.log(response.data.data);
-            hotels.value = response.data.data
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    // 페이지네이션
-
-    // 페이지 버튼 계산
-    const pages = computed(() => {
-        const pageCount = 5;
-        const startPage = Math.max(current_page.value - Math.floor(pageCount / 2), 1);
-        // 만약 current_page.value가 5면? 5 빼기 5/2=2(나머지버림)  3이나오니까 max에서 3이반환됨됨
-        const endPage = Math.min(startPage + pageCount - 1, 46);
-        // 3이 반환되서 5랑 더하면 8이됨 8이 나오니까 8-1 해서 min에서 7이 반환됨
-
-        return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-        // Array에서 i를쓰면 0에서 부터 반복됨
-        // 7-3에 +1 이니까 5가출력됨 5개의 공간을가진 배열이 만들어지고 5 i는 1씩상승하고 i가 증가할 때마다 startPage 값에 더해지는 구조
-        // 3이니까 3+0 은 3 3+1은 4... 해서 배열에 3 4 5 6 7 결국 현제페이지인 5가 가운데 오도록 작동
-    });
-
-    // 페이지 변경
-    function changePage(page) {
-        if (page < 1 || page > 46) {
-            return 
-            // page가 1이하거나 46이상이면 작동안하고 리턴시켜버려서 함수를 나가버리기기
-        }
-        current_page.value = page;
-        loadHotels()
-    }
-
-    // 컨트롤러로 데이터 전송하는법?
-    const category = ref([
-        { id: 1, name: '서울' },
-    ]);
-
-    async function applyFilters() { 
-        try {
-            await axios.get('/api/filters', {
-            filters: selectedFilters.value
-            });
-        } catch {
-            console.error(error);
-        }
-    }
-
+// // 페이지 변경
+// function changePage(page) {
+//     // maxPage()
+//     const totalPages = hotels.value.per_page;
+//     if (page < 1 || page > totalPages) {
+//         return 
+//         // page가 1이하거나 46이상이면 작동안하고 리턴시켜버려서 함수를 나가버리기기
+//     }
+//     current_page.value = page;
+//     loadHotels()
+// }
 </script>
     
 <style scoped>
@@ -411,31 +426,6 @@
         object-fit: cover;
         background-repeat: no-repeat;
         border-radius: 5px 5px 0px 0px;
-    }
-    
-    /* 페이지네이션 */
-    .pagination {
-        /* margin: 0 auto; */
-        /* text-align: center; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin-top: 20px;
-    }
-    .pagination button {
-        font-size: 20px;
-        border-radius: 50px;
-        width: 40px;
-        height: 40px;
-        text-align: center;
-    }
-    .pagination button:hover, .pagination button:active {
-        color: #fff;
-        background: #01083a;
-    }
-    .active-page {
-        font-weight: 900;
     }
     
     /* 폰트 관련 */

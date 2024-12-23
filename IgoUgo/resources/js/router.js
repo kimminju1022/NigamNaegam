@@ -6,9 +6,9 @@ import MainPageComponent from '../views/components/MainPageComponent.vue';
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
 // 호텔
-import HotelListComponent from '../views/components/board/HotelListComponent.vue';
-import HotelMapComponent from '../views/components/board/HotelMapComponent.vue';
-import HotelListDetailComponent from '../views/components/board/HotelListDetailComponent.vue';
+import HotelListComponent from '../views/components/hotels/HotelListComponent.vue';
+import HotelMapComponent from '../views/components/hotels/HotelMapComponent.vue';
+import HotelListDetailComponent from '../views/components/hotels/HotelListDetailComponent.vue';
 // 상품
 import ProductMainComponent from '../views/components/board/ProductMainComponent.vue';
 import ProductListComponent from '../views/components/board/ProductListComponent.vue';
