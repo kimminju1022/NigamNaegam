@@ -5,11 +5,15 @@ export default {
     namespaced: true,
     state: () => ({
         hotelList: [],
+        hotelArea: [],
     }),
     mutations: {
         setHotelList(state, list) {
             state.hotelList = list;
-        }
+        },
+        setHotelArea(state, list) {
+            state.hotelArea = list;
+        },
     },
     actions: {
         getHotelsPagination(context, data) {
@@ -36,6 +40,26 @@ export default {
             });
 
         },
+
+        getHotelsArea(context, data) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/areas';
+                const config = {
+                    params: data
+                }
+
+                axios.get(url, config)
+                .then(response => {
+                    console.log('동작은하나??',response);
+                    context.commit('setHotelArea', response.data)
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject();
+                });
+            });
+        }
     },
     getters: {
 

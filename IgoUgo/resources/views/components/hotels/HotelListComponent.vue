@@ -76,7 +76,7 @@
                     <input v-model="serchData.chkLocal" value="서울" @change="updateFilters()" class="modal-input" type="checkbox" id="seoul">
                     <label for="seoul">서울</label>
                 </div>
-<!-- 
+
                 <div>
                     <input v-model="serchData.chkLocal" value="인천" @change="updateFilters()" class="modal-input" type="checkbox" id="Incheon">
                     <label for="Incheon">인천</label>
@@ -155,7 +155,7 @@
                 <div>
                     <input v-model="serchData.chkLocal" value="제주도"  @change="updateFilters()" class="modal-input" type="checkbox" id="jejudo">
                     <label for="jeju">제주도</label>
-                </div> -->
+                </div>
             </div>
 
             <p class="modal-region-text2 font-bold">카테고리</p>
@@ -207,7 +207,12 @@ const serchData = reactive({
     chkLocal: [],
     category: [],
 });
-const localList = [];
+
+const areaData = reactive({
+    area: store.state.hotel.hotelArea, // 이거는그러면 store의 state에 접근하는데? 모듈명은 hotel이고? hotelArea 배열을 가져와라
+});
+store.dispatch('hotel/getHotelsArea', areaData)
+console.log('area코드 받아와지나?',areaData);
 
 // 반응형
 const flg = ref(false);
