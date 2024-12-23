@@ -21,6 +21,29 @@ export default {
         },
     },
     actions: {
+        /** 게시판 명 획득
+         * 
+         */
+        getBoardTitle(context){
+            const url = '/board/api';
+            const data = JSON.stringify(data);
+            const config = {
+                headers:{
+                    'Content-Type': 'application/json',
+                }
+            }
+            axios.get(url)
+            .then(response =>{
+                // console.log(response)
+                context.commit('setBoard', response.data.boardList.date);
+                context.commit('setPage', response.data.boardList.current_page);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        
+        },
+
         /** 게시글획득
          *  @param{*} context
         */
