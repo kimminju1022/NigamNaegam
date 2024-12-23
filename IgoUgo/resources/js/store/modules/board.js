@@ -26,7 +26,7 @@ export default {
         */
         getBoardListPagination(context){
             const url = '/api/boards?bc_type='+ context.state.bcType +'&page=' + context.getters['getNextPage'];
-            console.log(url); // TODO : 추후삭제
+            // console.log(url); // TODO : 추후삭제
             
             axios.get(url)
             .then(response =>{

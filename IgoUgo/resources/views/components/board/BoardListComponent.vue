@@ -101,6 +101,7 @@
                         <p>30</p>
                     </div>
                 </div>
+                <!-- 현재 리스트가 호출이 불가함함 -->
                 <div v-for="item in boardList" :key="item" id="board-li-item">
                     <p>{{ item.bc_id }}</p>
                     <p>{{ item.area_name }}</p>
@@ -139,22 +140,25 @@ const boardList = computed(() => store.state.board.boardList);
 
 // beforemount
 onBeforeMount(() => {
-    // console.log('나온다아아아아앙')
+    console.log('나온다아아아아앙')
     // 백앤드로 요청 보내는 액션메소드
     if(store.state.board.boardList.length<1){
         store.dispatch('board/getBoardListPagination');
     }
 });
 
-
 const keyword = ref('');
 /**
  * 키워드 검색 처리
- */
+
 const keywordSearch = () => {
     
 }
-
+ */
+return{
+    boardList,
+    keyword,
+}
 </script>
 <style scoped>  
 footer{
