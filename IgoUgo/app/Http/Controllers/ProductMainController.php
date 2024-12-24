@@ -13,9 +13,15 @@ class ProductMainController extends Controller
             'culture' => Product::where('contenttypeid', '14')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
             'sports' => Product::where('contenttypeid', '28')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
             'shopping' => Product::where('contenttypeid', '38')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
-            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
+            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get()
         ];
 
-        return response()->json($products);
+        $responseData = [
+            'success' => true,
+            'msg' => '데이터 획득 성공',
+            'products' => $products
+        ];
+
+        return response()->json($responseData);
     }
 }

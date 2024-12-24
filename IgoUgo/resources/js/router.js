@@ -10,8 +10,8 @@ import HotelListComponent from '../views/components/hotels/HotelListComponent.vu
 import HotelMapComponent from '../views/components/hotels/HotelMapComponent.vue';
 import HotelListDetailComponent from '../views/components/hotels/HotelListDetailComponent.vue';
 // 상품
-import ProductMainComponent from '../views/components/board/ProductMainComponent.vue';
-import ProductListComponent from '../views/components/board/ProductListComponent.vue';
+import ProductMainComponent from '../views/components/products/ProductMainComponent.vue';
+import ProductListComponent from '../views/components/products/ProductListComponent.vue';
 // 게시판
 import BoardListComponent from '../views/components/board/BoardListComponent.vue';
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
