@@ -67,6 +67,7 @@ Route::middleware('my.auth')->group(function() {
     // 댓글관련 생성예정
 
     // 질문게시판 관련
+    Route::get('/question',[QuestionController::class, 'showMyQuestion']);
     Route::get('/question/{id}/edit',[QuestionController::class, 'edit'])->name('question.edit');
     Route::put('/question/{id}',[QuestionController::class, 'update'])->name('question.update');
 });

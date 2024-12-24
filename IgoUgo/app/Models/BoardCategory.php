@@ -15,4 +15,8 @@ class BoardCategory extends Model
         'bc_type'
         ,'bc_name'
     ];
+
+    public function boards() {
+        return $this->hasMany(Board::class, 'bc_type');
+    }
 }

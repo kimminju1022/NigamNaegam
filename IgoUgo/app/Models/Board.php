@@ -32,4 +32,16 @@ class Board extends Model
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function users() {
+        return $this->belongsTo(User::class, 'user_id')->select('user_id', 'user_nickname');
+    }
+
+    public function board_categories() {
+        return $this->belongsTo(BoardCategory::class, 'bc_type');
+    }
+
+    public function questions() {
+        return $this->hasMany(Question::class, 'board_id');
+    }
 }
