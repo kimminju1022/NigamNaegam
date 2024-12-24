@@ -72,89 +72,9 @@
             <p class="modal-region-text1 font-bold">지역</p>
 
             <div class="modal-region">
-                <div>
-                    <input v-model="serchData.chkLocal" value="서울" @change="updateFilters()" class="modal-input" type="checkbox" id="seoul">
-                    <label for="seoul">서울</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="인천" @change="updateFilters()" class="modal-input" type="checkbox" id="Incheon">
-                    <label for="Incheon">인천</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="대전" @change="updateFilters()" class="modal-input" type="checkbox" id="daejeon">
-                    <label for="daejeon">대전</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="대구" @change="updateFilters()" class="modal-input" type="checkbox" id="daegu">
-                    <label for="daegu">대구</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="광주" @change="updateFilters()" class="modal-input" type="checkbox" id="gwangju">
-                    <label for="gwangju">광주</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="부산" @change="updateFilters()" class="modal-input" type="checkbox" id="busan">
-                    <label for="busan">부산</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="울산" @change="updateFilters()" class="modal-input" type="checkbox" id="ulsan">
-                    <label for="ulsan">울산</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="세종" @change="updateFilters()" class="modal-input" type="checkbox" id="Sejong">
-                    <label for="Sejong">세종</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="경기도"  @change="updateFilters()" class="modal-input" type="checkbox" id="gyeonggido">
-                    <label for="gyeonggido">경기도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="강원도"  @change="updateFilters()" class="modal-input" type="checkbox" id="gangwondo">
-                    <label for="gangwondo">강원도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="충청북도" @change="updateFilters()" class="modal-input" type="checkbox" id="chungcheongbugdo">
-                    <label for="chungcheongbugdo">충청북도</label>
-                </div>
-                
-                <div>
-                    <input v-model="serchData.chkLocal" value="충청남도" @change="updateFilters()" class="modal-input" type="checkbox" id="chungcheongnamdo">
-                    <label for="chungcheongnamdo">충청남도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="경상북도" @change="updateFilters()" class="modal-input" type="checkbox" id="gyeongsangbugdo">
-                    <label for="gyeongsangbugdo">경상북도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="경상남도" @change="updateFilters()" class="modal-input" type="checkbox" id="gyeongsangnamdo">
-                    <label for="gyeongsangnamdo">경상남도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="전라북도" @change="updateFilters()" class="modal-input" type="checkbox" id="jeonlabugdo">
-                    <label for="jeonlabugdo">전라북도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="전라남도" @change="updateFilters()" class="modal-input" type="checkbox" id="jeonlanamdo">
-                    <label for="jeonlanamdo">전라남도</label>
-                </div>
-
-                <div>
-                    <input v-model="serchData.chkLocal" value="제주도"  @change="updateFilters()" class="modal-input" type="checkbox" id="jejudo">
-                    <label for="jeju">제주도</label>
+                <div v-for="item in $store.state.hotel.hotelArea" :key="item">
+                    <input v-model="serchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_id">
+                    <label :for="'input-' + item.area_id">{{ item.area_name }}</label>
                 </div>
             </div>
 
@@ -204,15 +124,11 @@ const actionName = 'hotel/getHotelsPagination';
 // 필터 관련
 const serchData = reactive({
     page: store.state.pagination.currentPage,
-    chkLocal: [],
-    category: [],
+    area_code: [],
+    hc_type: [],
 });
 
-const areaData = reactive({
-    area: store.state.hotel.hotelArea, // 이거는그러면 store의 state에 접근하는데? 모듈명은 hotel이고? hotelArea 배열을 가져와라
-});
-store.dispatch('hotel/getHotelsArea', areaData)
-console.log('area코드 받아와지나?',areaData);
+// const areaData = computed(() => store.state.hotel.hotelArea);
 
 // 반응형
 const flg = ref(false);
@@ -222,14 +138,18 @@ const flgSetup = () => {
 onBeforeMount(async () => {
     flgSetup(); // 리사이즈 이벤트
     await store.dispatch(actionName, serchData);
+    await store.dispatch('hotel/getHotelsArea');
+    // console.log('에리아데이터', areaData);
 });
+
 window.addEventListener('resize', flgSetup);
 
-
+    
 // 카테카테고리고리
 const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
 function updateFilters() {
+    console.log(serchData.area_code);
     store.dispatch(actionName, serchData);
 }
 
@@ -240,9 +160,9 @@ function closefilter(value) {
     localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
 
-window.onbeforeunload = function() {
-    localStorage.clear();
-};
+// window.onbeforeunload = function() {
+//     // localStorage.clear();
+// };
 
 // 모달모달
 const isVisible = ref(false);
@@ -514,7 +434,7 @@ function closemodal() {
         z-index: 2;
     }
     .modal-content {
-        width: 450px;
+        width: 340px;
         background-color: white;
         padding: 20px 30px 40px 30px;
         border-radius: 10px;
@@ -529,7 +449,7 @@ function closemodal() {
     }
     .modal-region {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         row-gap: 15px;
     }
     .modal-input {

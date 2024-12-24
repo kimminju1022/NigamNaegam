@@ -6,6 +6,7 @@ export default {
     state: () => ({
         hotelList: [],
         hotelArea: [],
+        hotelCategory: [],
     }),
     mutations: {
         setHotelList(state, list) {
@@ -14,6 +15,9 @@ export default {
         setHotelArea(state, list) {
             state.hotelArea = list;
         },
+        getHotelsCategory(state, list) {
+            state.hotelCategory = list;
+        }
     },
     actions: {
         getHotelsPagination(context, data) {
@@ -26,11 +30,10 @@ export default {
     
                 axios.get(url, config)
                 .then(response => {
-                    console.log(response);
+                    // console.log(response);
                     context.commit('setHotelList', response.data.data);
-
                     // 페이지 저장
-                    context.commit('pagination/setPaginationInitialize', response.data, {root: true});
+                    context.commit('pagination/setPagination', response.data, {root: true});
                     return resolve();
                 })
                 .catch(error => {
@@ -41,17 +44,32 @@ export default {
 
         },
 
-        getHotelsArea(context, data) {
+        getHotelsArea(context) {
             return new Promise((resolve, reject) => {
                 const url = '/api/areas';
-                const config = {
-                    params: data
-                }
 
-                axios.get(url, config)
+                axios.get(url)
                 .then(response => {
-                    console.log('동작은하나??',response);
-                    context.commit('setHotelArea', response.data)
+                    // console.log('동작은하나??',response);
+                    context.commit('setHotelArea', response.data);
+                    // console.log('값을 받아오나??', response.data);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject();
+                });
+            });
+        },
+
+        getHotelsCategory(context) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/category';
+
+                axios.get(url)
+                .then(response => {
+                    context.commit('setHotelCategory', response.data);
+                    console.log('값을 받아오나??', response.data);
                     return resolve();
                 })
                 .catch(error => {

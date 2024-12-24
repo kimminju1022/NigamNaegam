@@ -23,7 +23,7 @@
                     </div>
                     <div class="header-list">
                         <ul class="header-list-flex">
-                            <li class="header-list-hover"><router-link to="/hotels">호텔</router-link></li>
+                            <li class="header-list-hover"><router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link></li>
                             <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
                             <li class="header-list-hover">
                                 <div class="header-list-dropdown">
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <ul class="app-content-flex">
-                            <li class="app-content"><router-link to="/hotels">호텔</router-link></li>
+                            <li class="app-content"><router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link></li>
                             <li class="app-content"><router-link to="/products">상품</router-link></li>
                             <li class="app-content">
                                 <div class="app-content-dropdown">

@@ -12,7 +12,7 @@ class HotelController extends Controller
     public function hotels(Request $request) {
         Log::debug('request', $request->all());
         $hotels = HotelInfo::join('hotels', 'hotel_infos.hotel_id', '=', 'hotels.hotel_id')
-                           ->join('hotel_categories', 'hotel_infos.hc_id', '=', 'hotel_categories.hc_id')
+                           ->join('hotel_categories', 'hotel_infos.hc_type', '=', 'hotel_categories.hc_type')
                            ->where(function ($query) {
                                 $query->where('cat3', 'B02010100')
                                       ->orWhere('cat3', 'B02010700')
