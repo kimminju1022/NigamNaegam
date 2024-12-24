@@ -3,60 +3,65 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
-use App\Models\BoardsCategory;
+use App\Models\BoardCategory;
 use Illuminate\Http\Request;
 
 // 컨트롤러 이하 모두 에러 상태로 지우거나 주석처리됨 수정예정
 class BoardController extends Controller
 {
     //action-Method
-    public function index($type){
-        // $boardList = BoardsCategory::orderBy('created_at','DESC')->paginate(15);
+    public function index(Request $request){
+        $boardList = Board::orderBy('created_at','DESC')->paginate(15);
         
-        $type = Board::join('boards_category', 'boards.board_id', '=', 'boards_category.board_id');
+        // $type = Board::join('board_categories', 'boards.board_id', '=', 'board_categories.board_id');
+
+        // $boardTitle =Board::join('board_categories'.'boards.bc_id','=','board_categories.bc_name')
+        //     ->SELECT (
+        //         'board_categories.bc_name')
+        //     ->FROM (
+        //         'board_categories')
+        //     ->JOIN ('boards')
+        //     ->ON( 'board_categories.bc_id','=','boards.bc_id'
+        //     );
+        $boardTitle = BoardCategory::select('bc_name')
+                        ->where('bc_type', '=', $request->bc_type)
+                        ->first();
 
         $responseData = [
             'success' => true
+            ,'boardTitle'=> $boardTitle
             ,'msg' =>'게시글획득성공'
-            // ,'boardList' => $boardList->toArray()
+            ,'boardTitle' => $boardTitle->bc_name
+            ,'boardList' => $boardList->toArray()
         ];
-        $data =[
-            '리뷰' => [
-                'board_name' => '리뷰게시판',
-                'list' => ['board_id','area_code']
-            ]
-            ,'자유' => [
-                'board_name' => '자유게시판',
-                'list' => ['board_id','area_code']
-            ]
-        ];
+        
         // type검증
-        if(!array_key_exists($type, $data)){
-            return response()->json(['error' => 'type검증'], 400);
-        }
+        // if(!array_key_exists($type, $data)){
+        //     return response()->json(['error' => 'type검증'], 400);
+        // }
         return response()->json($responseData, 200);
         return $data[$type];
     }
     // 조인할 쿼리문 짜기
-    public function show($id){
-        $board = Board::join('users', 'boards.user_id', '=', 'users.user_id')
-        ->select(
-            'boards.board_id',
-            'boards.user_id',
-            'boards.board_title',
-            'boards.created_at',
-            'boards.view_cnt',
-            // 'likes.',
-            'users.user_nickname'
-            )
-        ->orderBy(
-            'boards.created_at', 'DESC'
-        )
-        ->where(
-            'board_categories.bc_type', '='
-            )
-        ->first();
-    }
+    // public function show($id){
+    //     $board = Board::join('users', 'boards.user_id', '=', 'users.user_id')
+    //     ->select(
+    //         'boards.board_id',
+    //         'boards.user_id',
+    //         'boards.board_title',
+    //         'boards.created_at',
+    //         'boards.view_cnt',
+    //         // 'likes.',
+    //         'users.user_nickname'
+    //         )
+    //     ->orderBy(
+    //         'boards.created_at', 'DESC'
+    //     )
+    //     ->where(
+    //         'board_categories.bc_type', '='
+    //         )
+    //     ->first();
+    // }
 
     // public function showMyQuestion(Request $request){
 
@@ -73,7 +78,6 @@ class BoardController extends Controller
     //         ,'data' => $questionList->toArray()
     //     ];
 
-        return response()->json($responseData, 200);
-    }
-
+    //     return response()->json($responseData, 200);
+    // }
 }

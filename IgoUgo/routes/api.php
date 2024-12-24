@@ -41,7 +41,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
 // 리뷰/자유 게시판용 라우터
-Route::get('/boards/{type}',[BoardController::class, 'index'])->name('board.index');
+Route::get('/boards',[BoardController::class, 'index'])->name('board.index');
 
 // 문의 게시판용 라우터
 Route::get('/question',[BoardController::class, 'index'])->name('board.index');

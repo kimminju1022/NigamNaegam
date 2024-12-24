@@ -1,8 +1,7 @@
 <template>
     <main>
         <h2 style="margin: 30px 0; font-size: 3rem;">
-            <!-- {{ item.bc_type }} -->
-            <!-- <p v-show=""></p> -->
+            {{ boardTitle.bc_name }}
         </h2>
         <div class="board-head">
             <div class="board-category">
@@ -134,20 +133,23 @@ import { computed,onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex'; // 스토어쓰니까 이거 선언해 줘야해
 
 const store = useStore();
-
+// boardTitle
+const boardTitle = computed(() => store.state.board.boardTitle);
 // boardlist
 const boardList = computed(() => store.state.board.boardList);
 
+
 // beforemount
 onBeforeMount(() => {
-    console.log('나온다아아아아앙')
+    // console.log('나온다아아아아앙')
     // 백앤드로 요청 보내는 액션메소드
+
     if(store.state.board.boardList.length<1){
         store.dispatch('board/getBoardListPagination');
     }
 });
 
-const keyword = ref('');
+// const keyword = ref('');
 /**
  * 키워드 검색 처리
 

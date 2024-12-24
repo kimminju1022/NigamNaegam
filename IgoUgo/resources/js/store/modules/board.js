@@ -4,12 +4,16 @@ import axios from "../../axios";
 export default {
     namespaced: true,
     state: () => ({
+        boardTitle:1,
         boardList: [],
         page: 0,  // 현재페이지로 넘겨주기 위함
-        bcType: 0
+        bcType: 0 
     }),
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
+        setBoardTitle(state,boardTitle){
+            state.boardTitle = boardTitle;
+        },
         setBoardList(state,boardList){
             state.boardList = boardList;
         },
@@ -24,19 +28,22 @@ export default {
         /** 게시판 명 획득
          * 
          */
-        getBoardTitle(context){
-            const url = '/board/api';
+        getBoardTitle(context,type){
+            const url = '/api/boards/${type}';
             const data = JSON.stringify(data);
             const config = {
                 headers:{
                     'Content-Type': 'application/json',
                 }
             }
-            axios.get(url)
+            axios
+            .get(url)
             .then(response =>{
                 // console.log(response)
-                context.commit('setBoard', response.data.boardList.date);
+                context.commit('setBoardTitle', response.data.boardTitle.data);
+                context.commit('setBoardList', response.data.boardList.data);
                 context.commit('setPage', response.data.boardList.current_page);
+                context.commit('setBcType', response.data.boardList.bcType.data);
             })
             .catch(error => {
                 console.error(error);
