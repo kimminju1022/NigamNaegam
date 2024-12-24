@@ -38,10 +38,10 @@ class Board extends Model
     }
 
     public function board_categories() {
-        return $this->belongsTo(BoardCategory::class, 'bc_type');
+        return $this->belongsTo(BoardCategory::class, 'bc_type', 'bc_type');
     }
 
     public function questions() {
-        return $this->hasMany(Question::class, 'board_id');
+        return $this->hasMany(Question::class, 'board_id', 'board_id');
     }
 }

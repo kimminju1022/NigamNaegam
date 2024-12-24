@@ -19,11 +19,11 @@ class HotelInfoFactory extends Factory
     public function definition()
     {
         $hotel = Hotel::select('hotel_id')->inRandomOrder()->first();
-        $hotel_cat = HotelCategory::select('hc_id')->inRandomOrder()->first();
+        $hotel_cat = HotelCategory::select('hc_type')->inRandomOrder()->first();
 
         return [
             'hotel_id' => $hotel->hotel_id,
-            'hc_id' => $hotel_cat->hc_id,
+            'hc_type' => $hotel_cat->hc_type,
         ];
     }
 }

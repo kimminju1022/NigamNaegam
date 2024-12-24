@@ -24,12 +24,12 @@ class QuestionController extends Controller
 
         Log::debug($request);
         $questionList = Board::with(['questions', 'users', 'board_categories'])
-                                ->where(function ($query) {
-                                    $query->where('user_id', '1')
-                                            ->Where('bc_type', '2');
-                                })
+                                ->where('user_id', $request->user_id)
+                                ->Where('bc_type', $request->bc_type)
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
+
+
 
 
         $responseData = [

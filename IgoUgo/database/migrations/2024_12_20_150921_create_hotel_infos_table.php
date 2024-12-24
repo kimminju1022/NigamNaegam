@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('hotel_infos', function (Blueprint $table) {
             $table->id('hotel_info_id');
             $table->bigInteger('hotel_id')->unsigned();
-            $table->bigInteger('hc_id')->unsigned();
+            $table->integer('hc_type');
         });
     }
 

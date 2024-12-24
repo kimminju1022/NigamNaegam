@@ -4,26 +4,20 @@ import axios from "../../axios";
 export default {
     namespaced: true,
     state: () => ({
-        
+        boardList: [],
     }),
     mutations: {
-
+        setBoardList(state, boardList) {
+            state.boardList = boardList;
+        },
     },
     actions: {
         /** 게시글획득
-                 *  @param{*} context
-                */
-        getQuestListPagenation(context){
-            const url = '/api/question';
-                const config = {
-                    headers:{
-                        'Authorization':'bearer' + localStorage.getItem('accessToken'),
-                    }
-                }
-                axios.get(url)
-                .then()
-                .catch();
-        },
+         *  @param{*} context
+        */
+
+        // 유저 1:1 문의내역
+        getUserQuetionList(context,userInfo) {}
     },
     getters: {
     

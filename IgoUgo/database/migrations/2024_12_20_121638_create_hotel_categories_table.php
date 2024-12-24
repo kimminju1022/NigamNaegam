@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('hotel_categories', function (Blueprint $table) {
             $table->id('hc_id');
-            $table->integer('hc_type');
+            $table->integer('hc_type')->unique();
             $table->string('hc_name', 10);
         });
     }

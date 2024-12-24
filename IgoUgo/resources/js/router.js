@@ -55,12 +55,12 @@ const routes = [
     {
         path: '/login',
         component: LoginComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/registration',
         component: UserRegistrationComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/hotels',
@@ -93,7 +93,7 @@ const routes = [
     {
         path: '/boards/create',
         component: BoardCreateComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/boards/update',
@@ -102,7 +102,7 @@ const routes = [
     {
         path: '/boards/edit',
         component: BoardUpdateComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/question',
@@ -111,36 +111,37 @@ const routes = [
     {
         path: '/question/create',
         component: QuestionCreateComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/question/:id',
         component: QuestionDetailComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/question/edit',
         component: QuestionEditComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/user/:id',
         component: MyPageComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/user/:id/edit',
         component: MyPageUpdateComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/password/:id',
         component: PasswordComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/password/:id/edit',
         component: PasswordUpdateComponent,
-        // beforeEnter: chkAuth,
+        beforeEnter: chkAuth,
     },
     {
         path: '/:catchAll(.*)',

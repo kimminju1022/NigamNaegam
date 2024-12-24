@@ -47,7 +47,7 @@ class UserRequest extends FormRequest
             $rules['user_name'] = ['required', 'between:2,20', 'regex:/^[a-zA-Z가-힣]+$/u'];
             $rules['user_nickname'] = ['required', 'between:1,50', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
             $rules['user_phone'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
-            $rules['user_profile'] = ['required', 'image'];
+            $rules['user_profile'] = ['image'];
 
             unset($rules['user_email']);
             unset($rules['user_password']);

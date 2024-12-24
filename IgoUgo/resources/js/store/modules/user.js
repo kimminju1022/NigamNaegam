@@ -137,8 +137,8 @@ export default {
                 // context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
                 localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
 
-
-                router.replace(`/user/${userInfo.user_id}`);
+                alert('수정 성공');
+                router.replace(`/user/${userData.userInfo.user_id}`);
                 }
             )
             .catch(error => {

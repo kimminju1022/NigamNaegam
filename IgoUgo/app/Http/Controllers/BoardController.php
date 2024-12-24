@@ -58,4 +58,22 @@ class BoardController extends Controller
         ->first();
     }
 
+    // public function showMyQuestion(Request $request){
+
+    //     $questionList = Board::with('users')
+    //     ->orderBy('created_at', 'DESC')
+    //                             ->where('user_id', $request->user_id)
+    //                             // ->with('users')
+    //                             // ->paginate(5);
+    //                             ->get();
+
+    //     $responseData = [
+    //         'success' => true
+    //         ,'msg' =>' 유저의 문의게시글 획득 성공'
+    //         ,'data' => $questionList->toArray()
+    //     ];
+
+        return response()->json($responseData, 200);
+    }
+
 }

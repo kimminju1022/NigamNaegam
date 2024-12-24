@@ -156,11 +156,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed} from 'vue';
+import { ref, onBeforeMount, onMounted, onUnmounted, computed} from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const userInfo = computed(()=> store.state.user.userInfo);
+const userQuestion = computed(() => store.state.auth.userInfo);
 
 // 반응형 상태를 저장하는 변수
 const isMobileView = ref(false);
@@ -169,6 +170,11 @@ const isMobileView = ref(false);
 const checkScreenWidth = () => {
     isMobileView.value = window.innerWidth <= 320;
 };
+
+// 비포 마운트 처리
+onBeforeMount(() => {
+    store.dispatch('question/getQuestListPagination');
+});
 
 // 컴포넌트가 마운트되면 현재 너비 확인 및 이벤트 리스너 등록
 onMounted(() => {

@@ -17,12 +17,12 @@ class ReviewCategorySeeder extends Seeder
     {
 
         ReviewCategory::insert([
-            ['rc_name' => '0', 'rc_type' => '숙박']
-            ,['rc_name' => '1', 'rc_type' => '맛집']
-            ,['rc_name' => '2', 'rc_type' => '관광']
-            ,['rc_name' => '3', 'rc_type' => '문화']
-            ,['rc_name' => '4', 'rc_type' => '레포츠']
-            ,['rc_name' => '5', 'rc_type' => '쇼핑']
+            ['rc_type' => '0', 'rc_name' => '숙박']
+            ,['rc_type' => '1', 'rc_name' => '맛집']
+            ,['rc_type' => '2', 'rc_name' => '관광']
+            ,['rc_type' => '3', 'rc_name' => '문화']
+            ,['rc_type' => '4', 'rc_name' => '레포츠']
+            ,['rc_type' => '5', 'rc_name' => '쇼핑']
         ]);
     }
 }

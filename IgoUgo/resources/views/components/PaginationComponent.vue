@@ -53,5 +53,7 @@ const changePage = (page) => {
 }
 .active-page {
     font-weight: 900;
+    color: #fff;
+    background: #01083A;
 }
 </style>

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('boards', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('bc_id')->references('bc_id')->on('board_categories');
+            $table->foreign('bc_type')->references('bc_type')->on('board_categories');
         });
         
         Schema::table('questions', function(Blueprint $table) {
@@ -34,8 +34,8 @@ return new class extends Migration
 
         Schema::table('reviews',  function(Blueprint $table) {
             $table->foreign('board_id')->references('board_id')->on('boards');
-            $table->foreign('area_id')->references('area_id')->on('areas');
-            $table->foreign('rc_id')->references('rc_id')->on('review_categories');
+            $table->foreign('area_code')->references('area_code')->on('areas');
+            $table->foreign('rc_type')->references('rc_type')->on('review_categories');
         });
 
         Schema::table('hotels', function(Blueprint $table) {
@@ -44,7 +44,7 @@ return new class extends Migration
 
         Schema::table('hotel_infos', function(Blueprint $table) {
             $table->foreign('hotel_id')->references('hotel_id')->on('hotels');
-            $table->foreign('hc_id')->references('hc_id')->on('hotel_categories');
+            $table->foreign('hc_type')->references('hc_type')->on('hotel_categories');
         });
 
         Schema::table('products', function(Blueprint $table) {
@@ -65,7 +65,7 @@ return new class extends Migration
     {
         Schema::table('boards', function(Blueprint $table) {
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['bc_id']);
+            $table->dropForeign(['bc_type']);
         });
         
         Schema::table('questions', function(Blueprint $table) {
@@ -84,8 +84,8 @@ return new class extends Migration
 
         Schema::table('reviews',  function(Blueprint $table) {
             $table->dropForeign(['board_id']);
-            $table->dropForeign(['area_id']);
-            $table->dropForeign(['rc_id']);
+            $table->dropForeign(['area_code']);
+            $table->dropForeign(['rc_type']);
         });
 
         Schema::table('hotels', function(Blueprint $table) {
@@ -94,7 +94,7 @@ return new class extends Migration
 
         Schema::table('hotel_infos', function(Blueprint $table) {
             $table->dropForeign(['hotel_id']);
-            $table->dropForeign(['hc_id']);
+            $table->dropForeign(['hc_type']);
         });
 
         Schema::table('products', function(Blueprint $table) {
