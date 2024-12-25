@@ -73,36 +73,16 @@
 
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelArea" :key="item">
-                    <input v-model="serchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_id">
+                    <input v-model="item.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_id">
                     <label :for="'input-' + item.area_id">{{ item.area_name }}</label>
                 </div>
             </div>
 
             <p class="modal-region-text2 font-bold">카테고리</p>
             <div class="modal-region">
-                <div>
-                    <input value="수영장"  @change="updateFilters()" class="modal-input" type="checkbox" id="pool">
-                    <label for="pool">수영장</label>
-                </div>
-                <div>
-                    <input value="바베큐장" @change="updateFilters()" class="modal-input" type="checkbox" id="grill">
-                    <label for="grill">바베큐장</label>
-                </div>
-                <div>
-                    <input value="캠프파이어" @change="updateFilters()" class="modal-input" type="checkbox" id="fire">
-                    <label for="fire">캠프파이어</label>
-                </div>
-                <div>
-                    <input value="뷰티시설" @change="updateFilters()" class="modal-input" type="checkbox" id="beauty">
-                    <label for="beauty">뷰티시설</label>
-                </div>
-                <div>
-                    <input value="피트니스" @change="updateFilters()" class="modal-input" type="checkbox" id="fitness">
-                    <label for="fitness">피트니스</label>
-                </div>
-                <div>
-                    <input value="픽업서비스" @change="updateFilters()" class="modal-input" type="checkbox" id="pickup">
-                    <label for="pickup">픽업서비스</label>
+                <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
+                    <input v-model="item.hc_type" :value="item.hc_type"  @change="updateFilters()" class="modal-input" type="checkbox" id="pool">
+                    <label for="pool">{{ item.hc_name }}</label>
                 </div>
             </div>
 
@@ -139,6 +119,7 @@ onBeforeMount(async () => {
     flgSetup(); // 리사이즈 이벤트
     await store.dispatch(actionName, serchData);
     await store.dispatch('hotel/getHotelsArea');
+    await store.dispatch('hotel/getHotelsCategory')
     // console.log('에리아데이터', areaData);
 });
 

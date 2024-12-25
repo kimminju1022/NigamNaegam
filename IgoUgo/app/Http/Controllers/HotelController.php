@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\HotelCategory;
 use App\Models\HotelInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -38,5 +39,11 @@ class HotelController extends Controller
         $areas = Area::get();
 
         return response()->json($areas);
+    }
+
+    public function categories(Request $request) {
+        $categories = HotelCategory::get();
+
+        return response()->json($categories);
     }
 }

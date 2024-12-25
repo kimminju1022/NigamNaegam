@@ -15,7 +15,7 @@ export default {
         setHotelArea(state, list) {
             state.hotelArea = list;
         },
-        getHotelsCategory(state, list) {
+        setHotelCategory(state, list) {
             state.hotelCategory = list;
         }
     },
