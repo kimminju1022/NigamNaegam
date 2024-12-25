@@ -4,11 +4,15 @@ import axios from "../../axios";
 export default {
     namespaced: true,
     state: () => ({
-        boardList: [],
+        questionList: [],
+        page: 0,
     }),
     mutations: {
-        setBoardList(state, boardList) {
-            state.boardList = boardList;
+        setQuestionList(state, questionList) {
+            state.questionList = questionList;
+        },
+        setPage(state, page) {
+            state.page = page;
         },
     },
     actions: {
@@ -17,9 +21,38 @@ export default {
         */
 
         // 유저 1:1 문의내역
-        getUserQuetionList(context,userInfo) {}
+        getUserQuestionList(context,userInfo) {
+            const url = `/api/user/${userInfo.user_id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                },
+                // params: {
+                //     bc_type: 2,
+                //     user_id: userInfo.user_id,
+                //     page: context.state.page,
+                // },
+            }
+
+            axios.get(url, config)
+            .then(response => {
+                console.log(response.data);
+                
+                // context.commit('setQuestionList', response.data.data);
+                context.commit('setQuestionList', response.data.data.data[0]);
+                if (response.data.data.length > 0) {
+                    context.commit('setPage', context.state.page + 1);
+                }
+            }) 
+            .catch(error => {
+                console.error(error);
+            });
+
+        }
     },
     getters: {
-    
+        getNextPage(state){
+            return state.page + 1;
+        }
     },
 }

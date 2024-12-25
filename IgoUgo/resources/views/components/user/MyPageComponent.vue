@@ -90,35 +90,16 @@
                         <p>작성일자</p>
                     </div>
                     <hr>
-                    <div class="question-content">
-                        <p>5</p>
-                        <p class="reply-yet">대기</p>
-                        <a href="">대표가 정말 뽀빠이인가요?</a>
-                        <p>2024-12-05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>4</p>
-                        <p class="reply-yet">대기</p>
-                        <a href="">깁스는 언제 풀 수 있을까요?</a>
-                        <p>2024-12-05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>3</p>
-                        <p class="reply-done">완료</p>
-                        <a href="">충격파 치료가 그렇게 아픈가요?</a>
-                        <p>2024-12-05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>2</p>
-                        <p class="reply-done">완료</p>
-                        <a href="">여백의 미가 진정한 미인가요?</a>
-                        <p>2024-12-05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>1</p>
-                        <p class="reply-done">완료</p>
-                        <a href="">세븐밸리 살려내라</a>
-                        <p>2024-12-05</p>
+                    <div v-for="item in userQuestion" :key="item" class="question-content">
+                        <p>{{ item.board_id }}</p>
+                        <div v-if="item.que_status === '0'">
+                            <p class="reply-yet">대기</p>
+                        </div>
+                        <div v-else>
+                            <p class="reply-done">대기</p>
+                        </div>
+                        <router-link :to="`/question/${item.board_id}`">{{ item.board_title }}</router-link>
+                        <p>{{ item.created_at }}</p>
                     </div>
                 </div>
             </div>
@@ -161,33 +142,24 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const userInfo = computed(()=> store.state.user.userInfo);
-const userQuestion = computed(() => store.state.auth.userInfo);
 
-// 반응형 상태를 저장하는 변수
-const isMobileView = ref(false);
-
-// 화면 너비를 확인하는 함수
-const checkScreenWidth = () => {
-    isMobileView.value = window.innerWidth <= 320;
-};
-
+// ***************** 문의 내역 *****************
 // 비포 마운트 처리
 onBeforeMount(() => {
-    store.dispatch('question/getQuestListPagination');
+    store.dispatch('question/getUserQuestionList', userInfo.value);
 });
 
-// 컴포넌트가 마운트되면 현재 너비 확인 및 이벤트 리스너 등록
-onMounted(() => {
-    checkScreenWidth(); // 초기 너비 확인
-    window.addEventListener('resize', checkScreenWidth); // 리사이즈 이벤트 등록
-});
+const userQuestion = computed(() => store.state.question.questionList);
+// const userQuestion = reactive({
+//     userQuestionList = store.state.question.questionList,
+// });
 
-// 컴포넌트가 언마운트되면 이벤트 리스너 제거
-onUnmounted(() => {
-    window.removeEventListener('resize', checkScreenWidth);
-});
+// console.log(userInfo);
+console.log(userInfo.value);
+console.log(userQuestion);
+console.log(userQuestion.value);
 
-
+// ***************** 탈퇴 *****************
 // Modal
 const modalFlg = ref(false);
 const openModal = () => {
@@ -197,7 +169,7 @@ const closeModal = () => {
     modalFlg.value = false;
 }
 
-// 탈퇴
+// 탈퇴 처리
 const deletemodal = (userInfo) => {
     store.dispatch('user/destroyUser', userInfo);
 }

@@ -55,11 +55,11 @@ Route::middleware('my.auth')->group(function() {
     
     // 유저 관련
     Route::get('/user/{id}', [UserController::class, 'show']);
+    // Route::get('/user/{id}',[QuestionController::class, 'showMyQuestion']);
     Route::get('/user/{id}/edit', [UserController::class, 'edit']);
     Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
     Route::post('/password/{id}', [UserController::class, 'chkPW']);
-    // Route::get('/password/{id}/edit', [UserController::class, 'editPW']);
     Route::put('/password/{id}', [UserController::class, 'updatePW'])->name('password.update');
 
     // 게시판 관련
@@ -67,9 +67,10 @@ Route::middleware('my.auth')->group(function() {
     Route::put('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
     // 댓글관련 생성예정
 
-    // 질문게시판 관련
-    Route::get('/question',[QuestionController::class, 'showMyQuestion']);
-    Route::get('/question/{id}/edit',[QuestionController::class, 'edit'])->name('question.edit');
-    Route::put('/question/{id}',[QuestionController::class, 'update'])->name('question.update');
+    // 문의게시판 관련
+    Route::get('/questions',[QuestionController::class, 'index']);
+    // Route::get('/questions/{id}',[QuestionController::class, 'showMyQuestion']);
+    Route::get('/questions/{id}/edit',[QuestionController::class, 'edit'])->name('question.edit');
+    Route::put('/questions/{id}',[QuestionController::class, 'update'])->name('question.update');
 });
 

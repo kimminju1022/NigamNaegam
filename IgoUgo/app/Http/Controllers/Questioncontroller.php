@@ -21,16 +21,12 @@ class QuestionController extends Controller
     }
 
     public function showMyQuestion(Request $request){
-
-        Log::debug($request);
+        $bcType = '2';
         $questionList = Board::with(['questions', 'users', 'board_categories'])
                                 ->where('user_id', $request->user_id)
-                                ->Where('bc_type', $request->bc_type)
+                                ->Where('bc_type', $bcType)
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
-
-
-
 
         $responseData = [
             'success' => true
