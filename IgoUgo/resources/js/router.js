@@ -79,7 +79,7 @@ const routes = [
         component: ProductMainComponent,
     },
     {
-        path: '/products/list',
+        path: '/products/:contenttypeid',
         component: ProductListComponent,
     },
     {

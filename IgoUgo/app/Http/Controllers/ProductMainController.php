@@ -24,4 +24,16 @@ class ProductMainController extends Controller
 
         return response()->json($responseData);
     }
+
+    public function showList($contenttypeid) {
+        $productList = Product::where('contenttypeid', $contenttypeid)->paginate(10);
+
+        $responseData = [
+            'success' => true,
+            'msg' => '데이터 획득 성공',
+            'products' => $productList
+        ];
+
+        return response()->json($responseData);        
+    }
 }

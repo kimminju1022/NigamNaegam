@@ -1,346 +1,448 @@
 <template>
-<div class="total-container">
-    
-
-    <div>
-        <div class="right-small-container order-box font-default-size">
-            <div>
-                <span class="font-bold">정렬 순서</span>
+    <div class="total-container"> 
+        <div>
+            <div class="category-name">
+                <span class="content-title">관광지</span>
             </div>
-            <div class="order-list">
-                <p>|</p>
-                <div class="order-list-item">
-                    뽀빠이 추천
-                    <img src="/img_product/img_star.png" class="img-order">
+            <div class="right-small-container select-result-box">
+                <h2><span class="font-blue">200</span> 개의 결과</h2>
+                <div class="select-list font-default-size" :class="{'dis-none':flg}">
+                    <div v-for="value in selectedFilters" :key="value" class="select-list-item">
+                        <p>{{ value }}</p>
+                        <img @click="closefilter(value)" src="img_product/img_x.png" class="img-x">
+                    </div>
                 </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    최신순
-                    <span class="order-list-item-update font-bold">NEW</span>
+            </div>
+            <div class="order-box font-default-size">
+                
+                <div class="order-box-first">
+                    <div>
+                        <span class="font-bold">정렬 순서</span>
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <p>에디터 추천</p>
+                        <img src="img_product/img_star.png" class="img-order">
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <p>최신순</p>
+                        <span class="order-list-item-update font-bold">NEW</span>
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <p>별점순</p>
+                        <img src="img_product/img_thumb.png" class="img-order">
+                    </div>
                 </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    베스트셀러
-                    <img src="/img_product/img_thumb.png" class="img-order">
+                <div class="order-box-last">
+                    <div @click="openmodal" class="order-list-item">
+                        <p class >필터</p>
+                        <img src="img_product/img_filter.png" class="img-order">
+                    </div>
+                    <p>|</p>
+                    <div class="order-list-item">
+                        <img src="img_product/img_placeholder.png" class="img-map">
+                        <p>지도 보기</p>
+                    </div>
                 </div>
-                <p>|</p>
-                <div class="order-list-item">
-                    낮은 가격
-                    <img src="/img_product/img_won.png" class="img-order">
-                </div>
+            </div>
+            <div>
+                <!-- <div v-else-if="error">{{ error }}</div> -->
+                <!-- <div class="card-list">
+                    <div v-for="item in hotels" :key="item" class="card">
+                        <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
+                        <p class="font-bold card-title">{{ item.title }}</p>
+                    </div>
+                </div> -->
+                <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
+
+                <!-- 페이지네이션 -->
+                <PaginationComponent :actionName="actionName" :serchData="serchData" />
             </div>
         </div>
-        <div class="right-small-container">
-            <!-- <div v-else-if="error">{{ error }}</div> -->
-            <div v-if="productItems.length > 0" class="card-list">
-                <div v-for="item in productItems" :key="item" class="card">
-                    <img :src="item.firstimage" @error="e => e.target.src='/default/board_default.png'" class="img-card">
-                    <p class="font-bold card-title">{{ item.title }}</p>
-                </div>
-            </div>
-            <div v-else>상품 데이터를 불러오는 중...</div>
+    </div> 
 
-            
-            <div class="pagination">
-                <a href="#"><button class="btn bg-clear"><</button></a>
-                <a href="#"><button class="btn bg-clear">1</button></a>
-                <a href="#"><button class="btn bg-clear">2</button></a>
-                <a href="#"><button class="btn bg-clear">3</button></a>
-                <a href="#"><button class="btn bg-clear">4</button></a>
-                <a href="#"><button class="btn bg-clear">5</button></a>
-                <a href="#"><button class="btn bg-clear">></button></a>
+    <!-- 모달모달 -->
+    <div v-if="isVisible" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-x-button">
+                <img @click="closemodal" class="modal_x_img" src="/img_product/img_x.png" alt="">
+            </div>
+            <p class="modal-region-text1 font-bold">지역</p>
+
+            <div class="modal-region">
+                <div v-for="item in $store.state.hotel.hotelArea" :key="item">
+                    <input v-model="serchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_id">
+                    <label :for="'input-' + item.area_id">{{ item.area_name }}</label>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </template>
-
+    
 <script setup>
-import { onBeforeMount, onMounted, ref } from 'vue';
-import axios from 'axios';
+import { computed, onBeforeMount, reactive, ref} from 'vue';
+import { useStore } from 'vuex';
+import PaginationComponent from '../PaginationComponent.vue';
 
+const store = useStore();
+
+// 호텔 리스트 관련
+const hotels = computed(() => store.state.hotel.hotelList);
+const actionName = 'hotel/getHotelsPagination';
+
+// 필터 관련
+const serchData = reactive({
+    page: store.state.pagination.currentPage,
+    area_code: [],
+    hc_type: [],
+});
+
+// const areaData = computed(() => store.state.hotel.hotelArea);
+
+// 반응형
 const flg = ref(false);
 const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
-onBeforeMount(() => {
-    flgSetup();
-    // Axios로 API 호출
-    axios.get('/api/products/list')
-    .then((response) => {
-        productItems.value = response.data.response.body.items.item;
-        // response.data.response.body.items.item.forEach(item => {
-        //     const TITLE = document.getElementById('title');
-        //     TITLE.textContent = item.title;
-        //     // console.log(item.title);
-        // });
-    })
-    .catch((error) => {
-        console.error(error);
-    })
+onBeforeMount(async () => {
+    flgSetup(); // 리사이즈 이벤트
+    await store.dispatch(actionName, serchData);
+    await store.dispatch('hotel/getHotelsArea');
+    // console.log('에리아데이터', areaData);
 });
+
 window.addEventListener('resize', flgSetup);
 
-// API
-const productItems = ref([]);
+    
+// 카테카테고리고리
+const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
-// 마운트된 후
-onMounted(() => {
-});
-// data() {
-//     return {
-//         items: [], // tourAPI 데이터
-//         loading: true, // 로딩 상태
-//         error: null, // 에러 메시지
-//     };
+function updateFilters() {
+    console.log(serchData.area_code);
+    store.dispatch(actionName, serchData);
+}
+
+function closefilter(value) {
+    selectedFilters.value = selectedFilters.value.filter(
+        (item) => item !== value
+    );
+    localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+}
+
+// window.onbeforeunload = function() {
+//     // localStorage.clear();
+// };
+
+// 모달모달
+const isVisible = ref(false);
+
+function openmodal() {
+    isVisible.value = true;
+}
+    
+function closemodal() {
+    isVisible.value = false;
+}
+
+// 컨트롤러로 데이터 전송하는법?
+// const category = ref([
+//     { id: 1, name: '서울' },
+// ]);
+
+// async function applyFilters() { 
+//     try {
+//         await axios.get('/api/filters', {
+//         filters: selectedFilters.value
+//         });
+//     } catch {
+//         console.error(error);
+//     }
+// }
+
+
+
+// ----------------------------------------------------------------------------    
+// // 마운트된 후
+// onMounted(async() => {
+//     await loadHotels()
+//     // console.log(hotels)
+// });
+
+// // 호텔 불러오기
+// const hotels = ref([]);
+// let current_page = ref(1)
+
+// async function loadHotels() {
+//     try {
+//         const response = await axios.get(`/api/hotels?page=${current_page.value}`);
+//         // console.log(response.data.data);
+//         hotels.value = response.data.data
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+
+// // 페이지네이션
+
+// // 페이지 버튼 계산
+// // function maxPage() {
+// //     loadHotels();
+// //     console.log(hotels.value.per_page);
+// //     return hotels.value.per_page;
+// // }
+
+
+// const pages = computed(() => {
+//     // maxPage()
+//     const totalPages = 46;
+//     const pageCount = 5;
+//     const startPage = Math.max(current_page.value - Math.floor(pageCount / 2), 1);
+//     // 만약 current_page.value가 5면? 5 빼기 5/2=2(나머지버림)  3이나오니까 max에서 3이반환됨됨
+//     const endPage = Math.min(startPage + pageCount - 1, totalPages);
+//     // 3이 반환되서 5랑 더하면 8이됨 8이 나오니까 8-1 해서 min에서 7이 반환됨
+//     const adjustedStartPage = Math.max(endPage - pageCount + 1, 1);
+//     // 7-3+1 해서 5이된다 
+    
+//     return Array.from({ length: Math.min(pageCount, totalPages) }, (_, i) => adjustedStartPage + i)
+//     // Array에서 i를쓰면 0에서 부터 반복됨
+//     // 7-3에 +1 이니까 5가출력됨 5개의 공간을가진 배열이 만들어지고 5 i는 1씩상승하고 i가 증가할 때마다 startPage 값에 더해지는 구조
+//     // 3이니까 3+0 은 3 3+1은 4... 해서 배열에 3 4 5 6 7 결국 현제페이지인 5가 가운데 오도록 작동
+// });
+
+// // 페이지 변경
+// function changePage(page) {
+//     // maxPage()
+//     const totalPages = hotels.value.per_page;
+//     if (page < 1 || page > totalPages) {
+//         return 
+//         // page가 1이하거나 46이상이면 작동안하고 리턴시켜버려서 함수를 나가버리기기
+//     }
+//     current_page.value = page;
+//     loadHotels()
 // }
 </script>
-
+    
 <style scoped>
-/* 전체를 감싸는 제일 큰 틀 */
-/* .total-container {
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    gap: 30px;
-    padding: 0 50px;
-} */
-
-/* 작은 틀 */
-.left-small-container {
-    border: 1px solid #01083A;
-    border-radius: 10px;
-    margin: 1rem 0;
-    padding: 20px;
-}
-.right-small-container {
-    /* border: 1px solid #01083A; */
-    border-radius: 10px;
-    margin: 10px 0;
-}
-
-/* 리스트 아이템 */
-.list-item {
-    display: flex;
-    gap: 10px;
-    font-size: 20px;
-    align-items: center;
-}
-
-/* 지도 관련 */
-.map-box {
-    /* height: 200px; */
-    background-image: url('/default/map_example.png');
-    background-position: center;
-}
-.map-box-title {
-    margin-top: 140px;
-    background-color: rgba(255, 255, 255, .7);
-    text-align: center;
-    /* border-radius: 10px; */
-}
-
-/* 카테고리 관련 */
-.cat-box-title {
-    text-align: center;
-}
-.cat-list {
-    display: flex;
-    flex-direction: column;
-    /* justify-content: space-around; */
-    gap: 20px;
-    margin-top: 10px;
-}
-.cat-input {
-    width: 20px;
-    height: 20px;
-    border: 1px solid #01083A;
-    border-radius: 50%;
-    appearance: none;
-}
-.cat-input:checked {
-    background-color: #01083A;
-}
-
-/* 가격 관련 */
-.pri-box-title {
-    text-align: center;
-}
-.pri-box {
-    margin-top: 20px;
-}
-.pri-input {
-    border: 1px solid #01083A;
-    border-radius: 10px;
-    height: 30px;
-    min-width: 100px;
-    padding-left: 20px;
-}
-.pri-wave {
-    text-align: center;
-}
-
-/* 버튼 */
-.button-position {
-    text-align: center;
-}
-.button-wide {
-    min-width: 150px;
-    font-size: 1.5rem;
-    border-radius: 10px;
-}
-
-/* 선택 결과 관련 */
-.select-result-box {
-    padding: 20px;
-}
-.select-list {
-    padding: 20px;
-    display: flex;
-    gap: 20px;
-}
-.select-list-item {
-    border: 1px solid #01083A;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-/* 정렬 순서 관련 */
-.order-box {
-    display: flex;
-    gap: 20px;
-}
-.order-list {
-    display: flex;
-    gap: 20px;
-}
-.order-list-item {
-    display: flex;
-    align-items: center;
-}
-.order-list-item-update {
-    color: #ff0000;
-    font-size: 15px;
-    margin-left: 5px;
-}
-
-/* 카드 관련 */
-.card-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 15px;
-    margin-top: 50px;
-}
-.card {
-    height: 300px;
-    border: 1px solid #01083A;
-    border-radius: 10px;
-    display: grid;
-    padding: 15px;
-    margin: 0 auto;
-}
-.card-title {
-    width: 175px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-}
-.img-card {
-    width: 200px;
-    height: 185px;
-    object-fit: cover;
-    background-repeat: no-repeat;
-    border-radius: 5px;
-}
-
-/* 페이지네이션 */
-.pagination {
-    /* margin: 0 auto; */
-    /* text-align: center; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-.pagination button {
-    font-size: 20px;
-    border-radius: 50px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-}
-.pagination button:hover, .pagination button:active {
-    color: #fff;
-    background: #01083a;
-}
-
-/* 폰트 관련 */
-.font-default-size {
-    font-size: 18px;
-}
-.font-blue {
-    color: #0000ff;
-}
-.font-bold {
-    font-weight: 900;
-}
-
-/* 기타 등등 */
-.img-x { 
-    width: 12px;
-    height: 12px;
-    margin-left: 10px;
-}
-.img-order { 
-    width: 20px;
-    height: 20px;
-    margin-left: 5px;
-}
-/* 일단 얘는 나중에 글자 크기 조절 */
-.test {
-    font-size: 5px;
-}
-
-/* --------------------------------- */
-/* 반응형 구현 */
-/* --------------------------------- */
-
-/* 사라짐 */
-.dis-none {
-    display: none;
-}
-
-/* 지도 */
-.map-height {
-    height: 150px;
-}
-
-/* 카테고리 */
-.cat-list-change {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-.cat-input-change {
-    width: 16px;
-    height: 16px;
-}
-.cat-list-item-change {
-    font-size: 16px;
-}
-
-/* 가격 */
-.pri-box-change {
-    display: flex;
-    gap: 5px;
-}
-
-/* 미디어쿼리 */
-@media (max-width: 1000px) {
-    .total-container {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
+    .content-title {
+        font-size: 50px;
     }
-}
+    .category-name {
+        padding-bottom: 10px;
+    }
+    /* 선택 결과 관련 */
+    .select-result-box {
+        padding: 20px;
+    }
+    .select-list {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        display: flex;
+        gap: 20px;
+    }
+    .select-list-item {
+        display: flex;
+        justify-content: space-between;
+        max-width: 130px;
+        border: 1px solid #01083A;
+        border-radius: 20px;
+        padding: 10px;
+    }
+    
+    /* 정렬 순서 관련 */
+    .order-box {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+    }
+    /* .order-list {
+        display: flex;
+        gap: 20px;
+    } */
+    .order-box-first {
+        display: flex;
+        gap: 20px;
+    }
+    .order-box-last {
+        display: flex;
+        gap: 20px;
+    }
+    .order-list-item {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+    .order-list-item-update {
+        color: #ff0000;
+        font-size: 15px;
+        margin-left: 5px;
+    }
+    
+    /* 카드 관련 */
+    .card-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        column-gap: 15px;
+        row-gap: 40px;
+        margin-top: 40px;
+    }
+    .card {
+        height: 250px;
+        width: 300px;
+        border: 1px solid #e9e9e9;
+        border-radius: 10px;
+        display: grid;
+        grid-template-rows: 185px 65px;
+        margin: 0 auto;
+        justify-items: center;
+        /* 호버효과 css */
+        position: relative;
+        transition: 0.2s ease-in-out;
+        /* flex: 1; */
+    }
+    /* 카드호버 */
+    .card:hover {
+        transform: translateY(-10px);
+        cursor: pointer;
+        box-shadow: 1px 1px 20px #ddd;
+    }
+    .card-title {
+        width: 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        align-self: center;
+    }
+    .img-card {
+        width: 100%;
+        height: 185px;
+        object-fit: cover;
+        background-repeat: no-repeat;
+        border-radius: 5px 5px 0px 0px;
+    }
+    
+    /* 폰트 관련 */
+    .font-default-size {
+        font-size: 18px;
+    }
+    .font-blue {
+        color: #0000ff;
+    }
+    .font-bold {
+        font-weight: 900;
+    }
+    
+    /* 기타 등등 */
+    .img-x { 
+        width: 12px;
+        height: 12px;
+        margin-left: 10px;
+        align-self: center;
+        cursor: pointer;
+    }
+    .img-order { 
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+    }
+    .img-map {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+    /* 일단 얘는 나중에 글자 크기 조절 */
+    .test {
+        font-size: 5px;
+    }
+    
+    /* --------------------------------- */
+    /* 반응형 구현 */
+    /* --------------------------------- */
+    
+    /* 사라짐 */
+    .dis-none {
+        display: none;
+    }
+    
+    /* 지도 */
+    .map-height {
+        height: 150px;
+    }
+    
+    /* 카테고리 */
+    .cat-list-change {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .cat-input-change {
+        width: 16px;
+        height: 16px;
+    }
+    .cat-list-item-change {
+        font-size: 16px;
+    }
+    
+    /* 가격 */
+    .pri-box-change {
+        display: flex;
+        gap: 5px;
+    }
+
+    /* 모달모달 */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+    }
+    .modal-content {
+        width: 340px;
+        background-color: white;
+        padding: 20px 30px 40px 30px;
+        border-radius: 10px;
+    }
+    .modal-region-text1 {
+        font-size: 20px;
+        padding-bottom: 30px;
+    }
+    .modal-region-text2 {
+        font-size: 20px;
+        padding: 30px 0;
+    }
+    .modal-region {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        row-gap: 15px;
+    }
+    .modal-input {
+        margin-right: 5px;
+    }
+    .modal-x-button {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .modal_x_img {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    
+    /* 미디어쿼리 */
+    @media (max-width: 1000px) {
+        .total-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+    }
 </style>

@@ -30,11 +30,12 @@ Route::get('/hotels', [HotelController::class, 'hotels']);
 Route::get('/areas', [HotelController::class, 'areas']);
 Route::get('/category', [HotelController::class, 'categories']);
 
-// 상품메인 라우터
+// ----- 상품 관련 -----
+// 상품 메인 라우터
 Route::get('/products', [ProductMainController::class, 'getFilteredProducts']);
-
-// 상품리스트 라우터
-Route::get('/products/list', [ProductController::class, 'productData']);
+// 각 카테고리별 상품리스트 라우터
+// Route::get('/products/{id}', [ProductController::class, 'productData']);
+Route::get('/products/{contenttypeid}', [ProductMainController::class, 'showList']);
 
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

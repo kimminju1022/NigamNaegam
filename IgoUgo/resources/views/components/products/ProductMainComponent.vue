@@ -3,16 +3,18 @@
 <div v-if="$store.state.product.productTypeList.spot">
     <div v-for="(condition, idx) in conditions" :key="idx" class="product-line">
         <!-- <div :style="{ backgroundImage: 'url(' + products.firstimage + ')' }" class="product-main-img"> -->
-        <div class="product-main-img" :class="'back-' + condition">
-            <div class="product-main-title">
-                <p v-if="condition === 'spot'">관광지</p>
-                <p v-else-if="condition === 'culture'">문화시설</p>
-                <p v-else-if="condition === 'sports'">레포츠</p>
-                <p v-else-if="condition === 'shopping'">쇼핑</p>
-                <p v-else>음식점</p>
+        <router-link :to="getProductLink(condition)">
+            <div class="product-main-img" :class="'back-' + condition">
+                <div class="product-main-title">
+                    <p v-if="condition === 'spot'">관광지</p>
+                    <p v-else-if="condition === 'culture'">문화시설</p>
+                    <p v-else-if="condition === 'sports'">레포츠</p>
+                    <p v-else-if="condition === 'shopping'">쇼핑</p>
+                    <p v-else>음식점</p>
+                </div>
+                <!-- <img src="/img_main/slide_img1.png" class="product-main-img"> -->
             </div>
-            <!-- <img src="/img_main/slide_img1.png" class="product-main-img"> -->
-        </div>
+        </router-link>
         <ProductSwiperComponent :condition="condition"></ProductSwiperComponent>
     </div>
 </div>
@@ -34,10 +36,24 @@ const conditions = [
     'restaurant',
 ];
 
+// 조건에 따른 id - 객체
+const contentTypeId = {
+    spot: 12,
+    culture: 14,
+    sports: 28,
+    shopping: 38,
+    restaurant: 39,
+};
+
 onBeforeMount(async () => {
     // fetchAllProduct();
     await store.dispatch('product/takeProducts');
 })    
+
+const getProductLink = (condition) => {
+    const contentMatch = contentTypeId[condition];
+    return `/products/${contentMatch}`;
+};
 
 // DB
 // const allProduct = ref({}); // 조건별 데이터를 저장
