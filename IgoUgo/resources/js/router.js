@@ -32,7 +32,7 @@ import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
-    const authFlg = store.state.user.authFlg;
+    const authFlg = store.state.auth.authFlg;
     const noAuthPassFlg = (to.path === '/login' || to.path === '/registration');
     
     if(authFlg && noAuthPassFlg) {
