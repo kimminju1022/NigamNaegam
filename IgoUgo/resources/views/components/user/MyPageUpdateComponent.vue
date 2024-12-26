@@ -46,7 +46,7 @@ const store =  useStore();
 // const router = useRouter();
 
 const userData = reactive({
-    userInfo: store.state.user.userInfo,
+    userInfo: store.state.auth.userInfo,
     file: null,
 });
 

@@ -18,7 +18,7 @@ class Hotel extends Model
         ,'addr1'
         ,'addr2'
         ,'tel'
-        ,'areacode'
+        ,'area_code'
         ,'benikia'
         ,'booktour'
         ,'goodstay'

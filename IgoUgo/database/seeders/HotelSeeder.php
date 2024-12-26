@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class PublicAPiDataSeeder extends Seeder
+class HotelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -36,7 +36,7 @@ class PublicAPiDataSeeder extends Seeder
             DB::table('hotels')->insert([
                 'addr1' => data_get($item, 'addr1') !== '' ? data_get($item, 'addr1') : null,
                 'addr2' => data_get($item, 'addr2') !== '' ? data_get($item, 'addr2') : null,
-                'areacode' => data_get($item, 'areacode') !== '' ? data_get($item, 'areacode') : null,
+                'area_code' => data_get($item, 'areacode') !== '' ? data_get($item, 'areacode') : null,
                 'benikia' => data_get($item, 'benikia') !== '' ? data_get($item, 'benikia') : false,
                 'cat1' => data_get($item, 'cat1') !== '' ? data_get($item, 'cat1') : null,
                 'cat2' => data_get($item, 'cat2') !== '' ? data_get($item, 'cat2') : null,

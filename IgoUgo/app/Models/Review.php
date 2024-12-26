@@ -20,8 +20,8 @@ class Review extends Model
      */
     protected $fillable = [
         'board_id',
-        'area_id',
-        'rc_id',
+        'area_code',
+        'rc_type',
         'rate',
     ];
 }

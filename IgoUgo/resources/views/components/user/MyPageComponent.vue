@@ -4,24 +4,24 @@
             <div class="my-profile-bg">
                 <div class="my-profile-box">
                     <div class="my-profile-img">
-                        <img :src="$store.state.user.userInfo.user_profile" alt="">
+                        <img :src="$store.state.auth.userInfo.user_profile" alt="">
                     </div>
                     <div class="my-profile-content">
                         <div class="profile-item">
                             <p class="bg-navy">이메일</p>
-                            <p>{{ $store.state.user.userInfo.user_email }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_email }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">이름</p>
-                            <p>{{ $store.state.user.userInfo.user_name }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_name }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">닉네임</p>
-                            <p>{{ $store.state.user.userInfo.user_nickname }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_nickname }}</p>
                         </div>
                         <div class="profile-item">
                             <p class="bg-navy">전화번호</p>
-                            <p>{{ $store.state.user.userInfo.user_phone }}</p>
+                            <p>{{ $store.state.auth.userInfo.user_phone }}</p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@ import { ref, onBeforeMount, onMounted, onUnmounted, computed} from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-const userInfo = computed(()=> store.state.user.userInfo);
+const userInfo = computed(()=> store.state.auth.userInfo);
 
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
@@ -153,11 +153,6 @@ const userQuestion = computed(() => store.state.question.questionList);
 // const userQuestion = reactive({
 //     userQuestionList = store.state.question.questionList,
 // });
-
-// console.log(userInfo);
-console.log(userInfo.value);
-console.log(userQuestion);
-console.log(userQuestion.value);
 
 // ***************** 탈퇴 *****************
 // Modal

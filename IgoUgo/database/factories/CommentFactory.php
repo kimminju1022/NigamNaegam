@@ -19,7 +19,7 @@ class CommentFactory extends Factory
     public function definition()
     {
         $user = User::select('user_id')->inRandomOrder()->first();
-        $board = Board::select('board_id')->inRandomOrder()->first();
+        $board = Board::select('board_id')->where('bc_type', '0')->orWhere('bc_type', '1')->inRandomOrder()->first(); // bc_type 0,1만 들고와야해
         $date = $this->faker->dateTimeBetween($board->created_at);
 
         return [

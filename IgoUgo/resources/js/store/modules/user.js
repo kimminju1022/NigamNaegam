@@ -90,8 +90,8 @@ export default {
             axios.post(url, null, config)
             .then(response => {
                 // 토큰 세팅
-                localStorage.setItem('accessToken', response.data.accessToken);
-                localStorage.setItem('refreshToken', response.data.refreshToken);
+                localStorage.setItem('auth/accessToken', response.data.accessToken);
+                localStorage.setItem('auth/refreshToken', response.data.refreshToken);
 
                 // 후속 처리 진행
                 callbackProcess();
@@ -128,14 +128,9 @@ export default {
             
             axios.post(url, formData, config)
             .then(response => {
-                // console.log(response.data.userInfo);
-                // console.log(response.formData.userInfo);
-                
-                // context.commit('setUserUnshift', response.userInfo);
 
-                context.commit('setUserInfo', response.data.userInfo);
-                // context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
-                localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
+                context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
+                localStorage.setItem('auth/userInfo', JSON.stringify(response.data.userInfo), {root: true});
 
                 alert('수정 성공');
                 router.replace(`/user/${userData.userInfo.user_id}`);
@@ -144,14 +139,11 @@ export default {
             .catch(error => {
                 alert('수정 실패');
                 console.error(error);
-                // console.error(error.response.data.data);
-                // console.error(error.response.formData);
             });
         },
 
         // 유저 탈퇴
         destroyUser(context, userInfo) {
-            // console.log(userInfo);
             const url = `/api/user/${userInfo.user_id}`;
             const config = {
                 headers: {
@@ -183,7 +175,7 @@ export default {
                 }
             }
 
-            context.commit('setErrorMsgList', []);
+            context.commit('auth/setErrorMsgList', [], {root: true});
 
             axios.post(url, data, config)
             .then(response => {
@@ -206,7 +198,7 @@ export default {
                     errorMsgList.push('예기치 못한 오류 발생');
                 }
                 
-                context.commit('setErrorMsgList', errorMsgList);
+                context.commit('auth/setErrorMsgList', errorMsgList, {root: true});
                 // alert(errorMsgList);
             });
         },
@@ -235,8 +227,8 @@ export default {
                 localStorage.clear();
                 // localStorage.removeItem('accessToken');
     
-                context.commit('setAuthFlg', false);
-                context.commit('setUserInfo', {});
+                context.commit('auth/setAuthFlg', false, {root: true});
+                context.commit('auth/setUserInfo', {}, {root: true});
     
                 router.replace('/login');
             })
@@ -257,7 +249,7 @@ export default {
                     errorMsgList.push('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
                 }
                 
-                context.commit('setErrorMsgList', errorMsgList);
+                context.commit('auth/setErrorMsgList', errorMsgList);
             });
         }
     },

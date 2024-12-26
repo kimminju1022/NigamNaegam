@@ -21,4 +21,7 @@ class LikeSeeder extends Seeder
             Like::factory($interval)->create();
         }
     }
+    
+
+        $boards = Board::select('board_id')->where('bc_type', '0')->orWhere('bc_type', '1')->get();
 }

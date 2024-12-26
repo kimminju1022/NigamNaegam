@@ -22,7 +22,7 @@ export default {
 
         // 유저 1:1 문의내역
         getUserQuestionList(context,userInfo) {
-            const url = `/api/user/${userInfo.user_id}`;
+            const url = `/api/questions/${userInfo.user_id}`;
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -36,13 +36,8 @@ export default {
 
             axios.get(url, config)
             .then(response => {
-                console.log(response.data);
-                
-                // context.commit('setQuestionList', response.data.data);
-                context.commit('setQuestionList', response.data.data.data[0]);
-                if (response.data.data.length > 0) {
-                    context.commit('setPage', context.state.page + 1);
-                }
+                // console.log('getUserQuestionList',response.data);
+                context.commit('setQuestionList', response.data.data.data);
             }) 
             .catch(error => {
                 console.error(error);

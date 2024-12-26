@@ -18,7 +18,7 @@ class festival extends Model
         ,'addr1'
         ,'addr2'
         ,'tel'
-        ,'areacode'
+        ,'area_code'
         ,'booktour'
         ,'cat1'
         ,'cat2'

@@ -20,10 +20,10 @@ class QuestionController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function showMyQuestion(Request $request){
+    public function showMyQuestion($id){
         $bcType = '2';
         $questionList = Board::with(['questions', 'users', 'board_categories'])
-                                ->where('user_id', $request->user_id)
+                                ->where('user_id', $id)
                                 ->Where('bc_type', $bcType)
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);

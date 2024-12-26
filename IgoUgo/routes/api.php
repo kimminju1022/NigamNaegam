@@ -70,7 +70,7 @@ Route::middleware('my.auth')->group(function() {
 
     // 문의게시판 관련
     Route::get('/questions',[QuestionController::class, 'index']);
-    // Route::get('/questions/{id}',[QuestionController::class, 'showMyQuestion']);
+    Route::get('/questions/{id}',[QuestionController::class, 'showMyQuestion']);
     Route::get('/questions/{id}/edit',[QuestionController::class, 'edit'])->name('question.edit');
     Route::put('/questions/{id}',[QuestionController::class, 'update'])->name('question.update');
 });
