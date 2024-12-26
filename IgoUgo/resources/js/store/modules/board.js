@@ -4,16 +4,17 @@ import axios from "../../axios";
 export default {
     namespaced: true,
     state: () => ({
-        boardTitle:1,
+        boardTitle: 'setBoardTitle',
         boardList: [],
         page: 0,  // 현재페이지로 넘겨주기 위함
         bcType: 0 
     }),
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
-        setBoardTitle(state,boardTitle){
-            state.boardTitle = boardTitle;
+        setBoardTitle(state, BoardTitle) {
+            state.boardTitle = BoardTitle.bc_name;
         },
+        
         setBoardList(state,boardList){
             state.boardList = boardList;
         },

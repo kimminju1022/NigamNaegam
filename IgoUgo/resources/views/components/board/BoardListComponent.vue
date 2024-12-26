@@ -1,7 +1,7 @@
 <template>
     <main>
         <h2 style="margin: 30px 0; font-size: 3rem;">
-            {{ boardTitle.bc_name }}
+            {{ boardTitle }}
         </h2>
         <div class="board-head">
             <div class="board-category">
