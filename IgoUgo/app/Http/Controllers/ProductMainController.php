@@ -26,7 +26,7 @@ class ProductMainController extends Controller
     }
 
     public function showList($contenttypeid) {
-        $productList = Product::where('contenttypeid', $contenttypeid)->paginate(10);
+        $productList = Product::where('contenttypeid', $contenttypeid)->whereNotNull('firstimage')->paginate(10);
 
         $responseData = [
             'success' => true,

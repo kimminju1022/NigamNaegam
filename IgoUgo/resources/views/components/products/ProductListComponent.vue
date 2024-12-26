@@ -9,7 +9,7 @@
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
                     <div v-for="value in selectedFilters" :key="value" class="select-list-item">
                         <p>{{ value }}</p>
-                        <img @click="closefilter(value)" src="img_product/img_x.png" class="img-x">
+                        <img @click="closefilter(value)" src="/img_product/img_x.png" class="img-x">
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                     <p>|</p>
                     <div class="order-list-item">
                         <p>에디터 추천</p>
-                        <img src="img_product/img_star.png" class="img-order">
+                        <img src="/img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
                     <div class="order-list-item">
@@ -32,17 +32,17 @@
                     <p>|</p>
                     <div class="order-list-item">
                         <p>별점순</p>
-                        <img src="img_product/img_thumb.png" class="img-order">
+                        <img src="/img_product/img_thumb.png" class="img-order">
                     </div>
                 </div>
                 <div class="order-box-last">
                     <div @click="openmodal" class="order-list-item">
                         <p class >필터</p>
-                        <img src="img_product/img_filter.png" class="img-order">
+                        <img src="/img_product/img_filter.png" class="img-order">
                     </div>
                     <p>|</p>
                     <div class="order-list-item">
-                        <img src="img_product/img_placeholder.png" class="img-map">
+                        <img src="/img_product/img_placeholder.png" class="img-map">
                         <p>지도 보기</p>
                     </div>
                 </div>

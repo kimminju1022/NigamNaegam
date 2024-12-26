@@ -3,7 +3,7 @@
 <div v-if="$store.state.product.productTypeList.spot">
     <div v-for="(condition, idx) in conditions" :key="idx" class="product-line">
         <!-- <div :style="{ backgroundImage: 'url(' + products.firstimage + ')' }" class="product-main-img"> -->
-        <router-link :to="getProductLink(condition)">
+        <router-link :to="getProductLink(condition)" class="link-title">
             <div class="product-main-img" :class="'back-' + condition">
                 <div class="product-main-title">
                     <p v-if="condition === 'spot'">관광지</p>
@@ -50,6 +50,7 @@ onBeforeMount(async () => {
     await store.dispatch('product/takeProducts');
 })    
 
+// 조건에 따른 url 생성
 const getProductLink = (condition) => {
     const contentMatch = contentTypeId[condition];
     return `/products/${contentMatch}`;
@@ -130,5 +131,10 @@ const loading = ref(true); // 로딩 상태
 }
 .back-restaurant {
     background-image: url('/img_product/restaurant.png');
+}
+
+/* 링크 관련 */
+.link-title {
+    color: #000;
 }
 </style>
