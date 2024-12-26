@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Board;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
@@ -19,7 +20,7 @@ class QuestionController extends Controller
         ];
         return response()->json($responseData, 200);
     }
-
+    
     public function showMyQuestion($id){
         $bcType = '2';
         $questionList = Board::with(['questions', 'users', 'board_categories'])
@@ -27,6 +28,11 @@ class QuestionController extends Controller
                                 ->Where('bc_type', $bcType)
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
+
+        // foreach($questionList as $item) {
+        //     $item->created_at = Carbon::parse($item->create_at)->format('Y-m-d');
+        //     return $item;
+        // }
 
         $responseData = [
             'success' => true

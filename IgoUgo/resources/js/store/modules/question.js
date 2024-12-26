@@ -16,10 +16,6 @@ export default {
         },
     },
     actions: {
-        /** 게시글획득
-         *  @param{*} context
-        */
-
         // 유저 1:1 문의내역
         getUserQuestionList(context,userInfo) {
             const url = `/api/questions/${userInfo.user_id}`;
@@ -27,11 +23,6 @@ export default {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 },
-                // params: {
-                //     bc_type: 2,
-                //     user_id: userInfo.user_id,
-                //     page: context.state.page,
-                // },
             }
 
             axios.get(url, config)
@@ -42,12 +33,31 @@ export default {
             .catch(error => {
                 console.error(error);
             });
+        },
 
-        }
+        getUserQuestionPagination(context, data) {
+            return new Promise((resolve, reject) => {
+                const url = `/api/questions/${userInfo.user_id}`;
+                const config = {
+                    params: data
+                };
+    
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setQuestionList', response.data.data);
+                    // 페이지 저장
+                    context.commit('pagination/setPagination', response.data, {root: true});
+                    console.log(response.data);
+                    console.log(response.data.data);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject();
+                });
+            });
+        },
     },
     getters: {
-        getNextPage(state){
-            return state.page + 1;
-        }
     },
 }

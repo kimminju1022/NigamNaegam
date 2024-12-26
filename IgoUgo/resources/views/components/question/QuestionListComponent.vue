@@ -1,6 +1,6 @@
 <template>
-    <main>
-        <h2>문의게시판</h2>
+    <div class="container">
+        <h1>문의게시판</h1>
         <div class="board-head">
             <div id="board-search-tb">
                 <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
@@ -108,9 +108,9 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 <!-- 페이지네이션 -->
-    <footer>
+    <div class="footer">
         <div class="pagination">
             <a href="#"><button class="btn bg-clear"><</button></a>
             <a href="#"><button class="btn bg-clear">1</button></a>
@@ -120,8 +120,8 @@
             <a href="#"><button class="btn bg-clear">5</button></a>
             <a href="#"><button class="btn bg-clear">></button></a>
         </div>
-        <router-link to="/boards/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
-    </footer>
+        <router-link to="/questions/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
+    </div>
 </template>
 <script setup>
 
@@ -132,11 +132,7 @@ import { onBeforeMount } from 'vue';
 //     console.log('보드다');
 // });
 </script>
-<style scoped>  
-footer{
-    height: 30px;
-    display: inline;
-}                                                                                      
+<style scoped>                                                                                 
 .scroll{
     display: inline-block;
     width: 100px;
@@ -152,7 +148,7 @@ footer{
 
 /*** Box1 스크롤바 설정 ***/
 /* 스크롤바 설정*/
-select-category::-webkit-scrollbar{
+/* select-category::-webkit-scrollbar{
     width: 10px;
 }
 .select-category::-webkit-scrollbar:vertical {
@@ -160,20 +156,22 @@ select-category::-webkit-scrollbar{
 }
 .select-category::-webkit-scrollbar:horizontal {
     height: 10px;
-}
+} */
 /* 스크롤바 막대 설정*/
-.select-category::-webkit-scrollbar-thumb{
+/* .select-category::-webkit-scrollbar-thumb{
     background-color: rgba(239, 242, 247, 0.1);
     border-radius: 10px;
     border: 2px solid #1f2845;;
-}
+} */
 /* 스크롤바 뒷 배경 설정*/
-.select-category::-webkit-scrollbar-track{
+/* .select-category::-webkit-scrollbar-track{
     border-radius: 10px;
     background-color: #1f2845;
-}
+} */
+
 /*  */
-main{
+
+.container{
     align-items: center;
 
 }
@@ -279,6 +277,7 @@ main{
     margin-top: 10px;
 }
 
+/* ****************** pagination 불러오면 삭제하기 ****************** */
 .pagination {
     display: flex;
     justify-content: center;
@@ -301,7 +300,13 @@ main{
     color: #fff;
     background: #01083a;
 }
+/* ****************** pagination 불러오면 삭제하기 ****************** */
 
+
+.footer{
+    height: 30px;
+    display: inline;
+}       
 @media screen and (max-width: 1000px) {
     /* .board-Qli-title > span:nth-child(2),
     .board-Qli-title > span:nth-child(3),

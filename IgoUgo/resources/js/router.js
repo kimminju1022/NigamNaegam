@@ -105,21 +105,21 @@ const routes = [
         beforeEnter: chkAuth,
     },
     {
-        path: '/question',
+        path: '/questions',
         component: QuestionComponent,
     },
     {
-        path: '/question/create',
+        path: '/questions/create',
         component: QuestionCreateComponent,
         beforeEnter: chkAuth,
     },
     {
-        path: '/question/:id',
+        path: '/questions/:id',
         component: QuestionDetailComponent,
         beforeEnter: chkAuth,
     },
     {
-        path: '/question/edit',
+        path: '/questions/edit',
         component: QuestionEditComponent,
         beforeEnter: chkAuth,
     },

@@ -27,8 +27,8 @@
                 </div>
             </div>
             <div class="my-profile-update-btn">
-                <router-link :to="`/password/${$store.state.user.userInfo.user_id}`"><button class="btn bg-clear">비밀번호 변경</button></router-link>
-                <router-link :to="`/user/${$store.state.user.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
+                <router-link :to="`/password/${$store.state.auth.userInfo.user_id}`"><button class="btn bg-clear">비밀번호 변경</button></router-link>
+                <router-link :to="`/user/${$store.state.auth.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
         <!-- <div v-if="isMobileView">
@@ -96,14 +96,17 @@
                             <p class="reply-yet">대기</p>
                         </div>
                         <div v-else>
-                            <p class="reply-done">대기</p>
+                            <p class="reply-done">완료</p>
                         </div>
                         <router-link :to="`/question/${item.board_id}`">{{ item.board_title }}</router-link>
                         <p>{{ item.created_at }}</p>
                     </div>
                 </div>
             </div>
-            <div class="pagination">
+
+            <!-- 페이지네이션 -->
+            <PaginationComponent :actionName="actionName" :serchData="serchData" />
+            <!-- <div class="pagination">
                 <a href="#"><button class="btn bg-clear"><</button></a>
                 <a href="#"><button class="btn bg-clear">1</button></a>
                 <a href="#"><button class="btn bg-clear">2</button></a>
@@ -111,7 +114,7 @@
                 <a href="#"><button class="btn bg-clear">4</button></a>
                 <a href="#"><button class="btn bg-clear">5</button></a>
                 <a href="#"><button class="btn bg-clear">></button></a>
-            </div>
+            </div> -->
         </div>
         
         <div class="user-delete-button">
@@ -137,11 +140,13 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount, onMounted, onUnmounted, computed} from 'vue';
+import { ref, onBeforeMount, computed, reactive} from 'vue';
 import { useStore } from 'vuex';
+import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 const userInfo = computed(()=> store.state.auth.userInfo);
+
 
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
@@ -150,9 +155,15 @@ onBeforeMount(() => {
 });
 
 const userQuestion = computed(() => store.state.question.questionList);
-// const userQuestion = reactive({
-//     userQuestionList = store.state.question.questionList,
-// });
+
+const actionName = 'question/getUserQuestionPagination';
+
+// 필터 관련
+const serchData = reactive({
+    page: store.state.pagination.currentPage,
+    // area_code: [],
+    // hc_type: [],
+});
 
 // ***************** 탈퇴 *****************
 // Modal
@@ -323,6 +334,7 @@ const deletemodal = (userInfo) => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #000;
 }
 
 .reply-yet {

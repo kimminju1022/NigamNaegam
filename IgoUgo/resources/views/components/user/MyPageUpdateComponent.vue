@@ -30,7 +30,7 @@
         </div>
         <div class="my-profile-update-btn">
             <button @click="$store.dispatch('user/updateUser', userData)" class="btn bg-navy btn-update">완료</button>
-            <router-link :to="`/user/${$store.state.user.userInfo.user_id}`"><button @click="backToUser" class="btn bg-navy btn-update">취소</button></router-link>
+            <router-link :to="`/user/${$store.state.auth.userInfo.user_id}`"><button @click="backToUser" class="btn bg-navy btn-update">취소</button></router-link>
             <!-- <button @click="backToUser" class="btn bg-navy btn-update">취소</button> -->
         </div>
     </div>
