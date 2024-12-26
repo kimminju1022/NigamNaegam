@@ -11,6 +11,10 @@
                         <p>{{ getAreaNameWithAreaCode(code) }}</p>
                         <img src="img_product/img_x.png" @click="closeFilter(code)" class="img-x">
                     </div>
+                    <div v-for="type in serchData.hc_type" :key="type" class="select-list-item">
+                        <p>{{ getHcNameWithHcType(type) }}</p>
+                        <img src="img_product/img_x.png" @click="closeFilter(type)" class="img-x">
+                    </div>
                 </div>
             </div>
             <div class="order-box font-default-size">
@@ -130,7 +134,6 @@ window.addEventListener('resize', flgSetup);
 
 function updateFilters() {
     store.dispatch('hotel/getHotelsPagination', serchData);
-
 }
 
 function closeFilter(value) {
@@ -138,6 +141,9 @@ function closeFilter(value) {
     serchData.area_code = serchData.area_code.filter(
         (item) => item !== value
     );
+    serchData.hc_type = serchData.hc_type.filter(
+        (item) => item !== value
+    )
     store.dispatch('hotel/getHotelsPagination', serchData);
     // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
@@ -145,6 +151,11 @@ function closeFilter(value) {
 function getAreaNameWithAreaCode(code) {
     const areaList = store.state.hotel.hotelArea.filter((item) => item.area_code === code);
     return areaList[0].area_name;
+}
+
+function getHcNameWithHcType(type) {
+    const HcList = store.state.hotel.hotelCategory.filter((item) => item.hc_type === type);
+    return HcList[0].hc_name;
 }
 
 // window.onbeforeunload = function() {
