@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Hotel;
 use App\Models\HotelCategory;
 use App\Models\HotelInfo;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -12,16 +14,29 @@ class HotelController extends Controller
 {
     public function hotels(Request $request) {
         Log::debug('request', $request->all());
+        $areaCode = $request->area_code;
+
         $hotels = HotelInfo::join('hotels', 'hotel_infos.hotel_id', '=', 'hotels.hotel_id')
                            ->join('hotel_categories', 'hotel_infos.hc_type', '=', 'hotel_categories.hc_type')
-                           ->where(function ($query) {
-                                $query->where('cat3', 'B02010100')
-                                      ->orWhere('cat3', 'B02010700')
-                                      ->orWhere('cat3', 'B02011100');
+                        //    ->where(function ($query) {
+                        //         $query->where('cat3', 'B02010100')
+                        //               ->orWhere('cat3', 'B02010700')
+                        //               ->orWhere('cat3', 'B02011100');
+                        //     })
+                            ->when($areaCode, function($query, $areaCode) {
+                                return $query->whereIn('area_code', $areaCode);
                             })
                             ->whereNotNull('firstimage')
                             ->orderBy('createdtime', 'desc')
                             ->paginate(10);
+                            // ->dd();
+
+                            
+        // $hotels = Hotel::with('hotel_category')
+        //     ->whereNotNull('firstimage')
+        //     ->orderBy('createdtime', 'desc')
+        //     ->paginate(10);
+
 
         // $hotels = Hotel::where(function ($query) {
         //     $query->where('cat3', 'B02010100')

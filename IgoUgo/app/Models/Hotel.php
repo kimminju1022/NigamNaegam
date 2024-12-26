@@ -49,4 +49,7 @@ class Hotel extends Model
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+    // public function hotel_category() {
+    //     return $this->hasManyThrough(HotelCategory::class, HotelInfo::class, 'hotel_id', 'hc_type', 'hotel_id', 'hc_type');
+    // }
 }

@@ -21,7 +21,6 @@ export default {
     },
     actions: {
         getHotelsPagination(context, data) {
-            console.log(data);
             return new Promise((resolve, reject) => {
                 const url = '/api/hotels';
                 const config = {
@@ -30,10 +29,10 @@ export default {
     
                 axios.get(url, config)
                 .then(response => {
-                    // console.log(response);
                     context.commit('setHotelList', response.data.data);
                     // 페이지 저장
                     context.commit('pagination/setPagination', response.data, {root: true});
+                    console.log(response.data);
                     return resolve();
                 })
                 .catch(error => {
@@ -50,9 +49,7 @@ export default {
 
                 axios.get(url)
                 .then(response => {
-                    // console.log('동작은하나??',response);
                     context.commit('setHotelArea', response.data);
-                    // console.log('값을 받아오나??', response.data);
                     return resolve();
                 })
                 .catch(error => {
@@ -69,7 +66,6 @@ export default {
                 axios.get(url)
                 .then(response => {
                     context.commit('setHotelCategory', response.data);
-                    console.log('값을 받아오나??', response.data);
                     return resolve();
                 })
                 .catch(error => {

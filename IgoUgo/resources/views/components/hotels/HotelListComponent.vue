@@ -7,9 +7,9 @@
             <div class="right-small-container select-result-box">
                 <h2><span class="font-blue">200</span> 개의 결과</h2>
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
-                    <div v-for="value in selectedFilters" :key="value" class="select-list-item">
-                        <p>{{ value }}</p>
-                        <img @click="closefilter(value)" src="img_product/img_x.png" class="img-x">
+                    <div v-for="code in serchData.area_code" :key="code" class="select-list-item">
+                        <p>{{ getAreaNameWithAreaCode(code) }}</p>
+                        <img src="img_product/img_x.png" @click="closeFilter(code)" class="img-x">
                     </div>
                 </div>
             </div>
@@ -73,16 +73,16 @@
 
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelArea" :key="item">
-                    <input v-model="item.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_id">
-                    <label :for="'input-' + item.area_id">{{ item.area_name }}</label>
+                    <input v-model="serchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
+                    <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
 
             <p class="modal-region-text2 font-bold">카테고리</p>
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
-                    <input v-model="item.hc_type" :value="item.hc_type"  @change="updateFilters()" class="modal-input" type="checkbox" id="pool">
-                    <label for="pool">{{ item.hc_name }}</label>
+                    <input v-model="serchData.hc_type" :value="item.hc_type"  @change="updateFilters()" class="modal-input" type="checkbox" :id="'input2-' + item.hc_type">
+                    <label :for="'input2-' + item.hc_type">{{ item.hc_name }}</label>
                 </div>
             </div>
 
@@ -118,27 +118,33 @@ const flgSetup = () => {
 onBeforeMount(async () => {
     flgSetup(); // 리사이즈 이벤트
     await store.dispatch(actionName, serchData);
-    await store.dispatch('hotel/getHotelsArea');
-    await store.dispatch('hotel/getHotelsCategory')
-    // console.log('에리아데이터', areaData);
+    await store.dispatch('hotel/getHotelsArea', serchData);
+    await store.dispatch('hotel/getHotelsCategory', serchData);
 });
 
 window.addEventListener('resize', flgSetup);
 
     
 // 카테카테고리고리
-const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+// const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
 function updateFilters() {
-    console.log(serchData.area_code);
-    store.dispatch(actionName, serchData);
+    store.dispatch('hotel/getHotelsPagination', serchData);
+
 }
 
-function closefilter(value) {
-    selectedFilters.value = selectedFilters.value.filter(
+function closeFilter(value) {
+    // console.log(serchData.area_code);
+    serchData.area_code = serchData.area_code.filter(
         (item) => item !== value
     );
-    localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+    store.dispatch('hotel/getHotelsPagination', serchData);
+    // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+}
+
+function getAreaNameWithAreaCode(code) {
+    const areaList = store.state.hotel.hotelArea.filter((item) => item.area_code === code);
+    return areaList[0].area_name;
 }
 
 // window.onbeforeunload = function() {
@@ -255,7 +261,7 @@ function closemodal() {
     .select-list-item {
         display: flex;
         justify-content: space-between;
-        max-width: 130px;
+        max-width: 170px;
         border: 1px solid #01083A;
         border-radius: 20px;
         padding: 10px;
