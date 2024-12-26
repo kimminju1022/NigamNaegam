@@ -56,58 +56,58 @@
                 <div id="board-li-notice" >
                     <div id="board-li-item">
                         <p>5</p>
-                        <p>공지</p>
+                        <p></p>
                         <p>12월 여행 주의 사항</p>
                         <p>라라핑</p>
                         <p>2024.12.11</p>
-                        <p>2</p>
+                        <p></p>
                         <p>50</p>
                     </div>
                     <div id="board-li-item">
                         <p>4</p>
-                        <p>공지</p>
+                        <p></p>
                         <p>11월 단풍놀이 명소 전국 Top 20</p>
                         <p>차나핑</p>
                         <p>2024.11.11</p>
-                        <p>20</p>
+                        <p></p>
                         <p>50</p>
                     </div>
                     <div id="board-li-item">
                         <p>3</p>
-                        <p>공지</p>
+                        <p></p>
                         <p>11월 여행 주의 사항</p>
                         <p>라라핑</p>
                         <p>2024.11.11</p>
-                        <p>2</p>
+                        <p></p>
                         <p>30</p>
                     </div>
                     <div id="board-li-item">
                         <p>2</p>
-                        <p>공지</p>
+                        <p></p>
                         <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
                         <p>믿어핑</p>
                         <p>2024.11.01</p>
-                        <p>2</p>
+                        <p></p>
                         <p>50</p>
                     </div>
                     <div id="board-li-item">
                         <p>1</p>
-                        <p>공지</p>
+                        <p></p>
                         <p>10월 여행 주의 사항</p>
                         <p>차캐핑</p>
                         <p>2024.12.11</p>
-                        <p>10</p>
+                        <p></p>
                         <p>30</p>
                     </div>
                 </div>
                 <!-- 현재 리스트가 호출이 불가함함 -->
                 <div v-for="item in boardList" :key="item" id="board-li-item">
-                    <p>{{ item.bc_id }}</p>
+                    <p>{{ item.board_id }}</p>
                     <p>{{ item.area_name }}</p>
                     <router-link :to="'/boards/' + item.bc_id"><p>{{ item.board_title }}</p></router-link>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
-                    <p>{{ item.like_flg }}</p>
+                    <p>{{ item.like_cnt }}</p>
                     <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
@@ -143,10 +143,7 @@ const boardList = computed(() => store.state.board.boardList);
 onBeforeMount(() => {
     // console.log('나온다아아아아앙')
     // 백앤드로 요청 보내는 액션메소드
-
-    if(store.state.board.boardList.length<1){
-        store.dispatch('board/getBoardListPagination');
-    }
+    store.dispatch('board/getBoardListPagination');
 });
 
 // const keyword = ref('');

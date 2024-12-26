@@ -215,6 +215,7 @@ const user = computed(()=> store.state.auth.userInfo);
 // ---------- 게시판 이동 관련 start ----------
 const redirectBoards = bcType => {
     store.commit('board/setBcType', bcType);
+    store.dispatch('board/getBoardListPagination');
     router.push('/boards');
 }
 // ---------- 게시판 이동 관련 end ----------

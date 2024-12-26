@@ -4,25 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use App\Models\BoardCategory;
+use Database\Seeders\AreaSeeder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 // 컨트롤러 이하 모두 에러 상태로 지우거나 주석처리됨 수정예정
 class BoardController extends Controller
 {
-    //action-Method
-    public function index(Request $request){
-        $boardList = Board::orderBy('created_at','DESC')->paginate(15);
-        
-        // $type = Board::join('board_categories', 'boards.board_id', '=', 'board_categories.board_id');
+    // action-Method
 
-        // $boardTitle =Board::join('board_categories'.'boards.bc_id','=','board_categories.bc_name')
-        //     ->SELECT (
-        //         'board_categories.bc_name')
-        //     ->FROM (
-        //         'board_categories')
-        //     ->JOIN ('boards')
-        //     ->ON( 'board_categories.bc_id','=','boards.bc_id'
-        //     );
+    public function index(Request $request) {
+        $boardList = Board::
+            join('users', 'users.user_id', '=', 'boards.user_id')
+            ->when($request->bc_type === '0', function(Builder $query) {
+                return $query->join('reviews', function ($join) {
+                        $join->on('reviews.board_id', '=', 'boards.board_id')
+                            ->where('boards.bc_type', '=', '0');
+                    })
+                    ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
+                    ->joinSub(
+                        DB::table('likes')
+                            ->select('likes.board_id', DB::raw('COUNT(likes.like_id) as like_cnt'))
+                            ->where('like_flg', '=', '1')
+                            ->groupBy('likes.board_id'),
+                        'like_tmp',
+                        'boards.board_id',
+                        '=',
+                        'like_tmp.board_id'
+                    );
+            })
+            ->orderBy('boards.created_at', 'desc')
+            ->paginate(15);
+
+        // 보드 타이틀 획득
         $boardTitle = BoardCategory::select('bc_name')
                         ->where('bc_type', '=', $request->bc_type)
                         ->first();
