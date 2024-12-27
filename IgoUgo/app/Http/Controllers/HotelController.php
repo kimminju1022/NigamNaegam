@@ -20,17 +20,20 @@ class HotelController extends Controller
         // $hotels = Hotel::with(['hotelInfos.hotelCategory'])
         $hotels = Hotel::whereIn('cat3', ['B02010100', 'B02010700', 'B02011100']) // 소분류에 맞는 호텔, 게스트하우스, 팬션 만 조회
             ->when($areaCode, function($query, $areaCode) { 
-                return $query->whereIn('hotels.area_code', $areaCode);
+                return $query->whereIn('hotels.area_code', $areaCode);  // 동적으로 주어진 $areaCode 배열에 포함된 hotels.area_code 값을 가진 데이터만 필터링한다
+                // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
             })
             ->when($hcType, function($query, $hcType) {
-                return $query->whereHas('hotelInfos', function(Builder $query) use($hcType) {
-                    $query->whereIn('hc_type', $hcType);
-                });
+                return $query->whereHas('hotelInfos', function(Builder $query) use($hcType) { // whereHas는 조건에 맞는 데이터만 가져온다 ex) $hcType이 1이면 1에 해당하는 특정 hc_type을 가져온다 / 외부변수를 사용할수없지만 use 를사용하면 외부 변수를 끌어다가 사용할수 있음
+                    // whereHas 첫번째인수 = 여기서는 hotelInfos라는 모델과의 관계를, 지정 두번째인수 = 익명함수 / wherehas를 사용하는이유(일대다 관계기떄문에 단순히 whereIn을 사용할수없다.) whererha 쓰렴ㄴ
+                    $query->whereIn('hc_type', $hcType);  // 동적으로 주어진 $hcType 배열에 포함된 hc_type 값을 가진 데이터만 필터링한다
+                    // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
+                });                                        
             })
-            ->whereNotNull('hotels.firstimage')
-            ->select('hotel_id', 'title', 'firstimage')
-            ->orderBy('createdtime', 'desc')
-            ->paginate(32);
+            ->whereNotNull('hotels.firstimage') // 사진있는것만 가져오기
+            ->select('hotel_id', 'title', 'firstimage') // 호텔아이디, 호텔이름, 사진만 가져오기
+            ->orderBy('createdtime', 'desc')    // 파일 업로드한날로 최신순으로 정렬
+            ->paginate(32); // 페이지네이션
 
         // $hotels = Hotel::join('hotel_infos', 'hotels.hotel_id', '=', 'hotel_infos.hotel_id')
         //                 ->join('hotel_categories', 'hotel_infos.hc_type', '=', 'hotel_categories.hc_type')
