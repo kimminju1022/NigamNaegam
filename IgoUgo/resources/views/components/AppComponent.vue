@@ -6,19 +6,18 @@
             <!-- <header> --> <!-- 이거 지워도 되나 -->                
                 <div>
                     <div class="header-title">
-                        <router-link to="/"><img class="header-logo-img" src="/logo_gam.png" alt=""></router-link>
+                        <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link>
                         <!-- {{ console.log(flg) }} -->
                         <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
                         <div v-if="!$store.state.auth.authFlg" class="header-title-button">
-                            <button class="btn bg-clear header-btn">FAQ</button>
+                            <router-link to="/questions"><button class="btn bg-clear header-btn">FAQ</button></router-link>
                             <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
                             <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                         </div>
                         <div v-else class="header-title-button">
-                            <button class="btn bg-clear header-btn">FAQ</button>
+                            <router-link to="/questions"><button class="btn bg-clear header-btn">FAQ</button></router-link>
                             <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button>
-                            <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-navy header-logout">로그아웃</button> -->
-                            <router-link :to="`/user/${user.user_id}`"><img :src="user.user_profile" alt=""></router-link>
+                            <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="user.user_profile" alt=""></router-link>
                         </div>
                     </div>
                     <div class="header-list">
@@ -67,12 +66,12 @@
                             </div>
                             <div v-else class="app-resist-logout">
                                 <button @click="$store.dispatch('auth/logout')" class="app-resist-login btn bg-navy">로그아웃</button>
-                                <router-link to="/user"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
+                                <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="$store.state.user.userInfo.user_profile" alt=""></router-link>
                             </div>
                         </div>
                         <ul class="app-content-flex">
                             <li class="app-content"><router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link></li>
-                            <li class="app-content"><router-link to="/products">상품</router-link></li>
+                            <li class="app-content"><router-link to="/products" @click="$store.commit('pagination/setPaginationInitialize')">상품</router-link></li>
                             <li class="app-content">
                                 <div class="app-content-dropdown">
                                     <p class="app-content-dropbtn">게시판</p>
@@ -111,13 +110,13 @@
         <footer>
             <div class="footer-inner">
                 <div>
-                    <img class="footer-logo" src="/logo_footer.png" alt="">
+                    <img class="footer-logo" src="/logo_gam.png" alt="">
                 </div>
                 <div class="footer-text">
                     <p>Tel : 053.572.1005</p>
                     <p>후원계좌 : IM뱅크 222-8282-222</p>
                     <p>(주)  절어서 한국속으로</p>
-                    <p>대표 : 뽀빠이</p>
+                    <p>대표 : 미어캣</p>
                     <p>사업자 번호 : 123-45-678</p>
                 </div>
             </div>
@@ -138,7 +137,7 @@
                     <p>Tel : 053.572.1005</p>
                     <p>후원계좌 : IM뱅크 222-8282-222</p>
                     <p>(주)  절어서 한국속으로</p>
-                    <p>대표 : 뽀빠이</p>
+                    <p>대표 : 미어캣</p>
                     <p>사업자 번호 : 123-45-678</p>
                 </div>
             </div>
@@ -361,8 +360,8 @@ header {
 }
 
 .header-logo-img {
-    width: 110px;
-    height: 110px;
+    width: 90px;
+    height: 90px;
 }
 
 .header-title-img-1 {

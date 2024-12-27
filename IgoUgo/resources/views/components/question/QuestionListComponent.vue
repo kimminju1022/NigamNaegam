@@ -2,280 +2,210 @@
     <div class="container">
         <h1>문의게시판</h1>
         <div class="board-head">
-            <div id="board-search-tb">
-                <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+            <!-- <div class="board-search-tb"> -->
+                <!-- <input v-model="search" type="text" placeholder="검색어를 입력해 주세요"> -->
+                <input type="text" placeholder="검색어를 입력해 주세요">
                 <button class="btn bg-navy board-search-btn">검색</button>
-            </div>
+            <!-- </div> -->
         </div>
         
-    <!-- 리스트항목 -->
-        <div class="board-list">
+        <!-- 리스트항목 -->
+        <div class="board-box">
             <!-- 리스트 헤드 -->
-            <div class="board-Qli-title">
-                <span>번호</span>
-                <span>답변상태</span>
-                <span>제목</span>
-                <span>닉네임</span>
-                <span>작성일자</span>
+            <div class="board-notice-title">
+                <p>번호</p>
+                <p>상태</p>
+                <p>제목</p>
+                <p>닉네임</p>
+                <p>작성일자</p>
             </div>
+
             <!-- 리스트 목록 -->
-            <div class="board-Qli-items">
-                <div id="board-Qli-notice" >
-                    <div id="board-Qli-item">
-                        <p>5</p>
-                        <p>공지</p>
-                        <p>파일업로드 오류 시 간단해결방법</p>
-                        <p>라라핑</p>
-                        <p>2024.12.11</p>
-                    </div>
-                    <div id="board-Qli-item">
-                        <p>4</p>
-                        <p>공지</p>
-                        <p>로그인 에러 시 문의방법</p>
-                        <p>차나핑</p>
-                        <p>2024.11.11</p>
-                    </div>
-                    <div id="board-Qli-item">
-                        <p>3</p>
-                        <p>공지</p>
-                        <p>게시글 수정 오류 해결방법</p>
-                        <p>라라핑</p>
-                        <p>2024.11.11</p>
-                    </div>
-                    <div id="board-Qli-item">
-                        <p>2</p>
-                        <p>공지</p>
-                        <p>자주 질문하는 오류 해결방법</p>
-                        <p>믿어핑</p>
-                        <p>2024.11.01</p>
-                    </div>
-                    <div id="board-Qli-item">
-                        <p>1</p>
-                        <p>공지</p>
-                        <p>민원 해결 절차 안내</p>
-                        <p>차캐핑</p>
-                        <p>2024.12.11</p>
-                    </div>
-                </div>
-                <div id="board-Qli-item">
-                    <p>22</p>
-                    <p>답변완료</p>
-                    <p>게시글 오류</p>
-                    <p>햅삐햅삐햅삐</p>
-                    <p>2024.12.11</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>21</p>
-                    <p>답변완료</p>
-                    <p>비밀번호 오류</p>
-                    <p>오징어</p>
-                    <p>2024.12.08</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>20</p>
-                    <p>답변대기</p>
-                    <p>신고글 재게시</p>
-                    <p>과메기</p>
-                    <p>2024.12.02</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>19</p>
-                    <p>답변완료</p>
-                    <p>메인에 보이는 여행지 사진 포토스팟 문의</p>
-                    <p>루팡</p>
-                    <p>2024.12.02</p>
-                </div>
-                <div id="board-Qli-item">
-                    <p>18</p>
-                    <p>답변대기</p>
-                    <p>너네 일 너무 잘 하는거 아니야 이렇게 잘 하면</p>
-                    <p>햅삐햅삐햅삐</p>
-                    <p>2024.11.28</p>
-                </div>
-                <div id="board-Qli-item">
+            <!-- 공지 리스트 -->
+            <div class="board-notice-box" >
+                <div class="board-content">
                     <p>5</p>
-                    <p>답변완료</p>
-                    <p>답변을 확인할 수 없어요</p>
+                    <p>공지</p>
+                    <p>파일업로드 오류 시 간단해결방법</p>
                     <p>라라핑</p>
                     <p>2024.12.11</p>
                 </div>
-                <div id="board-Qli-item">
+                <div class="board-content">
                     <p>4</p>
-                    <p>답변완료</p>
-                    <p>마이페이지 프로필 수정 문의</p>
+                    <p>공지</p>
+                    <p>로그인 에러 시 문의방법</p>
                     <p>차나핑</p>
                     <p>2024.11.11</p>
+                </div>
+                <div class="board-content">
+                    <p>3</p>
+                    <p>공지</p>
+                    <p>게시글 수정 오류 해결방법</p>
+                    <p>라라핑</p>
+                    <p>2024.11.11</p>
+                </div>
+                <div class="board-content">
+                    <p>2</p>
+                    <p>공지</p>
+                    <p>자주 질문하는 오류 해결방법</p>
+                    <p>믿어핑</p>
+                    <p>2024.11.01</p>
+                </div>
+                <div class="board-content">
+                    <p>1</p>
+                    <p>공지</p>
+                    <p>민원 해결 절차 안내</p>
+                    <p>차캐핑</p>
+                    <p>2024.12.11</p>
+                </div>
+            </div>
+            <!-- 문의 게시판 리스트 -->
+            <div class="board-content-box">
+                <div v-for="item in questionList" :key="item" class="board-content">
+                    <p>{{ item.board_id }}</p>
+                    <div v-if="item.questions.que_status === '0'">
+                        <p class="reply-yet">대기</p>
+                    </div>
+                    <div v-else>
+                        <p class="reply-done">완료</p>
+                    </div>
+                    <router-link :to="`/questions/${item.board_id}`">{{ item.board_title }}</router-link>
+                    <p>{{ item.users.user_nickname }}</p>
+                    <p>{{ item.created_at }}</p>
                 </div>
             </div>
         </div>
     </div>
-<!-- 페이지네이션 -->
-    <div class="footer">
-        <div class="pagination">
-            <a href="#"><button class="btn bg-clear"><</button></a>
-            <a href="#"><button class="btn bg-clear">1</button></a>
-            <a href="#"><button class="btn bg-clear">2</button></a>
-            <a href="#"><button class="btn bg-clear">3</button></a>
-            <a href="#"><button class="btn bg-clear">4</button></a>
-            <a href="#"><button class="btn bg-clear">5</button></a>
-            <a href="#"><button class="btn bg-clear">></button></a>
-        </div>
+    <!-- 페이지네이션 -->
+    <div class="footer-box">
+        <PaginationComponent :actionName="actionName" :searchData="searchData" />
         <router-link to="/questions/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
     </div>
 </template>
 <script setup>
 
-import { onBeforeMount } from 'vue';
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
+import PaginationComponent from '../PaginationComponent.vue';
 
-// 비포마운트처리
-// onBeforeMount(() => {
-//     console.log('보드다');
-// });
+const store = useStore();
+const actionName = 'question/getQuestionList';
+const questionList = computed(() => store.state.question.questionList);
+
+// console.log(questionList);
+// 필터 관련
+const searchData = reactive({
+    page: store.state.pagination.currentPage,
+});
+
+onBeforeMount(() => {
+    store.dispatch(actionName, searchData);
+});
 </script>
-<style scoped>                                                                                 
-.scroll{
-    display: inline-block;
-    width: 100px;
-    height: 200px;  
-    padding: 20px;
-    overflow-y: scroll;
-    border: 1px solid black;
-    box-sizing: border-box;
-    color: white;
-    font-family: 'Nanum Gothic';
-    background-color: #01083a55;
-}
 
-/*** Box1 스크롤바 설정 ***/
-/* 스크롤바 설정*/
-/* select-category::-webkit-scrollbar{
-    width: 10px;
-}
-.select-category::-webkit-scrollbar:vertical {
-    width: 10px;
-}
-.select-category::-webkit-scrollbar:horizontal {
-    height: 10px;
-} */
-/* 스크롤바 막대 설정*/
-/* .select-category::-webkit-scrollbar-thumb{
-    background-color: rgba(239, 242, 247, 0.1);
-    border-radius: 10px;
-    border: 2px solid #1f2845;;
-} */
-/* 스크롤바 뒷 배경 설정*/
-/* .select-category::-webkit-scrollbar-track{
-    border-radius: 10px;
-    background-color: #1f2845;
-} */
-
-/*  */
-
+<style scoped>
 .container{
     align-items: center;
+}
 
+.container > h1 {
+    font-size: 3rem;
+    margin: 50px 0;
 }
 
 .board-head{
     display: flex;
-    justify-content: space-between;
-    /* display: grid; */
-    grid-template-columns: 2fr 7fr;
-    align-items: center;    
-    gap: 30px; 
-    margin: 50px auto;
-    min-width: 800px;
-}
-
-.board-category{
-    border-radius: 10px;
-    height: 1.2rem;
-    display: inline-flex;
-    justify-content:end;
-    margin: 10px 20px;
+    justify-content: flex-end;
     gap: 30px;
 }
 
-#board-Qli-notice {
-    font-weight: 500;
-    font-size: 1.2rem;
-    background-color: #eeeeeec0;
-    padding: 10px;
-}
-#board-Qli-item>p:nth-child(3){
-    text-align: left;
-    overflow: hidden;
-}
-
-#board-search-tb{
-    display: inline-flex;
-    /* float: right; */
-    justify-content:end;
-    align-items: flex-end;
-}
-.board-search {
-    /* margin-right: -22px;  */
+.board-head > input {
     border: #01083a solid 1px;
     color: #01083a;
     border-radius: 20px;
     width: 300px;
-    height: 31px;
-    text-indent: 20px; 
-    margin-right: 30px;
+    padding: 5px 20px;
+    font-size: 16px;
 }
 
 .board-search-btn{
-    font-size: large;
-    float: right;
+    font-size: 18px;
     border-radius: 20px;
     width: 70px;
-    height: 32px;
+    text-align: center;
 }
+
+.board-box{
+    /* width: 100%; */
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
+    max-width: 1250px;
+    min-width: 500px;
+    margin: 40px 0;
+    font-size: 18px;
+}
+
+.board-notice-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr 9fr 1.5fr 2fr;
+    text-align: center;
+    padding: 10px;
+    font-weight: 600;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-notice-box {
+    background-color: #eeeeee;
+    padding:  5px;
+}
+
+.board-notice-box > .board-content > p:nth-child(2) {
+    font-weight: 600;
+}
+
+.board-content-box {
+    padding: 5px;
+}
+
+.board-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr 9fr 1.5fr 2fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.board-content > :nth-child(3){
+    /* text-align: left;
+    overflow: hidden; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    padding: 0 10px;
+}
+
+.reply-yet {
+    color: red;
+}
+
+.reply-done {
+    color: blue;
+}
+
 .board-create-btn{
-    float: right;
-    font-size: large;
     border-radius: 20px;
     width: 70px;
     height: 30px;
     margin-top: -30px;
 }
 
-.board-list{
-    height: auto;
-    width: 100%;
-    /* justify-content: center;
-    align-content: center; */
-}
-.board-Qli-title{
-    display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1.5fr 1.5fr;
-    text-align: center;
-    width: 100%;
-    height: 40px;
-    font-weight: 600;
-    font-size: 1.2rem;
-    letter-spacing: 0.3rem;
-    border-bottom: double #01083a 5px;
-}
-.select-category{
-    width: 100px;
-    height: 30px;
-    text-align: center;
-    border: solid #01083a 1px;
-    border-radius: 20px;
-    font-size: 1.2rem;
-}
-.select-category>option{
-    border: none;
-}
-#board-Qli-item{
-    display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1.5fr 1.5fr;
-    text-align: center;
-    width: 100%;
-    height: 30px;
-    margin-top: 10px;
-}
+/* .footer-box :nth-child(2){
+    display: flex;
+    align-content: flex-end;
+} */
 
 /* ****************** pagination 불러오면 삭제하기 ****************** */
 .pagination {
@@ -283,7 +213,7 @@ import { onBeforeMount } from 'vue';
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
 }
 
 .pagination button {
@@ -301,35 +231,4 @@ import { onBeforeMount } from 'vue';
     background: #01083a;
 }
 /* ****************** pagination 불러오면 삭제하기 ****************** */
-
-
-.footer{
-    height: 30px;
-    display: inline;
-}       
-@media screen and (max-width: 1000px) {
-    /* .board-Qli-title > span:nth-child(2),
-    .board-Qli-title > span:nth-child(3),
-    .board-Qli-title > span:nth-child(4) { 
-        display: block; /* 2, 3, 4번째 요소만 보이게 */ 
-    /* } 
-    .board-category{
-        display: flex;
-        text-align: end;
-    }
-    .board-Qli-title{
-        display: grid;
-        grid-template-columns: 1fr 5fr 1.5fr;
-    }
-    .board-Qli-title > span {
-        display: none;
-    }
-    .board-head{
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    align-items: center;    
-    gap: 30px; 
-    margin: 50px auto;} */
-
-}
 </style>

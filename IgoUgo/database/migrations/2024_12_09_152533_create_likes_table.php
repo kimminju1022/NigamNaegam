@@ -18,6 +18,8 @@ return new class extends Migration
             $table->char('like_flg', 1)->default(0);
             $table->bigInteger('board_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

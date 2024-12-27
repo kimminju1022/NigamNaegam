@@ -89,32 +89,23 @@
                         <p>제목</p>
                         <p>작성일자</p>
                     </div>
-                    <hr>
                     <div v-for="item in userQuestion" :key="item" class="question-content">
                         <p>{{ item.board_id }}</p>
-                        <div v-if="item.que_status === '0'">
+                        <div v-if="item.questions.que_status === '0'">
                             <p class="reply-yet">대기</p>
                         </div>
                         <div v-else>
                             <p class="reply-done">완료</p>
                         </div>
-                        <router-link :to="`/question/${item.board_id}`">{{ item.board_title }}</router-link>
+                        <!-- <p>{{ item.questions.que_status }}</p> -->
+                        <router-link :to="`/questions/${item.board_id}`">{{ item.board_title }}</router-link>
                         <p>{{ item.created_at }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- 페이지네이션 -->
-            <PaginationComponent :actionName="actionName" :serchData="serchData" />
-            <!-- <div class="pagination">
-                <a href="#"><button class="btn bg-clear"><</button></a>
-                <a href="#"><button class="btn bg-clear">1</button></a>
-                <a href="#"><button class="btn bg-clear">2</button></a>
-                <a href="#"><button class="btn bg-clear">3</button></a>
-                <a href="#"><button class="btn bg-clear">4</button></a>
-                <a href="#"><button class="btn bg-clear">5</button></a>
-                <a href="#"><button class="btn bg-clear">></button></a>
-            </div> -->
+            <PaginationComponent :actionName="actionName" :searchData="searchData" />
         </div>
         
         <div class="user-delete-button">
@@ -131,7 +122,6 @@
                 </div>
                 <div class="delete-btn">
                     <button @click="deletemodal(userInfo)" class="btn bg-clear">탈퇴</button>
-                    <!-- <button class="btn bg-clear">탈퇴</button> -->
                     <button @click="closeModal" class="btn bg-clear">취소</button>
                 </div>
             </div>
@@ -140,29 +130,27 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount, computed, reactive} from 'vue';
+import { ref, onBeforeMount, computed, reactive } from 'vue';
 import { useStore } from 'vuex';
 import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 const userInfo = computed(()=> store.state.auth.userInfo);
+const actionName = 'question/getUserQuestionList';
 
 
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
 onBeforeMount(() => {
-    store.dispatch('question/getUserQuestionList', userInfo.value);
+    store.dispatch(actionName, searchData);
 });
 
 const userQuestion = computed(() => store.state.question.questionList);
 
-const actionName = 'question/getUserQuestionPagination';
-
 // 필터 관련
-const serchData = reactive({
+const searchData = reactive({
+    user_id: store.state.auth.userInfo.user_id,
     page: store.state.pagination.currentPage,
-    // area_code: [],
-    // hc_type: [],
 });
 
 // ***************** 탈퇴 *****************
@@ -278,8 +266,11 @@ const deletemodal = (userInfo) => {
 }
 
 .my-profile-update-btn :nth-child(2) button:hover {
-    background-color: rgb(133, 177, 218);
-    color: #01083a;
+    /* background-color: rgb(133, 177, 218);
+    color: #01083a; */
+    background-color: #7e7e85;
+    color: #ffffff;
+    transition: ease-in-out 0.3s;
 }
 
 /* 탈퇴 버튼 */
@@ -289,6 +280,11 @@ const deletemodal = (userInfo) => {
     padding: 7px 15px;
     border-radius: 50px; 
     color: #929292; 
+}
+
+.btn-exit:hover {
+    color: #f72222;
+    font-weight: 600;
 }
 
 /* **************************************** */
@@ -302,12 +298,11 @@ const deletemodal = (userInfo) => {
 }
 
 .question-content-box {
-    border-top: 1px solid #01083a;
-    border-bottom: 1px solid #01083a;
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
     max-width: 1250px;
     min-width: 500px;
     margin-bottom: 30px;
-    /* color: #01083a; */
 }
 
 .question-title {
@@ -317,6 +312,7 @@ const deletemodal = (userInfo) => {
     padding: 10px;
     font-weight: 600;
     font-size: 18px;
+    border-bottom: 1px solid #01083a;
 }
 
 .question-content-box > hr{
@@ -399,13 +395,13 @@ const deletemodal = (userInfo) => {
 
 .delete-btn button:nth-child(1):hover {
     color: red;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bold;
 }
 
 .delete-btn button:nth-child(2):hover {
     /* color: red; */
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bold;
 }
 

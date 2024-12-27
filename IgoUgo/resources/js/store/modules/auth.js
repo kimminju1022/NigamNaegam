@@ -50,7 +50,8 @@ export default {
 
                 alert('어서와 처음이지');
 
-                router.replace('/');
+                // router.replace('/');
+                router.go(-1); // 이전 히스토리로 이동
             })
             .catch(error => {
                 let errorMsgList = [];

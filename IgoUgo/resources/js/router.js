@@ -5,6 +5,11 @@ import MainPageComponent from '../views/components/MainPageComponent.vue';
 // 로그인 관련
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
+// 유저
+import MyPageComponent from '../views/components/user/MyPageComponent.vue';
+import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
+import PasswordComponent from '../views/components/user/PasswordComponent.vue';
+import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
 // 호텔
 import HotelListComponent from '../views/components/hotels/HotelListComponent.vue';
 import HotelMapComponent from '../views/components/hotels/HotelMapComponent.vue';
@@ -19,15 +24,10 @@ import BoardDetailComponent from '../views/components/board/BoardDetailComponent
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
 // 문의게시판
-import QuestionComponent from '../views/components/question/QuestionListComponent.vue';
+import QuestionListComponent from '../views/components/question/QuestionListComponent.vue';
 import QuestionCreateComponent from '../views/components/question/QuestionCreateComponent.vue';
 import QuestionDetailComponent from '../views/components/question/QuestionDetailComponent.vue';
-import QuestionEditComponent from '../views/components/question/QuestionEditComponent.vue';
-// 유저
-import MyPageComponent from '../views/components/user/MyPageComponent.vue';
-import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
-import PasswordComponent from '../views/components/user/PasswordComponent.vue';
-import PasswordUpdateComponent from '../views/components/user/PasswordUpdateComponent.vue';
+import QuestionUpdateComponent from '../views/components/question/QuestionUpdateComponent.vue';
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 
@@ -48,11 +48,12 @@ const chkAuth = (to, from, next) => {
 
 
 const routes = [
-    // 다른 경로와 컴포넌트 추가 가능
+    // 메인
     {
         path: '/',
         component: MainPageComponent,
     },
+    // 로그인
     {
         path: '/login',
         component: LoginComponent,
@@ -63,6 +64,28 @@ const routes = [
         component: UserRegistrationComponent,
         beforeEnter: chkAuth,
     },
+    // 유저
+    {
+        path: '/user/:id',
+        component: MyPageComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/user/:id/edit',
+        component: MyPageUpdateComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/password/:id',
+        component: PasswordComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/password/:id/edit',
+        component: PasswordUpdateComponent,
+        beforeEnter: chkAuth,
+    },
+    // 호텔
     {
         path: '/hotels',
         component: HotelListComponent
@@ -75,6 +98,7 @@ const routes = [
         path: '/hotels/detail',
         component: HotelListDetailComponent,
     },
+    // 상품
     {
         path: '/products',
         component: ProductMainComponent,
@@ -103,15 +127,17 @@ const routes = [
     {
         path: '/boards/update',
         component: BoardUpdateComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/boards/edit',
         component: BoardUpdateComponent,
         beforeEnter: chkAuth,
     },
+    // 문의게시판
     {
         path: '/questions',
-        component: QuestionComponent,
+        component: QuestionListComponent,
     },
     {
         path: '/questions/create',
@@ -121,31 +147,10 @@ const routes = [
     {
         path: '/questions/:id',
         component: QuestionDetailComponent,
-        beforeEnter: chkAuth,
     },
     {
         path: '/questions/edit',
-        component: QuestionEditComponent,
-        beforeEnter: chkAuth,
-    },
-    {
-        path: '/user/:id',
-        component: MyPageComponent,
-        beforeEnter: chkAuth,
-    },
-    {
-        path: '/user/:id/edit',
-        component: MyPageUpdateComponent,
-        beforeEnter: chkAuth,
-    },
-    {
-        path: '/password/:id',
-        component: PasswordComponent,
-        beforeEnter: chkAuth,
-    },
-    {
-        path: '/password/:id/edit',
-        component: PasswordUpdateComponent,
+        component: QuestionUpdateComponent,
         beforeEnter: chkAuth,
     },
     {

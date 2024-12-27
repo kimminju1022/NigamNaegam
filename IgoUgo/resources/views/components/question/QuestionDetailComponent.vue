@@ -1,55 +1,56 @@
 <template>
-    <header>
+    <div class="container">
         <!-- 경로표시 -->
-        <h2>FAQ</h2>
+        <h1>FAQ</h1>
         <!-- 버튼영역 -->
-        <div class="question-detailItem-btn"> 
-            <button class="btn bg-navy question-detail-btn" @click="updateConfirm">수정</button>
-            <button class="btn bg-navy question-detail-btn" @click="deleteConfirm">삭제</button>
+        <div class="header-btn-box"> 
+            <button class="btn bg-navy header-btn" @click="updateConfirm">수정</button>
+            <button class="btn bg-navy header-btn" @click="deleteConfirm">삭제</button>
         </div>
-    </header>
-    <main>  
-        <div class="">
-            <!-- 상세 글머리_정보불러오기-->
-            <h1>타이틀</h1>
-            <div class="question-detail-head">
-                <span>작성자 : 닉네임</span>
-                <span>2024.12.05</span>
+        <div class="board-box">  
+            <div class="">
+                <!-- 상세 글머리_정보불러오기-->
+                <h1>타이틀</h1>
+                <div class="question-detail-head">
+                    <span>작성자 : 닉네임</span>
+                    <span>2024.12.05</span>
+                </div>
             </div>
-        </div>
-        
-        <!-- 등록이미지 불러오기 -->
-        <div class="question-detail-img">
-            <img src="../../../../../ex/img/내(신발).png" alt="test">
-            <img src="../../../../../ex/img/slack.png" alt="test">
-        </div>
-        <hr>
-        <!-- 내용 -->
-        <div class="question-detail-content">
-            <span>loem</span>
-        </div>
-        <hr>
-        <!-- 댓글 -->
-        <div class="question-reply-container">
-            <div class="question-detail-reply ">
-                <span>댓글</span>
-                <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
-                <button class="btn bg-navy question-detail-btn">작성</button>
-                <span>총 댓글 : </span>
-                <!-- {{ 댓글수[0] }} -->
+            
+            <!-- 등록이미지 불러오기 -->
+            <div class="question-detail-img">
+                <img src="../../../../../ex/img/내(신발).png" alt="test">
+                <img src="../../../../../ex/img/slack.png" alt="test">
             </div>
             <hr>
-            <div class="question-detail-replyList">
-                <div class="replyList-head">
-                    <span>내용</span>
-                    <span>닉네임</span>
-                    <span>작성일시</span>
-                </div>
-                
+            <!-- 내용 -->
+            <div class="question-detail-content">
+                <span>loem</span>
             </div>
-        </div>
+            <hr>
+            <!-- 댓글 -->
+            <div class="question-reply-container">
+                <div class="question-detail-reply ">
+                    <span>댓글</span>
+                    <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
+                    <button class="btn bg-navy question-detail-btn">작성</button>
+                    <span>총 댓글 : </span>
+                    <!-- {{ 댓글수[0] }} -->
+                </div>
+                <hr>
+                <div class="question-detail-replyList">
+                    <div class="replyList-head">
+                        <span>내용</span>
+                        <span>닉네임</span>
+                        <span>작성일시</span>
+                    </div>
+                    
+                </div>
+            </div>
 
-    </main>
+        </div>
+        
+    </div>
 </template>
 
 <script setup>
@@ -75,12 +76,36 @@ const deleteConfirm = () => {
 </script>
 
 <style scoped>
-/* header{
-    display: grid;
-    grid-template-columns: 5fr 2fr;
-    margin: 30px auto;
-    align-items: flex-end;
-} */
+.container{
+    align-items: center;
+}
+
+.container > h1 {
+    font-size: 3rem;
+    margin: 50px 0;
+}
+
+.header-btn-box {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-btn{
+    font-size: 18px;       
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
+    /* gap: -200px; */
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.board-box {
+    
+}
+
 .question-detail-category {
     display: flex;
     align-items: flex-end;
@@ -93,18 +118,6 @@ const deleteConfirm = () => {
     width: 100%;
     column-gap: 10px;
     float: right;
-}
-.question-detail-btn{
-    font-size: large;       
-    border-radius: 20px;
-    width: 70px;
-    height: 30px;
-    gap: -200px;
-    margin-right: 20px;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .question-detail-head{
     display: grid;

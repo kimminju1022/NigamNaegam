@@ -43,7 +43,7 @@ class Board extends Model
     }
 
     public function questions() {
-        return $this->hasMany(Question::class, 'board_id', 'board_id');
+        return $this->hasOne(Question::class, 'board_id', 'board_id');
     }
 
 }

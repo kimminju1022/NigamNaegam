@@ -6,6 +6,7 @@ export default {
     state: () => ({
         questionList: [],
         page: 0,
+        questionDetail: null,
     }),
     mutations: {
         setQuestionList(state, questionList) {
@@ -14,49 +15,63 @@ export default {
         setPage(state, page) {
             state.page = page;
         },
+        setQuestionDetail(state, question) {
+            state.questionDetail = question;
+        },
     },
     actions: {
-        // 유저 1:1 문의내역
-        getUserQuestionList(context,userInfo) {
-            const url = `/api/questions/${userInfo.user_id}`;
+        // 문의내역 리스트
+        getQuestionList(context, searchData) {
+            const url = '/api/questions';
             const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                },
+                params: searchData,
             }
 
             axios.get(url, config)
             .then(response => {
-                // console.log('getUserQuestionList',response.data);
+                console.log('getUserQuestionList',response.data);
                 context.commit('setQuestionList', response.data.data.data);
+                context.commit('pagination/setPagination', response.data.data, {root: true});
             }) 
             .catch(error => {
                 console.error(error);
             });
         },
 
-        getUserQuestionPagination(context, data) {
-            return new Promise((resolve, reject) => {
-                const url = `/api/questions/${userInfo.user_id}`;
-                const config = {
-                    params: data
-                };
-    
-                axios.get(url, config)
-                .then(response => {
-                    context.commit('setQuestionList', response.data.data);
-                    // 페이지 저장
-                    context.commit('pagination/setPagination', response.data, {root: true});
-                    console.log(response.data);
-                    console.log(response.data.data);
-                    return resolve();
-                })
-                .catch(error => {
-                    console.log(error.response);
-                    return reject();
-                });
+        // 유저 1:1 문의내역
+        getUserQuestionList(context, searchData) {
+            const url = `/api/user/questions/${searchData.user_id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                },
+                params: searchData,
+            }
+
+            axios.get(url, config)
+            .then(response => {
+                // console.log('getUserQuestionList',response.data);
+                context.commit('setQuestionList', response.data.data.data);
+                context.commit('pagination/setPagination', response.data.data, {root: true});
+            }) 
+            .catch(error => {
+                console.error(error);
             });
         },
+
+        // 문의 게시글 상세
+        getQuestionDetail(context, data) {
+            const url = `/api/questions/${data.board_id}`;
+
+            axios.get(url, config)
+            .then(response => {
+                // console.log(response);
+                context.commit('setQuestionDetail', response.data.question);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
     },
     getters: {
     },

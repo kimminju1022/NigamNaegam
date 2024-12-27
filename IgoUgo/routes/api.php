@@ -42,10 +42,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
 // 리뷰/자유 게시판용 라우터
-Route::get('/boards',[BoardController::class, 'index'])->name('board.index');
+Route::get('/boards', [BoardController::class, 'index'])->name('board.index');
 
 // 문의 게시판용 라우터
-Route::get('/question',[BoardController::class, 'index'])->name('board.index');
+Route::get('/questions', [QuestionController::class, 'index']);
+Route::get('/questions/{id}',[QuestionController::class, 'show']);
 
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
@@ -56,7 +57,6 @@ Route::middleware('my.auth')->group(function() {
     
     // 유저 관련
     Route::get('/user/{id}', [UserController::class, 'show']);
-    // Route::get('/user/{id}',[QuestionController::class, 'showMyQuestion']);
     Route::get('/user/{id}/edit', [UserController::class, 'edit']);
     Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
@@ -69,9 +69,8 @@ Route::middleware('my.auth')->group(function() {
     // 댓글관련 생성예정
 
     // 문의게시판 관련
-    Route::get('/questions',[QuestionController::class, 'index']);
-    Route::get('/questions/{id}',[QuestionController::class, 'showMyQuestion']);
-    Route::get('/questions/{id}/edit',[QuestionController::class, 'edit'])->name('question.edit');
-    Route::put('/questions/{id}',[QuestionController::class, 'update'])->name('question.update');
+    Route::get('/user/questions/{id}', [QuestionController::class, 'showMyQuestion']);
+    Route::get('/questions/{id}/edit', [QuestionController::class, 'edit'])->name('question.edit');
+    Route::put('/questions/{id}', [QuestionController::class, 'update'])->name('question.update');
 });
 

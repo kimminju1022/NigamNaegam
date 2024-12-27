@@ -50,6 +50,6 @@ class User extends Authenticatable
     }
     
     public function boards() {
-        return $this->hasMany(Board::class, 'user_id');
+        return $this->hasMany(Board::class, 'user_id', 'user_id');
     }
 }
