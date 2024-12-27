@@ -76,8 +76,8 @@
                                 <div class="app-content-dropdown">
                                     <p class="app-content-dropbtn">게시판</p>
                                     <div class="app-content app-content-dropdown-content">
-                                        <router-link to="/boards" class="app-review-board">리뷰 게시판</router-link>
-                                        <router-link to="/boards" class="app-review-board">자유 게시판</router-link>
+                                        <a @click="redirectBoards('0')" class="app-review-board">리뷰</a>
+                                        <a @click="redirectBoards('1')" class="app-review-board">자유</a>
                                     </div>
                                 </div>
                             </li>
@@ -212,9 +212,10 @@ const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
 
 // ---------- 게시판 이동 관련 start ----------
-const redirectBoards = bcType => {
+const redirectBoards = async (bcType) => {
+    store.commit('pagination/setPaginationInitialize');
     store.commit('board/setBcType', bcType);
-    store.dispatch('board/getBoardListPagination');
+    await store.dispatch('board/getBoardListPagination', {page: 1, bc_type: bcType});
     router.push('/boards');
 }
 // ---------- 게시판 이동 관련 end ----------

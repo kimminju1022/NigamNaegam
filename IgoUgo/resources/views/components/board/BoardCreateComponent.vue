@@ -1,7 +1,7 @@
 <template>
     <!-- 작동btn  [목록과 취소가 같은것 아닐까?] -->
     <div class="board-create-head">
-        <h2>{{ item.bc_type }} ></h2>
+        <h2>{{ boardTitle }} </h2>
         <div class="form-box">
             <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link>
             <button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button>
@@ -14,7 +14,8 @@
         <div class="select-boardType">
             <h3></h3>
             <select name="board-categories" id="board-categories">
-                <!-- v-model="SelectedBoardCategory"  -->
+                <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
+                <option disabled hidden selected>--게시판선택--</option>
                 <option value="1">리뷰게시판</option>
                 <option value="2">자유게시판</option>
             </select>
@@ -52,7 +53,8 @@
                     <option value="16">제주</option>
                 </select>
             </h3>
-            <div v-for="searchItem in searchKeyword" id="board-search-tb">
+            <!--  v-for="searchItem in searchKeyword"  -->
+            <div id="board-search-tb">
                 <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
                 <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
             </div>
@@ -87,7 +89,7 @@
         <hr>
         <div class="board-create-file">
             <h3 class="board-create-fileChoice">파일첨부</h3>
-            <input type="file" name="file" accept="imge/*" @change="changeImage">
+            <input @change="setFile" type="file" name="file" accept="imge/*">
         </div>            
         <!--미리보기 삭제기능추가 -->
         <div class="board-imgPreview">
@@ -96,7 +98,7 @@
         </div>
         <img src={{}} alt="">
         <hr>
-        <textarea name="content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
+        <textarea v-model="boardInfo.content" name="content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
         <hr>
     </div>
     <!-- 내용 -->
@@ -104,8 +106,25 @@
 </template>
 
 <script setup>
+import { computed, reactive, ref } from 'vue';
 import router from '../../../js/router';
+import board from '../../../js/store/modules/board';
+import { useStore } from 'vuex';
 
+const store = useStore();
+const boardInfo = reactive({
+    content: ''
+    ,file: ''
+})
+const preview = ref('');
+
+const boardTitle = computed(() => store.state.board.boardTitle);
+
+// 
+const setFile = (e) => {
+    boarInfo.file= e.target.files[0];
+    preview.value = URL.createObjectURL(boarInfo.file);
+}
 
 const cancelConfirm = () =>{
     const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
@@ -116,7 +135,7 @@ const cancelConfirm = () =>{
 const doneConfirm = () =>{
     const userResponse = confirm('작성을 완료하시겠습니까?');
     if (userResponse) {
-        router.push('/boards/detail');
+        router.push('/boards/detail',boardInfo);
         // 이때, post로 정보 전달해줘야함...어떻게?
     }
 }

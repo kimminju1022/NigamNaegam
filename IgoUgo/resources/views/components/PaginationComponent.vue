@@ -19,10 +19,10 @@ const store = useStore();
 
 const props = defineProps({
     'actionName': String,
-    'serchData': Object,
+    'searchData': Object,
 });
 
-const requestParam = reactive(props.serchData);
+const requestParam = reactive(props.searchData);
 const changePage = (page) => {
     requestParam.page = page;
     store.dispatch(props.actionName, requestParam);

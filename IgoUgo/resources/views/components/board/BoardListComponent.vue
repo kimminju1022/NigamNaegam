@@ -1,136 +1,133 @@
 <template>
-    <main>
-        <h2 style="margin: 30px 0; font-size: 3rem;">
-            {{ boardTitle }}
-        </h2>
-        <div class="board-head">
-            <div class="board-category">
-                <select name="select-category" class="bg-clear btn select-category">
-                    <option disabled hidden selected>카테고리</option>
-                    <option value="0">맛집</option>
-                    <option value="1">액티비티</option>
-                    <option value="2">힐링</option>
-                    <option value="3">쇼핑</option>       
-                </select>
-                <select name="select-category" class="bg-clear btn select-category">
-                    <option disabled hidden selected>지역</option>
-                    <option value="0">서울</option>
-                    <option value="1">인천</option>
-                    <option value="2">대전</option>
-                    <option value="3">세종</option>        
-                    <option value="4">대구</option>
-                    <option value="5">광주</option>
-                    <option value="6">부산</option>
-                    <option value="7">울산</option>
-                    <option value="8">경기</option>
-                    <option value="9">강원</option>
-                    <option value="10">충북</option>
-                    <option value="11">충남</option>        
-                    <option value="12">경북</option>
-                    <option value="13">경남</option>
-                    <option value="14">전북</option>
-                    <option value="15">전남</option>        
-                    <option value="16">제주</option>        
-                </select>
-            </div>
-            <div id="board-search-tb">
-                <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
-                <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
-            </div>
+    <h2 style="margin: 30px 0; font-size: 3rem;">
+        {{ boardTitle }}
+    </h2>
+    <div class="board-head">
+        <div class="board-category">
+            <select name="select-category" class="bg-clear btn select-category">
+                <option disabled hidden selected>카테고리</option>
+                <option value="0">맛집</option>
+                <option value="1">액티비티</option>
+                <option value="2">힐링</option>
+                <option value="3">쇼핑</option>       
+            </select>
+            <select name="select-category" class="bg-clear btn select-category">
+                <option disabled hidden selected>지역</option>
+                <option value="0">서울</option>
+                <option value="1">인천</option>
+                <option value="2">대전</option>
+                <option value="3">세종</option>        
+                <option value="4">대구</option>
+                <option value="5">광주</option>
+                <option value="6">부산</option>
+                <option value="7">울산</option>
+                <option value="8">경기</option>
+                <option value="9">강원</option>
+                <option value="10">충북</option>
+                <option value="11">충남</option>        
+                <option value="12">경북</option>
+                <option value="13">경남</option>
+                <option value="14">전북</option>
+                <option value="15">전남</option>        
+                <option value="16">제주</option>        
+            </select>
         </div>
-        
-    <!-- 리스트항목 -->
-        <div class="board-list">
-            <!-- 리스트 헤드 -->
-            <div class="board-li-title">
-                <span>번호</span>
-                <span>지역</span>
-                <span>제목</span>
-                <span>닉네임</span>
-                <span>작성일자</span>
-                <span>좋아요</span>
-                <span>조회수</span>
-            </div>
-            <!-- 리스트 목록 -->
-            <div class="board-li-items">
-                <div id="board-li-notice" >
-                    <div id="board-li-item">
-                        <p>5</p>
-                        <p></p>
-                        <p>12월 여행 주의 사항</p>
-                        <p>라라핑</p>
-                        <p>2024.12.11</p>
-                        <p></p>
-                        <p>50</p>
-                    </div>
-                    <div id="board-li-item">
-                        <p>4</p>
-                        <p></p>
-                        <p>11월 단풍놀이 명소 전국 Top 20</p>
-                        <p>차나핑</p>
-                        <p>2024.11.11</p>
-                        <p></p>
-                        <p>50</p>
-                    </div>
-                    <div id="board-li-item">
-                        <p>3</p>
-                        <p></p>
-                        <p>11월 여행 주의 사항</p>
-                        <p>라라핑</p>
-                        <p>2024.11.11</p>
-                        <p></p>
-                        <p>30</p>
-                    </div>
-                    <div id="board-li-item">
-                        <p>2</p>
-                        <p></p>
-                        <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
-                        <p>믿어핑</p>
-                        <p>2024.11.01</p>
-                        <p></p>
-                        <p>50</p>
-                    </div>
-                    <div id="board-li-item">
-                        <p>1</p>
-                        <p></p>
-                        <p>10월 여행 주의 사항</p>
-                        <p>차캐핑</p>
-                        <p>2024.12.11</p>
-                        <p></p>
-                        <p>30</p>
-                    </div>
+        <div id="board-search-tb">
+            <!--  v-model="keyword" -->
+            <input class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+            <!-- @click="keywordSearch"  -->
+            <button class="btn bg-navy board-search-btn">검색</button>
+        </div>
+    </div>
+    
+<!-- 리스트항목 -->
+    <div class="board-list">
+        <!-- 리스트 헤드 -->
+        <div class="board-li-title">
+            <span>번호</span>
+            <span v-show="$store.state.board.bcType === 0">지역</span>
+            <span>제목</span>
+            <span>닉네임</span>
+            <span>작성일자</span>
+            <span v-show="$store.state.board.bcType === 0">좋아요</span>
+            <span>조회수</span>
+        </div>
+        <!-- 리스트 목록 -->
+        <div class="board-li-items">
+            <div id="board-li-notice" >
+                <div id="board-li-item">
+                    <p>5</p>
+                    <p v-show="$store.state.board.bcType === 0"></p>
+                    <p>12월 여행 주의 사항</p>
+                    <p>라라핑</p>
+                    <p>2024.12.11</p>
+                    <p v-show="$store.state.board.bcType === 0"></p>
+                    <p>50</p>
                 </div>
-                <!-- 현재 리스트가 호출이 불가함함 -->
-                <div v-for="item in boardList" :key="item" id="board-li-item">
-                    <p>{{ item.board_id }}</p>
-                    <p>{{ item.area_name }}</p>
-                    <router-link :to="'/boards/' + item.bc_id"><p>{{ item.board_title }}</p></router-link>
-                    <p>{{ item.user_nickname }}</p>
-                    <p>{{ item.created_at }}</p>
-                    <p>{{ item.like_cnt }}</p>
-                    <p>{{ item.view_cnt }}</p>
+                <div id="board-li-item">
+                    <p>4</p>
+                    <p></p>
+                    <p>11월 단풍놀이 명소 전국 Top 20</p>
+                    <p>차나핑</p>
+                    <p>2024.11.11</p>
+                    <p></p>
+                    <p>50</p>
+                </div>
+                <div id="board-li-item">
+                    <p>3</p>
+                    <p></p>
+                    <p>11월 여행 주의 사항</p>
+                    <p>라라핑</p>
+                    <p>2024.11.11</p>
+                    <p></p>
+                    <p>30</p>
+                </div>
+                <div id="board-li-item">
+                    <p>2</p>
+                    <p></p>
+                    <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
+                    <p>믿어핑</p>
+                    <p>2024.11.01</p>
+                    <p></p>
+                    <p>50</p>
+                </div>
+                <div id="board-li-item">
+                    <p>1</p>
+                    <p></p>
+                    <p>10월 여행 주의 사항</p>
+                    <p>차캐핑</p>
+                    <p>2024.12.11</p>
+                    <p></p>
+                    <p>30</p>
                 </div>
             </div>
+
+            <!--  -->
+            <div v-for="item in boardList" :key="item" id="board-li-item">
+                <p>{{ item.board_id }}</p>
+                <!-- v-if="item.board_type === 1" hidden -->
+                <p>{{ item.area_name }}</p>
+                <router-link :to="'/boards/' + item.board_id"><p>{{ item.board_title }}</p></router-link>
+                <p>{{ item.user_nickname }}</p>
+                <p>{{ item.created_at }}</p>
+                <!--  v-if="item.board_type === 1" hidden -->
+                <p>{{ item.like_cnt }}</p>
+                <p>{{ item.view_cnt }}</p>
+            </div>
         </div>
-    </main>
-<!-- 페이지네이션 -->
-    <footer>
-        <div class="pagination">
-            <a href="#"><button class="btn bg-clear"><</button></a>
-            <a href="#"><button class="btn bg-clear">1</button></a>
-            <a href="#"><button class="btn bg-clear">2</button></a>
-            <a href="#"><button class="btn bg-clear">3</button></a>
-            <a href="#"><button class="btn bg-clear">4</button></a>
-            <a href="#"><button class="btn bg-clear">5</button></a>
-            <a href="#"><button class="btn bg-clear">></button></a>
-        </div>
-        <router-link to="/boards/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
-    </footer>
+    </div>
+    <!-- 하단 기능버튼 -->
+    <div class="pagination-btn">
+        <!-- 페이지네이션 -->
+        <PaginationComponent :actionName="actionName" :searchData="searchData" />
+        <router-link to="/boards/create"><button class="btn bg-navy header-bg-btn board-create-btn">작성</button></router-link>
+    </div>
 </template>
 <script setup>
 
-import { computed,onBeforeMount, ref } from 'vue';
+import { computed,onBeforeMount, reactive, watch } from 'vue';
 import { useStore } from 'vuex'; // 스토어쓰니까 이거 선언해 줘야해
+import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 // boardTitle
@@ -138,12 +135,28 @@ const boardTitle = computed(() => store.state.board.boardTitle);
 // boardlist
 const boardList = computed(() => store.state.board.boardList);
 
+// -------------------------------
+// 페이지네이션 관련
+const actionName = 'board/getBoardListPagination';
+const searchData = reactive({
+    page: store.state.pagination.currentPage,
+    bc_type: store.state.board.bcType,
+});
+watch(
+    () => store.state.board.bcType,
+    (newVal) => {
+        searchData.bc_type = newVal;
+    }
+);
+// -------------------------------
 
 // beforemount
-onBeforeMount(() => {
+onBeforeMount(async () => {
     // console.log('나온다아아아아앙')
     // 백앤드로 요청 보내는 액션메소드
-    store.dispatch('board/getBoardListPagination');
+    if(boardList.value.length === 0){
+        store.dispatch('board/getBoardListPagination', searchData);
+    }
 });
 
 // const keyword = ref('');
@@ -160,11 +173,16 @@ const keywordSearch = () => {
 // }
 </script>
 <style scoped>  
+/* 양식관련련 */
 footer{
     height: 30px;
     display: inline;
-}                                                                                      
-.scroll{
+}                  
+.pagination-btn{
+    display: inline-block;
+    width: 100%;
+}                                                                    
+/* .scroll{
     display: inline-block;
     width: 100px;
     height: 200px;  
@@ -175,8 +193,8 @@ footer{
     color: white;
     font-family: 'Nanum Gothic';
     background-color: #01083a55;
-}
-
+} */
+/* ------------------------------ */
 /*** Box1 스크롤바 설정 ***/
 /* 스크롤바 설정*/
 select-category::-webkit-scrollbar{
@@ -235,7 +253,7 @@ main{
     text-align: left;
     overflow: hidden;
 }
-
+/* 검색 및 버튼---------------- */
 #board-search-tb{
     display: inline-flex;
     /* float: right; */
@@ -268,7 +286,12 @@ main{
     height: 30px;
     margin-top: -30px;
 }
-
+.board-create-btn{
+    align-items: center;
+    text-align: center;
+    /* margin-left: -30px; */
+}
+/* -------------------------- */
 .board-list{
     height: auto;
     width: 100%;
