@@ -133,6 +133,7 @@ window.addEventListener('resize', flgSetup);
 // const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
 function updateFilters() {
+    serchData.page = 1;
     store.dispatch('hotel/getHotelsPagination', serchData);
 }
 

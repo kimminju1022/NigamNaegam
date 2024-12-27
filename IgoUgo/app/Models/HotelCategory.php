@@ -20,4 +20,8 @@ class HotelCategory extends Model
         'fitness',
         'pickup',
     ];
+
+    // public function hotelCategory() {
+    //     return $this->hasMany(HotelInfo::class, 'hc_type');
+    // }
 }

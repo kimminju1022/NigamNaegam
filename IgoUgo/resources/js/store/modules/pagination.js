@@ -8,6 +8,10 @@ export default {
         viewPageNumber: localStorage.getItem('viewPageNumber') ? JSON.parse(localStorage.getItem('viewPageNumber')) : [],
     }),
     mutations: {
+        setCurrentPage(state, page) {
+            state.currentPage = page;
+            localStorage.setItem('currentPage', page);
+        },
         setPaginationInitialize(state) {
             state.currentPage = 1;
             state.lastPage = 1;

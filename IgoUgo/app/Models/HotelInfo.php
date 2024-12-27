@@ -17,4 +17,12 @@ class HotelInfo extends Model
         'hotel_id',
         'hc_type',
     ];
+
+    // public function hotel() {
+    //     return $this->belongsTo(Hotel::class, 'hotel_id');
+    // }
+    
+    // public function hotelCategory() {
+    //     return $this->belongsTo(HotelCategory::class, 'hc_type');
+    // }
 }
