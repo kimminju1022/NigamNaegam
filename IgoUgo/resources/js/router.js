@@ -12,6 +12,7 @@ import HotelListDetailComponent from '../views/components/hotels/HotelListDetail
 // 상품
 import ProductMainComponent from '../views/components/products/ProductMainComponent.vue';
 import ProductListComponent from '../views/components/products/ProductListComponent.vue';
+import ProductDetailComponent from '../views/components/products/ProductDetailComponent.vue';
 // 게시판
 import BoardListComponent from '../views/components/board/BoardListComponent.vue';
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
@@ -81,6 +82,10 @@ const routes = [
     {
         path: '/products/:contenttypeid',
         component: ProductListComponent,
+    },
+    {
+        path: '/products/:contenttypeid/:id',
+        component: ProductDetailComponent,
     },
     {
         path: '/boards',

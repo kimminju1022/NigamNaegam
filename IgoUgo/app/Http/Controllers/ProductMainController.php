@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductMainController extends Controller
 {
@@ -25,15 +27,27 @@ class ProductMainController extends Controller
         return response()->json($responseData);
     }
 
-    public function showList($contenttypeid) {
-        $productList = Product::where('contenttypeid', $contenttypeid)->whereNotNull('firstimage')->paginate(10);
-
+    public function showList(Request $request) {
+        $contentTypeId = $request->contenttypeid;
+        $areaCode = $request->area_code;
+        $productList = Product::where('contenttypeid', $contentTypeId)
+                                ->when($areaCode, function($query, $areaCode) {
+                                    return $query->whereIn('products.area_code', $areaCode);
+                                })
+                                ->whereNotNull('firstimage')
+                                ->select('product_id', 'title', 'firstimage')
+                                ->orderBy('createdtime', 'desc')
+                                ->paginate(32);
         $responseData = [
             'success' => true,
             'msg' => '데이터 획득 성공',
             'products' => $productList
         ];
+        return response()->json($responseData);
+    }
 
-        return response()->json($responseData);        
+    public function areas(Request $request) {
+        $areas = Area::get();
+        return response()->json($areas);
     }
 }

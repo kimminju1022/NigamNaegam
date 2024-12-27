@@ -2,14 +2,14 @@
     <div class="total-container"> 
         <div>
             <div class="category-name">
-                <span class="content-title">관광지</span>
+                <span class="content-title">{{ productTitle }}</span>
             </div>
             <div class="right-small-container select-result-box">
-                <h2><span class="font-blue">200</span> 개의 결과</h2>
+                <h2><span class="font-blue">{{ productsCnt }}</span> 개의 결과</h2>
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
-                    <div v-for="value in selectedFilters" :key="value" class="select-list-item">
-                        <p>{{ value }}</p>
-                        <img @click="closefilter(value)" src="/img_product/img_x.png" class="img-x">
+                    <div v-for="code in searchData.area_code" :key="code" class="select-list-item">
+                        <p>{{ getAreaNameWithAreaCode(code) }}</p>
+                        <img src="/img_product/img_x.png" @click="closeFilter(code)" class="img-x">
                     </div>
                 </div>
             </div>
@@ -49,16 +49,16 @@
             </div>
             <div>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
-                <!-- <div class="card-list">
-                    <div v-for="item in hotels" :key="item" class="card">
+                <div class="card-list">
+                    <div v-for="item in products" :key="item" class="card">
                         <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
                         <p class="font-bold card-title">{{ item.title }}</p>
                     </div>
-                </div> -->
+                </div>
                 <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
 
                 <!-- 페이지네이션 -->
-                <PaginationComponent :actionName="actionName" :serchData="serchData" />
+                <PaginationComponent :actionName="actionName" :searchData="searchData" />
             </div>
         </div>
     </div> 
@@ -72,9 +72,9 @@
             <p class="modal-region-text1 font-bold">지역</p>
 
             <div class="modal-region">
-                <div v-for="item in $store.state.hotel.hotelArea" :key="item">
-                    <input v-model="serchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_id">
-                    <label :for="'input-' + item.area_id">{{ item.area_name }}</label>
+                <div v-for="item in $store.state.product.productArea" :key="item">
+                    <input v-model="searchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
+                    <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
         </div>
@@ -84,19 +84,35 @@
 <script setup>
 import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
+const route = useRoute();
+// const conttentTypeId = route.params.contenttypeid; // url의 conttenttypeid 가져오기
 
-// 호텔 리스트 관련
-const hotels = computed(() => store.state.hotel.hotelList);
-const actionName = 'hotel/getHotelsPagination';
+// id에 따른 타이틀명 - 객체
+const productIdList = {
+    12: '관광지',
+    14: '문화시설',
+    28: '레포츠',
+    38: '쇼핑',
+    39: '음식점',
+};
+
+// 상품 리스트 타이틀
+const productTitle = ref('');
+
+// 상품 리스트 관련
+const products = computed(() => store.state.product.productList);
+const productsCnt = computed(() => store.state.product.productCnt);
+const actionName = 'product/getProductsPagination';
 
 // 필터 관련
-const serchData = reactive({
+const searchData = reactive({
     page: store.state.pagination.currentPage,
+    contentTypeId: route.params.contenttypeid,
     area_code: [],
-    hc_type: [],
 });
 
 // const areaData = computed(() => store.state.hotel.hotelArea);
@@ -107,28 +123,38 @@ const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
 onBeforeMount(async () => {
+    // 타이틀
+    productTitle.value = productIdList[route.params.contenttypeid];
+
     flgSetup(); // 리사이즈 이벤트
-    await store.dispatch(actionName, serchData);
-    await store.dispatch('hotel/getHotelsArea');
+    await store.dispatch(actionName, searchData);
+    await store.dispatch('product/getProductsArea', searchData);
     // console.log('에리아데이터', areaData);
 });
 
 window.addEventListener('resize', flgSetup);
+
+function getAreaNameWithAreaCode(code) {
+    const areaList = store.state.product.productArea.filter((item) => item.area_code === code);
+    return areaList[0].area_name;
+}
 
     
 // 카테카테고리고리
 const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
 function updateFilters() {
-    console.log(serchData.area_code);
-    store.dispatch(actionName, serchData);
+    // console.log(searchData.area_code);
+    store.dispatch(actionName, searchData);
 }
 
-function closefilter(value) {
-    selectedFilters.value = selectedFilters.value.filter(
+function closeFilter(value) {
+    // console.log(serchData.area_code);
+    searchData.area_code = searchData.area_code.filter(
         (item) => item !== value
     );
-    localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
+    store.dispatch('product/getProductsPagination', searchData);
+    // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
 
 // window.onbeforeunload = function() {
@@ -245,7 +271,7 @@ function closemodal() {
     .select-list-item {
         display: flex;
         justify-content: space-between;
-        max-width: 130px;
+        max-width: 170px;
         border: 1px solid #01083A;
         border-radius: 20px;
         padding: 10px;
@@ -405,7 +431,7 @@ function closemodal() {
         z-index: 2;
     }
     .modal-content {
-        width: 340px;
+        width: 500px;
         background-color: white;
         padding: 20px 30px 40px 30px;
         border-radius: 10px;

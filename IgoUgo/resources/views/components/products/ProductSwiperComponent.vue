@@ -20,7 +20,11 @@
         </div>
     </swiper-slide>
     <swiper-slide>
-        <p class="move-page">더 알아보기</p>
+        <router-link :to="getProductLink(condition)">
+            <div class="move-page-card">
+                <p class="move-page">더 알아보기</p>
+            </div>
+        </router-link>
     </swiper-slide>
     
     <button class="swiper-button-prev btn bg-clear"><</button>
@@ -46,6 +50,21 @@ const modules = [Navigation];
 const props = defineProps({
   'condition': String
 });
+
+// 조건에 따른 id - 객체
+const contentTypeId = {
+    spot: 12,
+    culture: 14,
+    sports: 28,
+    shopping: 38,
+    restaurant: 39,
+};
+
+// 조건에 따른 url 생성
+const getProductLink = (condition) => {
+    const contentMatch = contentTypeId[condition];
+    return `/products/${contentMatch}`;
+};
 </script>
 
 <style scoped>
@@ -93,13 +112,20 @@ const props = defineProps({
     justify-content: center;
     align-items: center;
 }
+.move-page-card {
+    width: 202px;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .move-page {
     font-size: 25px;
 }
 .swiper-slide:hover {
     cursor: pointer;
 }
-.swiper-slide:hover > .move-page {
+.move-page-card:hover > .move-page {
     background-color: #01083a;
     color: #fff;
     font-size: 25px;
