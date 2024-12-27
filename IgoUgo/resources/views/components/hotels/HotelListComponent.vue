@@ -5,7 +5,7 @@
                 <span class="name-hotel">호텔</span>
             </div>
             <div class="right-small-container select-result-box">
-                <h2><span class="font-blue">200</span> 개의 결과</h2>
+                <h2><span class="font-blue">{{ $store.state.hotel.count }}</span> 개의 결과</h2>
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
                     <div v-for="code in serchData.area_code" :key="code" class="select-list-item">
                         <p>{{ getAreaNameWithAreaCode(code) }}</p>
@@ -47,7 +47,7 @@
                     <p>|</p>
                     <div class="order-list-item">
                         <img src="img_product/img_placeholder.png" class="img-map">
-                        <p>지도 보기</p>
+                        <router-link to=""><p>지도 보기</p></router-link>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,13 @@
                     <label :for="'input2-' + item.hc_type">{{ item.hc_name }}</label>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <!-- 호텔 모달 -->
+    <div v-if="isVisibleMap" class="modal-overlay">
+        <div class="modal-content-map">
+            <p>ahekfahekf</p>
         </div>
     </div>
 </template>
@@ -99,9 +105,11 @@ import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import PaginationComponent from '../PaginationComponent.vue';
 
+
 const store = useStore();
 
 // 호텔 리스트 관련
+// const count = computed(() => store.getters['model/itemCount']);
 const hotels = computed(() => store.state.hotel.hotelList);
 const actionName = 'hotel/getHotelsPagination';
 
@@ -124,6 +132,7 @@ onBeforeMount(async () => {
     await store.dispatch(actionName, serchData);
     await store.dispatch('hotel/getHotelsArea', serchData);
     await store.dispatch('hotel/getHotelsCategory', serchData);
+    // console.log('카운트되나?',count.value)
 });
 
 window.addEventListener('resize', flgSetup);
@@ -165,6 +174,7 @@ function getHcNameWithHcType(type) {
 
 // 모달모달
 const isVisible = ref(false);
+const isVisibleMap = ref(false);
 
 function openmodal() {
     isVisible.value = true;
@@ -173,6 +183,17 @@ function openmodal() {
 function closemodal() {
     isVisible.value = false;
 }
+
+function openmodalMap() {
+    isVisibleMap.value = true;
+}
+
+function closemodalMap() {
+    isVisibleMap.value = false;
+}
+
+
+
 
 // 컨트롤러로 데이터 전송하는법?
 // const category = ref([
@@ -464,6 +485,11 @@ function closemodal() {
         cursor: pointer;
     }
 
+    /* 지도 모달모달 */
+    .modal-content-map {
+        width: 300px;
+        height: 300px;
+    }
     
     /* 미디어쿼리 */
     @media (max-width: 1000px) {

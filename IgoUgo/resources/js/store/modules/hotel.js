@@ -7,6 +7,7 @@ export default {
         hotelList: [],
         hotelArea: [],
         hotelCategory: [],
+        count: [],
     }),
     mutations: {
         setHotelList(state, list) {
@@ -17,7 +18,10 @@ export default {
         },
         setHotelCategory(state, list) {
             state.hotelCategory = list;
-        }
+        },
+        setCount(state, list) {
+            state.count = list;
+        },
     },
     actions: {
         getHotelsPagination(context, data) {
@@ -31,6 +35,8 @@ export default {
                 .then(response => {
                     context.commit('setHotelList', response.data.data);
                     // 페이지 저장
+                    context.commit('setCount', response.data.total);
+                    console.log(response.data.total);
                     context.commit('pagination/setPagination', response.data, {root: true});
                     console.log(response.data);
                     return resolve();
