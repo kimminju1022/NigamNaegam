@@ -12,7 +12,7 @@ use MyToken;
 class UserController extends Controller
 {
     public function store(UserRequest $request) {
-        Log::debug('user request : ', $request->all());
+        // Log::debug('user request : ', $request->all());
         $insertData['user_email'] = $request->user_email;
         $insertData['user_name'] = $request->user_name;
         $insertData['user_nickname'] = $request->user_nickname;

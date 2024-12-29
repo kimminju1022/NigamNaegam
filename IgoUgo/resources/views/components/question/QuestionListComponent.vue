@@ -2,26 +2,19 @@
     <div class="container">
         <h1>문의게시판</h1>
         <div class="board-head">
-            <!-- <div class="board-search-tb"> -->
                 <!-- <input v-model="search" type="text" placeholder="검색어를 입력해 주세요"> -->
                 <input type="text" placeholder="검색어를 입력해 주세요">
                 <button class="btn bg-navy board-search-btn">검색</button>
-            <!-- </div> -->
         </div>
-        
-        <!-- 리스트항목 -->
         <div class="board-box">
-            <!-- 리스트 헤드 -->
-            <div class="board-notice-title">
+            <div class="board-title">
                 <p>번호</p>
                 <p>상태</p>
                 <p>제목</p>
                 <p>닉네임</p>
                 <p>작성일자</p>
+                <p>조회수</p>
             </div>
-
-            <!-- 리스트 목록 -->
-            <!-- 공지 리스트 -->
             <div class="board-notice-box" >
                 <div class="board-content">
                     <p>5</p>
@@ -29,6 +22,7 @@
                     <p>파일업로드 오류 시 간단해결방법</p>
                     <p>라라핑</p>
                     <p>2024.12.11</p>
+                    <p>204</p>
                 </div>
                 <div class="board-content">
                     <p>4</p>
@@ -36,6 +30,7 @@
                     <p>로그인 에러 시 문의방법</p>
                     <p>차나핑</p>
                     <p>2024.11.11</p>
+                    <p>224</p>
                 </div>
                 <div class="board-content">
                     <p>3</p>
@@ -43,6 +38,7 @@
                     <p>게시글 수정 오류 해결방법</p>
                     <p>라라핑</p>
                     <p>2024.11.11</p>
+                    <p>763</p>
                 </div>
                 <div class="board-content">
                     <p>2</p>
@@ -50,6 +46,7 @@
                     <p>자주 질문하는 오류 해결방법</p>
                     <p>믿어핑</p>
                     <p>2024.11.01</p>
+                    <p>744</p>
                 </div>
                 <div class="board-content">
                     <p>1</p>
@@ -57,9 +54,9 @@
                     <p>민원 해결 절차 안내</p>
                     <p>차캐핑</p>
                     <p>2024.12.11</p>
+                    <p>428</p>
                 </div>
             </div>
-            <!-- 문의 게시판 리스트 -->
             <div class="board-content-box">
                 <div v-for="item in questionList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
@@ -72,6 +69,7 @@
                     <router-link :to="`/questions/${item.board_id}`">{{ item.board_title }}</router-link>
                     <p>{{ item.users.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
+                    <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
         </div>
@@ -89,10 +87,9 @@ import { useStore } from 'vuex';
 import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
-const actionName = 'question/getQuestionList';
+const actionName = 'question/questionList';
 const questionList = computed(() => store.state.question.questionList);
 
-// console.log(questionList);
 // 필터 관련
 const searchData = reactive({
     page: store.state.pagination.currentPage,
@@ -145,9 +142,9 @@ onBeforeMount(() => {
     font-size: 18px;
 }
 
-.board-notice-title {
+.board-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 9fr 1.5fr 2fr;
+    grid-template-columns: 1fr 1fr 9fr 1.5fr 1.5fr 1fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -169,7 +166,7 @@ onBeforeMount(() => {
 
 .board-content{
     display: grid;
-    grid-template-columns: 1fr 1fr 9fr 1.5fr 2fr;
+    grid-template-columns: 1fr 1fr 9fr 1.5fr 1.5fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;

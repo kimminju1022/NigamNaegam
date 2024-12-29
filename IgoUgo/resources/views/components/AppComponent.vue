@@ -157,6 +157,9 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import router from '../../js/router';
 
+const store = useStore();
+const user = computed(()=> store.state.auth.userInfo);
+
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 // // 창 크기 여부
@@ -208,8 +211,6 @@ const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value
 }
 
-const store = useStore();
-const user = computed(()=> store.state.auth.userInfo);
 
 // ---------- 게시판 이동 관련 start ----------
 const redirectBoards = async (bcType) => {

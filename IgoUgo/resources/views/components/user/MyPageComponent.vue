@@ -136,7 +136,7 @@ import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 const userInfo = computed(()=> store.state.auth.userInfo);
-const actionName = 'question/getUserQuestionList';
+const actionName = 'question/userQuestionList';
 
 
 // ***************** 문의 내역 *****************
@@ -153,6 +153,8 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
 });
 
+console.log(userQuestion);
+
 // ***************** 탈퇴 *****************
 // Modal
 const modalFlg = ref(false);
@@ -167,6 +169,7 @@ const closeModal = () => {
 const deletemodal = (userInfo) => {
     store.dispatch('user/destroyUser', userInfo);
 }
+
 </script>
 
 <style scoped>

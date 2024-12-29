@@ -149,7 +149,7 @@ const routes = [
         component: QuestionDetailComponent,
     },
     {
-        path: '/questions/edit',
+        path: '/questions/:id/edit',
         component: QuestionUpdateComponent,
         beforeEnter: chkAuth,
     },

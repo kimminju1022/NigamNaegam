@@ -38,12 +38,10 @@
 
 <script setup>
 
-import { computed, reactive, ref } from 'vue';
-// import { useRouter } from 'vue-router';
+import { reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store =  useStore();
-// const router = useRouter();
 
 const userData = reactive({
     userInfo: store.state.auth.userInfo,

@@ -1,304 +1,173 @@
 <template>
-    <!-- 작동btn  [목록과 취소가 같은것 아닐까?] -->
-    <div class="board-create-head">
-        <h2 style="margin: 30px 0; font-size: 3rem;">FAQ</h2>
-        <div class="form-box">
-            <button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button>
-            <button class="btn bg-navy board-create-btn" @click="doneConfirm">완료</button>
+    <div class="container">
+        <h1>FAQ</h1>
+        <div class="header-btn-box"> 
+            <button @click="$store.dispatch('question/storeQuestion', question)" class="btn bg-navy header-btn">완료</button>
+            <router-link :to="'/questions'"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
         </div>
-        <!-- 선택박스 -->
+        <div class="board-box">  
+            <div class="board-title-box">
+                <p>제목</p>
+                <input v-model="question.board_title" type="text" name="board_title">
+            </div>
+            <div class="board-img">
+                <p>파일 첨부</p>
+                <div class="board-img-content">
+                    <input @change="setFile1" type="file" name="board_img1" accept="image/*">
+                    <input @change="setFile2" type="file" name="board_img2" accept="image/*">
+                    <div class="img-preview">
+                        <img :src="preview1">
+                        <button @click="clearFile1" v-show="preview1" class="btn bg-clear">X</button>
+                    </div>
+                    <div class="img-preview">
+                        <img :src="preview2">
+                        <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
+                    </div>
+                </div>
+            </div>
+            <div class="board-content">
+                <p>내용</p>
+                <textarea v-model="question.board_content" name="board_content"></textarea>
+            </div>
+        </div>
     </div>
-    <hr style="border: solid #01083a 2px;">
-    <div class="board-create-container">
-        <div class="board-create-title">
-            <h3>제목</h3>
-            <input type="text" name="title" placeholder="제목을 적어주세요" maxlength="100">
-        </div>
-        <hr>
-        <textarea name="content" placeholder="어떤점이 궁금하신가요? 문의사항을 적어주세요" maxlength="2000"></textarea>
-        <hr>
-        <div class="board-create-file">
-            <h3 class="board-create-fileChoice">파일첨부</h3>
-            <input type="file" name="file" accept="imge/*">
-        </div>            
-        <!--미리보기 삭제기능추가 -->
-        <div>
-            사진미리보기
-        </div>
-        <hr>
-    </div>
-    <!-- 내용 -->
-
 </template>
 
 <script setup>
-import router from '../../../js/router';
+import { reactive, ref } from 'vue';
 
+const question = reactive({
+    board_title: ''
+    ,board_content: ''
+    ,board_img1: null
+    ,board_img2: null
+});
 
-const cancelConfirm = () =>{
-    const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
-    if (userResponse) {
-        router.push('/boards/question');
-    }
+const preview1 = ref('');
+const preview2 = ref('');
+
+const setFile1 = (e) => {
+    question.file1 = e.target.files[0];
+    preview1.value = URL.createObjectURL(question.file1);
 }
-const doneConfirm = () =>{
-    const userResponse = confirm('작성을 완료하시겠습니까?');
-    if (userResponse) {
-        router.push('/boards/question/detail');
-        // 이때, post로 정보 전달해줘야함...어떻게?
-    }
+
+const setFile2 = (e) => {
+    question.file2 = e.target.files[0];
+    preview2.value = URL.createObjectURL(question.file2);
 }
 
-// 모달 시러시러 예쁜모달 만들고 싶다...별점똥 좋아요똥똥
-// export default {
-//     name:'modal',
-//     data(){
-//         return{
-//             modalopen : false,
+const clearFile1 = () => {
+    question.file1 = null;
+    preview1.value = null;
+}
 
-            
-//         }
+const clearFile2 = () => {
+    question.file2 = null;
+    preview2.value = null;
+}
+
+
+// import router from '../../../js/router';
+
+
+// const cancelConfirm = () =>{
+//     const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
+//     if (userResponse) {
+//         router.push('/boards/question');
+//     }
+// }
+// const doneConfirm = () =>{
+//     const userResponse = confirm('작성을 완료하시겠습니까?');
+//     if (userResponse) {
+//         router.push('/boards/question/detail');
+//         // 이때, post로 정보 전달해줘야함...어떻게?
 //     }
 // }
 
-// 별점
-// export default {
-//     data() {
-//         return {
-//         rating: 0, // 실제 별점 값
-//         hoverRating: 0, // 마우스 오버 시 임시 별점 값
-//         stars: [1, 2, 3, 4, 5], // 별의 개수
-//         };
-//     },
-//     computed: {
-//   reversedStars() {
-//           return [...this.stars].reverse(); // 배열 원본을 유지하면서 뒤집음
-//         },
-//     },
-//     methods: {
-//         setRating(star) {
-//         this.rating = star; // 클릭한 별점 설정
-//         this.submitRating(); // 서버에 전달
-//         },
-//         hoverRating(star) {
-//         this.hoverRating = star; // 마우스 오버 시 임시 별점 표시
-//         },
-//         resetHover() {
-//         this.hoverRating = 0; // 마우스가 떠나면 초기화
-//         },
-//         submitRating() {
-//         // Laravel로 점수 전송
-//         fetch("/api/rating", {
-//             method: "POST",
-//             headers: {
-//             "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ rating: this.rating }),
-//         })
-//         .then((response) => response.json())
-//         .then((data) => {
-//           console.log("별점 저장 성공:", data);
-//         })
-//         .catch((error) => {
-//           console.error("별점 저장 실패:", error);
-//         });
-//     },
-//   },
-// };
-// export default {
-//   name: "Star-3",
-//   data() {
-//     return {
-//       score: 0,
-//     };
-//   },
-//   methods: {
-//     check(index) {
-//       this.score = index + 1;
-//     },
-//   },
-// };
 </script>
 
 <style scoped>
-
-.board-create-head{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-    column-gap: 10px;
-    margin-bottom: 20px;
-}
-.board-create-head>h2{
-    font-size: 2rem;
-}
-
-.form-box, .board-create-file{
-    /* display: grid;
-    grid-template-columns: repeat(3,1fr);
-    margin-top: 20px;
-    margin-bottom: 30px;
-    text-align: center;
-    align-items: flex-end;
-    justify-content: left; */
-    display: inline-flex;
-    gap: 20px;
-    justify-content:flex-end;
-    align-items: flex-end;
-    margin: 10px auto 30px auto;
-}
-/* .form-box>button{
-    border-radius: 20px;
-    width: 60px;
-    height: 30px;
-    font-size: large;
-} */
-.board-search-tb{
-    display: inline-flex;
-    justify-content:end;
-    margin: 10px 20px;
-    align-items: flex-end;
-}
-.board-search {
-    margin-left: 20px; 
-    background-color: #e9e8e8;
-    border-radius: 20px;
-    width: 250px;
-    height: 31px;
-    text-indent: 20px; 
-}
-
-.board-search-btn{
-    font-size: large;
-    border-radius: 20px;
-    width: 70px;
-    height: 30px;
-    margin-left: -60px;
-}
-.board-create-btn{
-    font-size: large;
-    border: #01083a solid 1px;
-    border-radius: 20px;
-    width: 70px;
-    height: 30px;
-    gap: 50px;
-    text-align: center;
-}
-.select-boardType, .select-categories, .board-create-title{
-    display: inline-flex;
-    justify-content:flex-end;
-    margin: 10px 20px;
-}
-.board-create-title>input{
-    font-size: 1.2rem;
-    margin-left: 85px;
-}
-.board-create-container>textarea{
-    width: 1200px;
-    height: 400px;
-    font-size: 1.2rem;
-    border-radius: 20px;
-    margin: 10px;
-    padding: 20px;
-    resize: none;
+.container{
     align-items: center;
 }
-.select-boardType>#board-categories, .select-categories>#board-categories{
-    width: 200px;
-    border: none;
-    border-bottom: solid 1px #01083a;
-    text-align: center;
-}
-.select-boardType{
-    gap: 60px;
-}
-.select-categories{
-    gap: 40px;
+
+.container > h1 {
+    font-size: 3rem;
+    margin: 50px 0;
 }
 
-.board-create-evaluation{
+.header-btn-box {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-btn{
+    font-size: 18px;       
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.board-box {
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
+    margin-top: 50px;
+}
+
+.board-box > div {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-box > div > :first-child{
+    border-right: 1px solid #01083a;
+}
+
+.board-title-box > p:first-child
+,.board-img > p:first-child
+, .board-content> p:first-child {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.board-box p, .board-title-box > input ,.board-content > textarea {
+    padding: 10px;
+    font-size: 17px;
+}
+
+.board-content > textarea {
+    resize: none;
+    min-height: 400px;
+    margin: 10px;
+}
+
+.board-img-content {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.board-img-content :nth-child(-n + 2) {
+    margin-bottom: 10px;
+} 
+
+.board-img-content img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.img-preview {
     display: flex;
 }
 
-/* 모달 */
-/* 모달 시 메인 배경 */
-.board-create-modal{
-    width: 100%;
-    height: 100%;
-    background-color: rgba(197, 198, 198, 0.374);
-    position: fixed;
-    padding: 20px;
-}
-/* 모달 디자인 */
-.board-create-modal-content{
-    width: 50%;
-    background-color: azure;
-    border-radius: 10px;
-    padding: 20px;
-}
-.modal-content {
-
-
-background: white;
-padding: 20px;
-border-radius: 10px;
-
-
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-
-text-align: center;
-width: 300px;
-}
-
-
-/* 별점 */
-/* .star {
-    appearance: none;
-    padding: 1px;
-}
-
-.star::after {
-    content: '☆';
-    color: hsl(229, 100%, 48%);
-    font-size: 20px;
-}
-
-.star:hover::after,
-.star:has(~ .star:hover)::after,
-.star:checked::after,
-.star:has(~ .star:checked)::after {
-    content: '★';
-}
-
-/* .star:hover ~ .star::after {
-    content: '☆';
-} */
-/*.star-rating span {
-  font-size: 30px;
-  cursor: pointer;
-  color: lightgray;
-  transition: color 0.2s;
-}
-
-.star-rating span.filled {
-color: gold;  채워진 별 
-}
-
-.star-rating span:hover,
-.star-rating span:hover ~ span {
-color: gold;  마우스 오버 시 별 
-}
-.star-3{
-color: gold;
-}
-*/
-@media screen and (max-width: 800px) {
-    .board-detail-head {
-        grid-template-columns: none; /*기존 가로 정렬 해제 */
-        grid-template-rows: auto;  /*세로로 요소 쌓기 */
-        align-items: center;  /*중앙 정렬 */
-        text-align: center;  /*텍스트 중앙정렬 */
-    }
+.img-preview > button {
+    width: 20px;
+    height: 20px;
 }
 </style>

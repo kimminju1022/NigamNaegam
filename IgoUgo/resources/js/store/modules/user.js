@@ -4,29 +4,13 @@ import router from '../../router';
 export default {
     namespaced: true,
     state: () => ({
-        // accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
-        // authFlg: localStorage.getItem('accessToken') ? true : false,
-        // userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
-        // errorMsgList: [],
+        userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
         controllFlg: true,
     }),
     mutations: {
-        // setUserInfo(state, userInfo) {
-        //     state.userInfo = userInfo;
-        // },
-        // setUserUnshift(state, userInfo) {
-        //     state.userInfo = userInfo;
-        // },
-        // setAuthFlg(state, flg) {
-        //     state.authFlg = flg;
-        // },
-        // setAccessToken(state, accessToken) {
-        //     state.accessToken = accessToken;
-        //     localStorage.setItem('accessToken', accessToken);
-        // },
-        // setErrorMsgList(state, errorMsgList) {
-        //     state.errorMsgList = errorMsgList;
-        // },
+        setUserInfo(state, userInfo) {
+            state.userInfo = userInfo;
+        },
         setControllFlg(state, flg) {
             state.controllFlg = flg;
         },
@@ -34,34 +18,26 @@ export default {
     actions: {
         // 회원가입
         registration(context, userInfo) {
-            context.dispatch('여기 뭐적어야해'
-                , () => {
-                    if(context.state.controllFlg){
-                        context.commit('setControllFlg', false);
-                    
-                        const url = '/api/registration';
+            const url = '/api/registration';
 
-                        const formData = new FormData();
-                        formData.append('user_email', userInfo.user_email);
-                        formData.append('user_password', userInfo.user_password);
-                        formData.append('user_password_chk', userInfo.user_password_chk);
-                        formData.append('user_name', userInfo.user_name);
-                        formData.append('user_nickname', userInfo.user_nickname);
-                        formData.append('user_phone', userInfo.user_phone);
+            const formData = new FormData();
+            formData.append('user_email', userInfo.user_email);
+            formData.append('user_password', userInfo.user_password);
+            formData.append('user_password_chk', userInfo.user_password_chk);
+            formData.append('user_name', userInfo.user_name);
+            formData.append('user_nickname', userInfo.user_nickname);
+            formData.append('user_phone', userInfo.user_phone);
 
-                        axios.post(url, formData)
-                        .then(() => {
-                            alert('회원가입 성공');
+            axios.post(url, formData)
+            .then(response => {
+                alert('회원가입 성공');
 
-                            router.replace('/login');
-                        })
-                        .catch(error => {
-                            console.log(error.response.data);
-                            alert('회원가입 실패');
-                        });
-                    } 
-                }
-                , {root: true})
+                router.replace('/login');
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                alert('회원가입 실패');
+            });
         },
 
         // // 토큰 만료 후 처리
@@ -125,8 +101,6 @@ export default {
                                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                             }
                         }
-
-                        // console.log(userInfo);
                         
                         const formData = new FormData();
 

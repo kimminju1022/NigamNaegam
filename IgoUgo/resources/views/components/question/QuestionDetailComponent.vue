@@ -1,77 +1,83 @@
 <template>
     <div class="container">
-        <!-- 경로표시 -->
         <h1>FAQ</h1>
-        <!-- 버튼영역 -->
-        <div class="header-btn-box"> 
-            <button class="btn bg-navy header-btn" @click="updateConfirm">수정</button>
-            <button class="btn bg-navy header-btn" @click="deleteConfirm">삭제</button>
+        <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
+            <router-link :to="`/questions/${questionList.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link>
+            <!-- <router-link :to="`/questions/${$store.state.questions.questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link> -->
+            <button class="btn bg-navy header-btn" @click="deleteQuestion">삭제</button>
         </div>
+        <!-- <div v-if="questionDetail" class="board-box">   -->
         <div class="board-box">  
-            <div class="">
-                <!-- 상세 글머리_정보불러오기-->
-                <h1>타이틀</h1>
-                <div class="question-detail-head">
-                    <span>작성자 : 닉네임</span>
-                    <span>2024.12.05</span>
-                </div>
+            <div class="board-title-box">
+                <p>제목</p>
+                <p>{{ questionDetail.board_title }}</p>
             </div>
-            
-            <!-- 등록이미지 불러오기 -->
-            <div class="question-detail-img">
-                <img src="../../../../../ex/img/내(신발).png" alt="test">
-                <img src="../../../../../ex/img/slack.png" alt="test">
-            </div>
-            <hr>
-            <!-- 내용 -->
-            <div class="question-detail-content">
-                <span>loem</span>
-            </div>
-            <hr>
-            <!-- 댓글 -->
-            <div class="question-reply-container">
-                <div class="question-detail-reply ">
-                    <span>댓글</span>
-                    <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
-                    <button class="btn bg-navy question-detail-btn">작성</button>
-                    <span>총 댓글 : </span>
-                    <!-- {{ 댓글수[0] }} -->
-                </div>
-                <hr>
-                <div class="question-detail-replyList">
-                    <div class="replyList-head">
-                        <span>내용</span>
-                        <span>닉네임</span>
-                        <span>작성일시</span>
+            <div class="board-content-box">
+                <p>내용</p>
+                <div class="board-content">
+                    <div class="board-content-img">
+                        <img :src="questionDetail.board_img1">
+                        <img :src="questionDetail.board_img2">
                     </div>
-                    
+                    <p>{{ questionDetail.board_content }}</p>
+                    <div class="board-user">
+                        <p>닉네임 : {{ questionDetail.users.user_nickname }}</p>
+                        <p>{{ questionDetail.created_at }}</p>
+                    </div>
                 </div>
             </div>
-
+            <div class="admin-content-section">
+                <div class="admin-content-box">
+                    <p>관리자 답변</p>
+                    <div class="admin-content">
+                        <p>여기는 관리자 답변</p>
+                        <div class="board-admin">
+                            <p>관리자</p>
+                            <p>2024.12.05</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
     </div>
 </template>
 
 <script setup>
-import { onBeforeMount } from 'vue';
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
 import router from '../../../js/router'
-// // 비포마운트처리
-// onBeforeMount(()=>{
-//     console.log('')
-// })
-const updateConfirm = () => {
-    const userResponse = confirm('해당 글을 수정 하시겠습니까?');
-        if (userResponse) {
-        router.push('/boards/question/update');
-    }
-}
 
-const deleteConfirm = () => {
-    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n 삭제 시 게시글을 되돌릴 수 없습니다');
-        if (userResponse) {
-        router.push('/boards/question');
-    }
+const store = useStore();
+
+
+const questionList = computed(() => store.state.question.questionList);
+const questionDetail = computed(() => store.state.question.questionDetail);
+
+const boardInfo = reactive({
+    board_id: store.state.question.questionList.board_id,
+});
+
+onBeforeMount(()=>{
+    store.dispatch('question/questionDetail', boardInfo.board_id);
+});
+
+// console.log('questionList', questionList.value);
+// console.log('questionDetail', questionDetail);
+// console.log('questionDetail', boardInfo);
+
+
+// ******************************* button *******************************
+// const updateConfirm = () => {
+//     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
+//         if (userResponse) {
+//         router.push('/boards/question/update');
+//     }
+// }
+
+const deleteQuestion = (id) => {
+    confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+
+    store.dispatch('question/destroyQuestion', id);
 }
 </script>
 
@@ -103,187 +109,68 @@ const deleteConfirm = () => {
 }
 
 .board-box {
-    
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
+    margin-top: 50px;
 }
 
-.question-detail-category {
-    display: flex;
-    align-items: flex-end;
-    column-gap: 10px;
+.board-box p {
+    padding: 10px;
+    font-size: 17px;
 }
-.question-detailItem-btn{
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    width: 100%;
-    column-gap: 10px;
-    float: right;
+
+.board-title-box > p:first-child
+, .board-content-box > p:first-child
+, .admin-content-box > p:first-child {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
 }
-.question-detail-head{
+
+.board-box > div:not(:last-child) {
     display: grid;
-    grid-template-columns: 7fr 2fr 1.5fr 1fr 1fr 1fr;
-    justify-content: center;
-    text-align: start;
-    margin-bottom: 30px;
-    align-items: flex-end;
+    grid-template-columns: 1fr 5fr;
+    border-bottom: 1px solid #01083a;
+    /* padding: 10px; */
 }
-.question-detail-head>button{
-    border: none;
-    background: transparent;
-    font-size: 1.2rem;
+
+/* 이렇게 써도되나? 밑에거가 맞는건가 */
+.board-box > div > :first-child:not(:last-child) {
+/* .board-box > div > p:nth-child(1) { */
+    border-right: 1px solid #01083a;
 }
-.question-detail-img{
+
+.board-content > *:not(:last-child), .admin-content > *:not(:last-child) {
+    border-bottom: 1px solid #01083a;
+}
+
+.board-user, .board-admin {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.board-content-img {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin: 20px;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    place-items: center;
+}
+
+.board-content-img > img {
+    max-width: 300px;
     max-height: 300px;
 }
-.question-detail-img>img{
-    display: block;
-    margin: 0 auto;
-    border-radius: 20px;
-    max-width: 450px;
-    max-height: 270px;
+
+.admin-content-section {
+    background: #D9D9D9;
 }
-.question-detail-content{
-    min-height: 70px;
-    padding: 20px 30px;
-}
-.question-detail-replyList{
-    /*width: 100%;
-    position: relative;
+
+.admin-content-box {
     display: grid;
-    gap: 10px;
-    /* margin-left: 20px;    
-    gap: 30px;  */
-    display: grid;
-    grid-template-rows: repeat(1fr);
-    row-gap: 10px;
-}
-.question-detail-replyList:nth-last-child(1){
-    padding-bottom: 10px;
-    border-bottom: solid #01083a 1px;
-}
-.question-detail-reply{
-    /* position: absolute; */
-    width: 100%;
-    gap: 5px;
-    display: grid;
-    grid-template-columns: 1fr 8fr 1fr 2fr;
-    justify-content: center;
-    align-items: center;
-    margin: 10px ;
-    font-size: 1.2rem;
-    padding-left: 15px;
-}
-.question-detail-reply>input{
-    background-color:rgba(236, 236, 236, 0.575);
-    height: 30px;
-    border-radius: 10px;
-    padding-left: 10px;
-}
-.question-detail-reply>button{
-    margin-left: -30px;
-}
-.replyList-head, .replyList{
-    width: 100%;
-    display: grid;
-    grid-template-columns: 7fr 1fr 1.5fr;
-    align-items: center;
-}
-.replyList-head{
-    height: 40px;
-    font-weight: 700;
-    border-bottom: solid #071055b9 1px;
-}
-.replyList{
-    padding-left: 25px;
-}
-.replyList-head:nth-child(1), .replyList>span:nth-child(2), .replyList>span:nth-child(3){
-    text-align: center;
-}
-.pagination {
-    /* margin: 0 auto; */
-    /* text-align: center; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    grid-template-columns: 1fr 5fr;
 }
 
-.pagination button {
-    font-size: 20px;
-    border-radius: 50px;
-    width: 40px;
-    height: 40px;
-    /*  */
-    /* border: 2px solid #01083a; */
-    text-align: center;
-}
-
-.pagination button:hover, .pagination button:active {
-    color: #fff;
-    background: #01083a;
-}
-/* @media(max-width: 800px){
-    .board-detail-head{
-        flex-wrap: wrap;
-        flex-direction: column; 
-        align-items: flex-start; 
-    }
-} */
-@media(max-width:800px){
-    
-    /* .board-detail-head {
-        grid-template-columns: 1fr;  한 줄로 정렬 
-        grid-template-rows: repeat(5, auto);  각 요소가 한 줄씩 차지 
-        justify-items: center;  요소를 가운데 정렬 
-        text-align: center;
-        gap: 10px;
-   }  */
-    .question-detail-head {
-        display: flex; /* Flexbox로 전환 */
-        grid-row: span 3;
-        grid-column: span 1;
-        flex-direction: column; /* 세로 정렬 */
-        align-items: center; /* 가로 중앙 정렬 */
-        text-align: center; /* 텍스트 중앙 정렬 */
-        gap: 10px; /* 요소 간 간격 */
-    }
-
-    /* header{
-        display: grid;
-        grid-template-rows: 1fr 1fr;
-    } */
-    /* .board-detail-btn{
-        display: grid;
-        grid-template-columns: 1fr 1fr    
-    } */
-    .question-detail-img{
-        max-width: 600px;
-
-    }
-    .question-detail-reply{
-        width: 800px;
-        max-width: 1200px;
-        display: grid;
-        grid-template-columns: 1fr 9fr 2fr;
-        align-items: center;    
-        gap: 30px; 
-        margin: 50px auto;
-    }
-    .replyList{
-        width: 800px;
-        display: grid;
-        grid-template-columns: 7fr 1fr 1.5fr;
-        align-items: center;    
-        gap: 30px; 
-        margin: 50px auto;
-    }
-
+.admin-content-box > :first-child{
+    border-right: 1px solid #01083a;
 }
 </style>

@@ -14,7 +14,7 @@ class Board extends Model
 
     protected $fillable = [
         'user_id',
-        'bc_id',
+        'bc_type',
         'board_title',
         'board_content',
         'board_img1',
