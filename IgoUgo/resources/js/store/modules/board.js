@@ -7,10 +7,16 @@ export default {
     state: () => ({
         boardTitle: '',
         boardList: [],
+        boardCategories:'',
+        boardArea:'',
         bcType: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
     }),
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
+        setBcType(state, bcType) {
+            state.bcType = bcType;
+            localStorage.setItem('boardBcType', bcType);
+        },
         setBoardTitle(state, boardTitle) {
             state.boardTitle = boardTitle;
         },
@@ -18,14 +24,19 @@ export default {
         setBoardList(state,boardList){
             state.boardList = boardList;
         },
-        setBcType(state, bcType) {
-            state.bcType = bcType;
-            localStorage.setItem('boardBcType', bcType);
+        setboardCategories(state, boardCategories) {
+            state.boardCategories = boardCategories
+            localStorage.setItem('boarCategoryBctype', bcType);
+        },
+        setboardCategoryArea(state, boardArea) {
+            state.boardArea = boardArea
+            localStorage.setItem('boardCategoryArea', areaName);
         },
     },
     actions: {
         /** 게시글획득
          *  @param{*} context
+         * @param{int} id
         */
         getBoardListPagination(context, searchData) {
             return new Promise((resolve, reject) => {
@@ -40,6 +51,9 @@ export default {
                     context.commit('setBoardTitle', response.data.boardTitle);
                     context.commit('setBoardList', response.data.boardList.data);
                     context.commit('pagination/setPagination', response.data.boardList, {root: true});
+                    context.commit('setboardCategories', response.data.boarCategoryBctype.data);
+                    context.commit('setboardCategoryArea', response.data.boardCategoryArea.data);
+
                     return resolve();
                 })
                 .catch(error => {
@@ -47,6 +61,17 @@ export default {
                     return reject();
                 });
             });
+        },
+        showBoardDetail(context, id) {
+            const url = '/boards/'+id;
+            const config = {
+                headers:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+            axios.get(url, config)
+            .then()
+            .catch();
         },
         
         /** 게시글 작성

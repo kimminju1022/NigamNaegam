@@ -1,86 +1,92 @@
 <template>
-    <header>
+    <div class="board-detail-header">
         <!-- 경로표시 -->
         <div class="board-detail-category">
-            <h2>boardtitle    ></h2>
-            <h3>category    ></h3>
-            <h3>category</h3>
+            <h2>{{ boardtitle }}    ></h2>
+            <h3>{{ boardCategories }}    ></h3>
+            <h3>{{ boardArea }}</h3>
         </div>
         <!-- 버튼영역 -->
         <div class="board-detailItem-btn"> 
             <button class="btn bg-navy board-detail-btn" @click="detailConfirm">수정</button>
             <button class="btn bg-navy board-detail-btn" @click="deleteConfirm">삭제</button>
         </div>
-    </header>
-    <main>  
-        <!-- 상세 글머리_정보불러오기-->
-        <h1>타이틀</h1>
-        <div class="board-detail-head">
-            <p>★★★☆☆</p>
-            <span>작성자 : 닉네임</span>
-            <span>2024.12.05</span>
-            <button>💗  :</button>
-            <!-- <span> {{ loveIt[0] }}</span> -->
-            <span>조회 : </span>
-            <!-- {{ absolve[1]++ }} -->
-            <button @click="boardNotify">🚨 신고</button>
-        </div>
-        
-        <!-- 등록이미지 불러오기 -->
-        <div class="board-detail-img">
-            <img src="../../../../../ex/img/내(신발).png" alt="test">
-            <img src="../../../../../ex/img/slack.png" alt="test">
+    </div>
+    
+    <!-- 상세 글머리_정보불러오기-->
+    <h1>타이틀</h1>
+    <div class="board-detail-head">
+        <p>★★★☆☆</p>
+        <span>작성자 : 닉네임</span>
+        <span>2024.12.05</span>
+        <button>💗  :</button>
+        <!-- <span> {{ loveIt[0] }}</span> -->
+        <span>조회 : </span>
+        <!-- {{ absolve[1]++ }} -->
+        <button @click="boardNotify">🚨 신고</button>
+    </div>
+    
+    <!-- 등록이미지 불러오기 -->
+    <div class="board-detail-img">
+        <img src="../../../../../ex/img/내(신발).png" alt="test">
+        <img src="../../../../../ex/img/slack.png" alt="test">
+    </div>
+    <hr>
+    <!-- 내용 -->
+    <div class="board-detail-content">
+        <span>loem</span>
+    </div>
+    <hr>
+    <!-- 댓글 -->
+    <div class="board-reply-container">
+        <div class="board-detail-reply ">
+            <span>댓글</span>
+            <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
+            <button class="btn bg-navy board-detail-btn">작성</button>
+            <span>총 댓글 :</span>
+            <!-- {{ 댓글수[0] }} 아이템을 어떻게 불러와야할 지 모르겠어 tatal값을 계산해서 넣어야 할텐데 모르겠어 -->
         </div>
         <hr>
-        <!-- 내용 -->
-        <div class="board-detail-content">
-            <span>loem</span>
-        </div>
-        <hr>
-        <!-- 댓글 -->
-        <div class="board-reply-container">
-            <div class="board-detail-reply ">
-                <span>댓글</span>
-                <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
-                <button class="btn bg-navy board-detail-btn">작성</button>
-                <span>총 댓글 :</span>
-                <!-- {{ 댓글수[0] }} 아이템을 어떻게 불러와야할 지 모르겠어 tatal값을 계산해서 넣어야 할텐데 모르겠어 -->
+        <div class="board-detail-replyList">
+            <div class="replyList-head">
+                <span>내용</span>
+                <span>닉네임</span>
+                <span>작성일시</span>
             </div>
-            <hr>
-            <div class="board-detail-replyList">
-                <div class="replyList-head">
-                    <span>내용</span>
-                    <span>닉네임</span>
-                    <span>작성일시</span>
-                </div>
-                <div v-for="item in boardReply" :key="item" class="replyList">
-                    <span>{{ item.comment_content }}</span>
-                    <span>{{ item.user_nickname }}</span>
-                    <span>{{ item.created_at }}</span>
-                </div>
+            <div v-for="item in boardReply" :key="item" class="replyList">
+                <span>{{ item.comment_content }}</span>
+                <span>{{ item.user_nickname }}</span>
+                <span>{{ item.created_at }}</span>
             </div>
-            <!-- 페이지네이션 -->
         </div>
-        <div class="pagination">
-            <a href="#"><button class="btn bg-clear"><</button></a>
-            <a href="#"><button class="btn bg-clear">1</button></a>
-            <a href="#"><button class="btn bg-clear">2</button></a>
-            <a href="#"><button class="btn bg-clear">3</button></a>
-            <a href="#"><button class="btn bg-clear">4</button></a>
-            <a href="#"><button class="btn bg-clear">5</button></a>
-            <a href="#"><button class="btn bg-clear">></button></a>
-        </div>
-        
-    </main>
+        <!-- 페이지네이션 -->
+    </div>
+    <div class="pagination">
+        <a href="#"><button class="btn bg-clear"><</button></a>
+        <a href="#"><button class="btn bg-clear">1</button></a>
+        <a href="#"><button class="btn bg-clear">2</button></a>
+        <a href="#"><button class="btn bg-clear">3</button></a>
+        <a href="#"><button class="btn bg-clear">4</button></a>
+        <a href="#"><button class="btn bg-clear">5</button></a>
+        <a href="#"><button class="btn bg-clear">></button></a>
+    </div>
+    
+
     </template>
 
 <script setup>
-import { onBeforeMount } from 'vue';
+import { computed,onBeforeMount } from 'vue';
 import router from '../../../js/router'
-// 비포마운트처리
-onBeforeMount(()=>{
-    console.log('')
-})
+import { useStore } from 'vuex';
+
+const store = useStore();
+// board출력값
+const boardTitle = computed(() => store.state.board.boardTitle);
+const boardCategories = computed(() => store.state.board.boardCategories);
+const boardArea = computed(() => store.state.board.boardArea);
+
+
+// alert 안내문구---------------------start-----------------
 const detailConfirm = () => {
     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
     if (userResponse) {
@@ -102,7 +108,12 @@ const boardNotify= () => {
     } else {
     }
 }
+// alert 안내문구---------------------end-----------------
 
+// 비포마운트처리
+onBeforeMount(()=>{
+    console.log('')
+})
 
 </script>
 
@@ -110,7 +121,7 @@ const boardNotify= () => {
 hr{
     border: solid #01083a 1px;
 }
-header{
+.board-detail-header{
     display: grid;
     grid-template-columns: 5fr 2fr;
     margin: 30px auto;

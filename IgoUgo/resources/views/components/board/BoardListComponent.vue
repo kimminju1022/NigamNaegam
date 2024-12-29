@@ -45,69 +45,70 @@
         <!-- 리스트 헤드 -->
         <div class="board-li-title">
             <span>번호</span>
-            <span v-show="$store.state.board.bcType === 0">지역</span>
+            <span v-show="$store.state.board.bcType !== 1">지역</span>
             <span>제목</span>
             <span>닉네임</span>
             <span>작성일자</span>
-            <span v-show="$store.state.board.bcType === 0">좋아요</span>
+            <span>좋아요</span>
             <span>조회수</span>
         </div>
-        <!-- 리스트 목록 -->
-        <div class="board-li-items">
+        <!-- [관리자자]] 리스트 목록 -->
+        <div>
             <div id="board-li-notice" >
                 <div id="board-li-item">
                     <p>5</p>
-                    <p v-show="$store.state.board.bcType === 0"></p>
-                    <p>12월 여행 주의 사항</p>
+                    <!-- v-show="$store.state.board.bcType === 0" -->
+                    <p>공지</p>
+                    <p class="board-li-innertitle">12월 여행 주의 사항</p>
                     <p>라라핑</p>
                     <p>2024.12.11</p>
-                    <p v-show="$store.state.board.bcType === 0"></p>
+                    <p>-</p>
                     <p>50</p>
                 </div>
                 <div id="board-li-item">
                     <p>4</p>
-                    <p></p>
-                    <p>11월 단풍놀이 명소 전국 Top 20</p>
+                    <p>공지</p>
+                    <p class="board-li-innertitle">11월 단풍놀이 명소 전국 Top 20</p>
                     <p>차나핑</p>
                     <p>2024.11.11</p>
-                    <p></p>
+                    <p>-</p>
                     <p>50</p>
                 </div>
                 <div id="board-li-item">
                     <p>3</p>
-                    <p></p>
-                    <p>11월 여행 주의 사항</p>
+                    <p>공지</p>
+                    <p class="board-li-innertitle">11월 여행 주의 사항</p>
                     <p>라라핑</p>
                     <p>2024.11.11</p>
-                    <p></p>
+                    <p>-</p>
                     <p>30</p>
                 </div>
                 <div id="board-li-item">
                     <p>2</p>
-                    <p></p>
-                    <p>전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
+                    <p>공지</p>
+                    <p class="board-li-innertitle">전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
                     <p>믿어핑</p>
                     <p>2024.11.01</p>
-                    <p></p>
+                    <p>-</p>
                     <p>50</p>
                 </div>
                 <div id="board-li-item">
                     <p>1</p>
-                    <p></p>
-                    <p>10월 여행 주의 사항</p>
+                    <p>공지</p>
+                    <p class="board-li-innertitle">10월 여행 주의 사항</p>
                     <p>차캐핑</p>
                     <p>2024.12.11</p>
-                    <p></p>
+                    <p>-</p>
                     <p>30</p>
                 </div>
             </div>
 
-            <!--  -->
+            <!-- [유저저] 리스트 시작 -->
             <div v-for="item in boardList" :key="item" id="board-li-item">
                 <p>{{ item.board_id }}</p>
                 <!-- v-if="item.board_type === 1" hidden -->
                 <p>{{ item.area_name }}</p>
-                <router-link :to="'/boards/' + item.board_id"><p>{{ item.board_title }}</p></router-link>
+                <router-link :to="'/boards/' + item.board_id"><p class="board-li-innertitle">{{ item.board_title }}</p></router-link>
                 <p>{{ item.user_nickname }}</p>
                 <p>{{ item.created_at }}</p>
                 <!--  v-if="item.board_type === 1" hidden -->
@@ -242,16 +243,24 @@ main{
     margin: 20px 20px;
     gap: 30px;
 }
-
+/* 리스트 항목----------- */
 #board-li-notice {
     font-weight: 500;
     font-size: 1.2rem;
     background-color: #eeeeeec0;
     padding: 10px;
 }
-#board-li-item>p:nth-child(3){
+/* #board-li-item>p:nth-child(3){
     text-align: left;
-    overflow: hidden;
+    overflow: hidden; */
+.board-li-innertitle{
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: break-word;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
 }
 /* 검색 및 버튼---------------- */
 #board-search-tb{

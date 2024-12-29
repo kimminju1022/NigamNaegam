@@ -49,7 +49,7 @@ class BoardController extends Controller
             ,'boardTitle' => $boardTitle->bc_name
             ,'boardList' => $boardList->toArray()
         ];
-        
+
         // type검증
         // if(!array_key_exists($type, $data)){
         //     return response()->json(['error' => 'type검증'], 400);
