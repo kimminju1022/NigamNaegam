@@ -36,6 +36,7 @@ Route::get('/products', [ProductMainController::class, 'getFilteredProducts']);
 // 각 카테고리별 상품리스트 라우터
 // Route::get('/products/{id}', [ProductController::class, 'productData']);
 Route::get('/products/{contenttypeid}', [ProductMainController::class, 'showList']);
+Route::get('/products/{contenttypeid}/{id}', [ProductMainController::class, 'productDetail']);
 
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

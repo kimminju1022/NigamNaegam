@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ProductMainController extends Controller
@@ -35,7 +36,7 @@ class ProductMainController extends Controller
                                     return $query->whereIn('products.area_code', $areaCode);
                                 })
                                 ->whereNotNull('firstimage')
-                                ->select('product_id', 'title', 'firstimage')
+                                ->select('contentid', 'title', 'firstimage')
                                 ->orderBy('createdtime', 'desc')
                                 ->paginate(32);
         $responseData = [
@@ -49,5 +50,28 @@ class ProductMainController extends Controller
     public function areas(Request $request) {
         $areas = Area::get();
         return response()->json($areas);
+    }
+
+    public function productDetail($contenttypeid, $id) {
+        $url = 'http://apis.data.go.kr/B551011/KorService1/detailIntro1';
+        $serviceKey = env('API_KEY');
+
+        // HTTP 요청
+        $productDetail = Http::get($url, [
+            'serviceKey' => $serviceKey,
+            'MobileOS' => 'ETC',
+            'MobileApp' => 'IgoUgo',
+            '_type' => 'json',
+            'contentTypeId' => $contenttypeid,
+            'contentId' => $id,
+        ]);
+
+        $resultCode = $productDetail->header('resultCode');
+
+        if($productDetail->failed() && $resultCode !== '0000') {
+            throw new \Exception('API 받아오기 실패'. $productDetail->status());
+        }
+        
+        return response()->json($productDetail->json());
     }
 }

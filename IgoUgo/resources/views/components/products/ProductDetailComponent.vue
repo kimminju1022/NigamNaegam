@@ -1,7 +1,8 @@
 <template>
     <div class="container">
         <div class="detail-title">
-            <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p>
+            <p>{{ productDetail.contentid }}</p>
+            <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
         </div>
         <div>
             <div class="detail-button">
@@ -10,30 +11,16 @@
             </div>
 
             <div class="detail-img-map">
-                <div class="div-hell">
-                    <div class="detail-img">
-                        <img class="img-big" src="/test.png" alt="">
-                        <div class="detail_img-right">
-                            <img class="img-middle" src="/test.png" alt="">
-                            <img class="img-middle" src="/test.png" alt="">
-                        </div>
-                    </div>
-                    <div class="detail-five">
-                        <img class="img-small" src="/test.png" alt="">
-                        <img class="img-small" src="/test.png" alt="">
-                        <img class="img-small" src="/test.png" alt="">
-                        <img class="img-small" src="/test.png" alt="">
-                    </div>
+                <div class="img-map-box">
+                    <img class="detail-img-big" src="/test.png" alt="">
                 </div>
                 <div>
+                    <div class="img-map-box">
+                        <img class="detail-img-small" src="/test.png" alt="">
+                    </div>
                     <div id="map"></div>
                 </div>
             </div>    
-
-            <!-- <div class="detail-option">
-                <p>편의시설</p>
-                <div class="detail-option-emoticon"></div>
-            </div> -->
 
             <div class="detail-content">
                 <p class="detail-content-content">이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다. 영국에서 HGXWCH이라는 사람은 1930년에 이 편지를 받았습니다. 그는 비서에게 복사해서 보내라고 했습니다. 며칠 뒤에 복권이 당첨되어 20억을 받았습니다. 어떤 이는 이 편지를 받았으나 96시간 이내 자신의 손에서 떠나야 한다는 사실을 잊었습니다. 그는 곧 사직되었습니다. 나중에야 이 사실을 알고 7통의 편지를 보냈는데 다시 좋은 직장을 얻었습니다. 미국의 케네디 대통령은 이 편지를 받았지만 그냥 버렸습니다. 결국 9일 후 그는 암살당했습니다. 기억해 주세요. 이 편지를 보내면 7년의 행운이 있을 것이고 그렇지 않으면 3년의 불행이 있을 것입니다. 그리고 이 편지를 버리거나 낙서를 해서는 절대로 안됩니다. 7통입니다. 이 편지를 받은 사람은 행운이 깃들 것입니다. 힘들겠지만 좋은 게 좋다고 생각하세요. 7년의 행운을 빌면서...</p>
@@ -43,9 +30,27 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive } from 'vue';
 import env from '../../../js/env';
+import { useStore } from 'vuex'; 
+import { useRoute } from 'vue-router';
 
+const store = useStore();
+const route = useRoute();
+
+// 상품 상세
+const productDetail = computed(() => store.state.product.productDetail);
+
+// 상품 컨텐츠타입id랑 컨텐츠id
+const findData = reactive({
+    contenttypeid: route.params.contenttypeid,
+    id: route.params.id,
+});
+console.log(findData);
+
+onBeforeMount(async () => {
+    await store.dispatch('product/takeProductDetail', findData);
+});
 
 let map = reactive(null);
 
@@ -76,7 +81,7 @@ const loadKakaoMap = () => {
     };
 
     map = new window.kakao.maps.Map(container, options);
-    console.log(map);
+    // console.log(map);
     loadMaker();
 }
 
@@ -123,6 +128,7 @@ const loadMaker = () => {
 .detail-title {
     font-size: 40px;
 }
+
 /* 버튼 영역 */
 .detail-button {
     display: flex;
@@ -135,56 +141,42 @@ const loadMaker = () => {
     background-color: transparent;
     font-size: 20px;
 }
-/* 이미지 영역 */
-.detail-img {
-    display: grid;
-    grid-template-columns: 550px 250px;
-    gap: 20px;
-}
-/* 이미지 크거 영역 */
-.div-hell {
-    display: grid;
-    grid-row: 320px 100px;
-    gap: 20px;
-}
+
+/* 이미지&지도 영역 */
+/* 큰 영역 */
 .detail-img-map {
+    width: 90%;
+    height: 450px;
     display: grid;
-    grid-template-columns: 820px 330px;
-    justify-content: center;
-    gap: 50px;
-}
-.detail_img-right {
-    display: grid;
-    grid-template-rows: 150px 150px;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
+    margin: 0 auto;
 }
-.img-big {
-    width: 550px;
-    height: 320px;
+/* 이미지 감싸는 div */
+.img-map-box {
+    overflow: hidden;
+}
+/* 왼쪽 큰 이미지 */
+.detail-img-big {
+    /* width: 500px;
+    height: 500px; */
     background-repeat: no-repeat;
     object-fit: cover;
 }
-.img-middle {
-    width: 250px;
-    height: 150px;
+/* 오른쪽 작은 이미지 */
+.detail-img-small {
+    width: 100%;
+    height: 215px;
     background-repeat: no-repeat;
     object-fit: cover;
+    margin-bottom: 20px;
 }
-.img-small {
-    width: 190px;
-    height: 100px;
-    background-repeat: no-repeat;
-    object-fit: cover;
-}
-.detail-five {
-    display: flex;
-    gap: 20px;
-}
+
 /* 지도지도 */
 #map {
-    width: 330px;
-    height: 440px;
+    height: 215px;
 }
+
 /* 디테일 옵션 영역 */
 .detail-option {
     margin-top: 20px;
@@ -215,11 +207,6 @@ const loadMaker = () => {
     .img-big {
         width: 100%;
         height: auto;
-    }
-
-    .detail_img-right {
-        grid-template-rows: repeat(2, 1fr);
-        gap: 20px;
     }
 
     .img-middle {

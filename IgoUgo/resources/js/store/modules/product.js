@@ -7,7 +7,8 @@ export default {
         productTypeList: {},
         productList: [],
         productArea: [],
-        productCnt: ''
+        productCnt: '',
+        productDetail: []
     }),
     mutations: {
         setProductTypeList(state, data) {
@@ -21,6 +22,9 @@ export default {
         },
         setProductCnt(state, data) {
             state.productCnt = data;
+        },
+        setProductDetail(state, data) {
+            state.productDetail = data;
         }
     },
     actions: {
@@ -75,6 +79,25 @@ export default {
                 });
             });
         },
+
+        takeProductDetail(context, findData) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/products/' + findData.contenttypeid + findData.id;
+                const config = {
+                    params: findData
+                };
+
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setProductDetail', response.data.response.body.items.item.data);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject();
+                })
+            })
+        }
     },
     getters: {
     

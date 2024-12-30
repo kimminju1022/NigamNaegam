@@ -50,9 +50,13 @@
             <div>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div class="card-list">
-                    <div v-for="item in products" :key="item" class="card">
-                        <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
-                        <p class="font-bold card-title">{{ item.title }}</p>
+                    <div v-for="item in products" :key="item">
+                        <router-link :to="route.path + '/' + item.contentid">
+                            <div class="card">
+                                <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
+                                <p class="font-bold card-title">{{ item.title }}</p>
+                            </div>
+                        </router-link>
                     </div>
                 </div>
                 <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
