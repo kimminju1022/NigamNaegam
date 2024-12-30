@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>FAQ</h1>
+        <h1>문의게시판</h1>
         <div class="header-btn-box"> 
             <button @click="$store.dispatch('question/storeQuestion', question)" class="btn bg-navy header-btn">완료</button>
             <router-link :to="'/questions'"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
@@ -143,7 +143,7 @@ const clearFile2 = () => {
 
 .board-content > textarea {
     resize: none;
-    min-height: 400px;
+    height: 300px;
     margin: 10px;
 }
 

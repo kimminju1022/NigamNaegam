@@ -47,7 +47,7 @@ export default {
                 },
                 params: searchData,
             }
-
+            
             axios.get(url, config)
             .then(response => {
                 // console.log('getUserQuestionList',response.data);
@@ -61,16 +61,15 @@ export default {
 
         // 게시글 상세
         questionDetail(context, data) {
-            // const url = `/api/questions/${data}`;
-            const url = `/api/questions/190`;
+            const url = `/api/questions/${data.board_id}`;
+            // const url = `/api/questions/190`;
             const config = {
                 params: data,
             }
 
             axios.get(url, config)
             .then(response => {
-                console.log(response.data);
-                // console.log(response.data.data);
+                // console.log(response.data);
                 
                 context.commit('setQuestionDetail', response.data.data);
             })
@@ -105,36 +104,46 @@ export default {
             });
         },
 
-        updateQuestion(context, data) {
-            const url = `/api/user/${data.user_id}`;
+        // 게시글 수정
+        updateQuestion(context, question) {
+            const url = `/api/questions/${question.questionDetail.board_id}`;
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
+                },
+                // params: question,
             }
-            
+            // console.log(question);
             const formData = new FormData();
 
-            formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);
-            formData.append('board_img1', data.file1 || data.board_img1);
-            formData.append('board_img2', data.file2 || data.board_img2);
-            
+            formData.append('board_id', question.questionDetail.board_id);
+            formData.append('board_title', question.questionDetail.board_title);
+            formData.append('board_content', question.questionDetail.board_content);
+            if(question.board_img1) {
+                formData.append('board_img1', question.board_img1);
+            }
+            if(question.board_img2) {
+                formData.append('board_img2', question.board_img2);
+            }
+
+            // console.log('formData는', formData);
+
             axios.post(url, formData, config)
             .then(response => {
                 context.commit('setQuestionList', response.data.data);
 
                 alert('수정 성공');
-                router.replace(`/questions/${data.board_id}`);
+                router.replace(`/questions/${question.questionDetail.board_id}`);
                 }
             )
             .catch(error => {
                 alert('수정 실패');
-                console.error(error);
+                console.error(error.response.data);
             });
         },
 
+        // 게시글 삭제
         destroyQuestion(context, id) {
             const url = `/api/questions/${id}`;
             const config = {
@@ -146,14 +155,13 @@ export default {
             axios.delete(url, config)
             .then(response => {
                 alert('삭제 성공');
-                context.commit('setQuestions', response.data);
                 router.push('/questions');
             })
             .catch(error => {
                 console.error(error);
                 alert('삭제 실패');
             });
-    }   
+        }   
     },
     getters: {
     },

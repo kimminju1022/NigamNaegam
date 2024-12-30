@@ -51,7 +51,7 @@ class QuestionSeeder extends Seeder
 
             $question = new Question();
             $question->board_id = $item->board_id;
-            $question->que_content = $random_status === 0 ? null : $this->faker->realText(rand(10, 100));
+            $question->que_content = $random_status === 0 ? null : $this->faker->realText(rand(10, 2000));
             $question->que_status = (string)$random_status;
             $question->created_at = $item->created_at;
             $question->updated_at = $random_status === 0 ? $item->created_at : $date;

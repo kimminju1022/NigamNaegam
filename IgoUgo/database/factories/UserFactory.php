@@ -17,16 +17,13 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-
-
-        $date = $this->faker->dateTimeBetween('-1 years');
+        $date = $this->faker->dateTimeBetween('-1 year');
 
         return [
             'user_email' => $this->faker->unique()->safeEmail()
             ,'user_password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
             ,'user_name' => $this->faker->name()
             ,'user_nickname' => $this->faker->unique()->name()
-            // ,'user_phone' => $this->faker->unique()->phoneNumber()
             ,'user_phone' => '0' . $this->faker->randomElement(['10', '11', '17']) . $this->faker->numerify('########')
             ,'refresh_token' => Str::random(10)
             ,'created_at' => $date

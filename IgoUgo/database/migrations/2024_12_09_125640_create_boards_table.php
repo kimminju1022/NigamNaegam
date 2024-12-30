@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id('board_id');
             $table->string('board_title', 100);
             $table->string('board_content', 2000);
-            $table->string('board_img1', 100)->default('/default/board_default.png');
-            $table->string('board_img2', 100)->default('/default/board_default.png');
+            $table->string('board_img1', 100)->nullable()->default('/default/board_default.png');
+            $table->string('board_img2', 100)->nullable()->default('/default/board_default.png');
             $table->bigInteger('view_cnt')->default(0);
             $table->timestamps();
             $table->softDeletes();
