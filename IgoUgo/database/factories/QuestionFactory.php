@@ -38,7 +38,7 @@ class QuestionFactory extends Factory
 
         return [
             'board_id' => $board->board_id
-            ,'que_content' => $this->faker->realText(rand(10, 100))
+            ,'que_content' => $this->faker->realText(rand(10, 2000))
             ,'que_status' => (string)random_int(0, 1)
             ,'created_at' => $date
             ,'updated_at' => $date

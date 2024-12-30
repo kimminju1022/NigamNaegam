@@ -21,13 +21,13 @@ class BoardFactory extends Factory
         $user = User::select('user_id')->inRandomOrder()->first();
         $bc_type = BoardCategory::select('bc_type')->inRandomOrder()->first();
 
-        $date = $this->faker->dateTimeBetween($user->created_at);
+        $date = $this->faker->dateTimeBetween($user->created_at, now());
 
         return [
             'user_id' => $user->user_id
             ,'bc_type' => $bc_type->bc_type
             ,'board_title' => $this->faker->realText(rand(10, 100))
-            ,'board_content' => $this->faker->realText(rand(10, 1000))
+            ,'board_content' => $this->faker->realText(rand(10, 2000))
             ,'board_img1' => '/img_main/back'.rand(1,5).'.jpg'
             ,'board_img2' => '/img_main/back'.rand(1,5).'.jpg'
             ,'view_cnt' => rand(1,300)

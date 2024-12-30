@@ -153,7 +153,7 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
 });
 
-console.log(userQuestion);
+// console.log(userQuestion);
 
 // ***************** 탈퇴 *****************
 // Modal
