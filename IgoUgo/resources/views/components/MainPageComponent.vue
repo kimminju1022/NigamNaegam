@@ -109,433 +109,565 @@
         </div>
         
         <div class="main-together-container">
-            <div>
-                <h2>같이 할래? 나랑! 너랑?</h2>
-                <hr>
-            </div>
-            <div class="main-together-first">
-                <div>
-                    <img src="default/board_default.png" class="main-together-img-big">
+            <h2>같이 갈래? 나랑! 너랑?</h2>
+            <hr>
+            <div class="main-together-list">
+                <div class="together-card">
+                    <p>관광지</p>
+                    <img src="default/board_default.png">
+                    <p>제목</p>
                 </div>
-                
-                <div class="main-together-second">
-                    <div>재밋는 곳! 같이 감!</div>
-                    <hr>
-                    <div class="main-together-third">
-                        <div class="main-card">
-                            <img src="default/board_default.png" class="main-together-img">
-                            <p>같이 체험할</p>
-                        </div>
-                        <div class="main-card">
-                            <img src="default/board_default.png" class="main-together-img">
-                            <p>체험상품들을</p>
-                        </div>
-                        <div class="main-card">
-                            <img src="default/board_default.png" class="main-together-img">
-                            <p>여기에 등록할것</p>
-                        </div>
-                        <div class="main-card">
-                            <img src="default/board_default.png" class="main-together-img">
-                            <p>디자인은 알아서</p>
-                        </div>
-                    </div>
+                <div class="together-card">
+                    <p>문화시설</p>
+                    <img src="default/board_default.png">
+                    <p>제목</p>
+                </div>
+                <div class="together-card">
+                    <p>레포츠</p>
+                    <img src="default/board_default.png">
+                    <p>제목</p>
+                </div>
+                <div class="together-card">
+                    <p>쇼핑</p>
+                    <img src="default/board_default.png">
+                    <p>제목</p>
+                </div>
+                <div class="together-card">
+                    <p>음식점</p>
+                    <img src="default/board_default.png">
+                    <p>제목</p>
                 </div>
             </div>
         </div>
         
-        <div>
-            <!-- 관광특구와 같은 홍보글 넣을것, 일단 이미지로 넣었음 -->
-            <div class="main-ppl-container">
-                <img src="default/profile_default.png" class="main-ppl-ex">
-                <img src="default/profile_default.png" class="main-ppl-ex">
-                <img src="default/profile_default.png" class="main-ppl-ex">
-            </div>
+        <div class="main-ppl-container">
+            <a href="https://stolantern.com/photo/photo_history"><img src="/img_main/seoul_light_festival.png"></a>
+            <a href="https://www.dtmsa.or.kr/"><img src="/img_main/daegu_market.png"></a>
+            <a href="https://ramenfestival.co.kr/introduce"><img src="/img_main/ramen.png"></a>
         </div>
         
         <div class="main-popular-container">
-            <div>
-                <h2>현재 인기글</h2>
-                <hr>
-            </div>
-            <div>
-                <h2>리뷰</h2>
+            <h2>현재 인기글</h2>
+            <!-- <hr> -->
+            <div class="main-popular-review">
+                <h3>리뷰</h3>
                 <div class="main-popular-box">
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                 </div>
             </div>
     
-            <div>
-                <h2>자유</h2>
+            <div class="main-popular-free">
+                <h3>자유</h3>
                 <div class="main-popular-box">
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                     <div class="main-card">
-                        <img src="default/profile_default.png" class="main-together-img">
+                        <img src="default/profile_default.png">
                         <p>리뷰 제목</p>
                         <p>작성자 닉네임</p>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div>
-            <img src="default/gongzi.png">
+
+        <div class="divisverysad">
+            <div class="announcement">
+                <div class="announcement-sidebar">
+                    <div>
+                        <p>내 감!니 감? 의<br>소식을<br>확인해보세요</p>
+                    </div>
+                    <div class="announcement-info">
+                        <p class="announcement-info-qna">문의 게시판 바로가기 →</p>
+                        <p>내감!니감?에 대한 궁금한 점을<br>물어보세요</p>
+                    </div>
+                </div>
+                <div class="announcement-item">
+                    <div>
+                        <p>공지사항</p>
+                        <button class="btn bg-clear">바로가기</button>
+                    </div>
+                    <hr>
+                    <div class="announcement-list"> 
+                        <p>2024-12-17</p>
+                        <p>안녕하세요 반갑습니다.</p>
+                    </div>
+                    <hr>
+                    <div class="announcement-list"> 
+                        <p>2024-12-17</p>
+                        <p>안녕하세요 반갑습니다.</p> 
+                    </div>
+                    <hr>
+                    <div class="announcement-list"> 
+                        <p>2024-12-17</p>
+                        <p>안녕하세요 반갑습니다.</p> 
+                    </div>
+                    <hr>
+                    <div class="announcement-list"> 
+                        <p>2024-12-17</p>
+                        <p>안녕하세요 반갑습니다.</p> 
+                    </div>
+                    <hr>
+                    <div class="announcement-list"> 
+                        <p>2024-12-17</p>
+                        <p>안녕하세요 반갑습니다.</p> 
+                    </div>
+                    <hr>
+                </div>
+            </div>
         </div>
     </div>
-    </template>
-    
-    <script setup>
-    import { Swiper, SwiperSlide } from 'swiper/vue';
-    import { onBeforeMount, ref } from 'vue';
-    
-    // Import Swiper styles
-    import 'swiper/css';
-    import 'swiper/css/pagination';
-    import 'swiper/css/navigation';
-    import 'swiper/css/scrollbar';
-    
-    // Import required modules
-    import { Pagination, Navigation, Scrollbar, Autoplay } from 'swiper/modules';
-    
-    // Register Swiper modules
-    const modules = [Pagination, Navigation, Scrollbar, Autoplay];
-    
-    const flg = ref(false);
-    const flgSetup = () => {
-        flg.value = window.innerWidth >= 1000 ? false : true;
-    }
-    onBeforeMount(() => {
-        flgSetup();
-    });
-    window.addEventListener('resize', flgSetup);
-    </script>
-    
-    <style scoped>
-    /* 폰트 종류 */
-    /* 학교안심 물결 */
-    /* @font-face {
-        font-family: 'TTHakgyoansimMulgyeolB';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimMulgyeolB.woff2') format('woff2');
-        font-weight: 700;
-        font-style: normal;
-    } */
-    /* 평창평화체 */
-    /* @font-face {
-        font-family: 'PyeongChangPeace-Bold';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
-        font-weight: 700;
-        font-style: normal;
-    } */
-    /* SF함박눈 */
-    /* @font-face {
-        font-family: 'SF_HambakSnow';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/SF_HambakSnow.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    } */
-    /* 수성혜정체 */
-    /* @font-face {
-        font-family: 'SuseongHyejeong';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205-2@1.0/SuseongHyejeong.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-    } */
-    /* 마초체 */
-    /* @font-face {
-        font-family: 'EF_MACHO';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/EF_MACHO.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-    } */
-    
-    /* 전체를 감싸는 컨테이너 */
-    .main-page-container {
-        display: flex;
-        flex-direction: column;
-        gap: 100px;
-    }
-    
-    /* 베너 */
-    .main-banner {
-        height: 500px;
-    }
-    
-    /* ***** swiper CSS ***** */
-    /* swiper 전체 */
-    .swiper {
-        width: 100%;
-        /* width: 100vw; */
-        height: 100%;
-        /* overflow: visible; */
-    }
-    /* swiper 내부 */
-    .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    /* slide */
-    .banner-slide {
-        width: 100%;
-        height: 75%;
-    }
-    .banner-bottom-white {
-        background-color: #fff;
-        width: 100%;
-        height: 25%;
-    }
-    .banner-content-flex {
-        width: 90%;
-        display: flex;
-        position: absolute;
-        gap: 50px;
-    }
-    .banner-content-img {
-        width: 600px;
-        height: 400px;
-        /* border-radius: 30px; */
-        object-fit: cover;
-        margin-top: 20px;
-        box-shadow: 5px 5px 10px rgba(76, 76, 76, .7);
-    }
-    .banner-content-right {
-        display: flex;
-        flex-direction: column;
-        text-align: start;
-        gap: 90px;
-        padding: 20px 0;
-        width: 100%;
-    }
-    .banner-content-text {
-        color: #fff;
-        font-weight: 500;
-    }
-    .banner-content-title > p {
-        color: #fff;
-        margin-bottom: 10px;
-    }
-    /* 슬라이드 타이틀 */
-    /* .title1 > p {
-        font-family: 'TTHakgyoansimMulgyeolB';
-        font-size: 65px;
-    } */
-    /* .title2 > p {
-        font-family: 'PyeongChangPeace-Bold';
-        font-size: 55px;
-    } */
-    /* .title3 > p {
-        font-family: 'SF_HambakSnow';
-        font-size: 65px;
-    } */
-    /* .title4 > p {
-        font-family: 'EF_MACHO';
-        font-size: 65px;
-        color: #6170e2;
-    } */
-    .title4 + .title4-text {
-        color: #6170e2;
-    }
-    /* .title5 > p {
-        font-family: 'SuseongHyejeong';
-        font-size: 65px;
-        color: #4c4c4c;
-    } */
-    .title5 + .title5-text {
-        color: #4c4c4c;
-    }
-    /* 텍스트 이미지 */
-    .banner-text-img {
-        width: 500px;
-        height: 150px;
-    }
-    .banner-text-img-small {
-        width: 300px;
-        height: 150px;
-    }
-    /* 슬라이드 배경 */
-    .banner-slide1 {
-        /* background-color: rgba(255, 168, 93, 0.7); */
-        background-image: url('/img_main/back1.jpg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    }
-    .banner-slide2 {
-        /* background-color: #025B00; */
-        background-image: url('/img_main/back2.jpg');
-        background-repeat: no-repeat;
-        /* background-position: center; */
-        background-size: cover;
-    }
-    .banner-slide3 {
-        /* background-color: #99bff2; */
-        background-image: url('/img_main/back3.jpg');
-        background-repeat: no-repeat;
-        /* background-position: center; */
-        background-size: cover
-    }
-    .banner-slide4 {
-        /* background-color: rgba(255, 211, 88, 0.8); */
-        background-image: url('/img_main/back4.jpg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    }
-    .banner-slide5 {
-        /* background-color: #d7bda6; */
-        background-image: url('/img_main/back5.jpg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover
-    }
-    /* 화살표 */
-    .swiper-button-next::after, .swiper-button-prev::after {
-        display: none;
-    }
-    .swiper-button-prev {
-        /* color: #01083a; */
-        width: 30px;
-        height: 20px;
-        font-size: 20px;
-        margin-left: 1050px;
-        margin-top: 156px;
-    }
-    .swiper-button-next {
-        /* color: #01083a; */
-        width: 30px;
-        height: 20px;
-        font-size: 20px;
-        margin-right: 50px;
-        margin-top: 156px;
-    }
+</template>
 
-    /* 페이지네이션 */
-    .swiper-pagination {
-        color: #01083a;
-        margin-bottom: 65px;
-        margin-left: 1090px;
-        width: 70px;
-    }
-    /* 스크롤 */
-    .swiper-scrollbar {
-        width: 500px;
-        height: 10px;
-        background-color: transparent;
-        border-top: 1px solid #01083a;
-        border-bottom: 1px solid #01083a;
-        border-radius: 0;
-        margin-bottom: 40px;
-        margin-left: 700px;
-    }
-    .swiper-scrollbar > .swiper-scrollbar-drag {
-        background-color: #01083a;
-        border-radius: 0;
-    }
-    
-    /* 같이할래 부분 */
-    .main-together-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-    .main-together-first {
-        display: grid;
-        grid-template-columns: 1fr 4fr;
-        gap: 20px;
-    }
-    .main-together-second {
-        padding: 50px 0;
-    }
-    .main-together-third {
-        margin: 20px 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 10px;
-    }
-    .main-together-img {
-        width: 200px;
-        height: 200px;
-    }
-    .main-together-img-big {
-        width: 300px;
-        height: 500px;
-    }
-    
-    /* 광고 관련 */
-    .main-ppl-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-    /* 광고 예시 이미지만 넣어두었으니 나중에 지울것 */
-    .main-ppl-ex {
-        height: 100px;
-    }
-    
-    /* 인기글 관련 */
-    .main-popular-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-    .main-popular-box {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-    }
-    
-    /* 카드 공통 */
-    .main-card {
-        border: 1px solid #01083a;
-        border-radius: 10px;
-        min-width: 200px;
-    }
-    
-    /* ---------- 반응형 ---------- */
-    /* 베너 관련 */
-    .ch-size {
-        width: 250px;
-        height: 350px;
-    }
-    .banner-content {
-        width: 80%;
-        /* display: flex; */
-        position: absolute;
-        gap: 20px;
-    }
-    </style>
+<script setup>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { onBeforeMount, ref } from 'vue';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
+
+// Import required modules
+import { Pagination, Navigation, Scrollbar, Autoplay } from 'swiper/modules';
+
+// Register Swiper modules
+const modules = [Pagination, Navigation, Scrollbar, Autoplay];
+
+const flg = ref(false);
+const flgSetup = () => {
+    flg.value = window.innerWidth >= 1000 ? false : true;
+}
+onBeforeMount(() => {
+    flgSetup();
+});
+window.addEventListener('resize', flgSetup);
+</script>
+
+<style scoped>
+/* 폰트 종류 */
+/* 학교안심 물결 */
+/* @font-face {
+    font-family: 'TTHakgyoansimMulgyeolB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimMulgyeolB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+} */
+/* 평창평화체 */
+/* @font-face {
+    font-family: 'PyeongChangPeace-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+} */
+/* SF함박눈 */
+/* @font-face {
+    font-family: 'SF_HambakSnow';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/SF_HambakSnow.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+} */
+/* 수성혜정체 */
+/* @font-face {
+    font-family: 'SuseongHyejeong';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205-2@1.0/SuseongHyejeong.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+} */
+/* 마초체 */
+/* @font-face {
+    font-family: 'EF_MACHO';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/EF_MACHO.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+} */
+
+/* 전체를 감싸는 컨테이너 */
+.main-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+
+/* 베너 */
+.main-banner {
+    height: 500px;
+}
+
+/* ***** swiper CSS ***** */
+/* swiper 전체 */
+.swiper {
+    width: 100%;
+    /* width: 100vw; */
+    height: 100%;
+    /* overflow: visible; */
+}
+/* swiper 내부 */
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* slide */
+.banner-slide {
+    width: 100%;
+    height: 75%;
+}
+.banner-bottom-white {
+    background-color: #fff;
+    width: 100%;
+    height: 25%;
+}
+.banner-content-flex {
+    width: 90%;
+    display: flex;
+    position: absolute;
+    gap: 50px;
+}
+.banner-content-img {
+    width: 600px;
+    height: 400px;
+    /* border-radius: 30px; */
+    object-fit: cover;
+    margin-top: 20px;
+    box-shadow: 5px 5px 10px rgba(76, 76, 76, .7);
+}
+.banner-content-right {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    gap: 90px;
+    padding: 20px 0;
+    width: 100%;
+}
+.banner-content-text {
+    color: #fff;
+    font-weight: 500;
+}
+.banner-content-title > p {
+    color: #fff;
+    margin-bottom: 10px;
+}
+/* 슬라이드 타이틀 */
+/* .title1 > p {
+    font-family: 'TTHakgyoansimMulgyeolB';
+    font-size: 65px;
+} */
+/* .title2 > p {
+    font-family: 'PyeongChangPeace-Bold';
+    font-size: 55px;
+} */
+/* .title3 > p {
+    font-family: 'SF_HambakSnow';
+    font-size: 65px;
+} */
+/* .title4 > p {
+    font-family: 'EF_MACHO';
+    font-size: 65px;
+    color: #6170e2;
+} */
+.title4 + .title4-text {
+    color: #6170e2;
+}
+/* .title5 > p {
+    font-family: 'SuseongHyejeong';
+    font-size: 65px;
+    color: #4c4c4c;
+} */
+.title5 + .title5-text {
+    color: #4c4c4c;
+}
+/* 텍스트 이미지 */
+.banner-text-img {
+    width: 500px;
+    height: 150px;
+}
+.banner-text-img-small {
+    width: 300px;
+    height: 150px;
+}
+/* 슬라이드 배경 */
+.banner-slide1 {
+    /* background-color: rgba(255, 168, 93, 0.7); */
+    background-image: url('/img_main/back1.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.banner-slide2 {
+    /* background-color: #025B00; */
+    background-image: url('/img_main/back2.jpg');
+    background-repeat: no-repeat;
+    /* background-position: center; */
+    background-size: cover;
+}
+.banner-slide3 {
+    /* background-color: #99bff2; */
+    background-image: url('/img_main/back3.jpg');
+    background-repeat: no-repeat;
+    /* background-position: center; */
+    background-size: cover
+}
+.banner-slide4 {
+    /* background-color: rgba(255, 211, 88, 0.8); */
+    background-image: url('/img_main/back4.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.banner-slide5 {
+    /* background-color: #d7bda6; */
+    background-image: url('/img_main/back5.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover
+}
+/* 화살표 */
+.swiper-button-next::after, .swiper-button-prev::after {
+    display: none;
+}
+.swiper-button-prev {
+    /* color: #01083a; */
+    width: 30px;
+    height: 20px;
+    font-size: 20px;
+    margin-left: 1050px;
+    margin-top: 156px;
+}
+.swiper-button-next {
+    /* color: #01083a; */
+    width: 30px;
+    height: 20px;
+    font-size: 20px;
+    margin-right: 50px;
+    margin-top: 156px;
+}
+
+/* 페이지네이션 */
+.swiper-pagination {
+    color: #01083a;
+    margin-bottom: 65px;
+    margin-left: 1090px;
+    width: 70px;
+}
+/* 스크롤 */
+.swiper-scrollbar {
+    width: 500px;
+    height: 10px;
+    background-color: transparent;
+    border-top: 1px solid #01083a;
+    border-bottom: 1px solid #01083a;
+    border-radius: 0;
+    margin-bottom: 40px;
+    margin-left: 700px;
+}
+.swiper-scrollbar > .swiper-scrollbar-drag {
+    background-color: #01083a;
+    border-radius: 0;
+}
+
+/* 같이할래 부분 */
+/* .main-together-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+} */
+
+.main-page-container h2, .main-page-container h3 {
+    margin-bottom: 20px;
+}
+
+.main-together-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin: 50px 0;
+    padding: 10px;
+    place-items: center;
+}
+
+.main-together-list img, .main-popular-container img {
+    max-width: 220px;
+    max-height: 220px;
+}
+
+.together-card :first-child {
+    font-size: 21px;
+}
+
+.together-card :last-child {
+    font-size: 18px;
+}
+
+/* 광고 관련 */
+.main-ppl-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    place-items: center;
+}
+
+.main-ppl-container img{
+    height: 400px;
+}
+
+/* 인기글 관련 */
+.main-popular-container {
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-rows: 0.2fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.main-popular-review {
+    border-top: 1px solid #000;
+}
+
+.main-popular-review h3, .main-popular-free h3 {
+    margin-top: 20px;
+}
+
+.main-popular-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* 카드 공통 */
+.main-card {
+    border: 1px solid #01083a;
+    /* border-radius: 10px; */
+    min-width: 200px;
+    display: grid;
+    grid-template-rows: 7fr 1fr 1fr;
+    align-items: center;
+    padding: 5px;
+}
+
+/* 공지사항 부분 */
+.divisverysad {
+    display: grid;
+    place-items: center;
+    margin: 70px 0;
+}
+
+/* 내감니감의 소식을 확인해보세요 */
+.announcement {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    gap: 10px;
+    max-width: 900px;
+}
+
+.announcement-sidebar{
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    justify-content: space-between;
+}
+
+.announcement-sidebar > :first-child {
+    /* align-content: center; */
+    font-size: 25px;
+}
+
+/* 문의게시판 바로가기쪽 */
+.announcement-info {
+    padding: 10px;
+    border-radius: 10px; 
+    box-shadow: 3px 3px 10px rgba(114, 114, 114, 0.7);
+}
+
+.announcement-info-qna {
+    font-size: 20px;
+    padding: 5px 0;
+}
+
+/* 공지사항 */
+hr {
+    opacity: 50%;
+}
+
+.announcement-item {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 600px;
+    font-size: 16px;
+    gap: 7px;
+    box-shadow: 3px 3px 10px rgba(114, 114, 114, 0.7);
+}
+
+.announcement-item > :first-child {
+    display: flex;
+    font-size: 22px;
+    justify-content: space-between;
+    font-weight: 600;
+    margin: 0 10px;
+}
+
+.announcement-item > :first-child > :first-child {
+    margin: 10px 0;
+}
+
+.announcement-list {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 30px;
+    padding: 0 30px;
+}
+
+/* ---------- 반응형 ---------- */
+/* 베너 관련 */
+.ch-size {
+    width: 250px;
+    height: 350px;
+}
+
+.banner-content {
+    width: 80%;
+    /* display: flex; */
+    position: absolute;
+    gap: 20px;
+}
+</style>

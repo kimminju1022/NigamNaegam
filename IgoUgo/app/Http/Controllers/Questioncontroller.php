@@ -53,19 +53,12 @@ class QuestionController extends Controller
     
     // 유저 1:1 문의 내역
     public function showMyQuestion($id){
-        // Log::debug('showMyQuestion', $id);
         $bcType = '2';
         $questionList = Board::with(['questions', 'users', 'board_categories'])
                                 ->where('user_id', $id)
                                 ->where('bc_type', $bcType)
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
-
-        // foreach($questionList as $item) {
-        //     $item->created_at = Carbon::parse($item->create_at)->format('Y-m-d');
-        //     return $item;
-        // }
-        
         // Log::debug($questionList);
 
         $responseData = [

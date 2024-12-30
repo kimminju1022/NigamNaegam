@@ -3,27 +3,38 @@
         <!-- header -->
 
         <div class="header-header" v-if="flg === '0'">
-            <!-- <header> --> <!-- 이거 지워도 되나 -->                
-                <div>
-                    <div class="header-title">
-                        <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link>
-                        <!-- {{ console.log(flg) }} -->
-                        <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
-                        <div v-if="!$store.state.auth.authFlg" class="header-title-button">
-                            <router-link to="/questions"><button class="btn bg-clear header-btn">FAQ</button></router-link>
-                            <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
-                            <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
-                        </div>
-                        <div v-else class="header-title-button">
-                            <router-link to="/questions"><button class="btn bg-clear header-btn">FAQ</button></router-link>
-                            <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button>
-                            <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="user.user_profile" alt=""></router-link>
-                        </div>
+            <div>
+                <div class="header-title">
+                    <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link>
+                    <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
+                    <div v-if="!$store.state.auth.authFlg" class="header-title-button">
+                        <router-link to="/questions"><button class="btn bg-clear header-btn">FAQ</button></router-link>
+                        <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
+                        <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                     </div>
-                    <div class="header-list">
+                    <div v-else class="header-title-button">
+                        <!-- 자주 묻는 질문이 아닌데 왜 FAQ라고 하냐고 할까봐 우선 '문의'로 바꿈 -->
+                        <router-link to="/questions"><button class="btn bg-clear header-btn">문의</button></router-link>
+                        <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button>
+                        <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="user.user_profile" alt=""></router-link>
+                    </div>
+                </div>
+                <div class="header-list">
+                    <div class="header-list-box">
                         <ul class="header-list-flex">
                             <li class="header-list-hover"><router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link></li>
-                            <li class="header-list-hover"><router-link to="/products">상품</router-link></li>
+                            <li class="header-list-hover">
+                                <div class="header-list-dropdown">
+                                    <router-link to="/products" @click="$store.commit('pagination/setPaginationInitialize')">즐길거리</router-link>
+                                        <div class="header-list-hover header-list-dropdown-content">
+                                            <router-link to="/products/12">관광지</router-link>
+                                            <router-link to="/products/14">문화시설</router-link>
+                                            <router-link to="/products/28">레포츠</router-link>
+                                            <router-link to="/products/38">쇼핑</router-link>
+                                            <router-link to="/products/39">음식점</router-link>
+                                        </div>
+                                </div>
+                            </li>
                             <li class="header-list-hover">
                                 <div class="header-list-dropdown">
                                     <p class="header-list-dropbtn">게시판</p>
@@ -34,13 +45,13 @@
                                 </div>
                             </li>
                         </ul>
-                        <div class="header-search"> 
-                            <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                            <button class="btn bg-navy header-bg-btn">검색</button>
-                        </div>
+                    </div>
+                    <div class="header-search"> 
+                        <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                        <button class="btn bg-navy header-bg-btn">검색</button>
                     </div>
                 </div>
-            <!-- </header> -->
+            </div>
         </div>
 
         <!-- header 반응형 -->
@@ -57,10 +68,9 @@
 
                     <!-- 메뉴 -->
                     <div class="nav" v-show="isMenuOpen">
-                        
                         <div class="app-resist-login-div" @click="toggleMenu">
                             <div class="close close3"></div>
-                            <div v-if="!$store.state.auth.authFlg">
+                            <div v-if="!$store.state.auth.authFlg" class="app-header-btn">
                                 <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
                                 <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
                             </div>
@@ -71,11 +81,21 @@
                         </div>
                         <ul class="app-content-flex">
                             <li class="app-content"><router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link></li>
-                            <li class="app-content"><router-link to="/products" @click="$store.commit('pagination/setPaginationInitialize')">상품</router-link></li>
+                            <li class="app-content">
+                                <div class="app-content-dropdown">
+                                    <router-link to="/products" @click="$store.commit('pagination/setPaginationInitialize')">즐길거리</router-link>
+                                        <div class="app-content app-content-dropdown-content">
+                                            <router-link to="/products/12">관광지</router-link>
+                                            <router-link to="/products/14">문화시설</router-link>
+                                            <router-link to="/products/28">레포츠</router-link>
+                                            <router-link to="/products/38">쇼핑</router-link>
+                                            <router-link to="/products/39">음식점</router-link>
+                                        </div>
+                                </div></li>
                             <li class="app-content">
                                 <div class="app-content-dropdown">
                                     <p class="app-content-dropbtn">게시판</p>
-                                    <div class="app-content app-content-dropdown-content">
+                                    <div class="app-content app-content-dropdown-content app-dropdown-board">
                                         <a @click="redirectBoards('0')" class="app-review-board">리뷰</a>
                                         <a @click="redirectBoards('1')" class="app-review-board">자유</a>
                                     </div>
@@ -326,18 +346,6 @@ header {
     justify-items: center;
 }
 
-/* 감로고 뺀 버전 */
-/* .header-title-2 {
-    display: grid;
-    grid-template-columns: 1fr 3.5fr;
-    align-items: center;
-    justify-items: center;
-} */
- /* 감로고는 사이드바 안에 넣어볼까 */
- /* 내감니감 사진을 좀 작은 버전 만들어서 1000보다 작아지면 그 사진으로 대체하는 걸로? */
- /* 아니면  */
- /* ***** 지우지마 ***** */
-
 .header-title > :first-child {
     justify-self: start;
     margin-left: 50px;
@@ -401,15 +409,15 @@ header {
 }
 .bg-logout {
     background-color: #c9c9c9;
-    /* color: red; */
 }
+
+
 /* 헤더 2 -> 호텔, 상품, 게시판, 검색바 */
 .header-list {
     display: flex;
     align-items: center;
     margin: 0 8px;
     gap: 20px;
-    background-color: #fff;
 }
 
 /* 호텔, 상품, 게시판 hover */
@@ -424,7 +432,6 @@ header {
     font-size: 23px;
     font-weight: 500;
     padding: 5px 10px;
-    /**/
     position: relative;
     display: block;
     text-decoration: none;
@@ -475,17 +482,16 @@ header {
     display : none;
     position : absolute;
     z-index : 1;
-    top: 0;
-    left: 100%;
 }
 
 .header-list-dropdown-content a{
-    white-space: nowrap; 
-    font-size: 20px;
+    display: block;
+    font-size: 20px;   
 }
 
 .header-list-dropdown:hover .header-list-dropdown-content {
-    display: flex;
+    display: block;
+    background: #fff;
 }
 
 /* 헤더 검색바 */
@@ -635,6 +641,12 @@ footer {
         border: 1px solid #ccc;
         z-index: 100;
     } 
+
+    .app-header-btn {
+        display: flex;
+        gap: 10px;
+    }
+
     .app-resist-login-div {
         display: flex;
         justify-content: center;
@@ -662,6 +674,10 @@ footer {
         grid-template-columns: 2fr 1fr;
     }
 
+    .app-resist-logout img {
+        border-radius: 50%;
+    }
+
     .app-content {
         font-size: 20px;
         margin-top: 10px;
@@ -683,7 +699,6 @@ footer {
         font-size: 20px;
         font-weight: 500;
         padding: 5px;
-        /**/
         position: relative;
         display: inline-block;
         text-decoration: none;
@@ -732,8 +747,15 @@ footer {
         display : none;
         position : absolute;
         z-index : 1;
-        top: 75%;
-        left: -30%;
+        /* top: 75%;
+        left: -30%; */
+        top: -10%;
+        left: 60%;
+    }
+
+    .app-dropdown-board {
+        top: -10%;
+        left: 50%;
     }
 
     .app-content-dropdown-content a{

@@ -25,23 +25,23 @@ class QuestionFactory extends Factory
         // $board_1 = $board->offset(150)->get();
         // $board_1 = $board->take(50)->get();
 
-        $board = Board::select('board_id')->where('bc_type', '2')
-        ->whereNotExists(function($query) {
-            $query->select(DB::raw(1))
-                    ->from('questions')
-                    ->whereRaw('boards.board_id = questions.board_id');
-        })
-        ->inRandomOrder()->first();
+        // $board = Board::select('board_id')->where('bc_type', '2')
+        //                 ->whereNotExists(function($query) {
+        //                     $query->select(DB::raw(1))
+        //                     ->from('questions')
+        //                     ->whereRaw('boards.board_id = questions.board_id');
+        //                 })
+        // ->inRandomOrder()->first();
 
-        $date = $this->faker->dateTimeBetween($board->created_at);
-        // 디폴트 status = 0(답변대기)이니까 2/3정도만 1(완료)로 만드려면 150개정도만 배열로 따로 저장해서 그거만 돌려야함
+        // $date = $this->faker->dateTimeBetween($board->created_at);
+        // // 디폴트 status = 0(답변대기)이니까 2/3정도만 1(완료)로 만드려면 150개정도만 배열로 따로 저장해서 그거만 돌려야함
 
-        return [
-            'board_id' => $board->board_id
-            ,'que_content' => $this->faker->realText(rand(10, 2000))
-            ,'que_status' => (string)random_int(0, 1)
-            ,'created_at' => $date
-            ,'updated_at' => $date
-        ];
+        // return [
+        //     'board_id' => $board->board_id
+        //     ,'que_content' => $this->faker->realText(rand(10, 2000))
+        //     ,'que_status' => (string)random_int(0, 1)
+        //     ,'created_at' => $date
+        //     ,'updated_at' => $date
+        // ];
     }
 }

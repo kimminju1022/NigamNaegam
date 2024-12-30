@@ -36,14 +36,8 @@ class QuestionSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        // $baseInterval = 1000;
-        // $total = Board::select('board_id')->where('bc_type', '2')->count();
-        // $interval = $baseInterval > $total ? $total : $baseInterval;
-        
+    {        
         $boards = Board::select('board_id', 'created_at')->where('bc_type', '2')->get();
-
-        // 디폴트 status = 0(답변대기)이니까 2/3정도만 1(완료)로 만드려면 150개정도만 배열로 따로 저장해서 그거만 돌려야함
 
         foreach($boards as $item) {
             $random_status = random_int(0, 1);
