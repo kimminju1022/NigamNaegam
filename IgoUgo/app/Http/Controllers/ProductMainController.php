@@ -52,8 +52,8 @@ class ProductMainController extends Controller
         return response()->json($areas);
     }
 
-    public function productDetail($contenttypeid, $id) {
-        $url = 'http://apis.data.go.kr/B551011/KorService1/detailIntro1';
+    public function productDetail($id) {
+        $url = 'http://apis.data.go.kr/B551011/KorService1/detailImage1';
         $serviceKey = env('API_KEY');
 
         // HTTP 요청
@@ -62,10 +62,10 @@ class ProductMainController extends Controller
             'MobileOS' => 'ETC',
             'MobileApp' => 'IgoUgo',
             '_type' => 'json',
-            'contentTypeId' => $contenttypeid,
             'contentId' => $id,
+            'imageYN' => 'Y',
+            'subImageYN' => 'Y',
         ]);
-
         $resultCode = $productDetail->header('resultCode');
 
         if($productDetail->failed() && $resultCode !== '0000') {
@@ -74,4 +74,30 @@ class ProductMainController extends Controller
         
         return response()->json($productDetail->json());
     }
+    // public function productDetail($contenttypeid, $id) {
+    //     $url = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
+    //     $serviceKey = env('API_KEY');
+
+    //     // HTTP 요청
+    //     $productDetail = Http::get($url, [
+    //         'serviceKey' => $serviceKey,
+    //         'MobileOS' => 'ETC',
+    //         'MobileApp' => 'IgoUgo',
+    //         '_type' => 'json',
+    //         'contentTypeId' => $contenttypeid,
+    //         'contentId' => $id,
+    //         'defaultYN' => 'Y',
+    //         'firstImageYN' => 'Y',
+    //         'addrinfoYN' => 'Y',
+    //         'mapinfoYN' => 'Y',
+    //         'overviewYN' => 'Y',
+    //     ]);
+    //     $resultCode = $productDetail->header('resultCode');
+
+    //     if($productDetail->failed() && $resultCode !== '0000') {
+    //         throw new \Exception('API 받아오기 실패'. $productDetail->status());
+    //     }
+        
+    //     return response()->json($productDetail->json());
+    // }
 }

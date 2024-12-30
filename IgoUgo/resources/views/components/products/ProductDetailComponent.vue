@@ -1,29 +1,38 @@
 <template>
     <div class="container">
-        <div class="detail-title">
-            <p>{{ productDetail.contentid }}</p>
-            <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
-        </div>
-        <div>
-            <div class="detail-button">
-                <button class="detail-button-style">🚩메이커 하우스 리움</button> 
-                <button class="detail-button-style">예약페이지로 이동</button>
+        <div v-if="productDetail.contentid === undefined">
+            <div class="detail-title">
+                <p>한국관광공사에 의해 삭제된 데이터 입니다.</p>
             </div>
-
-            <div class="detail-img-map">
-                <div class="img-map-box">
-                    <img class="detail-img-big" src="/test.png" alt="">
+            <button @click="$router.go(-1)" class="btn bg-navy btn-go-back"><- 리스트 페이지로 돌아가기</button>
+        </div>
+        <div v-else>
+            <button @click="$router.go(-1)" class="btn bg-clear btn-go-back"><- 리스트 페이지로 돌아가기</button>
+            <div class="detail-title">
+                <p>{{ productDetail.title }}</p>
+                <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
+            </div>
+            <div>
+                <div class="link-group">
+                    <p class="detail-button-style">🚩{{ productDetail.addr1 + ' ' + productDetail.addr2 }}</p>
+                    <a v-if="productDetail.homepage" :href="productDetail.homepage" class="detail-button-style" target="_blank">-> 홈페이지로 이동</a>
                 </div>
-                <div>
+                
+                <div class="detail-img-map">
                     <div class="img-map-box">
-                        <img class="detail-img-small" src="/test.png" alt="">
+                        <img class="detail-img-big" :src="productDetail.firstimage">
                     </div>
-                    <div id="map"></div>
+                    <div>
+                        <div class="img-map-box">
+                            <img class="detail-img-small" :src="productDetail.firstimage">
+                        </div>
+                        <div id="map"></div>
+                    </div>
+                </div>    
+                
+                <div class="detail-content">
+                    <p class="detail-content-content">이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다. 영국에서 HGXWCH이라는 사람은 1930년에 이 편지를 받았습니다. 그는 비서에게 복사해서 보내라고 했습니다. 며칠 뒤에 복권이 당첨되어 20억을 받았습니다. 어떤 이는 이 편지를 받았으나 96시간 이내 자신의 손에서 떠나야 한다는 사실을 잊었습니다. 그는 곧 사직되었습니다. 나중에야 이 사실을 알고 7통의 편지를 보냈는데 다시 좋은 직장을 얻었습니다. 미국의 케네디 대통령은 이 편지를 받았지만 그냥 버렸습니다. 결국 9일 후 그는 암살당했습니다. 기억해 주세요. 이 편지를 보내면 7년의 행운이 있을 것이고 그렇지 않으면 3년의 불행이 있을 것입니다. 그리고 이 편지를 버리거나 낙서를 해서는 절대로 안됩니다. 7통입니다. 이 편지를 받은 사람은 행운이 깃들 것입니다. 힘들겠지만 좋은 게 좋다고 생각하세요. 7년의 행운을 빌면서...</p>
                 </div>
-            </div>    
-
-            <div class="detail-content">
-                <p class="detail-content-content">이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다. 영국에서 HGXWCH이라는 사람은 1930년에 이 편지를 받았습니다. 그는 비서에게 복사해서 보내라고 했습니다. 며칠 뒤에 복권이 당첨되어 20억을 받았습니다. 어떤 이는 이 편지를 받았으나 96시간 이내 자신의 손에서 떠나야 한다는 사실을 잊었습니다. 그는 곧 사직되었습니다. 나중에야 이 사실을 알고 7통의 편지를 보냈는데 다시 좋은 직장을 얻었습니다. 미국의 케네디 대통령은 이 편지를 받았지만 그냥 버렸습니다. 결국 9일 후 그는 암살당했습니다. 기억해 주세요. 이 편지를 보내면 7년의 행운이 있을 것이고 그렇지 않으면 3년의 불행이 있을 것입니다. 그리고 이 편지를 버리거나 낙서를 해서는 절대로 안됩니다. 7통입니다. 이 편지를 받은 사람은 행운이 깃들 것입니다. 힘들겠지만 좋은 게 좋다고 생각하세요. 7년의 행운을 빌면서...</p>
             </div>
         </div>
     </div>
@@ -46,21 +55,26 @@ const findData = reactive({
     contenttypeid: route.params.contenttypeid,
     id: route.params.id,
 });
-console.log(findData);
 
 onBeforeMount(async () => {
     await store.dispatch('product/takeProductDetail', findData);
-});
 
-let map = reactive(null);
-
-onMounted(() => {
     if (window.kakao && window.kakao.maps) {
         loadKakaoMap();
     } else {
         loadKakaoMapScript();
     }
 });
+
+let map = reactive(null);
+
+// onMounted(() => {
+//     if (window.kakao && window.kakao.maps) {
+//         loadKakaoMap();
+//     } else {
+//         loadKakaoMapScript();
+//     }
+// });
 
 // 카카오맵 스크립트 다운로드
 const loadKakaoMapScript = () => {
@@ -124,23 +138,30 @@ const loadMaker = () => {
 </script>
 
 <style scoped>
+/* 데이터가 없을 때 나오는 버튼 */
+.btn-go-back {
+    padding: 10px;
+    border-radius: 20px;
+    margin: 50px 0;
+}
+
 /* 타이틀 */
 .detail-title {
     font-size: 40px;
 }
 
-/* 버튼 영역 */
-.detail-button {
+/* 링크 영역 */
+.link-group {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
     margin-bottom: 30px;
 }
-.detail-button-style {
+/* .detail-button-style {
     border-style: none;
     background-color: transparent;
     font-size: 20px;
-}
+} */
 
 /* 이미지&지도 영역 */
 /* 큰 영역 */

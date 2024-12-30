@@ -8,7 +8,7 @@ export default {
         productList: [],
         productArea: [],
         productCnt: '',
-        productDetail: []
+        productDetail: {}
     }),
     mutations: {
         setProductTypeList(state, data) {
@@ -82,14 +82,15 @@ export default {
 
         takeProductDetail(context, findData) {
             return new Promise((resolve, reject) => {
-                const url = '/api/products/' + findData.contenttypeid + findData.id;
+                const url = '/api/products/' + findData.contenttypeid + '/' + findData.id;
                 const config = {
                     params: findData
                 };
 
                 axios.get(url, config)
                 .then(response => {
-                    context.commit('setProductDetail', response.data.response.body.items.item.data);
+                    context.commit('setProductDetail', response.data.response.body.items.item[0]);
+                    console.log(productDetail);
                     return resolve();
                 })
                 .catch(error => {
