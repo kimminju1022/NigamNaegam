@@ -52,4 +52,8 @@ class User extends Authenticatable
     public function boards() {
         return $this->hasMany(Board::class, 'user_id', 'user_id');
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'board_id', 'board_id');
+    }
 }

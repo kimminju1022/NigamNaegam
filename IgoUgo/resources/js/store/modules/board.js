@@ -10,8 +10,9 @@ export default {
         boardCategories:'',
         boardArea:'',
         bcType: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
+        boardComment:null,
     }),
-    mutations: {
+    _mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
         setBcType(state, bcType) {
             state.bcType = bcType;
@@ -20,18 +21,44 @@ export default {
         setBoardTitle(state, boardTitle) {
             state.boardTitle = boardTitle;
         },
-        
-        setBoardList(state,boardList){
+
+        setBoardList(state, boardList) {
             state.boardList = boardList;
         },
         setboardCategories(state, boardCategories) {
-            state.boardCategories = boardCategories
+            state.boardCategories = boardCategories;
             localStorage.setItem('boarCategoryBctype', bcType);
         },
         setboardCategoryArea(state, boardArea) {
-            state.boardArea = boardArea
+            state.boardArea = boardArea;
             localStorage.setItem('boardCategoryArea', areaName);
         },
+        setBoardComment(state, boardComment) {
+            state.boardComment = boardComment;
+        },
+        // 댓글가져오기
+        showComment(context, id) {
+            const url = '/api/boards/'+id;
+            const config = {
+                headers:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+            axios.get(url, config)
+            .then(response => {
+                console.log(response); //추후삭제제
+                context.commit('setBoardComment', response.data.boardComment);
+            })
+            .catch(error => {
+                console.error(error);
+            });   
+        }
+    },
+    get mutations() {
+        return this._mutations;
+    },
+    set mutations(value) {
+        this._mutations = value;
     },
     actions: {
         /** 게시글획득

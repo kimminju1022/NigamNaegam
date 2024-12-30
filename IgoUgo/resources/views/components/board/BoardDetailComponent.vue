@@ -43,7 +43,8 @@
             <span>댓글</span>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
             <button class="btn bg-navy board-detail-btn">작성</button>
-            <span>총 댓글 :</span>
+            <span>총 댓글 :{{ ClipboardItem.comment_cnt }}
+            </span>
             <!-- {{ 댓글수[0] }} 아이템을 어떻게 불러와야할 지 모르겠어 tatal값을 계산해서 넣어야 할텐데 모르겠어 -->
         </div>
         <hr>
@@ -53,24 +54,22 @@
                 <span>닉네임</span>
                 <span>작성일시</span>
             </div>
-            <div v-for="item in boardReply" :key="item" class="replyList">
+            <!-- <div v-for="item in boardReply" :key="item" class="replyList">
                 <span>{{ item.comment_content }}</span>
                 <span>{{ item.user_nickname }}</span>
                 <span>{{ item.created_at }}</span>
+            </div> -->
+            <div v-if="boardComment" class="replylist-comment">
+                <span>{{ boardComment.comments.comment_content }}</span>
+                <span>{{ boardComment. }}</span>
+                <span></span>
+            </div>
+            <div class="pagination-btn">
+                <!-- 페이지네이션 -->
+                <PaginationComponent :actionName="actionName" :searchData="searchData" />
             </div>
         </div>
-        <!-- 페이지네이션 -->
     </div>
-    <div class="pagination">
-        <a href="#"><button class="btn bg-clear"><</button></a>
-        <a href="#"><button class="btn bg-clear">1</button></a>
-        <a href="#"><button class="btn bg-clear">2</button></a>
-        <a href="#"><button class="btn bg-clear">3</button></a>
-        <a href="#"><button class="btn bg-clear">4</button></a>
-        <a href="#"><button class="btn bg-clear">5</button></a>
-        <a href="#"><button class="btn bg-clear">></button></a>
-    </div>
-    
 
     </template>
 
@@ -85,6 +84,8 @@ const boardTitle = computed(() => store.state.board.boardTitle);
 const boardCategories = computed(() => store.state.board.boardCategories);
 const boardArea = computed(() => store.state.board.boardArea);
 
+// 게시글 댓글 정보  ----------------------------------------
+const boardComment = computed(() => store.state.board.boardComment);
 
 // alert 안내문구---------------------start-----------------
 const detailConfirm = () => {
