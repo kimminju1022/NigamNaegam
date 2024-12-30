@@ -38,10 +38,17 @@ class Board extends Model
         return $this->belongsTo(User::class, 'user_id')->select('user_id', 'user_nickname');
     }
 
+    public function areas(){
+        return $this->belongsTo(review::class, 'user_id')->select('user_id', 'user_nickname');
+    }
+
     public function board_categories() {
         return $this->belongsTo(BoardCategory::class, 'bc_type', 'bc_type');
     }
 
+    public function comments() {
+        return $this->hasMany(Comment::class, 'board_id', 'board_id');
+    }
     public function questions() {
         return $this->hasOne(Question::class, 'board_id', 'board_id');
     }
