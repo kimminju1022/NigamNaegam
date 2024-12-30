@@ -1,7 +1,6 @@
 <template>
-
     <div class="container">
-        <h1>FAQ</h1>
+        <h1>문의게시판</h1>
         <div class="header-btn-box"> 
             <button @click="$store.dispatch('question/updateQuestion', question)" class="btn bg-navy header-btn">완료</button>
             <router-link :to="'/questions'"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
@@ -9,7 +8,11 @@
         <div class="board-box">  
             <div class="board-title-box">
                 <p>제목</p>
-                <input v-model="question.questionDetail.board_title" name="board_title">
+                <input v-model="question.questionDetail.board_title" maxlength="100" name="board_title">
+                <div class="board-num">
+                    <p>글 번호</p>
+                    <p>{{ question.questionDetail.board_id }}</p>
+                </div>
             </div>
             <div class="board-img">
                 <p>파일 첨부</p>
@@ -28,7 +31,7 @@
             </div>
             <div class="board-content">
                 <p>내용</p>
-                <textarea v-model="question.questionDetail.board_content" name="board_content"></textarea>
+                <textarea maxlength="2000" v-model="question.questionDetail.board_content" name="board_content"></textarea>
             </div>
         </div>
     </div>
@@ -41,13 +44,6 @@ import router from '../../../js/router';
 
 const store =  useStore();
 
-// const question = reactive({
-//     board_title: ''
-//     ,board_content: ''
-//     ,board_img1: null
-//     ,board_img2: null
-// });
-
 const question = reactive({
     questionDetail: store.state.question.questionDetail
     ,board_img1: null
@@ -58,22 +54,22 @@ const preview1 = ref('');
 const preview2 = ref('');
 
 const setFile1 = (e) => {
-    question.file1 = e.target.files[0];
-    preview1.value = URL.createObjectURL(question.file1);
+    question.board_img1 = e.target.files[0];
+    preview1.value = URL.createObjectURL(question.board_img1);
 }
 
 const setFile2 = (e) => {
-    question.file2 = e.target.files[0];
-    preview2.value = URL.createObjectURL(question.file2);
+    question.board_img2 = e.target.files[0];
+    preview2.value = URL.createObjectURL(question.board_img2);
 }
 
 const clearFile1 = () => {
-    question.file1 = null;
+    question.board_img1 = null;
     preview1.value = null;
 }
 
 const clearFile2 = () => {
-    question.file2 = null;
+    question.board_img2 = null;
     preview2.value = null;
 }
 
@@ -136,7 +132,7 @@ const clearFile2 = () => {
     margin-top: 50px;
 }
 
-.board-box > div {
+.board-box > div:not(:first-child) {
     display: grid;
     grid-template-columns: 1fr 5fr;
     border-bottom: 1px solid #01083a;
@@ -149,7 +145,7 @@ const clearFile2 = () => {
 .board-title-box > p:first-child
 ,.board-img > p:first-child
 , .board-content> p:first-child {
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     font-weight: 600;
 }
@@ -159,9 +155,28 @@ const clearFile2 = () => {
     font-size: 17px;
 }
 
+.board-title-box {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-num {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-left: 1px solid #01083a;
+}
+
+.board-num :first-child {
+    border-right: 1px solid #01083a;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+}
+
 .board-content > textarea {
     resize: none;
-    min-height: 400px;
+    height: 300px;
     margin: 10px;
 }
 

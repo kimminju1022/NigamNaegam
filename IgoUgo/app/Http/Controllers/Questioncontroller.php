@@ -53,6 +53,7 @@ class QuestionController extends Controller
     
     // 유저 1:1 문의 내역
     public function showMyQuestion($id){
+        // Log::debug('showMyQuestion', $id);
         $bcType = '2';
         $questionList = Board::with(['questions', 'users', 'board_categories'])
                                 ->where('user_id', $id)
@@ -64,6 +65,8 @@ class QuestionController extends Controller
         //     $item->created_at = Carbon::parse($item->create_at)->format('Y-m-d');
         //     return $item;
         // }
+        
+        // Log::debug($questionList);
 
         $responseData = [
             'success' => true
@@ -126,6 +129,7 @@ class QuestionController extends Controller
 
     // 게시글 수정 처리
     public function update(BoardRequest $request) {
+        Log::debug('q_update', $request->all());
         $board = Board::find($request->board_id);
 
         if($board->board_title !== $request->board_title) {
