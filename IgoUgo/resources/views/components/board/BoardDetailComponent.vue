@@ -61,7 +61,7 @@
             </div> -->
             <div v-if="boardComment" class="replylist-comment">
                 <span>{{ boardComment.comments.comment_content }}</span>
-                <span>{{ boardComment. }}</span>
+                <!-- <span>{{ boardComment. }}</span> -->
                 <span></span>
             </div>
             <div class="pagination-btn">

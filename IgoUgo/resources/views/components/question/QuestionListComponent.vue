@@ -2,9 +2,12 @@
     <div class="container">
         <h1>문의게시판</h1>
         <div class="board-head">
-                <!-- <input v-model="search" type="text" placeholder="검색어를 입력해 주세요"> -->
-                <input type="text" placeholder="검색어를 입력해 주세요">
-                <button class="btn bg-navy board-search-btn">검색</button>
+            <!-- <input v-model="search" type="text" placeholder="검색어를 입력해 주세요"> -->
+            <input type="text" placeholder="검색어를 입력해 주세요">
+            <button class="btn bg-navy board-search-btn">검색</button>
+            <div class="board-create-btn">
+                <router-link to="/questions/create"><button class="btn bg-navy">작성</button></router-link>
+            </div>
         </div>
         <div class="board-box">
             <div class="board-title">
@@ -77,7 +80,6 @@
     <!-- 페이지네이션 -->
     <div class="footer-box">
         <PaginationComponent :actionName="actionName" :searchData="searchData" />
-        <router-link to="/questions/create"><button class="btn bg-navy board-create-btn">작성</button></router-link>
     </div>
 </template>
 <script setup>
@@ -113,7 +115,7 @@ onBeforeMount(() => {
 .board-head{
     display: flex;
     justify-content: flex-end;
-    gap: 30px;
+    gap: 20px;
 }
 
 .board-head > input {
@@ -138,7 +140,7 @@ onBeforeMount(() => {
     border-bottom: 2px solid #01083a;
     max-width: 1250px;
     min-width: 500px;
-    margin: 40px 0;
+    margin: 40px auto;
     font-size: 18px;
 }
 
@@ -184,6 +186,10 @@ onBeforeMount(() => {
     padding: 0 10px;
 }
 
+.board-content-box > .board-content > :nth-child(3){
+    text-align: left;
+}
+
 .reply-yet {
     color: red;
 }
@@ -193,39 +199,15 @@ onBeforeMount(() => {
 }
 
 .board-create-btn{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.board-create-btn button {
+    font-size: 18px;
     border-radius: 20px;
     width: 70px;
-    height: 30px;
-    margin-top: -30px;
-}
-
-/* .footer-box :nth-child(2){
-    display: flex;
-    align-content: flex-end;
-} */
-
-/* ****************** pagination 불러오면 삭제하기 ****************** */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    /* margin-top: 30px; */
-}
-
-.pagination button {
-    font-size: 20px;
-    border-radius: 50px;
-    width: 40px;
-    height: 40px;
-    /*  */
-    /* border: 2px solid #01083a; */
     text-align: center;
+    height: 33px;
 }
-
-.pagination button:hover, .pagination button:active {
-    color: #fff;
-    background: #01083a;
-}
-/* ****************** pagination 불러오면 삭제하기 ****************** */
 </style>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,8 +31,12 @@ class Board extends Model
      * @return String('Y-m-d H:i:s')
      */
     protected function serializeDate(\DateTimeInterface $date) {
-        // return $date->format('Y-m-d');
-        return $date->format('Y-m-d H:i:s');
+        $today = Carbon::instance($date)->isToday();
+        if($today) {
+            return $date->format('H:i');
+        } else {
+            return $date->format('Y-m-d');
+        }
     }
 
     public function users() {
@@ -49,8 +54,12 @@ class Board extends Model
     public function comments() {
         return $this->hasMany(Comment::class, 'board_id', 'board_id');
     }
+
     public function questions() {
         return $this->hasOne(Question::class, 'board_id', 'board_id');
     }
 
+    public function likes() {
+        return $this->hasMany(Like::class, 'board_id', 'board_id')->where('like_flg', 1);
+    }
 }

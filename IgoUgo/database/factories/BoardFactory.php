@@ -18,7 +18,7 @@ class BoardFactory extends Factory
      */
     public function definition()
     {
-        $user = User::select('user_id')->inRandomOrder()->first();
+        $user = User::select('user_id', 'created_at')->inRandomOrder()->first();
         $bc_type = BoardCategory::select('bc_type')->inRandomOrder()->first();
 
         $date = $this->faker->dateTimeBetween($user->created_at, now());

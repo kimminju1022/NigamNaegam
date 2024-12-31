@@ -152,25 +152,12 @@
             <div class="main-popular-review">
                 <h3>리뷰</h3>
                 <div class="main-popular-box">
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
-                    </div>
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
-                    </div>
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
-                    </div>
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
+                    <div v-for="item in boardReview" :key="item" class="main-card">
+                        <div class="main-card-img">
+                            <img :src="item.board_img1">
+                        </div>
+                        <p>{{ item.board_title }}</p>
+                        <p>작성자 : {{ item.users.user_nickname }}</p>
                     </div>
                 </div>
             </div>
@@ -178,25 +165,12 @@
             <div class="main-popular-free">
                 <h3>자유</h3>
                 <div class="main-popular-box">
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
-                    </div>
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
-                    </div>
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
-                    </div>
-                    <div class="main-card">
-                        <img src="default/profile_default.png">
-                        <p>리뷰 제목</p>
-                        <p>작성자 닉네임</p>
+                    <div v-for="item in boardFree" :key="item" class="main-card">
+                        <div class="main-card-img">
+                            <img :src="item.board_img1">
+                        </div>
+                        <p>{{ item.board_title }}</p>
+                        <p>작성자 : {{ item.users.user_nickname }}</p>
                     </div>
                 </div>
             </div>
@@ -252,7 +226,7 @@
 
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -262,6 +236,13 @@ import 'swiper/css/scrollbar';
 
 // Import required modules
 import { Pagination, Navigation, Scrollbar, Autoplay } from 'swiper/modules';
+import { useStore } from 'vuex';
+import board from '../../js/store/modules/board';
+
+const store = useStore();
+
+const boardReview = computed(() => store.state.board.boardReview);
+const boardFree = computed(() => store.state.board.boardFree);
 
 // Register Swiper modules
 const modules = [Pagination, Navigation, Scrollbar, Autoplay];
@@ -272,6 +253,11 @@ const flgSetup = () => {
 }
 onBeforeMount(() => {
     flgSetup();
+
+    store.dispatch('board/boardReview');
+    store.dispatch('board/boardFree');
+    // console.log('1Review', boardReview.value);
+    // console.log('test', store.state.board.boardReview);
 });
 window.addEventListener('resize', flgSetup);
 </script>
@@ -522,7 +508,7 @@ window.addEventListener('resize', flgSetup);
     place-items: center;
 }
 
-.main-together-list img, .main-popular-container img {
+.main-together-list img {
     max-width: 220px;
     max-height: 220px;
 }
@@ -557,7 +543,7 @@ window.addEventListener('resize', flgSetup);
 }
 
 .main-popular-review {
-    border-top: 1px solid #000;
+    border-top: 1px solid #856969;
 }
 
 .main-popular-review h3, .main-popular-free h3 {
@@ -575,10 +561,22 @@ window.addEventListener('resize', flgSetup);
     border: 1px solid #01083a;
     /* border-radius: 10px; */
     min-width: 200px;
+    /* display: flex;
+    flex-direction: column;
+    align-content: space-between; */
     display: grid;
-    grid-template-rows: 7fr 1fr 1fr;
-    align-items: center;
-    padding: 5px;
+    grid-template-rows: 270px 1.5fr 1fr;
+    gap: 10px;
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding: 5px 5px 0 5px;
+}
+
+.main-card-img img {
+    object-fit: cover;
+    max-width: 285px;
+    max-height: 250px;
+
 }
 
 /* 공지사항 부분 */

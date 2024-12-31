@@ -18,4 +18,12 @@ class Like extends Model
         ,'user_id'
         ,'like_flg'
     ];
+    
+    public function boards() {
+        return $this->belongsTo(Board::class, 'board_id', 'board_id');
+    }
+    
+    public function users() {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

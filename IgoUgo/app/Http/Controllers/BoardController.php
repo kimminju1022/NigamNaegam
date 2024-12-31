@@ -124,4 +124,42 @@ class BoardController extends Controller
 
     //     return response()->json($responseData, 200);
     // }
+
+    // 게시판 리뷰 top4
+    public function showReview(){
+        $boardReview = Board::select('board_title', 'board_img1', 'user_id')
+                                ->withCount('likes')
+                                ->with(['users', 'likes'])
+                                ->where('bc_type', 0)
+                                ->groupBy('board_id', 'board_title', 'board_img1', 'user_id')
+                                ->orderBy('likes_count','DESC')
+                                ->limit(4)
+                                ->get();
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>'게시글 리스트 획득 성공'
+            ,'boardReview' => $boardReview->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // 게시판 자유 top4
+    public function showFree(){
+        $boardReview = Board::select('board_title', 'board_img1', 'user_id')
+                                ->withCount('likes')
+                                ->with(['users', 'likes'])
+                                ->where('bc_type', 1)
+                                ->groupBy('board_id', 'board_title', 'board_img1', 'user_id')
+                                ->orderBy('likes_count','DESC')
+                                ->limit(4)
+                                ->get();
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>'게시글 리스트 획득 성공'
+            ,'boardReview' => $boardReview->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
 }

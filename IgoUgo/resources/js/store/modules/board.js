@@ -11,8 +11,10 @@ export default {
         boardArea:'',
         bcType: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
         boardComment:null,
+        boardReview: [],
+        boardFree: [],
     }),
-    _mutations: {
+    mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
         setBcType(state, bcType) {
             state.bcType = bcType;
@@ -36,6 +38,15 @@ export default {
         setBoardComment(state, boardComment) {
             state.boardComment = boardComment;
         },
+        setBoardReview(state, boardReview) {
+            state.boardReview = boardReview;
+        },
+        setBoardFree(state, boardFree) {
+            state.boardFree = boardFree;
+        },
+    },
+    actions: {
+
         // 댓글가져오기
         showComment(context, id) {
             const url = '/api/boards/'+id;
@@ -52,15 +63,7 @@ export default {
             .catch(error => {
                 console.error(error);
             });   
-        }
-    },
-    get mutations() {
-        return this._mutations;
-    },
-    set mutations(value) {
-        this._mutations = value;
-    },
-    actions: {
+        },
         /** 게시글획득
          *  @param{*} context
          * @param{int} id
@@ -78,8 +81,8 @@ export default {
                     context.commit('setBoardTitle', response.data.boardTitle);
                     context.commit('setBoardList', response.data.boardList.data);
                     context.commit('pagination/setPagination', response.data.boardList, {root: true});
-                    context.commit('setboardCategories', response.data.boarCategoryBctype.data);
-                    context.commit('setboardCategoryArea', response.data.boardCategoryArea.data);
+                    // context.commit('setboardCategories', response.data.boardCategoryBctype.data);
+                    // context.commit('setboardCategoryArea', response.data.boardCategoryArea.data);
 
                     return resolve();
                 })
@@ -175,6 +178,33 @@ export default {
             axios.get(url)
             .then()
             .catch();
+        },
+
+        boardReview(context) {
+            const url = '/api/boards/review';
+
+            axios.get(url)
+            .then(response => {
+                // console.log('boardReview',response.data);
+                // console.log('boardReview', response.data.boardReview);
+                context.commit('setBoardReview', response.data.boardReview);
+            })
+            .catch(error => {
+                console.log(error.response);
+            });
+        },
+
+        boardFree(context) {
+            const url = '/api/boards/free';
+
+            axios.get(url)
+            .then(response => {
+                // console.log('boardFree',response.data);
+                context.commit('setBoardFree', response.data.boardReview);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            });
         },
     },
     getters: {

@@ -15,5 +15,23 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        
+        $this->call([
+            UserSeeder::class
+            ,AreaSeeder::class
+            ,FestivalSeeder::class
+            ,HotelSeeder::class
+            ,HotelCategorySeeder::class
+            ,HotelInfoSeeder::class
+            ,ProductSeeder::class
+            ,BoardCategorySeeder::class
+            ,BoardSeeder::class
+            ,CommentSeeder::class
+            ,LikeSeeder::class
+            ,QuestionSeeder::class
+            ,ReviewCategorySeeder::class
+            ,ReviewSeeder::class
+        ]);
     }
 }
