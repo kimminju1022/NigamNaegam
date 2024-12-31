@@ -8,6 +8,7 @@ export default {
         productList: [],
         productArea: [],
         productCnt: '',
+        productImg: [],
         productDetail: {}
     }),
     mutations: {
@@ -22,6 +23,9 @@ export default {
         },
         setProductCnt(state, data) {
             state.productCnt = data;
+        },
+        setProductImg(state, data) {
+            state.productImg = data;
         },
         setProductDetail(state, data) {
             state.productDetail = data;
@@ -89,8 +93,10 @@ export default {
 
                 axios.get(url, config)
                 .then(response => {
-                    context.commit('setProductDetail', response.data.response.body.items.item[0]);
-                    console.log(productDetail);
+                    const productImgs = response.data.productImg.response.body.items.item;
+                    const imgs = productImgs.map((item) => item.originimgurl);
+                    context.commit('setProductImg', imgs);
+                    context.commit('setProductDetail', response.data.productDetail.response.body.items.item[0]);
                     return resolve();
                 })
                 .catch(error => {

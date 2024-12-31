@@ -52,12 +52,13 @@ class ProductMainController extends Controller
         return response()->json($areas);
     }
 
-    public function productDetail($id) {
-        $url = 'http://apis.data.go.kr/B551011/KorService1/detailImage1';
+    public function productDetail($contenttypeid, $id) {
+        $url1 = 'http://apis.data.go.kr/B551011/KorService1/detailImage1';
+        $url2 = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
         $serviceKey = env('API_KEY');
 
         // HTTP 요청
-        $productDetail = Http::get($url, [
+        $response1 = Http::get($url1, [
             'serviceKey' => $serviceKey,
             'MobileOS' => 'ETC',
             'MobileApp' => 'IgoUgo',
@@ -66,13 +67,38 @@ class ProductMainController extends Controller
             'imageYN' => 'Y',
             'subImageYN' => 'Y',
         ]);
-        $resultCode = $productDetail->header('resultCode');
+        $resultCode1 = $response1->header('resultCode');
 
-        if($productDetail->failed() && $resultCode !== '0000') {
-            throw new \Exception('API 받아오기 실패'. $productDetail->status());
+        if($response1->failed() && $resultCode1 !== '0000') {
+            throw new \Exception('API 받아오기 실패'. $response1->status());
         }
+
+        $response2 = Http::get($url2, [
+            'serviceKey' => $serviceKey,
+            'MobileOS' => 'ETC',
+            'MobileApp' => 'IgoUgo',
+            '_type' => 'json',
+            'contentTypeId' => $contenttypeid,
+            'contentId' => $id,
+            'defaultYN' => 'Y',
+            'firstImageYN' => 'Y',
+            'addrinfoYN' => 'Y',
+            'mapinfoYN' => 'Y',
+            'overviewYN' => 'Y',
+        ]);
+        $resultCode = $response2->header('resultCode');
+
+        if($response2->failed() && $resultCode !== '0000') {
+            throw new \Exception('API 받아오기 실패'. $response2->status());
+        }
+
+        $productImg = $response1->json();
+        $productDetail = $response2->json();
         
-        return response()->json($productDetail->json());
+        return response()->json([
+            'productImg' => $productImg,
+            'productDetail' => $productDetail,
+        ]);
     }
     // public function productDetail($contenttypeid, $id) {
     //     $url = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
