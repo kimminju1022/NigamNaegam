@@ -23,15 +23,15 @@
                         <div class="detail-img">
                             <img class="img-big" :src="productDetail.firstimage" alt="">
                             <div class="detail_img-right">
-                                <img class="img-middle" :src="productImg[0]" alt="">
-                                <img class="img-middle" :src="productImg[1]" alt="">
+                                <img class="img-middle" :src="productImg[0] === undefined ? '/default/board_default.png' : productImg[0]" :class="{'img-contain':productImg[0] === undefined}" alt="">
+                                <img class="img-middle" :src="productImg[1] === undefined ? '/default/board_default.png' : productImg[1]" :class="{'img-contain':productImg[1] === undefined}" alt="">
                             </div>
                         </div>
                         <div class="detail-five">
-                            <img class="img-small" :src="productImg[2]" alt="">
-                            <img class="img-small" :src="productImg[3]" alt="">
-                            <img class="img-small" :src="productImg[4]" alt="">
-                            <img class="img-small" :src="productImg[5]" alt="">
+                            <img class="img-small" :src="productImg[2] === undefined ? '/default/board_default.png' : productImg[2]" :class="{'img-contain':productImg[2] === undefined}" alt="">
+                            <img class="img-small" :src="productImg[3] === undefined ? '/default/board_default.png' : productImg[3]" :class="{'img-contain':productImg[3] === undefined}" alt="">
+                            <img class="img-small" :src="productImg[4] === undefined ? '/default/board_default.png' : productImg[4]" :class="{'img-contain':productImg[4] === undefined}" alt="">
+                            <img class="img-small" :src="productImg[5] === undefined ? '/default/board_default.png' : productImg[5]" :class="{'img-contain':productImg[5] === undefined}" alt="">
                         </div>
                     </div>
                     <div>
@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import env from '../../../js/env';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
@@ -60,6 +60,10 @@ const route = useRoute();
 const productImg = computed(() => store.state.product.productImg);
 const productDetail = computed(() => store.state.product.productDetail);
 
+// 상품 위도, 경도
+const productLat = ref(null);
+const productLng = ref(null);
+
 // 상품 컨텐츠타입id랑 컨텐츠id
 const findData = reactive({
     contenttypeid: route.params.contenttypeid,
@@ -68,15 +72,19 @@ const findData = reactive({
 
 onBeforeMount(async () => {
     await store.dispatch('product/takeProductDetail', findData);
+    productLat.value = productDetail.value.mapx;
+    productLng.value = productDetail.value.mapy;
 });
 
 // let map = reactive(null);
 const isMapReady = ref(false); // 지도 로딩 여부 상태
-const map = ref(null); // 지도 객체를 저장
+var map = ref(null); // 지도 객체를 저장
 
 onMounted(() => {
     if (window.kakao && window.kakao.maps) {
-        loadKakaoMap();
+        if (productLat.value && productLng.value) {
+            loadKakaoMap();
+        }
     } else {
         loadKakaoMapScript();
     }
@@ -86,61 +94,90 @@ onMounted(() => {
 const loadKakaoMapScript = () => {
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
-    script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+    // script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+    script.onload = () => window.kakao.maps.load(() => {
+        if(productLat.value && productLng.value) {
+            loadKakaoMap();
+        }
+    });
 
     document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
 }
 
 // 카카오맵 화면에 로드
 const loadKakaoMap = () => {
-    const container = document.getElementById("map");
-    // #map 요소가 존재할 때만 지도를 초기화화
-    if(container) {
-        const options = {
-            center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
+    var container = document.getElementById("map");
+    console.log("Lat:", productLat.value, "Lng:", productLng.value);    
+    // #map 요소가 존재할 때만 지도를 초기화
+    if(container && productLat.value && productLng.value) {
+        var options = {
+            center: new window.kakao.maps.LatLng(productLat.value, productLng.value), 
+            // center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
             // draggable: false,
             level: 5
         };
-        
         map.value = new window.kakao.maps.Map(container, options);
         isMapReady.value = true; // 지도 로드 완료
-        loadMaker();
+        // loadMaker();
+    } else {
+        console.log("지도 데이터를 로드할 수 없습니다. productLat 또는 productLng가 null입니다.");
     }
-}
+};
+
+// 값 변경 감지
+watch([productLat, productLng], ([newLat, newLng]) => {
+    if (newLat && newLng) {
+        loadKakaoMap();
+    }
+});
 
 // 카카오맵 마커 생성
-const loadMaker = () => {
-    if(map.value) {
-        // 주소-좌표 변환 객체를 생성합니다
-        const geocoder = new window.kakao.maps.services.Geocoder();
+// const loadMaker = () => {
+//     if(map.value) {
+//         const marker = {
+//             position: new kakao.maps.LatLng(productLat, productLng),
+//             text: productDetail.title
+//         };
 
-        // 주소로 좌표를 검색합니다
-        geocoder.addressSearch('대구 중구 동성로1길 15', function(result, status) {
+//         const mapOption = {
+//             center: new kakao.maps.LatLng(productLat, productLng),
+//             level: 3,
+//             marker: marker
+//         };
 
-            // console.log(result) // 주소 위도경도 콘솔로그
-            // 정상적으로 검색이 완료됐으면 
-            if (status === window.kakao.maps.services.Status.OK) {
+//         map.value = new kakao.maps.StaticMap(map, mapOption);
 
-                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
-                // 결과값으로 받은 위치를 마커로 표시합니다
-                const marker = new window.kakao.maps.Marker({
-                    map: map.value,
-                    position: coords
-                });
+//         // // 주소-좌표 변환 객체를 생성합니다
+//         // const geocoder = new window.kakao.maps.services.Geocoder();
 
-                // 인포윈도우로 장소에 대한 설명을 표시합니다
-                const infowindow = new window.kakao.maps.InfoWindow({
-                    content: '<div style="width:150px;text-align:center;padding:6px 0;">토요코인호텔 동성로점</div>'
-                });
-                infowindow.open(map.value, marker);
+//         // // 주소로 좌표를 검색합니다
+//         // geocoder.addressSearch('대구 중구 동성로1길 15', function(result, status) {
 
-                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-                map.value.setCenter(coords);
-            } 
-        });   
-    }
-}
+//         //     // console.log(result) // 주소 위도경도 콘솔로그
+//         //     // 정상적으로 검색이 완료됐으면 
+//         //     if (status === window.kakao.maps.services.Status.OK) {
+
+//         //         const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+//         //         // 결과값으로 받은 위치를 마커로 표시합니다
+//         //         const marker = new window.kakao.maps.Marker({
+//         //             map: map.value,
+//         //             position: coords
+//         //         });
+
+//         //         // 인포윈도우로 장소에 대한 설명을 표시합니다
+//         //         const infowindow = new window.kakao.maps.InfoWindow({
+//         //             content: '<div style="width:150px;text-align:center;padding:6px 0;">토요코인호텔 동성로점</div>'
+//         //         });
+//         //         infowindow.open(map.value, marker);
+
+//         //         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+//         //         map.value.setCenter(coords);
+//         //     } 
+//         // });   
+//     }
+// }
 // // 버튼 클릭에 따라 지도 이동 기능을 막거나 풀고 싶은 경우에는 map.setDraggable 함수를 사용합니다
 // function setDraggable(draggable) {
 //     // 마우스 드래그로 지도 이동 가능여부를 설정합니다
@@ -221,6 +258,10 @@ const loadMaker = () => {
     background-repeat: no-repeat;
     object-fit: cover;
 }
+/* 기본 이미지 설정 */
+.img-contain {
+    object-fit: contain;
+}
 
 /* 지도지도 */
 #map {
@@ -245,6 +286,10 @@ const loadMaker = () => {
 }
 .detail-content-content {
     line-height: 30px;
+}
+
+a {
+    color: #000;
 }
 
 @media (max-width: 1000px) {
