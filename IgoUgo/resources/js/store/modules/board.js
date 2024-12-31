@@ -10,6 +10,8 @@ export default {
         boardCategories:'',
         boardArea:'',
         bcType: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
+        boardImg1:{},
+        boardImg2:{},
         boardComment:null,
         boardReview: [],
         boardFree: [],

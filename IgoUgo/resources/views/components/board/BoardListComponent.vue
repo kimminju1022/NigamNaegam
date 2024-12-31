@@ -1,6 +1,7 @@
 <template>
     <h2 style="margin: 30px 0; font-size: 3rem;">
-        {{ boardTitle }}
+        {{ boardTitle }} » 
+        <!-- {{ selectArea }} -->
     </h2>
     <div class="board-head">
         <div class="board-category">
@@ -11,8 +12,13 @@
                 <option value="2">힐링</option>
                 <option value="3">쇼핑</option>       
             </select>
-            <select name="select-category" class="bg-clear btn select-category">
-                <option disabled hidden selected>지역</option>
+            <select class="bg-clear btn select-category">
+                <!-- v-model="selectArea" -->
+                <!-- <option v-for="(item,index) in selectListArea" :key="item.value" :value="item.value">
+                    {{ item.area_name }}
+                </option>
+            -->
+                <!-- <option disabled hidden selected>지역</option>
                 <option value="0">서울</option>
                 <option value="1">인천</option>
                 <option value="2">대전</option>
@@ -29,7 +35,7 @@
                 <option value="13">경남</option>
                 <option value="14">전북</option>
                 <option value="15">전남</option>        
-                <option value="16">제주</option>        
+                <option value="16">제주</option>         -->
             </select>
         </div>
         <div id="board-search-tb">
@@ -44,15 +50,15 @@
     <div class="board-list">
         <!-- 리스트 헤드 -->
         <div class="board-li-title">
-            <span>번호</span>
-            <span v-show="$store.state.board.bcType !== 1">지역</span>
-            <span>제목</span>
-            <span>닉네임</span>
-            <span>작성일자</span>
-            <span>좋아요</span>
-            <span>조회수</span>
+            <p>번호</p>
+            <p v-show="$store.state.board.bcType !== 1">지역</p>
+            <p>제목</p>
+            <p>닉네임</p>
+            <p>작성일자</p>
+            <p>좋아요</p>
+            <p>조회수</p>
         </div>
-        <!-- [관리자자]] 리스트 목록 -->
+        <!-- [관리자] 리스트 목록 -->
         <div>
             <div id="board-li-notice" >
                 <div id="board-li-item">
@@ -103,7 +109,7 @@
                 </div>
             </div>
 
-            <!-- [유저저] 리스트 시작 -->
+            <!-- [유저] 리스트 시작 -->
             <div v-for="item in boardList" :key="item" id="board-li-item">
                 <p>{{ item.board_id }}</p>
                 <!-- v-if="item.board_type === 1" hidden -->
@@ -136,7 +142,38 @@ const boardTitle = computed(() => store.state.board.boardTitle);
 // boardlist
 const boardList = computed(() => store.state.board.boardList);
 
-// -------------------------------
+// selectbox(categories, area)---------
+// categories
+
+// area
+// data(){
+//     return{
+//         selectArea:"",
+//         selectListArea: [
+//             {name: "--지역선택--", value:""},
+//             {name: 서울, value="0"},
+//             {name: 인천, value="1"},
+//             {name: 대전, value="2"},
+//             {name: 세종, value="3"},
+//             {name: 대구, value="4"},
+//             {name: 광주, value="5"},
+//             {name: 부산, value="6"},
+//             {name: 울산, value="7"},
+//             {name: 경기, value="8"},
+//             {name: 강원, value="9"},
+//             {name: 충북, value="10"},
+//             {name: 충남, value="11"},
+//             {name: 경북, value="12"},
+//             {name: 경남, value="13"},
+//             {name: 전북, value="14"},
+//             {name: 전남, value="15"},
+//             {name: 제주, value="16"},
+//         ],
+//     };
+// };
+
+
+// // -------------------------------
 // 페이지네이션 관련
 const actionName = 'board/getBoardListPagination';
 const searchData = reactive({
