@@ -8,6 +8,8 @@ export default {
         hotelArea: [],
         hotelCategory: [],
         count: [],
+        hotelDetail: [],
+        hotelDetailImg: [],
     }),
     mutations: {
         setHotelList(state, list) {
@@ -22,6 +24,12 @@ export default {
         setCount(state, list) {
             state.count = list;
         },
+        setHotelDetail(state, list) {
+            state.hotelDetail = list;
+        },
+        setHotelDetailImg(state, list) {
+            state.hotelDetailImg = list;
+        }
     },
     actions: {
         getHotelsPagination(context, data) {
@@ -36,9 +44,9 @@ export default {
                     context.commit('setHotelList', response.data.data);
                     // 페이지 저장
                     context.commit('setCount', response.data.total);
-                    console.log(response.data.total);
+                    // console.log(response.data.total);
                     context.commit('pagination/setPagination', response.data, {root: true});
-                    console.log(response.data);
+                    // console.log(response.data);
                     return resolve();
                 })
                 .catch(error => {
@@ -67,7 +75,7 @@ export default {
 
         getHotelsCategory(context) {
             return new Promise((resolve, reject) => {
-                const url = '/api/category';
+                const url = '/api/categories';
 
                 axios.get(url)
                 .then(response => {
@@ -79,7 +87,31 @@ export default {
                     return reject();
                 });
             });
-        }
+        },
+
+        getHotelsDetail(context, findData) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/hotels/' + findData.contentid;
+                const config = {
+                    params: findData
+                };
+
+                axios.get(url, config)
+                .then(response => {
+                    const hotelImgs = response.data.hotelsImg.response.body.items.item;
+                    const imgs = hotelImgs.map((item) => item.originimgurl);
+                    context.commit('setHotelDetail', response.data.hotelsDetail.response.body.items.item[0]);
+                    context.commit('setHotelDetailImg', imgs);
+                    // console.log(response.data.hotelsDetail.response.body.items.item[0])
+                    // console.log(imgs)
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject();
+                });
+            });
+        },
     },
     getters: {
 

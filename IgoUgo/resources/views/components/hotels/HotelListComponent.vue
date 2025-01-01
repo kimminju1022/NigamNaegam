@@ -7,11 +7,11 @@
             <div class="right-small-container select-result-box">
                 <h2><span class="font-blue">{{ $store.state.hotel.count }}</span> 개의 결과</h2>
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
-                    <div v-for="code in serchData.area_code" :key="code" class="select-list-item">
+                    <div v-for="code in searchData.area_code" :key="code" class="select-list-item">
                         <p>{{ getAreaNameWithAreaCode(code) }}</p>
                         <img src="img_product/img_x.png" @click="closeFilter(code)" class="img-x">
                     </div>
-                    <div v-for="type in serchData.hc_type" :key="type" class="select-list-item">
+                    <div v-for="type in searchData.hc_type" :key="type" class="select-list-item">
                         <p>{{ getHcNameWithHcType(type) }}</p>
                         <img src="img_product/img_x.png" @click="closeFilter(type)" class="img-x">
                     </div>
@@ -54,15 +54,19 @@
             <div>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div class="card-list">
-                    <div v-for="item in hotels" :key="item" class="card">
-                        <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
-                        <p class="font-bold card-title">{{ item.title }}</p>
+                    <div v-for="item in hotels" :key="item" >
+                        <router-link :to="route.path + '/' + item.contentid">
+                            <div class="card">
+                                <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
+                                <p class="font-bold card-title">{{ item.title }}</p>
+                            </div>
+                        </router-link>
                     </div>
                 </div>
                 <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
 
                 <!-- 페이지네이션 -->
-                <PaginationComponent :actionName="actionName" :serchData="serchData" />
+                <PaginationComponent :actionName="actionName" :searchData="searchData" />
             </div>
         </div>
     </div> 
@@ -77,7 +81,7 @@
 
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelArea" :key="item">
-                    <input v-model="serchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
+                    <input v-model="searchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
                     <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
@@ -85,7 +89,7 @@
             <p class="modal-region-text2 font-bold">카테고리</p>
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
-                    <input v-model="serchData.hc_type" :value="item.hc_type"  @change="updateFilters()" class="modal-input" type="checkbox" :id="'input2-' + item.hc_type">
+                    <input v-model="searchData.hc_type" :value="item.hc_type"  @change="updateFilters()" class="modal-input" type="checkbox" :id="'input2-' + item.hc_type">
                     <label :for="'input2-' + item.hc_type">{{ item.hc_name }}</label>
                 </div>
             </div>
@@ -103,18 +107,20 @@
 <script setup>
 import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
 
-
 const store = useStore();
+const route = useRoute();
 
+// console.log(route.path);
 // 호텔 리스트 관련
 // const count = computed(() => store.getters['model/itemCount']);
 const hotels = computed(() => store.state.hotel.hotelList);
 const actionName = 'hotel/getHotelsPagination';
 
 // 필터 관련
-const serchData = reactive({
+const searchData = reactive({
     page: store.state.pagination.currentPage,
     area_code: [],
     hc_type: [],
@@ -129,9 +135,9 @@ const flgSetup = () => {
 }
 onBeforeMount(async () => {
     flgSetup(); // 리사이즈 이벤트
-    await store.dispatch(actionName, serchData);
-    await store.dispatch('hotel/getHotelsArea', serchData);
-    await store.dispatch('hotel/getHotelsCategory', serchData);
+    await store.dispatch(actionName, searchData);
+    await store.dispatch('hotel/getHotelsArea', searchData);
+    await store.dispatch('hotel/getHotelsCategory', searchData);
     // console.log('카운트되나?',count.value)
 });
 
@@ -142,19 +148,19 @@ window.addEventListener('resize', flgSetup);
 // const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
 function updateFilters() {
-    serchData.page = 1;
-    store.dispatch('hotel/getHotelsPagination', serchData);
+    searchData.page = 1;
+    store.dispatch('hotel/getHotelsPagination', searchData);
 }
 
 function closeFilter(value) {
-    // console.log(serchData.area_code);
-    serchData.area_code = serchData.area_code.filter(
+    // console.log(searchData.area_code);
+    searchData.area_code = searchData.area_code.filter(
         (item) => item !== value
     );
-    serchData.hc_type = serchData.hc_type.filter(
+    searchData.hc_type = searchData.hc_type.filter(
         (item) => item !== value
     )
-    store.dispatch('hotel/getHotelsPagination', serchData);
+    store.dispatch('hotel/getHotelsPagination', searchData);
     // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
 

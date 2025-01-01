@@ -7,6 +7,7 @@ use App\Models\Hotel;
 use App\Models\HotelCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class HotelController extends Controller
@@ -31,7 +32,7 @@ class HotelController extends Controller
                 });                                        
             })
             ->whereNotNull('hotels.firstimage') // 사진있는것만 가져오기
-            ->select('hotel_id', 'title', 'firstimage') // 호텔아이디, 호텔이름, 사진만 가져오기
+            ->select('hotel_id', 'title', 'firstimage', 'contentid') // 호텔아이디, 호텔이름, 사진만 가져오기
             ->orderBy('createdtime', 'desc')    // 파일 업로드한날로 최신순으로 정렬
             ->paginate(32); // 페이지네이션
 
@@ -90,6 +91,54 @@ class HotelController extends Controller
         // ->paginate(32);
 
         return response()->json($hotels);
+    }
+    public function hotelsDetail($getContentId) {
+        Log::debug($getContentId);
+        $API_KEY = env('API_KEY');
+        $url = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
+        $urlImg = 'http://apis.data.go.kr/B551011/KorService1/detailImage1';
+
+        $getHotelsDetail = Http::get($url, [
+            'MobileOS' => 'ETC',
+            'MobileApp' => 'IgoUgo',
+            'serviceKey' => $API_KEY,
+            'contentId' => $getContentId,
+            'defaultYN' => 'Y',
+            'firstImageYN' => 'Y',
+            'overviewYN' => 'Y',
+            'addrinfoYN' => 'Y',
+            '_type' => 'json',            
+        ]);
+
+        $resultCode = $getHotelsDetail->header('resultCode');
+
+        if($getHotelsDetail->failed() && $resultCode !== '0000') {
+            throw new \Exception('API 받아오기 실패'. $getHotelsDetail->status());
+        }
+
+        $getHotelsImg = Http::get($urlImg, [
+            'MobileOS' => 'ETC',
+            'MobileApp' => 'IgoUgo',
+            'serviceKey' => $API_KEY,
+            'contentId' => $getContentId,
+            'imageYN' => 'Y',
+            'subImageYN' => 'Y',
+            '_type' => 'json',  
+        ]);
+
+        $resultCodeImg = $getHotelsImg->header('resultcode');
+
+        if($getHotelsImg->failed() && $resultCodeImg !== '0000') {
+            throw new \Exception('API 받아오기 실패'. $getHotelsDetail->status());
+        }
+
+        $hotelsDetail = $getHotelsDetail->json();
+        $hotelsImg = $getHotelsImg->json();
+
+        return response()->json([
+            'hotelsDetail' => $hotelsDetail,
+            'hotelsImg' => $hotelsImg,
+        ]);
     }
 
     public function areas(Request $request) {

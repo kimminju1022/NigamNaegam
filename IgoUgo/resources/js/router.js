@@ -95,7 +95,7 @@ const routes = [
         component: HotelMapComponent,
     },
     {
-        path: '/hotels/detail',
+        path: '/hotels/:contentid',
         component: HotelListDetailComponent,
     },
     // 상품

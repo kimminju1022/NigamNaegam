@@ -28,7 +28,8 @@ Route::get('/testdata', [TestController::class, 'index']);
 // 호텔리스트 라우터
 Route::get('/hotels', [HotelController::class, 'hotels']);
 Route::get('/areas', [HotelController::class, 'areas']);
-Route::get('/category', [HotelController::class, 'categories']);
+Route::get('/categories', [HotelController::class, 'categories']);
+Route::get('/hotels/{contentid}', [HotelController::class, 'hotelsDetail']);
 
 // ----- 상품 관련 -----
 // 상품 메인 라우터
