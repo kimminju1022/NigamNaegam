@@ -62,4 +62,8 @@ class Board extends Model
     public function likes() {
         return $this->hasMany(Like::class, 'board_id', 'board_id')->where('like_flg', 1);
     }
+
+    public function reviews() {
+        return $this->hasOne(Review::class, 'board_id', 'board_id');
+    }
 }

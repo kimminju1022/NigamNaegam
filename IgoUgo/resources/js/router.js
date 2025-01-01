@@ -111,6 +111,7 @@ const routes = [
         path: '/products/:contenttypeid/:id',
         component: ProductDetailComponent,
     },
+    // 게시판
     {
         path: '/boards',
         component: BoardListComponent,

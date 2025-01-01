@@ -148,16 +148,15 @@
         
         <div class="main-popular-container">
             <h2>현재 인기글</h2>
-            <!-- <hr> -->
             <div class="main-popular-review">
                 <h3>리뷰</h3>
                 <div class="main-popular-box">
                     <div v-for="item in boardReview" :key="item" class="main-card">
-                        <div class="main-card-img">
+                        <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
                             <img :src="item.board_img1">
-                        </div>
-                        <p>{{ item.board_title }}</p>
-                        <p>작성자 : {{ item.users.user_nickname }}</p>
+                            <p>{{ item.board_title }}</p>
+                            <p>작성자 : {{ item.users.user_nickname }}</p>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -166,11 +165,11 @@
                 <h3>자유</h3>
                 <div class="main-popular-box">
                     <div v-for="item in boardFree" :key="item" class="main-card">
-                        <div class="main-card-img">
+                        <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
                             <img :src="item.board_img1">
-                        </div>
-                        <p>{{ item.board_title }}</p>
-                        <p>작성자 : {{ item.users.user_nickname }}</p>
+                            <p>{{ item.board_title }}</p>
+                            <p>작성자 : {{ item.users.user_nickname }}</p>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -299,7 +298,9 @@ window.addEventListener('resize', flgSetup);
     font-weight: normal;
     font-style: normal;
 } */
-
+a, a:visited {
+    color: #000;
+}
 /* 전체를 감싸는 컨테이너 */
 .main-page-container {
     display: flex;
@@ -501,7 +502,7 @@ window.addEventListener('resize', flgSetup);
 
 .main-together-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
     margin: 50px 0;
     padding: 10px;
@@ -528,6 +529,17 @@ window.addEventListener('resize', flgSetup);
     place-items: center;
 }
 
+.main-ppl-container img {
+    position: relative;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.main-ppl-container img:hover {
+    transform: translateY(-10px);
+    box-shadow: 2px 2px 20px #ddd;
+}
+
 .main-ppl-container img{
     height: 400px;
 }
@@ -543,7 +555,7 @@ window.addEventListener('resize', flgSetup);
 }
 
 .main-popular-review {
-    border-top: 1px solid #856969;
+    border-top: 1px solid #4c4c4c;
 }
 
 .main-popular-review h3, .main-popular-free h3 {
@@ -552,31 +564,46 @@ window.addEventListener('resize', flgSetup);
 
 .main-popular-box {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
 }
 
 /* 카드 공통 */
 .main-card {
-    border: 1px solid #01083a;
-    /* border-radius: 10px; */
-    min-width: 200px;
-    /* display: flex;
-    flex-direction: column;
-    align-content: space-between; */
-    display: grid;
-    grid-template-rows: 270px 1.5fr 1fr;
-    gap: 10px;
-    /* align-items: center; */
-    /* justify-content: center; */
-    padding: 5px 5px 0 5px;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    /* min-width: 180px; */
+    position: relative;
+    transition: 0.2s ease-in-out;
 }
 
-.main-card-img img {
-    object-fit: cover;
-    max-width: 285px;
-    max-height: 250px;
+.main-card:hover {
+    transform: translateY(-10px);
+    cursor: pointer;
+    box-shadow: 2px 2px 20px #ddd;
+}
 
+.main-card-content {
+    
+    display: grid;
+    grid-template-rows: 200px 90px 40px;
+    gap: 10px;
+}
+
+.main-card img {
+    object-fit: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    max-height: 200px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.main-card p {
+    width: 90%;
+    margin: 0 auto;
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
 }
 
 /* 공지사항 부분 */
@@ -612,7 +639,7 @@ window.addEventListener('resize', flgSetup);
 .announcement-info {
     padding: 10px;
     border-radius: 10px; 
-    box-shadow: 3px 3px 10px rgba(114, 114, 114, 0.7);
+    box-shadow: 2px 2px 15px rgba(175, 175, 175, 0.7);
 }
 
 .announcement-info-qna {
@@ -653,6 +680,7 @@ hr {
     grid-template-columns: 1fr 4fr;
     gap: 30px;
     padding: 0 30px;
+    color: #4c4c4c;
 }
 
 /* ---------- 반응형 ---------- */

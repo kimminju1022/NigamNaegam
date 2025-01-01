@@ -3,8 +3,9 @@
     <div class="board-create-head">
         <h2>{{ boardTitle }} </h2>
         <div class="form-box">
-            <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link>
-            <button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button>
+            <!-- <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link> -->
+            <!-- <router-link to="/boards"><button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button></router-link> -->
+            <router-link to="/boards"><button class="btn bg-clear board-create-btn">취소</button></router-link>
             <button class="btn bg-navy board-create-btn" @click="doneConfirm">완료</button>
         </div>
     </div>
@@ -13,17 +14,17 @@
     <div class="board-selectContainer">
         <div class="select-boardType">
             <h3></h3>
-            <select name="board-categories" id="board-categories">
+            <select name="boardType" class="board-categories">
                 <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
                 <option disabled hidden selected>--게시판선택--</option>
-                <option value="1">리뷰게시판</option>
-                <option value="2">자유게시판</option>
+                <option value="0">리뷰게시판</option>
+                <option value="1">자유게시판</option>
             </select>
         </div>
         <hr>
         <div class="board-selectType">
             <h3 class="board-category">유형
-                <select name="sub-categories" id="board-categories">
+                <select v-model="selectedCategory" name="category" class="board-categories">
                     <option disabled hidden selected>--유형선택--</option>
                     <option value="0">맛집</option>
                     <option value="1">액티비티</option>
@@ -32,7 +33,7 @@
                 </select>
             </h3>
             <h3 class="board-category">지역
-                <select name="sub-categories" id="board-categories">
+                <select v-model="selectedArea" name="area" class="board-categories">
                     <option disabled hidden selected>--지역선택--</option>
                     <option value="0">서울</option>
                     <option value="1">인천</option>
@@ -54,27 +55,27 @@
                 </select>
             </h3>
             <!--  v-for="searchItem in searchKeyword"  -->
-            <div id="board-search-tb">
+            <!-- <div id="board-search-tb">
                 <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
                 <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
-            </div>
+            </div> -->
             <!-- 별점 -->
             <div class="board-starGrade">
                 <h3>별점</h3>
                 <div class="star-grade">
-                    <input type="radio" name="rating" id="star-1" class="star" value="1">
+                    <input type="radio" name="rating" id="star-1" class="star" value="1" v-model="selectedRate">
                     <label for="star-1" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-2" class="star" value="2">
+                    <input type="radio" name="rating" id="star-2" class="star" value="2" v-model="selectedRate">
                     <label for="star-2" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-3" class="star" value="3">
+                    <input type="radio" name="rating" id="star-3" class="star" value="3" v-model="selectedRate">
                     <label for="star-3" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-4" class="star" value="4">
+                    <input type="radio" name="rating" id="star-4" class="star" value="4" v-model="selectedRate">
                     <label for="star-4" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-5" class="star" value="5">
+                    <input type="radio" name="rating" id="star-5" class="star" value="5" v-model="selectedRate">
                     <label for="star-5" class="star-label"></label>
                 </div>
             </div>
@@ -89,14 +90,25 @@
         <hr>
         <div class="board-create-file">
             <h3 class="board-create-fileChoice">파일첨부</h3>
-            <input @change="setFile" type="file" name="file" accept="imge/*">
+            <input @change="setFile1" type="file" name="board_img1" accept="imge/*">
+            <input @change="setFile2" type="file" name="board_img2" accept="imge/*">
         </div>            
         <!--미리보기 삭제기능추가 -->
         <div class="board-imgPreview">
-            <img :src="previewImage.img">
-            <button @click="deleteImg" class="btn btn-navy btn-imgBtn">✖</button>
+            <!-- <img :src="previewImage.img">
+            <button @click="deleteImg" class="btn btn-navy btn-imgBtn">✖</button> -->
+            <!-- <input @change="setFile1" type="file" name="board_img1" accept="image/*">
+            <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
+            <div class="img-preview">
+                <img :src="preview1">
+                <button @click="clearFile1" v-show="preview1" class="btn bg-clear">X</button>
+            </div>
+            <div class="img-preview">
+                <img :src="preview2">
+                <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
+            </div>
         </div>
-        <img src={{}} alt="">
+        <!-- <img src="" alt=""> -->
         <hr>
         <textarea v-model="boardInfo.content" name="content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
         <hr>
@@ -112,56 +124,95 @@ import board from '../../../js/store/modules/board';
 import { useStore } from 'vuex';
 
 const store = useStore();
+
+// *******************
+
+// const selectedCategory = ref('')
+// const selectedArea = ref('')
+// const selectedRate = ref('')
+
+const selectedCategory = ref(null);
+const selectedArea = ref(null);
+const selectedRate = ref(null);
+
 const boardInfo = reactive({
-    content: ''
-    ,file: ''
-})
-const preview = ref('');
+    board_title: ''
+    ,board_content: ''
+    ,board_img1: null
+    ,board_img2: null
+    ,area_code: selectedArea.value
+    ,rc_type: selectedCategory.value
+    ,rate: selectedRate.value
+});
+
+
+const preview1 = ref('');
+const preview2 = ref('');
 
 const boardTitle = computed(() => store.state.board.boardTitle);
 
-// 
-const setFile = (e) => {
-    boarInfo.file= e.target.files[0];
-    preview.value = URL.createObjectURL(boarInfo.file);
+const setFile1 = (e) => {
+    boardInfo.board_img1 = e.target.files[0];
+    preview1.value = URL.createObjectURL(boardInfo.board_img1);
 }
 
-const cancelConfirm = () =>{
-    const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
-    if (userResponse) {
-        router.push('/boards');
-    }
+const setFile2 = (e) => {
+    boardInfo.board_img2 = e.target.files[0];
+    preview2.value = URL.createObjectURL(boardInfo.board_img2);
 }
-const doneConfirm = () =>{
-    const userResponse = confirm('작성을 완료하시겠습니까?');
-    if (userResponse) {
-        router.push('/boards/detail',boardInfo);
-        // 이때, post로 정보 전달해줘야함...어떻게?
-    }
+
+const clearFile1 = () => {
+    boardInfo.board_img1 = null;
+    preview1.value = null;
 }
+
+const clearFile2 = () => {
+    boardInfo.board_img2 = null;
+    preview2.value = null;
+}
+
+// *******************
+
+
+
+
+// const cancelConfirm = () =>{
+//     const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
+//     if (userResponse) {
+//         router.push('/boards');
+//     }
+// }
+// const doneConfirm = () =>{
+//     const userResponse = confirm('작성을 완료하시겠습니까?');
+//     if (userResponse) {
+//         router.push('/boards/detail',boardInfo);
+//         // 이때, post로 정보 전달해줘야함...어떻게?
+//     }
+// }
+
 // 사진 업로드 미리보기
-const previewImage = ref<String>('')
+// const previewImage = ref<String>('')
 
-const changeImage = (event) => {
-    const files = event.target?.files
-    if(files.length>0){
-        const file = files[0]
-        // FileReader:데이터 읽고 저장하는 기능
-        const reader = new FileReader
-        // 로딩완료되면 실행하는 기능
-        reader.onload = (e) => {
-            // previewImage값 변경하는 기능
-            previewImage.value = e.target.result
-        }
-        reader.readAsDataURL(file)
-    }
-}
+// const changeImage = (event) => {
+//     const files = event.target?.files
+//     if(files.length>0){
+//         const file = files[0]
+//         // FileReader:데이터 읽고 저장하는 기능
+//         const reader = new FileReader
+//         // 로딩완료되면 실행하는 기능
+//         reader.onload = (e) => {
+//             // previewImage값 변경하는 기능
+//             previewImage.value = e.target.result
+//         }
+//         reader.readAsDataURL(file)
+//     }
+// }
 // 검색관련
-const searchItem= ref<String>('')
+// const searchItem= ref<String>('')
 
-const searchKeyword = (event) => {
+// const searchKeyword = (event) => {
 
-}
+// }
 
 // 모달 시러시러 예쁜모달 만들고 싶다...별점똥 좋아요똥똥
 // export default {
@@ -335,7 +386,7 @@ const searchKeyword = (event) => {
     resize: none;
     align-items: center;
 }
-#board-categories{
+.board-categories{
     width: 200px;
     border: none;
     border-bottom: solid 1px #01083a;

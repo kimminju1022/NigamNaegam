@@ -69,6 +69,7 @@ Route::middleware('my.auth')->group(function() {
     Route::put('/password/{id}', [UserController::class, 'updatePW'])->name('password.update');
 
     // 게시판 관련
+    Route::post('/boards',[BoardController::class, 'store']);
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
     Route::put('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
     // 댓글관련 생성예정

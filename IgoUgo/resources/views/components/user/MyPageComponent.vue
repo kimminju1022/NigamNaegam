@@ -269,11 +269,12 @@ const deletemodal = (userInfo) => {
 }
 
 .my-profile-update-btn :nth-child(2) button:hover {
-    /* background-color: rgb(133, 177, 218);
-    color: #01083a; */
-    background-color: #7e7e85;
+    /* background-color: #7e7e85;
     color: #ffffff;
-    transition: ease-in-out 0.3s;
+    transition: ease-in-out 0.3s; */
+    color: #01083a;
+    background-color: #fff;
+    border: 2px solid #01083a;
 }
 
 /* 탈퇴 버튼 */

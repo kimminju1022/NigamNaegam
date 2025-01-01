@@ -24,4 +24,16 @@ class Review extends Model
         'rc_type',
         'rate',
     ];
+
+    public function review_categories() {
+        return $this->belongsTo(ReviewCategory::class, 'rc_type', 'rc_type');
+    }
+
+    public function boards() {
+        return $this->belongsTo(Board::class, 'board_id', 'board_id');
+    }
+
+    public function areas() {
+        return $this->belongsTo(Area::class, 'area_code', 'area_code');
+    }
 }

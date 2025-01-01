@@ -20,4 +20,8 @@ class ReviewCategory extends Model
         'rc_name',
         'rc_type',
     ];
+
+    public function reviews() {
+        return $this->hasOne(Review::class, 'rc_type', 'rc_type');
+    }
 }

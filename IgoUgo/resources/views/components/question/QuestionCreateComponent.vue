@@ -112,6 +112,12 @@ const clearFile2 = () => {
     justify-content: center;
 }
 
+.header-btn:hover{
+    color: #01083a;
+    background-color: #fff;
+    border: 2px solid #01083a;
+}
+
 .board-box {
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;

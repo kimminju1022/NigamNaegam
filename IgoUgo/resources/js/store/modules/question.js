@@ -89,9 +89,13 @@ export default {
             }
             const formData = new FormData();
             formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);
-            formData.append('board_img1', data.file1 || '/default/board_default.png');
-            formData.append('board_img2', data.file2 || '/default/board_default.png');
+            formData.append('board_content', data.board_content);            
+            if(data.board_img1) {
+                formData.append('board_img1', data.board_img1);
+            }
+            if(data.board_img2) {
+                formData.append('board_img2', data.board_img2);
+            }
 
             axios.post(url, formData, config)
             .then(response => {

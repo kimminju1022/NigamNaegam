@@ -155,11 +155,14 @@ class QuestionController extends Controller
     public function destroy($id) {
         $board = Board::with('questions')
                         ->find($id);
+
         $board->delete();
 
-        // $question = Question::where('board_id', $id)
-        //                     ->find();
-        // $question->delete();
+        $question = Question::with('boards')
+                                ->where('board_id', $id)
+                                ->first();
+                                
+        $question->delete();
 
         $responseData = [
             'success' => true

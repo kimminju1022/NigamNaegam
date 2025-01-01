@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BoardRequest;
 use App\Models\Board;
 use App\Models\BoardCategory;
 use App\Models\Comment;
+use App\Models\Review;
 use Database\Seeders\AreaSeeder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use MyToken;
 
 // 컨트롤러 이하 모두 에러 상태로 지우거나 주석처리됨 수정예정
 class BoardController extends Controller
@@ -127,7 +130,7 @@ class BoardController extends Controller
 
     // 게시판 리뷰 top4
     public function showReview(){
-        $boardReview = Board::select('board_title', 'board_img1', 'user_id')
+        $boardReview = Board::select('board_title', 'board_img1', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 ->with(['users', 'likes'])
                                 ->where('bc_type', 0)
@@ -146,7 +149,7 @@ class BoardController extends Controller
 
     // 게시판 자유 top4
     public function showFree(){
-        $boardReview = Board::select('board_title', 'board_img1', 'user_id')
+        $boardFree = Board::select('board_title', 'board_img1', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 ->with(['users', 'likes'])
                                 ->where('bc_type', 1)
@@ -158,8 +161,48 @@ class BoardController extends Controller
         $responseData = [
             'success' => true
             ,'msg' =>'게시글 리스트 획득 성공'
-            ,'boardReview' => $boardReview->toArray()
+            ,'boardFree' => $boardFree->toArray()
         ];
+        return response()->json($responseData, 200);
+    }
+
+    // 게시글 작성
+    public function store(BoardRequest $request) {
+        $insertData = $request->only('board_title','board_content');
+        $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+        $insertData['view_cnt'] = 0;
+        $insertData['bc_type'] = $request->bc_type;
+
+        if ($request->hasFile('board_img1')) {
+            $insertData['board_img1'] = $request->file('board_img1')->store('img');
+        } else {
+            $insertData['board_img1'] = '/default/board_default.png';
+        }
+
+        if ($request->hasFile('board_img2')) {
+            $insertData['board_img2'] = $request->file('board_img2')->store('img');
+        } else {
+            $insertData['board_img2'] = '/default/board_default.png';
+        }
+
+        $board = Board::create($insertData);
+
+        if($request->bc_type === '0') {
+            $insertReview['board_id'] = $board->board_id;
+            $insertReview['area_code'] = $request->area_code;
+            $insertReview['rc_type'] = $request->rc_type;
+            $insertReview['rate'] = $request->rate;
+            
+            $review = Review::create($insertReview);
+        }
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '게시글 작성 성공'
+            ,'board' => $board->toArray()
+            ,'review' => isset($review) ? $review->toArray() : null
+        ];
+
         return response()->json($responseData, 200);
     }
 }

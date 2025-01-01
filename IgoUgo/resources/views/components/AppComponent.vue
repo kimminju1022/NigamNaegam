@@ -526,7 +526,7 @@ header {
 /* 푸터푸터 */
 footer {
     height: 230px;
-    background-color: #01083a;
+    background-color: #e0e0e0;
     position: relative;
     transform: translateY(0%);
     display: grid;
@@ -561,7 +561,7 @@ footer {
 }
 
 .footer-text {
-    color: #ffff;
+    color: #3f3f3f;
     font-size: 15px;
     letter-spacing: 1px;
     white-space: nowrap;
@@ -579,7 +579,7 @@ footer {
 
 .copy-right {
     font-size: 13px;
-    color: #fff;
+    color: #3f3f3f;
     margin: 10px 0;
     text-align: center;
     /* width: 400px; */
@@ -794,7 +794,7 @@ footer {
     
     footer {
         height: 230px;
-        background-color: #01083a;
+        background-color: #c9c9c9;
         position: relative;
         transform: translateY(0%);
         display: grid;

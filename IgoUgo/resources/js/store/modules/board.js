@@ -117,12 +117,36 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             };
-            const FormData = new FormData();
-            formData.append('content', data.content);
-            formData.append('file', data.file);
+            const formData = new FormData();
+            formData.append('bc_type', data.bc_type);
+            formData.append('board_title', data.board_title);
+            formData.append('board_content', data.board_content);
+            if(data.board_img1) {
+                formData.append('board_img1', data.board_img1);
+            }
+            if(data.board_img2) {
+                formData.append('board_img2', data.board_img2);
+            }
+            // 리뷰게시판일 경우
+            if(data.area_code) {
+                formData.append('area_code', data.area_code);
+            }
+            if(data.rc_type) {
+                formData.append('area_code', data.rc_type);
+            }
+            if(data.rate) {
+                formData.append('area_code', data.rate);
+            }
 
             axios.post(url,formData, config)
-            .then()
+            .then(response => {
+                console.log(response.data.boards);
+                console.log(response.data.reviewa);
+                
+                context.commit('setQuestionList', response.data.data);
+                
+                router.replace('/boards');
+            })
             .catch();
     },
         postBoardCreate(context){
@@ -202,7 +226,7 @@ export default {
             axios.get(url)
             .then(response => {
                 // console.log('boardFree',response.data);
-                context.commit('setBoardFree', response.data.boardReview);
+                context.commit('setBoardFree', response.data.boardFree);
             })
             .catch(error => {
                 console.log(error.response.data);
