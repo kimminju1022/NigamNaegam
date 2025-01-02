@@ -45,9 +45,9 @@
                         <img src="img_product/img_filter.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
+                    <div @click="openmodalMap" class="order-list-item">
                         <img src="img_product/img_placeholder.png" class="img-map">
-                        <router-link to=""><p>지도 보기</p></router-link>
+                        <p>지도 보기</p>
                     </div>
                 </div>
             </div>
@@ -99,16 +99,18 @@
     <!-- 호텔 모달 -->
     <div v-if="isVisibleMap" class="modal-overlay">
         <div class="modal-content-map">
-            <p>ahekfahekf</p>
+            <img @click="closemodalMap" class="modal_x_img modal_x_img_position" src="/img_product/img_x.png" alt="">
+            <div id="map"></div>
         </div>
     </div>
 </template>
     
 <script setup>
-import { computed, onBeforeMount, reactive, ref} from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
+import env from '../../../js/env';
 
 const store = useStore();
 const route = useRoute();
@@ -192,10 +194,47 @@ function closemodal() {
 
 function openmodalMap() {
     isVisibleMap.value = true;
+    if (window.kakao && window.kakao.maps) {
+        loadKakaoMap();
+    } else {
+        loadKakaoMapScript();
+    }
 }
 
 function closemodalMap() {
     isVisibleMap.value = false;
+}
+
+// 지도지도
+let map = null;
+
+// onMounted(() => {
+//     if (window.kakao && window.kakao.maps) {
+//         loadKakaoMap();
+//     } else {
+//         loadKakaoMapScript();
+//     }
+// });
+
+// 카카오맵 스크립트 다운로드
+const loadKakaoMapScript = () => {
+    const script = document.createElement('script');
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
+    script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+
+    document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+}
+
+// 카카오맵 화면에 로드
+const loadKakaoMap = () => {
+    const container = document.getElementById("map"); 
+    const options = {
+        center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
+        level: 3
+    };
+
+    map = new window.kakao.maps.Map(container, options);
+    console.log(map);
 }
 
 
@@ -493,8 +532,16 @@ function closemodalMap() {
 
     /* 지도 모달모달 */
     .modal-content-map {
-        width: 300px;
-        height: 300px;
+        display: grid;
+        grid-template-rows: 40px 1fr;
+        width: 1100px;
+        height: 800px;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .modal_x_img_position {
+        justify-self: end;
     }
     
     /* 미디어쿼리 */
