@@ -112,38 +112,48 @@
             <h2>같이 갈래? 나랑! 너랑?</h2>
             <hr>
             <div class="main-together-list">
-                <div class="together-card">
-                    <p>관광지</p>
-                    <img src="default/board_default.png">
-                    <p>제목</p>
+                <div class="main-card">
+                    <router-link :to="`/products/12/${productRandom.spot.contentid}`" class="main-card-content">
+                        <img :src="productRandom.spot.firstimage">
+                        <p class="type-title">관광지</p>
+                        <p>{{ productRandom.spot.title }}</p>
+                    </router-link>
                 </div>
-                <div class="together-card">
-                    <p>문화시설</p>
-                    <img src="default/board_default.png">
-                    <p>제목</p>
+                <div class="main-card">
+                    <router-link :to="`/products/12/${productRandom.culture.contentid}`" class="main-card-content">
+                        <img :src="productRandom.culture.firstimage">
+                        <p class="type-title">문화시설</p>
+                        <p>{{ productRandom.culture.title }}</p>
+                    </router-link>
                 </div>
-                <div class="together-card">
-                    <p>레포츠</p>
-                    <img src="default/board_default.png">
-                    <p>제목</p>
+                <div class="main-card">
+                    <router-link :to="`/products/12/${productRandom.sports.contentid}`" class="main-card-content">
+                        <img :src="productRandom.sports.firstimage">
+                        <p class="type-title">레포츠</p>
+                        <p>{{ productRandom.sports.title }}</p>
+                    </router-link>
                 </div>
-                <div class="together-card">
-                    <p>쇼핑</p>
-                    <img src="default/board_default.png">
-                    <p>제목</p>
+                <div class="main-card">
+                    <router-link :to="`/products/12/${productRandom.shopping.contentid}`" class="main-card-content">
+                        <img :src="productRandom.shopping.firstimage">
+                        <p class="type-title">쇼핑</p>
+                        <p>{{ productRandom.shopping.title }}</p>
+                    </router-link>
                 </div>
-                <div class="together-card">
-                    <p>음식점</p>
-                    <img src="default/board_default.png">
-                    <p>제목</p>
+                <div class="main-card">
+                    <router-link :to="`/products/12/${productRandom.restaurant.contentid}`" class="main-card-content">
+                        <img :src="productRandom.restaurant.firstimage">
+                        <p class="type-title">음식점</p>
+                        <p>{{ productRandom.restaurant.title }}</p>
+                    </router-link>
                 </div>
             </div>
         </div>
         
         <div class="main-ppl-container">
-            <a href="https://stolantern.com/photo/photo_history"><img src="/img_main/seoul_light_festival.png"></a>
-            <a href="https://www.dtmsa.or.kr/"><img src="/img_main/daegu_market.png"></a>
-            <a href="https://ramenfestival.co.kr/introduce"><img src="/img_main/ramen.png"></a>
+            <a href="https://stolantern.com/photo/photo_history" target="_blank"><img src="/img_main/seoul_light_festival.png"></a>
+            <a href="https://www.dtmsa.or.kr/" target="_blank"><img src="/img_main/daegu_market.png"></a>
+            <a href="https://ramenfestival.co.kr/introduce" target="_blank"><img src="/img_main/ramen.png"></a>
         </div>
         
         <div class="main-popular-container">
@@ -227,7 +237,7 @@
 
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -238,12 +248,12 @@ import 'swiper/css/scrollbar';
 // Import required modules
 import { Pagination, Navigation, Scrollbar, Autoplay } from 'swiper/modules';
 import { useStore } from 'vuex';
-import board from '../../js/store/modules/board';
 
 const store = useStore();
 
 const boardReview = computed(() => store.state.board.boardReview);
 const boardFree = computed(() => store.state.board.boardFree);
+const productRandom = computed(() => store.state.product.productRandom);
 
 // Register Swiper modules
 const modules = [Pagination, Navigation, Scrollbar, Autoplay];
@@ -254,9 +264,10 @@ const flgSetup = () => {
 }
 onBeforeMount(() => {
     flgSetup();
-
+    
     store.dispatch('board/boardReview');
     store.dispatch('board/boardFree');
+    store.dispatch('product/takeProductRandom');
     // console.log('1Review', boardReview.value);
     // console.log('test', store.state.board.boardReview);
 });
@@ -473,7 +484,7 @@ a, a:visited {
     color: #01083a;
     margin-bottom: 65px;
     margin-left: 1090px;
-    width: 70px;
+    width: 105px;
 }
 /* 스크롤 */
 .swiper-scrollbar {
@@ -492,11 +503,11 @@ a, a:visited {
 }
 
 /* 같이할래 부분 */
-/* .main-together-container {
+.main-together-container {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
-} */
+}
 
 .main-page-container h2, .main-page-container h3 {
     margin-bottom: 20px;
@@ -506,22 +517,23 @@ a, a:visited {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
-    margin: 50px 0;
+    /* margin: 50px 0; */
     padding: 10px;
     place-items: center;
 }
 
-.main-together-list img {
+/* .main-together-list img {
     max-width: 220px;
     max-height: 220px;
+} */
+
+.type-title {
+    font-size: 20px;
 }
 
-.together-card :first-child {
-    font-size: 21px;
-}
-
-.together-card :last-child {
-    font-size: 18px;
+.type-title + p {
+    font-size: 25px;
+    font-weight: 900;
 }
 
 /* 광고 관련 */
