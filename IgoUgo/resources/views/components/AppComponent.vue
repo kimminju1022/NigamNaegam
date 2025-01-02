@@ -265,6 +265,7 @@ const redirectBoards = async (bcType) => {
 
 a {
     text-decoration: none;
+    color: #01083a;
     cursor: pointer;
 }
 
