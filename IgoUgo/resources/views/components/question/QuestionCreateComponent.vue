@@ -47,22 +47,22 @@ const preview1 = ref('');
 const preview2 = ref('');
 
 const setFile1 = (e) => {
-    question.file1 = e.target.files[0];
-    preview1.value = URL.createObjectURL(question.file1);
+    question.board_img1 = e.target.files[0];
+    preview1.value = URL.createObjectURL(question.board_img1);
 }
 
 const setFile2 = (e) => {
-    question.file2 = e.target.files[0];
-    preview2.value = URL.createObjectURL(question.file2);
+    question.board_img2 = e.target.files[0];
+    preview2.value = URL.createObjectURL(question.board_img2);
 }
 
 const clearFile1 = () => {
-    question.file1 = null;
+    question.board_img1 = null;
     preview1.value = null;
 }
 
 const clearFile2 = () => {
-    question.file2 = null;
+    question.board_img2 = null;
     preview2.value = null;
 }
 

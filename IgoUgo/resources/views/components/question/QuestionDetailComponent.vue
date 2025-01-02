@@ -22,7 +22,7 @@
                         <img :src="questionDetail.board_img1">
                         <img :src="questionDetail.board_img2">
                     </div>
-                    <textarea readonly>{{ questionDetail.board_content }}</textarea>
+                    <p>{{ questionDetail.board_content }}</p>
                     <div class="board-user">
                         <p>닉네임 : {{ questionDetail.users.user_nickname }}</p>
                         <p>{{ questionDetail.created_at }}</p>

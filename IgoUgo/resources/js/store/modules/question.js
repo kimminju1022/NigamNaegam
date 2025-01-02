@@ -80,7 +80,7 @@ export default {
 
         // 게시글 작성
         storeQuestion(context, data) {
-            const url = '/api/questions'
+            const url = '/api/questions';
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',

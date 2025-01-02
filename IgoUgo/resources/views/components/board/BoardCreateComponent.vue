@@ -1,81 +1,196 @@
 <template>
-    <!-- 작동btn  [목록과 취소가 같은것 아닐까?] -->
-    <div class="board-create-head">
-        <h2>{{ boardTitle }} </h2>
+    <div class="container">
+        <!-- <div class="board-create-head"> -->
+        <!-- <h2>{{ boardTitle }}</h2> -->
+        <!-- <h1>게시판 작성</h1>
         <div class="form-box">
-            <!-- <router-link to="/boards"><button class="btn bg-clear board-create-btn">목록</button></router-link> -->
-            <!-- <router-link to="/boards"><button class="btn bg-clear board-create-btn" @click="cancelConfirm">취소</button></router-link> -->
             <router-link to="/boards"><button class="btn bg-clear board-create-btn">취소</button></router-link>
-            <button class="btn bg-navy board-create-btn" @click="doneConfirm">완료</button>
+            <button class="btn bg-navy board-create-btn" @click="$store.dispatch('board/storeBoard', boardInfo)">완료</button>
+        </div> -->
+        <h1>게시판 작성</h1>
+        <div class="header-btn-box"> 
+            <router-link :to="'/boards'"><button class="btn bg-navy header-btn">취소</button></router-link>
+            <button @click="$store.dispatch('board/storeBoard', question)" class="btn bg-navy header-btn">완료</button>
+        </div>
+        <div class="board-box">  
+            <div class="board-selectContainer">
+                <div class="select-boardType">
+                    <p>게시판</p>
+                    <select v-model="boardInfo.bc_type" name="bc_type" class="board-categories">
+                        <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
+                        <option disabled hidden selected>--게시판선택--</option>
+                        <option value="0">리뷰게시판</option>
+                        <option value="1">자유게시판</option>
+                    </select>
+                </div>
+                <hr>
+                <div v-show="boardInfo.bc_type === '0'" class="board-selectType">
+                    <h3 class="board-category">유형
+                        <select v-model="boardInfo.rc_type" name="rc_type" class="board-categories">
+                            <option disabled hidden selected>--유형선택--</option>
+                            <option value="0">숙박</option>
+                            <option value="1">맛집</option>
+                            <option value="2">관광</option>
+                            <option value="3">문화</option>
+                            <option value="4">레포츠</option>
+                            <option value="5">쇼핑</option>
+                        </select>
+                    </h3>
+                    <h3 class="board-category">지역
+                        <select v-model="boardInfo.area_code" name="area_code" class="board-categories">
+                            <option disabled hidden selected>--지역선택--</option>
+                            <option value="1">서울</option>
+                            <option value="2">인천</option>
+                            <option value="3">대전</option>
+                            <option value="4">대구</option>
+                            <option value="5">광주</option>
+                            <option value="6">부산</option>
+                            <option value="7">울산</option>
+                            <option value="8">세종</option>
+                            <option value="31">경기</option>
+                            <option value="32">강원</option>
+                            <option value="33">충북</option>
+                            <option value="34">충남</option>
+                            <option value="35">경북</option>
+                            <option value="36">경남</option>
+                            <option value="37">전북</option>
+                            <option value="38">전남</option>
+                            <option value="39">제주</option>
+                        </select>
+                    </h3>
+                    <!--  v-for="searchItem in searchKeyword"  -->
+                    <!-- <div id="board-search-tb">
+                        <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+                        <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
+                    </div> -->
+                    <!-- 별점 -->
+                    <div class="board-starGrade">
+                        <h3>별점</h3>
+                        <div class="star-grade">
+                            <input type="radio" name="rate" id="star-1" class="star" value="1" v-model="boardInfo.rate">
+                            <label for="star-1" class="star-label"></label>
+            
+                            <input type="radio" name="rate" id="star-2" class="star" value="2" v-model="boardInfo.rate">
+                            <label for="star-2" class="star-label"></label>
+            
+                            <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
+                            <label for="star-3" class="star-label"></label>
+            
+                            <input type="radio" name="rate" id="star-4" class="star" value="4" v-model="boardInfo.rate">
+                            <label for="star-4" class="star-label"></label>
+            
+                            <input type="radio" name="rate" id="star-5" class="star" value="5" v-model="boardInfo.rate">
+                            <label for="star-5" class="star-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div class="board-title-box">
+                <p>제목</p>
+                <input v-model="boardInfo.board_title" type="text" name="board_title">
+            </div>
+            <div class="board-img">
+                <p>파일 첨부</p>
+                <div class="board-img-content">
+                    <input @change="setFile1" type="file" name="board_img1" accept="image/*">
+                    <input @change="setFile2" type="file" name="board_img2" accept="image/*">
+                    <div class="img-preview">
+                        <img :src="preview1">
+                        <button @click="clearFile1" v-show="preview1" class="btn bg-clear">X</button>
+                    </div>
+                    <div class="img-preview">
+                        <img :src="preview2">
+                        <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
+                    </div>
+                </div>
+            </div>
+            <div class="board-content">
+                <p>내용</p>
+                <textarea v-model="boardInfo.board_content" name="board_content"></textarea>
+            </div>
+        </div>
+
+
+
+    <!-- <h2>{{ boardTitle }}</h2> -->
+    <!-- <div class="board-create-head">
+        <h1>게시판 작성</h1>
+        <div class="form-box">
+            <router-link to="/boards"><button class="btn bg-clear board-create-btn">취소</button></router-link>
+            <button class="btn bg-navy board-create-btn" @click="$store.dispatch('board/storeBoard', boardInfo)">완료</button>
         </div>
     </div>
-    <hr>
+    <hr> -->
     <!-- 선택박스 -->
-    <div class="board-selectContainer">
+    <!-- <div class="board-selectContainer">
         <div class="select-boardType">
             <h3></h3>
-            <select name="boardType" class="board-categories">
+            <select v-model="boardInfo.bc_type" name="bc_type" class="board-categories"> -->
                 <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
-                <option disabled hidden selected>--게시판선택--</option>
+                <!-- <option disabled hidden selected>--게시판선택--</option>
                 <option value="0">리뷰게시판</option>
                 <option value="1">자유게시판</option>
             </select>
         </div>
         <hr>
-        <div class="board-selectType">
+        <div v-show="boardInfo.bc_type === '0'" class="board-selectType">
             <h3 class="board-category">유형
-                <select v-model="selectedCategory" name="category" class="board-categories">
+                <select v-model="boardInfo.rc_type" name="rc_type" class="board-categories">
                     <option disabled hidden selected>--유형선택--</option>
-                    <option value="0">맛집</option>
-                    <option value="1">액티비티</option>
-                    <option value="2">힐링</option>
-                    <option value="3">쇼핑</option>
+                    <option value="0">숙박</option>
+                    <option value="1">맛집</option>
+                    <option value="2">관광</option>
+                    <option value="3">문화</option>
+                    <option value="4">레포츠</option>
+                    <option value="5">쇼핑</option>
                 </select>
             </h3>
             <h3 class="board-category">지역
-                <select v-model="selectedArea" name="area" class="board-categories">
+                <select v-model="boardInfo.area_code" name="area_code" class="board-categories">
                     <option disabled hidden selected>--지역선택--</option>
-                    <option value="0">서울</option>
-                    <option value="1">인천</option>
-                    <option value="2">대전</option>
-                    <option value="3">세종</option>
+                    <option value="1">서울</option>
+                    <option value="2">인천</option>
+                    <option value="3">대전</option>
                     <option value="4">대구</option>
                     <option value="5">광주</option>
                     <option value="6">부산</option>
                     <option value="7">울산</option>
-                    <option value="8">경기</option>
-                    <option value="9">강원</option>
-                    <option value="10">충북</option>
-                    <option value="11">충남</option>
-                    <option value="12">경북</option>
-                    <option value="13">경남</option>
-                    <option value="14">전북</option>
-                    <option value="15">전남</option>
-                    <option value="16">제주</option>
+                    <option value="8">세종</option>
+                    <option value="31">경기</option>
+                    <option value="32">강원</option>
+                    <option value="33">충북</option>
+                    <option value="34">충남</option>
+                    <option value="35">경북</option>
+                    <option value="36">경남</option>
+                    <option value="37">전북</option>
+                    <option value="38">전남</option>
+                    <option value="39">제주</option>
                 </select>
-            </h3>
+            </h3> -->
             <!--  v-for="searchItem in searchKeyword"  -->
             <!-- <div id="board-search-tb">
                 <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
                 <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
             </div> -->
             <!-- 별점 -->
-            <div class="board-starGrade">
+            <!-- <div class="board-starGrade">
                 <h3>별점</h3>
                 <div class="star-grade">
-                    <input type="radio" name="rating" id="star-1" class="star" value="1" v-model="selectedRate">
+                    <input type="radio" name="rate" id="star-1" class="star" value="1" v-model="boardInfo.rate">
                     <label for="star-1" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-2" class="star" value="2" v-model="selectedRate">
+                    <input type="radio" name="rate" id="star-2" class="star" value="2" v-model="boardInfo.rate">
                     <label for="star-2" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-3" class="star" value="3" v-model="selectedRate">
+                    <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
                     <label for="star-3" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-4" class="star" value="4" v-model="selectedRate">
+                    <input type="radio" name="rate" id="star-4" class="star" value="4" v-model="boardInfo.rate">
                     <label for="star-4" class="star-label"></label>
     
-                    <input type="radio" name="rating" id="star-5" class="star" value="5" v-model="selectedRate">
+                    <input type="radio" name="rate" id="star-5" class="star" value="5" v-model="boardInfo.rate">
                     <label for="star-5" class="star-label"></label>
                 </div>
             </div>
@@ -85,21 +200,21 @@
     <div class="board-create-container">
         <div class="board-create-title">
             <h3 style="margin-left: 10px;">제목</h3>
-            <input type="text" name="title" placeholder="제목을 적어주세요" maxlength="100">
+            <input v-model="boardInfo.board_title" type="text" name="board_title" placeholder="제목을 적어주세요" maxlength="100">
         </div>
         <hr>
         <div class="board-create-file">
             <h3 class="board-create-fileChoice">파일첨부</h3>
             <input @change="setFile1" type="file" name="board_img1" accept="imge/*">
             <input @change="setFile2" type="file" name="board_img2" accept="imge/*">
-        </div>            
+        </div>             -->
         <!--미리보기 삭제기능추가 -->
-        <div class="board-imgPreview">
+        <!-- <div class="board-imgPreview"> -->
             <!-- <img :src="previewImage.img">
             <button @click="deleteImg" class="btn btn-navy btn-imgBtn">✖</button> -->
             <!-- <input @change="setFile1" type="file" name="board_img1" accept="image/*">
             <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
-            <div class="img-preview">
+            <!-- <div class="img-preview">
                 <img :src="preview1">
                 <button @click="clearFile1" v-show="preview1" class="btn bg-clear">X</button>
             </div>
@@ -107,49 +222,36 @@
                 <img :src="preview2">
                 <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
             </div>
-        </div>
+        </div> -->
         <!-- <img src="" alt=""> -->
+        <!-- <hr>
+        <textarea v-model="boardInfo.board_content" name="board_content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
         <hr>
-        <textarea v-model="boardInfo.content" name="content" placeholder="당신의 이야기를 여기에 적어주세요" maxlength="2000"></textarea>
-        <hr>
-    </div>
+    </div> -->
     <!-- 내용 -->
 
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
-import router from '../../../js/router';
-import board from '../../../js/store/modules/board';
+import { reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-
-// *******************
-
-// const selectedCategory = ref('')
-// const selectedArea = ref('')
-// const selectedRate = ref('')
-
-const selectedCategory = ref(null);
-const selectedArea = ref(null);
-const selectedRate = ref(null);
 
 const boardInfo = reactive({
     board_title: ''
     ,board_content: ''
     ,board_img1: null
     ,board_img2: null
-    ,area_code: selectedArea.value
-    ,rc_type: selectedCategory.value
-    ,rate: selectedRate.value
+    ,bc_type: ''
+    ,area_code: ''
+    ,rc_type: ''
+    ,rate: ''
 });
-
 
 const preview1 = ref('');
 const preview2 = ref('');
 
-const boardTitle = computed(() => store.state.board.boardTitle);
 
 const setFile1 = (e) => {
     boardInfo.board_img1 = e.target.files[0];
@@ -171,121 +273,101 @@ const clearFile2 = () => {
     preview2.value = null;
 }
 
-// *******************
-
-
-
-
-// const cancelConfirm = () =>{
-//     const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
-//     if (userResponse) {
-//         router.push('/boards');
-//     }
-// }
-// const doneConfirm = () =>{
-//     const userResponse = confirm('작성을 완료하시겠습니까?');
-//     if (userResponse) {
-//         router.push('/boards/detail',boardInfo);
-//         // 이때, post로 정보 전달해줘야함...어떻게?
-//     }
-// }
-
-// 사진 업로드 미리보기
-// const previewImage = ref<String>('')
-
-// const changeImage = (event) => {
-//     const files = event.target?.files
-//     if(files.length>0){
-//         const file = files[0]
-//         // FileReader:데이터 읽고 저장하는 기능
-//         const reader = new FileReader
-//         // 로딩완료되면 실행하는 기능
-//         reader.onload = (e) => {
-//             // previewImage값 변경하는 기능
-//             previewImage.value = e.target.result
-//         }
-//         reader.readAsDataURL(file)
-//     }
-// }
-// 검색관련
-// const searchItem= ref<String>('')
-
-// const searchKeyword = (event) => {
-
-// }
-
-// 모달 시러시러 예쁜모달 만들고 싶다...별점똥 좋아요똥똥
-// export default {
-//     name:'modal',
-//     data(){
-//         return{
-//             modalopen : false,
-
-            
-//         }
-//     }
-// }
-
-// 별점
-// export default {
-//     data() {
-//         return {
-//         rating: 0, // 실제 별점 값
-//         hoverRating: 0, // 마우스 오버 시 임시 별점 값
-//         stars: [1, 2, 3, 4, 5], // 별의 개수
-//         };
-//     },
-//     computed: {
-//   reversedStars() {
-//           return [...this.stars].reverse(); // 배열 원본을 유지하면서 뒤집음
-//         },
-//     },
-//     methods: {
-//         setRating(star) {
-//         this.rating = star; // 클릭한 별점 설정
-//         this.submitRating(); // 서버에 전달
-//         },
-//         hoverRating(star) {
-//         this.hoverRating = star; // 마우스 오버 시 임시 별점 표시
-//         },
-//         resetHover() {
-//         this.hoverRating = 0; // 마우스가 떠나면 초기화
-//         },
-//         submitRating() {
-//         // Laravel로 점수 전송
-//         fetch("/api/rating", {
-//             method: "POST",
-//             headers: {
-//             "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ rating: this.rating }),
-//         })
-//         .then((response) => response.json())
-//         .then((data) => {
-//           console.log("별점 저장 성공:", data);
-//         })
-//         .catch((error) => {
-//           console.error("별점 저장 실패:", error);
-//         });
-//     },
-//   },
-// };
-// export default {
-//   name: "Star-3",
-//   data() {
-//     return {
-//       score: 0,
-//     };
-//   },
-//   methods: {
-//     check(index) {
-//       this.score = index + 1;
-//     },
-//   },
-// };
 </script>
 
 <style scoped>
+.container{
+    align-items: center;
+}
+
+.container > h1 {
+    font-size: 3rem;
+    margin: 50px 0;
+}
+
+.header-btn-box {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-btn{
+    font-size: 18px;       
+    border-radius: 20px;
+    width: 70px;
+    height: 30px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-btn:hover{
+    color: #01083a;
+    background-color: #fff;
+    border: 2px solid #01083a;
+}
+
+.board-box {
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
+    margin-top: 50px;
+}
+
+.board-box > div {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-box > div > :first-child{
+    border-right: 1px solid #01083a;
+}
+
+.board-title-box > p:first-child
+,.board-img > p:first-child
+, .board-content> p:first-child {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.board-box p, .board-title-box > input ,.board-content > textarea {
+    padding: 10px;
+    font-size: 17px;
+}
+
+.board-content > textarea {
+    resize: none;
+    height: 300px;
+    margin: 10px;
+}
+
+.board-img-content {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.board-img-content :nth-child(-n + 2) {
+    margin-bottom: 10px;
+} 
+
+.board-img-content img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.img-preview {
+    display: flex;
+}
+
+.img-preview > button {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* *************************** */
 
 .board-create-head{
     display: grid;

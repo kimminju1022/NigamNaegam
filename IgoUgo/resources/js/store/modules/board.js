@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 import axios from "../../axios";
-// import router from '../../router';
+import router from '../../router';
 
 export default {
     namespaced: true,
@@ -79,7 +79,7 @@ export default {
                 
                 axios.get(url, config)
                 .then(response =>{
-                    console.log(response);
+                    // console.log(response);
                     context.commit('setBoardTitle', response.data.boardTitle);
                     context.commit('setBoardList', response.data.boardList.data);
                     context.commit('pagination/setPagination', response.data.boardList, {root: true});
@@ -112,11 +112,12 @@ export default {
         storeBoard(context, data){
             const url = '/api/boards';
             const config = {
-                header: {
-                    'Content-Type':'multipart/from-data',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
-            };
+            }
+
             const formData = new FormData();
             formData.append('bc_type', data.bc_type);
             formData.append('board_title', data.board_title);
@@ -132,23 +133,28 @@ export default {
                 formData.append('area_code', data.area_code);
             }
             if(data.rc_type) {
-                formData.append('area_code', data.rc_type);
+                formData.append('rc_type', data.rc_type);
             }
             if(data.rate) {
-                formData.append('area_code', data.rate);
+                formData.append('rate', data.rate);
             }
+
+            // console.log(data);
 
             axios.post(url,formData, config)
             .then(response => {
-                console.log(response.data.boards);
-                console.log(response.data.reviewa);
+                // console.log(response.data);
+                // console.log(response.data.board);
+                // console.log(response.data.review);
                 
-                context.commit('setQuestionList', response.data.data);
+                context.commit('setBoardList', response.data);
                 
                 router.replace('/boards');
             })
-            .catch();
-    },
+            .catch(error => {
+                console.error(error.response.data);
+            });
+        },
         postBoardCreate(context){
             const url = '/api/boards/create';
             const config = {
