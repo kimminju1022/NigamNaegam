@@ -9,7 +9,9 @@ export default {
         productArea: [],
         productCnt: '',
         productImg: [],
-        productDetail: {}
+        productDetail: {},
+        productLat: null,
+        productLng: null
     }),
     mutations: {
         setProductTypeList(state, data) {
@@ -29,6 +31,12 @@ export default {
         },
         setProductDetail(state, data) {
             state.productDetail = data;
+        },
+        setProductLat(state, data) {
+            state.productLat = Number(data);
+        },
+        setProductLng(state, data) {
+            state.productLng = Number(data);
         }
     },
     actions: {
@@ -98,8 +106,12 @@ export default {
                 .then(response => {
                     const productImgs = response.data.productImg.response.body.items.item;
                     const imgs = productImgs.map((item) => item.originimgurl);
+                    const productDetail = response.data.productDetail.response.body.items.item[0];
+                    const productLat = productDetail.mapx;
                     context.commit('setProductImg', imgs);
-                    context.commit('setProductDetail', response.data.productDetail.response.body.items.item[0]);
+                    context.commit('setProductDetail', productDetail);
+                    context.commit('setProductLat', productLat);
+                    context.commit('setProductLng', productDetail.mapy);
                     return resolve();
                 })
                 .catch(error => {
