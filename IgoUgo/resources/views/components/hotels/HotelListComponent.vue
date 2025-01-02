@@ -29,8 +29,8 @@
                         <img src="img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
-                        <p>최신순</p>
+                    <div @click="sortData('modifiedtime')" class="order-list-item">
+                        <p :class="{ 'active-font-bold': isActive }">최신순</p>
                         <span class="order-list-item-update font-bold">NEW</span>
                     </div>
                     <p>|</p>
@@ -120,13 +120,28 @@ const route = useRoute();
 // const count = computed(() => store.getters['model/itemCount']);
 const hotels = computed(() => store.state.hotel.hotelList);
 const actionName = 'hotel/getHotelsPagination';
+let isActive = false;
 
 // 필터 관련
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     area_code: [],
     hc_type: [],
+    sort: 'createdtime',
 });
+
+function sortData(data) {
+    if(searchData.sort === data) {
+        searchData.sort = 'createdtime';
+        isActive = false
+    } else {
+        searchData.sort = data;
+        isActive = true
+    }
+    store.dispatch('hotel/getHotelsPagination', searchData);
+}
+
+
 
 // const areaData = computed(() => store.state.hotel.hotelArea);
 
@@ -206,15 +221,7 @@ function closemodalMap() {
 }
 
 // 지도지도
-let map = null;
-
-// onMounted(() => {
-//     if (window.kakao && window.kakao.maps) {
-//         loadKakaoMap();
-//     } else {
-//         loadKakaoMapScript();
-//     }
-// });
+// let map = null;
 
 // 카카오맵 스크립트 다운로드
 const loadKakaoMapScript = () => {
@@ -233,7 +240,7 @@ const loadKakaoMap = () => {
         level: 3
     };
 
-    map = new window.kakao.maps.Map(container, options);
+    const map = new window.kakao.maps.Map(container, options);
     console.log(map);
 }
 
@@ -343,6 +350,9 @@ const loadKakaoMap = () => {
         border: 1px solid #01083A;
         border-radius: 20px;
         padding: 10px;
+    }
+    .active-font-bold {
+        font-weight: 900;
     }
     
     /* 정렬 순서 관련 */

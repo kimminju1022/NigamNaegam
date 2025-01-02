@@ -475,8 +475,4 @@ function closemodal() {
             padding: 0;
         }
     }
-
-    a {
-    color: #000;
-}
 </style>
