@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\Log;
 class HotelController extends Controller
 {
     public function hotels(Request $request) {
-        Log::debug('request', $request->all());
+        // Log::debug('request', $request->all());
         $areaCode = $request->area_code;
         $hcType = $request->hc_type;
+        $sort = $request->sort;
+        Log::debug($sort);
         // Log::debug('hcType', $hcType);
 
         // $hotels = Hotel::with(['hotelInfos.hotelCategory'])
@@ -33,7 +35,7 @@ class HotelController extends Controller
             })
             ->whereNotNull('hotels.firstimage') // 사진있는것만 가져오기
             ->select('hotel_id', 'title', 'firstimage', 'contentid') // 호텔아이디, 호텔이름, 사진만 가져오기
-            ->orderBy('createdtime', 'desc')    // 파일 업로드한날로 최신순으로 정렬
+            ->orderBy($sort, 'desc')    // 파일 업로드한날로 최신순으로 정렬
             ->paginate(32); // 페이지네이션
 
         // $hotels = Hotel::join('hotel_infos', 'hotels.hotel_id', '=', 'hotel_infos.hotel_id')
