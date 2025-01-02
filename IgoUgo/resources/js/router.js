@@ -108,7 +108,7 @@ const routes = [
         component: ProductListComponent,
     },
     {
-        path: '/products/:contenttypeid/:id',
+        path: '/products/:contenttypeid/:contentid',
         component: ProductDetailComponent,
     },
     // 게시판

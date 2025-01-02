@@ -52,7 +52,7 @@ class ProductMainController extends Controller
         return response()->json($areas);
     }
 
-    public function productDetail($contenttypeid, $id) {
+    public function productDetail($contenttypeid, $contentid) {
         $url1 = 'http://apis.data.go.kr/B551011/KorService1/detailImage1';
         $url2 = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
         $serviceKey = env('API_KEY');
@@ -63,7 +63,7 @@ class ProductMainController extends Controller
             'MobileOS' => 'ETC',
             'MobileApp' => 'IgoUgo',
             '_type' => 'json',
-            'contentId' => $id,
+            'contentId' => $contentid,
             'imageYN' => 'Y',
             'subImageYN' => 'Y',
         ]);
@@ -79,7 +79,7 @@ class ProductMainController extends Controller
             'MobileApp' => 'IgoUgo',
             '_type' => 'json',
             'contentTypeId' => $contenttypeid,
-            'contentId' => $id,
+            'contentId' => $contentid,
             'defaultYN' => 'Y',
             'firstImageYN' => 'Y',
             'addrinfoYN' => 'Y',
@@ -99,6 +99,24 @@ class ProductMainController extends Controller
             'productImg' => $productImg,
             'productDetail' => $productDetail,
         ]);
+    }
+
+    public function getProductRandom() {
+        $products = [
+            'spot' => Product::where('contenttypeid', '12')->whereNotNull('firstimage')->inRandomOrder()->first(),
+            'culture' => Product::where('contenttypeid', '14')->whereNotNull('firstimage')->inRandomOrder()->first(),
+            'sports' => Product::where('contenttypeid', '28')->whereNotNull('firstimage')->inRandomOrder()->first(),
+            'shopping' => Product::where('contenttypeid', '38')->whereNotNull('firstimage')->inRandomOrder()->first(),
+            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->inRandomOrder()->first()
+        ];
+
+        $responseData = [
+            'success' => true,
+            'msg' => '데이터 획득 성공',
+            'products' => $products
+        ];
+
+        return response()->json($responseData);
     }
     // public function productDetail($contenttypeid, $id) {
     //     $url = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';

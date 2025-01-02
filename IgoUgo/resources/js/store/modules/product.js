@@ -11,7 +11,8 @@ export default {
         productImg: [],
         productDetail: {},
         productLat: null,
-        productLng: null
+        productLng: null,
+        productRandom: {}
     }),
     mutations: {
         setProductTypeList(state, data) {
@@ -37,6 +38,9 @@ export default {
         },
         setProductLng(state, data) {
             state.productLng = Number(data);
+        },
+        setProductRandom(state, data) {
+            state.productRandom = data;
         }
     },
     actions: {
@@ -94,7 +98,7 @@ export default {
 
         takeProductDetail(context, findData) {
             return new Promise((resolve, reject) => {
-                const url = '/api/products/' + findData.contenttypeid + '/' + findData.id;
+                const url = '/api/products/' + findData.contenttypeid + '/' + findData.contentid;
                 const config = {
                     params: findData
                 };
@@ -107,11 +111,12 @@ export default {
                     const productImgs = response.data.productImg.response.body.items.item;
                     const imgs = productImgs.map((item) => item.originimgurl);
                     const productDetail = response.data.productDetail.response.body.items.item[0];
-                    const productLat = productDetail.mapx;
+                    const productLat = productDetail.mapy;
+                    const productLng = productDetail.mapx;
                     context.commit('setProductImg', imgs);
                     context.commit('setProductDetail', productDetail);
                     context.commit('setProductLat', productLat);
-                    context.commit('setProductLng', productDetail.mapy);
+                    context.commit('setProductLng', productLng);
                     return resolve();
                 })
                 .catch(error => {
@@ -119,6 +124,18 @@ export default {
                     return reject();
                 })
             })
+        },
+
+        takeProductRandom(context) {
+            const url = '/api/product/random';
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setProductRandom', response.data.products);
+            })
+            .catch(error => {
+                console.log(error.response);
+            });
         }
     },
     getters: {

@@ -1,15 +1,15 @@
 <template>
     <div class="container">
-        <div v-if="1 === 0">
+        <div v-if="productDetail.title === null">
             <div class="detail-title">
                 <p>한국관광공사에 의해 삭제된 데이터 입니다.</p>
             </div>
             <button @click="$router.go(-1)" class="btn bg-navy btn-go-back"><- 리스트 페이지로 돌아가기</button>
         </div>
         <div v-else>
-            <button @click="$router.go(-1)" class="btn bg-clear btn-go-back"><- 리스트 페이지로 돌아가기</button>
             <div class="detail-title">
                 <p>{{ productDetail.title }}</p>
+                <button @click="$router.go(-1)" class="btn bg-clear btn-go-back">-> 리스트 페이지로 돌아가기</button>
                 <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
             </div>
             <div>
@@ -69,19 +69,17 @@ const productLng = computed(() => store.state.product.productLng);
 // 상품 컨텐츠타입id랑 컨텐츠id
 const findData = reactive({
     contenttypeid: route.params.contenttypeid,
-    id: route.params.id,
+    contentid: route.params.contentid,
 });
 
 onBeforeMount(async () => {
     await store.dispatch('product/takeProductDetail', findData);
-    console.log("Lat after dispatch:", productLat.value, "Lng after dispatch:", productLng.value);
-    // productLat.value = productDetail.value.mapx;
-    // productLng.value = productDetail.value.mapy;
+    // console.log("Lat after dispatch:", productLat.value, "Lng after dispatch:", productLng.value);
 });
 
 // const isMapReady = ref(false); // 지도 로딩 여부 상태
 // let map = reactive(null);
-var map = ref(null); // 지도 객체를 저장
+const map = ref(null); // 지도 객체를 저장
 // let map = null;
 
 onMounted(() => {
@@ -95,7 +93,7 @@ onMounted(() => {
                 console.log("Lat or Lng is null during onMounted.");
             }
         } else {
-            console.log("Kakao Maps is not yet available. Loading script...");
+            // console.log("Kakao Maps is not yet available. Loading script...");
             loadKakaoMapScript();
         }
     });
@@ -111,6 +109,7 @@ const loadKakaoMap = async () => {
         };
         map.value = new window.kakao.maps.Map(container, options);
         console.log("Map loaded successfully.");
+        loadMaker();
     } else {
         console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
     }
@@ -129,7 +128,7 @@ const loadKakaoMapScript = () => {
         };
         document.head.appendChild(script);
     } else {
-        console.log("Kakao Map script already loaded.");
+        // console.log("Kakao Map script already loaded.");
         window.kakao.maps.load(() => {
             loadKakaoMap();
         });
@@ -139,44 +138,38 @@ const loadKakaoMapScript = () => {
 // 값 변경 감지
 watch([productLat, productLng], ([newLat, newLng]) => {
     if (newLat && newLng) {
-        console.log("Updated Lat:", newLat, "Updated Lng:", newLng);
+        // console.log("Updated Lat:", newLat, "Updated Lng:", newLng);
         loadKakaoMap(); // 값이 변경되면 지도 로드
     } else {
         console.log("Lat or Lng is still null.");
     }
 });
 
-// // 카카오맵 마커 생성
-// const loadMaker = () => {
-//     // 주소-좌표 변환 객체를 생성합니다
-//     var geocoder = new window.kakao.maps.services.Geocoder();
+// 카카오맵 마커 생성
+const loadMaker = () => {
+    // 주소-좌표 변환 객체를 생성합니다
+    // var geocoder = new window.kakao.maps.services.Geocoder();
 
-//     // 주소로 좌표를 검색합니다
-//     geocoder.addressSearch('대구 중구 동성로1길 15', function(result, status) {
+    if(map.value) {
+        const markerPosition = new window.kakao.maps.LatLng(productLat.value, productLng.value);
+        const markerTitle = productDetail.value.title;
 
-//         // console.log(result) // 주소 위도경도 콘솔로그
-//         // 정상적으로 검색이 완료됐으면 
-//         if (status === window.kakao.maps.services.Status.OK) {
+        const marker = new window.kakao.maps.Marker({
+            position: markerPosition
+        });
 
-//             var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        marker.setMap(map.value);
 
-//             // 결과값으로 받은 위치를 마커로 표시합니다
-//             var marker = new window.kakao.maps.Marker({
-//                 map: map,
-//                 position: coords
-//             });
+        const infowindow = new window.kakao.maps.InfoWindow({
+            position: markerPosition,
+            content: markerTitle
+        });
 
-//             // 인포윈도우로 장소에 대한 설명을 표시합니다
-//             var infowindow = new window.kakao.maps.InfoWindow({
-//                 content: '<div style="width:150px;text-align:center;padding:6px 0;">토요코인호텔 동성로점</div>'
-//             });
-//             infowindow.open(map, marker);
-
-//             // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-//             map.setCenter(coords);
-//         } 
-//     });    
-// }
+        infowindow.open(map.value, marker);
+    } else {
+        console.log("no marker");
+    }
+}
 
 // onMounted(() => {
 //     // if (window.kakao && window.kakao.maps) {
@@ -307,13 +300,18 @@ watch([productLat, productLng], ([newLat, newLng]) => {
 <style scoped>
 /* 데이터가 없을 때 나오는 버튼 */
 .btn-go-back {
-    padding: 10px;
-    border-radius: 20px;
-    margin: 50px 0;
+    height: 30px;
+    padding: 0 10px;
 }
 
 /* 타이틀 */
 .detail-title {
+    /* font-size: 40px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.detail-title p {
     font-size: 40px;
 }
 
