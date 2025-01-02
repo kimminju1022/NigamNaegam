@@ -34,9 +34,30 @@ export default {
 
                 router.replace('/login');
             })
-            .catch(error => {
-                console.log(error.response.data);
-                alert('회원가입 실패');
+            .catch(error => {               
+                let errorMsgList = [];
+                const errorData = error.response.data;
+
+                if(error.response.status === 422) {
+                    if(errorData.data.user_email) {
+                        errorMsgList.push(errorData.data.user_email[0]);
+                    }
+                    if(errorData.data.user_password) {
+                        errorMsgList.push(errorData.data.user_password[0]);
+                    }
+                    if(errorData.data.user_nickname) {
+                        errorMsgList.push(errorData.data.user_nickname[0]);
+                    }
+                    if(errorData.data.user_phone) {
+                        errorMsgList.push(errorData.data.user_phone[0]);
+                    }
+                } else if(error.response.status === 401) {
+                    errorMsgList.push(errorData.msg);
+                } else {
+                    errorMsgList.push('예기치 못한 오류 발생');
+                }
+
+                alert(errorMsgList.join('\n'));
             });
         },
 
@@ -126,8 +147,30 @@ export default {
                             }
                         )
                         .catch(error => {
-                            alert('수정 실패');
-                            console.error(error);
+                            let errorMsgList = [];
+                            const errorData = error.response.data;
+            
+                            if(error.response.status === 422) {
+                                if(errorData.data.user_email) {
+                                    errorMsgList.push(errorData.data.user_email[0]);
+                                }
+                                if(errorData.data.user_password) {
+                                    errorMsgList.push(errorData.data.user_password[0]);
+                                }
+                                if(errorData.data.user_nickname) {
+                                    errorMsgList.push(errorData.data.user_nickname[0]);
+                                }
+                                if(errorData.data.user_phone) {
+                                    errorMsgList.push(errorData.data.user_phone[0]);
+                                }
+                            } else if(error.response.status === 401) {
+                                errorMsgList.push(errorData.msg);
+                            } else {
+                                errorMsgList.push('예기치 못한 오류 발생');
+                            }
+            
+                            alert(errorMsgList.join('\n'));
+                            // alert('수정 실패');
                         });
                     } 
                 }
@@ -240,18 +283,18 @@ export default {
                             // const errorData = error.response.data;
 
                             if(error.response.status === 422) {
-                                alert('비밀번호가 유효하지 않습니다.');
+                                // alert('비밀번호가 유효하지 않습니다.');
                                 errorMsgList.push('비밀번호가 유효하지 않습니다.');
                                 
                             } else if(error.response.status === 401) {
-                                alert('현재 비밀번호가 올바르지 않습니다.');
+                                // alert('현재 비밀번호가 올바르지 않습니다.');
                                 errorMsgList.push('현재 비밀번호가 올바르지 않습니다.');
                             } else {
-                                alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+                                // alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
                                 errorMsgList.push('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
                             }
-                            
-                            context.commit('auth/setErrorMsgList', errorMsgList);
+
+                            alert(errorMsgList.join('\n'));
                         });
                     } 
                 }

@@ -63,8 +63,6 @@ class UserController extends Controller
         $id = MyToken::getValueInPayload($request->bearerToken(), 'idt');
 
         $userInfo = User::find($id);
-
-        // $insertData['img'] = '/'.$request->file('file')->store('img');
     
         if($userInfo->user_name !== $request->user_name) {
             $userInfo->user_name = $request->user_name;
@@ -76,7 +74,7 @@ class UserController extends Controller
             $userInfo->user_phone = $request->user_phone;
         }
         if($request->hasFile('user_profile')) {
-            $userProfile = '/'.$request->file('user_profile')->store('img');
+            $userProfile = '/'.$request->file('user_profile')->store('profile');
             $userInfo->user_profile = $userProfile;
         }
 

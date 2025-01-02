@@ -125,7 +125,7 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid timezone.',
-    'unique' => 'The :attribute has already been taken.',
+    'unique' => '이 :attribute 이미 사용 중인 :attribute입니다.',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
@@ -158,6 +158,14 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'user_email' => '이메일'
+        ,'user_password' => '비밀번호'
+        ,'user_password_chk' => '비밀번호 확인'
+        ,'user_name' => '이름'
+        ,'user_nickname' => '닉네임'
+        ,'user_phone' => '전화번호'
+    ],
+
 
 ];

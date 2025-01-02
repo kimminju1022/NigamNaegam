@@ -182,8 +182,10 @@
                         <p>내 감!니 감? 의<br>소식을<br>확인해보세요</p>
                     </div>
                     <div class="announcement-info">
-                        <p class="announcement-info-qna">문의 게시판 바로가기 →</p>
-                        <p>내감!니감?에 대한 궁금한 점을<br>물어보세요</p>
+                        <router-link to="/questions">
+                            <p class="announcement-info-qna">문의 게시판 바로가기 →</p>
+                            <p>내감!니감?에 대한 궁금한 점을<br>물어보세요</p>
+                        </router-link>
                     </div>
                 </div>
                 <div class="announcement-item">
@@ -584,7 +586,6 @@ a, a:visited {
 }
 
 .main-card-content {
-    
     display: grid;
     grid-template-rows: 200px 90px 40px;
     gap: 10px;

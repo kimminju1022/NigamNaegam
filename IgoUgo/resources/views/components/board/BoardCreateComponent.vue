@@ -1,20 +1,13 @@
 <template>
     <div class="container">
-        <!-- <div class="board-create-head"> -->
-        <!-- <h2>{{ boardTitle }}</h2> -->
-        <!-- <h1>게시판 작성</h1>
-        <div class="form-box">
-            <router-link to="/boards"><button class="btn bg-clear board-create-btn">취소</button></router-link>
-            <button class="btn bg-navy board-create-btn" @click="$store.dispatch('board/storeBoard', boardInfo)">완료</button>
-        </div> -->
         <h1>게시판 작성</h1>
         <div class="header-btn-box"> 
             <router-link :to="'/boards'"><button class="btn bg-navy header-btn">취소</button></router-link>
-            <button @click="$store.dispatch('board/storeBoard', question)" class="btn bg-navy header-btn">완료</button>
+            <button @click="$store.dispatch('board/storeBoard', boardInfo)" class="btn bg-navy header-btn">완료</button>
         </div>
         <div class="board-box">  
-            <div class="board-selectContainer">
-                <div class="select-boardType">
+            <div class="board-select-container">
+                <div class="select-board-type">
                     <p>게시판</p>
                     <select v-model="boardInfo.bc_type" name="bc_type" class="board-categories">
                         <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
@@ -23,10 +16,10 @@
                         <option value="1">자유게시판</option>
                     </select>
                 </div>
-                <hr>
-                <div v-show="boardInfo.bc_type === '0'" class="board-selectType">
-                    <h3 class="board-category">유형
-                        <select v-model="boardInfo.rc_type" name="rc_type" class="board-categories">
+                <div v-show="boardInfo.bc_type === '0'" class="board-review-box">
+                    <div class="board-category">
+                        <p>유형</p>
+                        <select v-model="boardInfo.rc_type" name="rc_type">
                             <option disabled hidden selected>--유형선택--</option>
                             <option value="0">숙박</option>
                             <option value="1">맛집</option>
@@ -35,9 +28,10 @@
                             <option value="4">레포츠</option>
                             <option value="5">쇼핑</option>
                         </select>
-                    </h3>
-                    <h3 class="board-category">지역
-                        <select v-model="boardInfo.area_code" name="area_code" class="board-categories">
+                    </div>
+                    <div class="board-category">
+                        <p>지역</p>
+                        <select v-model="boardInfo.area_code" name="area_code">
                             <option disabled hidden selected>--지역선택--</option>
                             <option value="1">서울</option>
                             <option value="2">인천</option>
@@ -57,15 +51,15 @@
                             <option value="38">전남</option>
                             <option value="39">제주</option>
                         </select>
-                    </h3>
+                    </div>
                     <!--  v-for="searchItem in searchKeyword"  -->
                     <!-- <div id="board-search-tb">
                         <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
                         <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
                     </div> -->
                     <!-- 별점 -->
-                    <div class="board-starGrade">
-                        <h3>별점</h3>
+                    <div class="board-starGrade board-category">
+                        <p>별점</p>
                         <div class="star-grade">
                             <input type="radio" name="rate" id="star-1" class="star" value="1" v-model="boardInfo.rate">
                             <label for="star-1" class="star-label"></label>
@@ -85,7 +79,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
             <div class="board-title-box">
                 <p>제목</p>
@@ -111,6 +104,7 @@
                 <textarea v-model="boardInfo.board_content" name="board_content"></textarea>
             </div>
         </div>
+    </div>
 
 
 
@@ -313,19 +307,21 @@ const clearFile2 = () => {
     margin-top: 50px;
 }
 
-.board-box > div {
+.board-box > div:not(:first-child){
     display: grid;
     grid-template-columns: 1fr 5fr;
     border-bottom: 1px solid #01083a;
 }
 
-.board-box > div > :first-child{
+.board-box > div:not(:first-child) > :first-child, .select-board-type > p:first-child, .board-category :first-child{
     border-right: 1px solid #01083a;
 }
 
-.board-title-box > p:first-child
+.select-board-type > p:first-child
+,.board-title-box > p:first-child
 ,.board-img > p:first-child
-, .board-content> p:first-child {
+,.board-content> p:first-child
+,.board-category > p:first-child {
     font-size: 20px;
     text-align: center;
     font-weight: 600;
@@ -334,6 +330,39 @@ const clearFile2 = () => {
 .board-box p, .board-title-box > input ,.board-content > textarea {
     padding: 10px;
     font-size: 17px;
+}
+
+/* .board-select-container {
+    display: grid; */
+    /* grid-template-rows: 1fr 1fr; */
+/* } */
+
+.select-board-type {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    border-bottom: 1px solid #01083a;
+}
+
+select {
+    border: none;
+    font-size: 17px;
+    padding: 10px;
+}
+
+.select-board-type select {
+    width: 20%;
+}
+
+.board-review-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-category {
+    display: grid;
+    grid-template-columns: 1.07fr 1fr;
 }
 
 .board-content > textarea {
@@ -366,162 +395,12 @@ const clearFile2 = () => {
     height: 20px;
 }
 
-
-/* *************************** */
-
-.board-create-head{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-    column-gap: 10px;
-    margin-bottom: 20px;
-    letter-spacing: 5px;    
-}
-.board-create-head>h2{
-    font-size: 2rem;
-}
-.board-create-head>h3{
-    margin: 30px 0;
-    font-size: 3rem;}
-.form-box, .board-create-file{
-    /* display: grid;
-    grid-template-columns: repeat(3,1fr);
-    margin-top: 20px;
-    margin-bottom: 30px;
-    text-align: center;
-    justify-content: left; */
-    align-items: flex-end;
-    gap: 20px;    
-}
-/* .form-box>button{
-    border-radius: 20px;
-    width: 60px;
-    height: 30px;
-    font-size: large;
-} */
-.board-create-file{
-    display: grid;
-    grid-template-columns: 1fr;
-}
-.board-create-file>img{
-    height: 200px;
-}
-#board-search-tb{
-    display: inline-flex;
-    justify-content:end;
-    margin: 10px 20px;
-    align-items: flex-end;
-}
-.board-search {
-    margin-left: 20px; 
-    background-color: #e9e8e8;
-    border-radius: 20px;
-    width: 250px;
-    height: 31px;
-    text-indent: 20px; 
-}
-
-.board-search-btn{
-    font-size: large;
-    border-radius: 20px;
-    width: 70px;
-    height: 30px;
-    margin-left: -60px;
-}
-.board-selectType{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: center;
-    align-items: center;
-    margin: auto 10px;
-}
-.board-selectType>h3{
-    margin-left: 20px;
-}
-.board-create-btn{
-    font-size: large;
-    border: #01083a solid 1px;
-    border-radius: 20px;
-    width: 70px;
-    height: 30px;
-    gap: 50px;
-    text-align: center;
-}
-.select-boardType, .select-categories, .board-create-title,
-.board-starGrade, .form-box, .board-create-file{
-    display: inline-flex;
-    justify-content:flex-end;
-    margin: 10px 20px;
-    /* font-size: 1.2rem; */
-}
-.board-create-title>input{
-    font-size: 1.2rem;
-    margin-left: 85px;
-}
-.board-create-container>textarea{
-    width: 1200px;
-    height: 400px;
-    font-size: 1.2rem;
-    border-radius: 20px;
-    margin: 10px;
-    padding: 20px;
-    resize: none;
-    align-items: center;
-}
-.board-categories{
-    width: 200px;
-    border: none;
-    border-bottom: solid 1px #01083a;
-    text-align: center;
-    margin-left: 30px;
-}
-.board-create-evaluation{
-    display: flex;
-}
-
-/* 모달 */
-/* 모달 시 메인 배경 */
-.board-create-modal{
-    width: 100%;
-    height: 100%;
-    background-color: rgba(197, 198, 198, 0.374);
-    position: fixed;
-    padding: 20px;
-}
-/* 모달 디자인 */
-.board-create-modal-content{
-    width: 50%;
-    background-color: azure;
-    border-radius: 10px;
-    padding: 20px;
-}
-.modal-content {
-
-
-background: white;
-padding: 20px;
-border-radius: 10px;
-
-
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-
-text-align: center;
-width: 300px;
-}
-
-
 /* 별점 */
-.board-starGrade{
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-    justify-content: center;
-    align-items: center;
-}
+
 .star-grade {
     display: flex;
     flex-direction: row-reverse;    /* 별을 오른쪽에서 왼쪽으로 정렬 */
-    justify-content: flex-end;
+    justify-content: center;
     gap: 2px;
 }
 .star {
@@ -551,58 +430,31 @@ width: 300px;
     color: rgba(255, 217, 0, 1);
 }
 
-/* .star-grade {
-    display: flex;
+/* 모달 - 검색 */
+/* 모달 시 메인 배경 */
+.board-create-modal{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(197, 198, 198, 0.374);
+    position: fixed;
+    padding: 20px;
 }
-.star {
-    appearance: none;
-    padding: 1px;
+/* 모달 디자인 */
+.board-create-modal-content{
+    width: 50%;
+    background-color: azure;
+    border-radius: 10px;
+    padding: 20px;
+}
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
 }
 
-.star::after {
-    content: '☆';
-    color: rgba(255, 217, 0, 0.685);
-    font-size: 20px;
-    }
-
-.star:hover::after,
-.star:has(~ .star:hover)::after,
-.star:checked::after,
-.star:has(~ .star:checked)::after {
-    content: '★';
-    }
-
-.star:hover(~ .star)::after {
-    content: '☆';
-    }
-
-
-.star:hover::after,
-.star:hover ~ .star:hover::after,
-.star:checked::after,
-.star:hover ~ .star:checked::after {
-    content: '★';
-} */
-
-
-/*.star-rating span {
-    font-size: 30px;
-    cursor: pointer;
-    color: lightgray;
-    transition: color 0.2s;
-}
-.star-rating span.filled {
-color: gold; 
-}
-/* 마우스 호버 */
-/*.star-rating span:hover,
-.star-rating span:hover ~ span {
-color: gold; 
-}
-.star-3{
-color: gold;
-}
-*/
 @media screen and (max-width: 800px) {
     .board-detail-head {
         grid-template-columns: none; /*기존 가로 정렬 해제 */
