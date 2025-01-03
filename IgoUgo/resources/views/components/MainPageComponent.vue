@@ -113,35 +113,35 @@
             <hr>
             <div class="main-together-list">
                 <div class="main-card">
-                    <router-link :to="`/products/12/${productRandom.spot.contentid}`" class="main-card-content">
+                    <router-link :to="`/products/12/${productRandom.spot.contentid}`" class="together-card-content">
                         <img :src="productRandom.spot.firstimage">
                         <p class="type-title">관광지</p>
                         <p>{{ productRandom.spot.title }}</p>
                     </router-link>
                 </div>
-                <div class="main-card">
-                    <router-link :to="`/products/12/${productRandom.culture.contentid}`" class="main-card-content">
+                <div class="main-card together-card">
+                    <router-link :to="`/products/14/${productRandom.culture.contentid}`" class="together-card-content">
                         <img :src="productRandom.culture.firstimage">
                         <p class="type-title">문화시설</p>
                         <p>{{ productRandom.culture.title }}</p>
                     </router-link>
                 </div>
                 <div class="main-card">
-                    <router-link :to="`/products/12/${productRandom.sports.contentid}`" class="main-card-content">
+                    <router-link :to="`/products/28/${productRandom.sports.contentid}`" class="together-card-content">
                         <img :src="productRandom.sports.firstimage">
                         <p class="type-title">레포츠</p>
                         <p>{{ productRandom.sports.title }}</p>
                     </router-link>
                 </div>
                 <div class="main-card">
-                    <router-link :to="`/products/12/${productRandom.shopping.contentid}`" class="main-card-content">
+                    <router-link :to="`/products/38/${productRandom.shopping.contentid}`" class="together-card-content">
                         <img :src="productRandom.shopping.firstimage">
                         <p class="type-title">쇼핑</p>
                         <p>{{ productRandom.shopping.title }}</p>
                     </router-link>
                 </div>
                 <div class="main-card">
-                    <router-link :to="`/products/12/${productRandom.restaurant.contentid}`" class="main-card-content">
+                    <router-link :to="`/products/39/${productRandom.restaurant.contentid}`" class="together-card-content">
                         <img :src="productRandom.restaurant.firstimage">
                         <p class="type-title">음식점</p>
                         <p>{{ productRandom.restaurant.title }}</p>
@@ -189,46 +189,58 @@
             <div class="announcement">
                 <div class="announcement-sidebar">
                     <div>
-                        <p>내 감!니 감? 의<br>소식을<br>확인해보세요</p>
+                        <p>내 감!니 감? 의 소식을<br>확인해보세요</p>
                     </div>
                     <div class="announcement-info">
                         <router-link to="/questions">
-                            <p class="announcement-info-qna">문의 게시판 바로가기 →</p>
-                            <p>내감!니감?에 대한 궁금한 점을<br>물어보세요</p>
+                            <div class="announcement-info-content">
+                                <div>
+                                    <div class="announcement-info-qna-group">
+                                        <p class="announcement-info-qna">문의 게시판 바로가기</p>
+                                        <p class="announcement-info-qna">-></p>
+                                    </div>
+                                    <hr class="hr-style">
+                                </div>
+                                <p>내감!니감?에 대한 궁금한 점을<br>물어보세요</p>
+                            </div>
                         </router-link>
                     </div>
                 </div>
                 <div class="announcement-item">
                     <div>
-                        <p>공지사항</p>
-                        <button class="btn bg-clear">바로가기</button>
+                        <div class="announcement-title">
+                            <p>공지사항</p>
+                            <button class="btn bg-clear" style="font-size: 30px;">+</button>
+                        </div>
+                        <hr class="hr-style">
                     </div>
-                    <hr>
-                    <div class="announcement-list"> 
-                        <p>2024-12-17</p>
-                        <p>안녕하세요 반갑습니다.</p>
+                    <div>
+                        <div class="announcement-list"> 
+                            <p>안녕하세요 반갑습니다.</p>
+                            <p>2024-12-17</p>
+                        </div>
+                        <!-- <hr> -->
+                        <div class="announcement-list"> 
+                            <p>안녕하세요 반갑습니다.</p> 
+                            <p>2024-12-17</p>
+                        </div>
+                        <!-- <hr> -->
+                        <div class="announcement-list"> 
+                            <p>안녕하세요 반갑습니다.</p> 
+                            <p>2024-12-17</p>
+                        </div>
+                        <!-- <hr> -->
+                        <div class="announcement-list"> 
+                            <p>안녕하세요 반갑습니다.</p> 
+                            <p>2024-12-17</p>
+                        </div>
+                        <!-- <hr> -->
+                        <div class="announcement-list"> 
+                            <p>안녕하세요 반갑습니다.</p> 
+                            <p>2024-12-17</p>
+                        </div>
+                        <!-- <hr> -->
                     </div>
-                    <hr>
-                    <div class="announcement-list"> 
-                        <p>2024-12-17</p>
-                        <p>안녕하세요 반갑습니다.</p> 
-                    </div>
-                    <hr>
-                    <div class="announcement-list"> 
-                        <p>2024-12-17</p>
-                        <p>안녕하세요 반갑습니다.</p> 
-                    </div>
-                    <hr>
-                    <div class="announcement-list"> 
-                        <p>2024-12-17</p>
-                        <p>안녕하세요 반갑습니다.</p> 
-                    </div>
-                    <hr>
-                    <div class="announcement-list"> 
-                        <p>2024-12-17</p>
-                        <p>안녕하세요 반갑습니다.</p> 
-                    </div>
-                    <hr>
                 </div>
             </div>
         </div>
@@ -527,12 +539,18 @@ a, a:visited {
     max-height: 220px;
 } */
 
+.together-card-content {
+    display: grid;
+    grid-template-rows: 200px 40px 70px;
+    gap: 10px;
+}
+
 .type-title {
     font-size: 20px;
 }
 
 .type-title + p {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 900;
 }
 
@@ -587,6 +605,7 @@ a, a:visited {
     border: 1px solid #e7e7e7;
     border-radius: 10px;
     /* min-width: 180px; */
+    width: 100%;
     position: relative;
     transition: 0.2s ease-in-out;
 }
@@ -607,7 +626,8 @@ a, a:visited {
     object-fit: cover;
     background-repeat: no-repeat;
     width: 100%;
-    max-height: 200px;
+    /* max-height: 200px; */
+    height: 100%;
     border-radius: 10px 10px 0px 0px;
 }
 
@@ -629,10 +649,11 @@ a, a:visited {
 /* 내감니감의 소식을 확인해보세요 */
 .announcement {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     justify-items: center;
-    gap: 10px;
-    max-width: 900px;
+    gap: 80px;
+    /* max-width: 900px; */
+    width: 90%;
 }
 
 .announcement-sidebar{
@@ -640,7 +661,8 @@ a, a:visited {
     flex-direction: column; */
     display: grid;
     grid-template-rows: 1fr 1fr;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    width: 100%;
 }
 
 .announcement-sidebar > :first-child {
@@ -650,14 +672,25 @@ a, a:visited {
 
 /* 문의게시판 바로가기쪽 */
 .announcement-info {
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px; 
     box-shadow: 2px 2px 15px rgba(175, 175, 175, 0.7);
 }
 
+.announcement-info-content {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+}
+
+.announcement-info-qna-group{
+    display: flex;
+    justify-content: space-between;
+}
+
 .announcement-info-qna {
     font-size: 20px;
-    padding: 5px 0;
+    padding: 10px 0;
 }
 
 /* 공지사항 */
@@ -670,13 +703,14 @@ hr {
     flex-direction: column;
     padding: 20px;
     border-radius: 10px;
-    min-width: 600px;
+    /* min-width: 600px; */
+    width: 100%;
     font-size: 16px;
-    gap: 7px;
+    gap: 10px;
     box-shadow: 3px 3px 10px rgba(114, 114, 114, 0.7);
 }
 
-.announcement-item > :first-child {
+.announcement-item .announcement-title {
     display: flex;
     font-size: 22px;
     justify-content: space-between;
@@ -690,10 +724,14 @@ hr {
 
 .announcement-list {
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 4fr 1fr;
     gap: 30px;
-    padding: 0 30px;
+    padding: 10px 30px;
     color: #4c4c4c;
+}
+
+.hr-style {
+    border: 1px solid #01083a;
 }
 
 /* ---------- 반응형 ---------- */

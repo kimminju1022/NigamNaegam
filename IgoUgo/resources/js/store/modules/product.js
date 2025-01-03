@@ -102,9 +102,6 @@ export default {
                 const config = {
                     params: findData
                 };
-
-                // context.commit('setProductImg', []);
-                // context.commit('setProductDetail', {});
                 
                 axios.get(url, config)
                 .then(response => {

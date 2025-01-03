@@ -4,12 +4,12 @@
             <div class="detail-title">
                 <p>한국관광공사에 의해 삭제된 데이터 입니다.</p>
             </div>
-            <button @click="$router.go(-1)" class="btn bg-navy btn-go-back"><- 리스트 페이지로 돌아가기</button>
+            <button @click="$router.replace('/products/' + productDetail.contenttypeid)" class="btn bg-navy btn-go-back"><- 리스트 페이지로 돌아가기</button>
         </div>
         <div v-else>
             <div class="detail-title">
                 <p>{{ productDetail.title }}</p>
-                <button @click="$router.go(-1)" class="btn bg-clear btn-go-back">-> 리스트 페이지로 돌아가기</button>
+                <button @click="$router.replace('/products/' + productDetail.contenttypeid)" class="btn bg-clear btn-go-back">-> 리스트 페이지로 돌아가기</button>
                 <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
             </div>
             <div>
@@ -153,6 +153,7 @@ const loadMaker = () => {
     if(map.value) {
         const markerPosition = new window.kakao.maps.LatLng(productLat.value, productLng.value);
         const markerTitle = productDetail.value.title;
+        const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
 
         const marker = new window.kakao.maps.Marker({
             position: markerPosition
@@ -162,7 +163,8 @@ const loadMaker = () => {
 
         const infowindow = new window.kakao.maps.InfoWindow({
             position: markerPosition,
-            content: markerTitle
+            content: content
+            // content: markerTitle
         });
 
         infowindow.open(map.value, marker);
