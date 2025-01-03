@@ -126,7 +126,7 @@ const routes = [
         beforeEnter: chkAuth,
     },
     {
-        path: '/boards/update',
+        path: '/boards/:id/update',
         component: BoardUpdateComponent,
         beforeEnter: chkAuth,
     },

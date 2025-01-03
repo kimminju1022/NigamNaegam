@@ -9,12 +9,14 @@
         <!-- 버튼영역 -->
         
         <div class="board-detailItem-btn"> 
-            <!-- <router-link :to="`/boards/${boardInfo.board_id}/edit`">
-                <button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
-            </router-link>
+            <!-- <router-link :to="`/boards/${boardDetail.board_id}/edit`"><button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button></router-link> -->
+            <!--<button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+            <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
+            
+            <button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
             <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
-             -->
+
         </div>
     </div>
     
@@ -22,9 +24,9 @@
     <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head">
         <p v-if="boardDetail.bc_type === '0'">{{ boardDetail.rate }}</p>
-        <p>작성자 :{{ boardDetail.user_nickname }}</p>
+        <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
-        <button @click="boardLike"><img style="width: 20%;" src="../../../../../ex/img/heart.png"> : </button>
+        <button @click="boardLikeEvent"><img style="height: 10px;" src="../../../../../ex/img/heart.png"> : </button>
         <!-- <p> {{ loveIt[0] }}</p> -->
         <p>조회 : </p>
         <!-- {{ absolve[1]++ }} -->
@@ -38,15 +40,17 @@
     </div>
     <hr>
     <!-- 내용 -->
+    <!-- <textarea readonly class="board-detail-content" ref="boardTextarea" :style="{height: 'auto'}">{{ boardDetail.board_content}}</textarea> -->
     <textarea readonly class="board-detail-content">{{ boardDetail.board_content}}</textarea>
     <hr>
+
     <!-- 댓글 -->
     <div class="board-reply-container">
         <div class="board-detail-reply ">
             <p>댓글</p>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
             <button class="btn bg-navy board-detail-btn">작성</button>
-            <p>총 댓글 : {{ $store.state.board.commentsTotal }}</p>
+            <p style="text-align: end; padding-right: 40px;">총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
         <hr>
         <div class="board-detail-replyList">
@@ -72,30 +76,71 @@
 <script setup>
 import PaginationComponent from '../PaginationComponent.vue';
 import { computed, onBeforeMount, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 // board출력값
 const boardDetail = computed(() => store.state.board.boardDetail);
+// textarea높이 변환
+// export default {
+//     props: ['boardDetail'],
+//     mounted() {
+//     const textarea = this.$refs.boardTextarea;
+//         if (textarea) {
+//         textarea.style.height = 'auto'; // 초기화
+//         textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞게 높이 조정
+//         }
+//     },
+// };
+
+// 별점 이미지변환출력
+// const boardDetailRate = computed(() => store.state.board.boardDetail.rate);
+
+// const textareaValue = computed(() => store.state.board.boardDetail.board_content);
+
+// watch(textareaValue, (newValue) => {
+//     const textarea = document.querySelector('textarea');
+//     if (textarea) {
+//         textarea.style.height = 'auto';
+//         textarea.style.height = textarea.scrollHeight + 'px';
+//     }
+// });
+// 초기화 시 높이를 조정
+// document.addEventListener('DOMContentLoaded', () => {
+//     const textarea = document.querySelector('textarea');
+//     if (textarea) {
+//         textarea.style.height = 'auto';
+//         textarea.style.height = textarea.scrollHeight + 'px';
+//     }
+// });
+
+
 // const boardImg1 = computed(() => store.state.board.boardImg1);
 // const boardImg2 =  computed(() => store.state.board.boardImg2);
+
 
 // alert 안내문구---------------------start-----------------
 const detailConfirm = () => {
     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
     if (userResponse) {
-        router.push('/boards/update');
+        router.push(`/boards/${route.params.id}/update`);
     }
 }
 
 const deleteConfirm = () => {
     const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n 삭제 시 게시글을 되돌릴 수 없습니다');
     if (userResponse) {
-        router.push('/boards');
+        router.back();
     }
 }
+// const BoardDelete = (id) => {
+//     confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+//     store.dispatch('boards/BoardDelete', id);
+// }
+
 
 const boardNotify= () => {
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
@@ -110,6 +155,10 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
     board_id: route.params.id,
 });
+
+// rate별점표기-----------------------start-----------------
+const reviewRate = computed
+// rate별점표기------------------------end------------------
 
 // 비포마운트처리
 onBeforeMount(()=>{
@@ -156,12 +205,11 @@ hr{
 }
 .board-detail-head{
     display: grid;
-    grid-template-columns: 7fr 2fr 1.5fr 1fr 1fr 1fr;
-    grid-auto-rows: 100px;
-    align-items: center;
+    grid-template-columns: 7fr 2fr 2fr 1fr 1fr 1fr;
+    grid-auto-rows: 50px;
+    align-items:end;
     line-height: 1.5;
     margin: 20px auto;
-    padding: 40% auto;
 }
 /* .board-detail-head>:nth-child(){
     display: inline;
@@ -170,9 +218,6 @@ hr{
 .board-detail-head>button{
     border: none;
     background: transparent;
-    font-size: 1.2rem;
-    max-height: 0.8rem;
-
 }
 .board-detail-img{
     display: grid;
@@ -192,20 +237,26 @@ hr{
     max-height: 270px;
 }
 .board-detail-content{
-    min-height: 70px;
     padding: 20px 30px;
     width: 100%;
+    min-height: 500px;
+    max-height: 4000px;
+    /* height: auto; */
+    font-size: 1.2rem;
+    line-height: 2rem;
+    resize: none;
 }
+.replyList-head, .replyList{
+    display: grid;
+    grid-template-columns: 7fr 1fr 2fr;
+    align-items: center;
+}
+
 .board-detail-replyList{
-    /*width: 100%;
-    position: relative;
     display: grid;
-    gap: 10px;
-    /* margin-left: 20px;    
-    gap: 30px;  */
-    display: grid;
-    grid-template-rows: repeat(1fr);
-    row-gap: 10px;
+    /* grid-template-rows: repeat(1fr); */
+    gap: 20px 40px;
+    /* column-gap: 40px; */
 }
 .board-detail-replyList:nth-last-child(1){
     padding-bottom: 10px;
@@ -216,7 +267,7 @@ hr{
     width: 100%;
     gap: 5px;
     display: grid;
-    grid-template-columns: 7fr 1fr 2fr;
+    grid-template-columns: 1fr 8fr 1fr 3fr;
     justify-content: center;
     align-items: center;
     margin: 10px ;
@@ -237,9 +288,6 @@ hr{
     height: 40px;
     font-weight: 700;
     border-bottom: solid #071055b9 1px;
-}
-.replyList{
-    padding-left: 25px;
 }
 .replyList-head:nth-child(1), .replyList>p:nth-child(2), .replyList>p:nth-child(3){
     text-align: center;
@@ -284,13 +332,11 @@ hr{
         gap: 10px;
    }  */
     .board-detail-head {
-        display: flex; /* Flexbox로 전환 */
-        grid-row: p 3;
-        grid-column: p 1;
-        flex-direction: column; /* 세로 정렬 */
-        align-items: center; /* 가로 중앙 정렬 */
-        text-align: center; /* 텍스트 중앙 정렬 */
-        gap: 10px; /* 요소 간 간격 */
+        display: grid;
+        grid-column: 8fr 3fr 3fr 3fr 3fr 1fr;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
     }
 
     /* header{

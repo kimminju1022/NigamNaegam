@@ -211,10 +211,11 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-// import router from '../../js/router';
+import { useRouter } from 'vue-router';
 
 const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
+const router = useRouter();
 
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 

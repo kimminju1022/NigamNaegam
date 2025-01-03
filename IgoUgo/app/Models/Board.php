@@ -33,13 +33,13 @@ class Board extends Model
      * 
      * @param \DateTimeInterface $date
      * 
-     * @return String('Y-m-d H:i:s')
+     * @return String('Y-m-d')
      */
     protected function serializeDate(\DateTimeInterface $date) {
         $today = Carbon::instance($date)->isToday();
         if($today) {
-            return $date->format('H:i');
-        } else {
+        //     return $date->format('H:i');
+        // } else {
             return $date->format('Y-m-d');
         }
     }

@@ -40,7 +40,7 @@ class BoardController extends Controller
             ->where('boards.bc_type', '=', $request->bc_type)
             ->orderBy('boards.created_at', 'desc')
             ->paginate(15);
- 
+
         // 보드 타이틀 획득
         $boardTitle = BoardCategory::select('bc_name')
                         ->where('bc_type', '=', $request->bc_type)
