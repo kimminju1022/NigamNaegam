@@ -19,7 +19,7 @@ class Like extends Model
         ,'like_flg'
     ];
     
-    public function boards() {
+    public function board() {
         return $this->belongsTo(Board::class, 'board_id', 'board_id');
     }
     

@@ -24,20 +24,20 @@
                     </div>
                     <p>{{ questionDetail.board_content }}</p>
                     <div class="board-user">
-                        <p>닉네임 : {{ questionDetail.users.user_nickname }}</p>
+                        <p>닉네임 : {{ questionDetail.user.user_nickname }}</p>
                         <p>{{ questionDetail.created_at }}</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-show="questionDetail.questions.que_content !== null" class="admin-content-section">
+        <div v-show="questionDetail.question.que_content !== null" class="admin-content-section">
             <div class="admin-content-box">
                 <p>관리자 답변</p>
                 <div class="admin-content">
-                    <p>{{ questionDetail.questions.que_content }}</p>
+                    <p>{{ questionDetail.question.que_content }}</p>
                     <div class="board-admin">
                         <p>관리자</p>
-                        <p>{{ questionDetail.questions.updated_at }}</p>
+                        <p>{{ questionDetail.question.updated_at }}</p>
                     </div>
                 </div>
             </div>

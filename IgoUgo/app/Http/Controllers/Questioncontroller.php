@@ -16,7 +16,7 @@ class QuestionController extends Controller
     // 문의게시판 index 페이지
     public function index(){
         $bcType = '2';
-        $questionList = Board::with(['questions', 'users', 'board_categories'])
+        $questionList = Board::with(['question', 'user', 'board_category'])
                                 ->where('bc_type', $bcType)
                                 ->orderBy('created_at','DESC')
                                 ->paginate(15);
@@ -31,7 +31,7 @@ class QuestionController extends Controller
 
     // 문의게시판 디테일
     public function show($id) {
-        $question = Board::with(['questions', 'users'])
+        $question = Board::with(['question', 'user'])
                                 ->where('board_id', $id)
                                 ->first();
         // $question = Board::with(['questions', 'users', 'board_categories'])
@@ -54,7 +54,7 @@ class QuestionController extends Controller
     // 유저 1:1 문의 내역
     public function showMyQuestion($id){
         $bcType = '2';
-        $questionList = Board::with(['questions', 'users', 'board_categories'])
+        $questionList = Board::with(['question', 'user', 'board_category'])
                                 ->where('user_id', $id)
                                 ->where('bc_type', $bcType)
                                 ->orderBy('created_at', 'DESC')
@@ -153,12 +153,12 @@ class QuestionController extends Controller
 
     // 게시글 삭제
     public function destroy($id) {
-        $board = Board::with('questions')
+        $board = Board::with('question')
                         ->find($id);
 
         $board->delete();
 
-        $question = Question::with('boards')
+        $question = Question::with('board')
                                 ->where('board_id', $id)
                                 ->first();
                                 

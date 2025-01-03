@@ -18,7 +18,7 @@ class Area extends Model
         'area_rnum',
     ];
 
-    public function review() {
-        return $this->hasOne(Review::class, 'area_code', 'area_code');
-    }
+    // public function review() {
+    //     return $this->hasOne(Review::class, 'area_code', 'area_code');
+    // }
 }

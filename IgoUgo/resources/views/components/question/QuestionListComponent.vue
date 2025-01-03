@@ -63,14 +63,14 @@
             <div class="board-content-box">
                 <div v-for="item in questionList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
-                    <div v-if="item.questions.que_status === '0'">
+                    <div v-if="item.question.que_status === '0'">
                         <p class="reply-yet">대기</p>
                     </div>
                     <div v-else>
                         <p class="reply-done">완료</p>
                     </div>
                     <router-link :to="`/questions/${item.board_id}`">{{ item.board_title }}</router-link>
-                    <p>{{ item.users.user_nickname }}</p>
+                    <p>{{ item.user.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
                     <p>{{ item.view_cnt }}</p>
                 </div>

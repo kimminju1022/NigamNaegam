@@ -162,7 +162,7 @@ export default {
                 router.push('/questions');
             })
             .catch(error => {
-                console.error(error);
+                console.error(error.response);
                 alert('삭제 실패');
             });
         }   

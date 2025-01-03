@@ -15,7 +15,8 @@
                     </div>
                     <div v-else class="header-title-button">
                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
-                        <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button>
+                        <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button> -->
+                        <button @click="logout" class="btn bg-logout header-logout">로그아웃</button>
                         <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="user.user_profile" alt=""></router-link>
                     </div>
                 </div>
@@ -129,16 +130,57 @@
 
     <div v-if="flg === '0'">
         <footer>
-            <div class="footer-inner">
-                <div>
-                    <img class="footer-logo" src="/logo_gam.png" alt="">
+            <div class="footer-box">
+                <div class="footer-inner">
+                    <div>
+                        <img class="footer-logo" src="/logo_gam.png" alt="">
+                    </div>
+                    <div class="footer-text">
+                        <p>Tel : 053.572.1005</p>
+                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>(주)  절어서 한국속으로</p>
+                        <p>대표 : 미어캣</p>
+                        <p>사업자 번호 : 123-45-678</p>
+                    </div>
                 </div>
-                <div class="footer-text">
-                    <p>Tel : 053.572.1005</p>
-                    <p>후원계좌 : IM뱅크 222-8282-222</p>
-                    <p>(주)  절어서 한국속으로</p>
-                    <p>대표 : 미어캣</p>
-                    <p>사업자 번호 : 123-45-678</p>
+                <div class="footer-inner">
+                    <div>
+                        <img class="footer-logo" src="/logo_gam.png" alt="">
+                    </div>
+                    <div class="footer-text">
+                        <p>Tel : 053.572.1005</p>
+                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>(주)  절어서 한국속으로</p>
+                        <p>대표 : 미어캣</p>
+                        <p>사업자 번호 : 123-45-678</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-box">
+                    
+                <div class="footer-inner">
+                    <div>
+                        <img class="footer-logo" src="/logo_gam.png" alt="">
+                    </div>
+                    <div class="footer-text">
+                        <p>Tel : 053.572.1005</p>
+                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>(주)  절어서 한국속으로</p>
+                        <p>대표 : 미어캣</p>
+                        <p>사업자 번호 : 123-45-678</p>
+                    </div>
+                </div>
+                <div class="footer-inner">
+                    <div>
+                        <img class="footer-logo" src="/logo_gam.png" alt="">
+                    </div>
+                    <div class="footer-text">
+                        <p>Tel : 053.572.1005</p>
+                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>(주)  절어서 한국속으로</p>
+                        <p>대표 : 미어캣</p>
+                        <p>사업자 번호 : 123-45-678</p>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -176,7 +218,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import router from '../../js/router';
+// import router from '../../js/router';
 
 const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
@@ -232,6 +274,10 @@ const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value
 }
 
+const logout = () =>{
+    confirm('로그아웃 하시겠습니까?');
+    store.dispatch('auth/logout');
+}
 
 // ---------- 게시판 이동 관련 start ----------
 const redirectBoards = async (bcType) => {
@@ -526,7 +572,7 @@ header {
 
 /* 푸터푸터 */
 footer {
-    height: 230px;
+    height: 430px;
     background-color: #e0e0e0;
     position: relative;
     transform: translateY(0%);
@@ -535,6 +581,13 @@ footer {
     z-index: 1;
     margin-top: 50px;
     gap: 30px;
+}
+
+.footer-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 90%;
+    place-items: center;
 }
 
 /* 푸터 사업자번호 */
@@ -575,7 +628,7 @@ footer {
 }
 
 .hr {
-    width: 95vw;
+    width: 100vw;
 }
 
 .copy-right {

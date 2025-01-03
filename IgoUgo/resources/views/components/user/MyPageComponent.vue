@@ -91,7 +91,7 @@
                     </div>
                     <div v-for="item in userQuestion" :key="item" class="question-content">
                         <p>{{ item.board_id }}</p>
-                        <div v-if="item.questions.que_status === '0'">
+                        <div v-if="item.question.que_status === '0'">
                             <p class="reply-yet">대기</p>
                         </div>
                         <div v-else>
@@ -274,7 +274,8 @@ const deletemodal = (userInfo) => {
     transition: ease-in-out 0.3s; */
     color: #01083a;
     background-color: #fff;
-    border: 2px solid #01083a;
+    /* border: 2px solid #01083a; */
+    box-shadow: 0 0 0 2px #01083a inset;
 }
 
 /* 탈퇴 버튼 */

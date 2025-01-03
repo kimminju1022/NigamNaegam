@@ -29,7 +29,7 @@ class Question extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function boards() {
+    public function board() {
         return $this->belongsTo(Board::class, 'board_id');
     }
 }

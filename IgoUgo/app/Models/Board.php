@@ -56,14 +56,13 @@ class Board extends Model
         return $this->hasMany(Comment::class, 'board_id', 'board_id');
     }
 
-    public function questions() {
+    public function question() {
         return $this->hasOne(Question::class, 'board_id', 'board_id');
     }
 
     public function likes() {
         return $this->hasMany(Like::class, 'board_id', 'board_id')->where('like_flg', 1);
     }
-
 
     public function review() {
         return $this->hasOne(Review::class, 'board_id', 'board_id');

@@ -140,7 +140,7 @@ export default {
                         .then(response => {
 
                             context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
-                            localStorage.setItem('auth/userInfo', JSON.stringify(response.data.userInfo), {root: true});
+                            localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
 
                             alert('수정 성공');
                             router.replace(`/user/${userData.userInfo.user_id}`);
@@ -193,13 +193,13 @@ export default {
 
                         axios.delete(url, config)
                         .then(response => {
-                            alert('삭제 성공');
+                            alert('탈퇴 성공');
 
                             router.replace('/');
                         })
                         .catch(error => {
                             console.error(error);
-                            alert('삭제 실패');
+                            alert('탈퇴 실패');
                         });
                     } 
                 }

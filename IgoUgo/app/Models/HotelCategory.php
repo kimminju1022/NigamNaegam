@@ -21,7 +21,7 @@ class HotelCategory extends Model
         'pickup',
     ];
 
-    // public function hotelCategory() {
-    //     return $this->hasMany(HotelInfo::class, 'hc_type');
-    // }
+    public function hotelCategory() {
+        return $this->hasMany(HotelInfo::class, 'hc_type');
+    }
 }
