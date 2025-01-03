@@ -19,14 +19,14 @@ class BoardController extends Controller
     // action-Method
 
     public function index(Request $request) {
-        $boardList = Board::
+        $boardList = Board::select('boards.*')->
             join('users', 'users.user_id', '=', 'boards.user_id')
             ->when($request->bc_type === '0', function(Builder $query) {
                 return $query->join('reviews', function ($join) {
                         $join->on('reviews.board_id', '=', 'boards.board_id');
                     })
                     ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
-                    ->joinSub(
+                    ->leftJoinSub(
                         DB::table('likes')
                             ->select('likes.board_id', DB::raw('COUNT(likes.like_id) as like_cnt'))
                             ->where('like_flg', '=', '1')
