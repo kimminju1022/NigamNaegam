@@ -122,7 +122,7 @@ class QuestionController extends Controller
 
     // 게시글 수정 처리
     public function update(BoardRequest $request) {
-        Log::debug('q_update', $request->all());
+
         $board = Board::find($request->board_id);
 
         if($board->board_title !== $request->board_title) {
