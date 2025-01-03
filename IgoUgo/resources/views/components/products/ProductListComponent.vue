@@ -25,8 +25,8 @@
                         <img src="/img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
-                        <p>최신순</p>
+                    <div @click="sortData('modifiedtime')" class="order-list-item">
+                        <p :class="{ 'active-font-bold': isActive }">최신순</p>
                         <span class="order-list-item-update font-bold">NEW</span>
                     </div>
                     <p>|</p>
@@ -117,7 +117,21 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
     contentTypeId: route.params.contenttypeid,
     area_code: [],
+    sort: 'createdtime',
 });
+
+let isActive = false;
+
+function sortData(data) {
+    if(searchData.sort === data) {
+        searchData.sort = 'createdtime';
+        isActive = false
+    } else {
+        searchData.sort = data;
+        isActive = true
+    }
+    store.dispatch('product/getProductsPagination', searchData);
+}
 
 // const areaData = computed(() => store.state.hotel.hotelArea);
 
@@ -364,7 +378,9 @@ function closemodal() {
     .font-bold {
         font-weight: 900;
     }
-    
+    .active-font-bold {
+        font-weight: 900;
+    }
     /* 기타 등등 */
     .img-x { 
         width: 12px;

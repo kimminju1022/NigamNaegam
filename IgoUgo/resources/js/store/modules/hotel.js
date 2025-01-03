@@ -29,7 +29,7 @@ export default {
         },
         setHotelDetailImg(state, list) {
             state.hotelDetailImg = list;
-        }
+        },
     },
     actions: {
         getHotelsPagination(context, data) {

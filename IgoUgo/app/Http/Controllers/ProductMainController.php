@@ -31,13 +31,15 @@ class ProductMainController extends Controller
     public function showList(Request $request) {
         $contentTypeId = $request->contenttypeid;
         $areaCode = $request->area_code;
+        $sort = $request->sort;
+        Log::debug($sort);
         $productList = Product::where('contenttypeid', $contentTypeId)
                                 ->when($areaCode, function($query, $areaCode) {
                                     return $query->whereIn('products.area_code', $areaCode);
                                 })
                                 ->whereNotNull('firstimage')
                                 ->select('contentid', 'title', 'firstimage')
-                                ->orderBy('createdtime', 'desc')
+                                ->orderBy($sort, 'desc')
                                 ->paginate(32);
         $responseData = [
             'success' => true,

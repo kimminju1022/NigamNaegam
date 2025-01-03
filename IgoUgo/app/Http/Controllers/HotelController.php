@@ -17,7 +17,7 @@ class HotelController extends Controller
         $areaCode = $request->area_code;
         $hcType = $request->hc_type;
         $sort = $request->sort;
-        Log::debug($sort);
+        // Log::debug($sort);
         // Log::debug('hcType', $hcType);
 
         // $hotels = Hotel::with(['hotelInfos.hotelCategory'])
@@ -109,6 +109,7 @@ class HotelController extends Controller
             'firstImageYN' => 'Y',
             'overviewYN' => 'Y',
             'addrinfoYN' => 'Y',
+            'mapinfoYN' => 'Y',
             '_type' => 'json',            
         ]);
 
