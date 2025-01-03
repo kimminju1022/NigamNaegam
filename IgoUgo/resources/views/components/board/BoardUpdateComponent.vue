@@ -21,7 +21,7 @@
         </div>
 
         <div class="board-update-head">
-            <select name="" id="">
+            <select name="boardType" id="boardUpdate-type">
                 <option  disabled hidden selected>게시판 명</option>
                 <option value="0">리뷰게시판</option>
                 <option value="1">자유게시판</option>

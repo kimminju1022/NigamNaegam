@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductMainController;
@@ -47,7 +48,10 @@ Route::post('/registration', [UserController::class, 'store'])->name('user.store
 Route::get('/boards', [BoardController::class, 'index'])->name('board.index');
 Route::get('/boards/review', [BoardController::class, 'showReview']);
 Route::get('/boards/free', [BoardController::class, 'showFree']);
-Route::get('/boards/{id}/detail', [BoardController::class, 'show'])->name('board.show');
+Route::get('/boards/{id}', [BoardController::class, 'show'])->name('board.show');
+
+// 코켄트 관련
+Route::get('/comments', [CommentController::class, 'index'])->name('comment.index');
 
 // 문의 게시판용 라우터
 Route::get('/questions', [QuestionController::class, 'index']);

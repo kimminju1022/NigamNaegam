@@ -2,68 +2,63 @@
     <div class="board-detail-header">
         <!-- 경로표시 -->
         <div class="board-detail-category">
-            <h2>{{ boardtitle }}    ></h2>
-            <h3>{{ boardCategories }}    ></h3>
-            <h3>{{ boardArea }}</h3>
+            <h2>{{ $store.state.board.bcName }}</h2>
+            <h3 v-if="$store.state.board.rcName">  > {{ $store.state.board.rcName }}</h3>
+            <h3 v-if="$store.state.board.areaName">  > {{ $store.state.board.areaName }}</h3>
         </div>
         <!-- 버튼영역 -->
+        
         <div class="board-detailItem-btn"> 
-            <button class="btn bg-navy board-detail-btn" @click="detailConfirm">수정</button>
-            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm">삭제</button>
+            <!-- <router-link :to="`/boards/${boardInfo.board_id}/edit`">
+                <button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
+            </router-link>
+            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+            <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
+             -->
         </div>
     </div>
     
     <!-- 상세 글머리_정보불러오기-->
-    <h1>타이틀</h1>
+    <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head">
-        <p>★★★☆☆</p>
-        <span>작성자 : 닉네임</span>
-        <span>2024.12.05</span>
-        <button>💗  :</button>
-        <!-- <span> {{ loveIt[0] }}</span> -->
-        <span>조회 : </span>
+        <p v-if="boardDetail.bc_type === '0'">{{ boardDetail.rate }}</p>
+        <p>작성자 :{{ boardDetail.user_nickname }}</p>
+        <p>{{ boardDetail.created_at }}</p>
+        <button @click="boardLike"><img style="width: 20%;" src="../../../../../ex/img/heart.png"> : </button>
+        <!-- <p> {{ loveIt[0] }}</p> -->
+        <p>조회 : </p>
         <!-- {{ absolve[1]++ }} -->
         <button @click="boardNotify">🚨 신고</button>
     </div>
     
     <!-- 등록이미지 불러오기 -->
     <div class="board-detail-img">
-        <!-- <img src={{ item.boardImg1}} alt="test">
-        <img src={{ item.boardImg2}} alt="test"> -->
+        <img :src="boardDetail.board_img1">
+        <img :src="boardDetail.board_img2">
     </div>
     <hr>
     <!-- 내용 -->
-    <div class="board-detail-content">
-        <span>loem</span>
-    </div>
+    <textarea readonly class="board-detail-content">{{ boardDetail.board_content}}</textarea>
     <hr>
     <!-- 댓글 -->
     <div class="board-reply-container">
         <div class="board-detail-reply ">
-            <span>댓글</span>
+            <p>댓글</p>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
             <button class="btn bg-navy board-detail-btn">작성</button>
-            <span>총 댓글 :
-                <!-- {{ ClipboardItem.comment_cnt }} -->
-            </span>
-            <!-- {{ 댓글수[0] }} 아이템을 어떻게 불러와야할 지 모르겠어 tatal값을 계산해서 넣어야 할텐데 모르겠어 -->
+            <p>총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
         <hr>
         <div class="board-detail-replyList">
             <div class="replyList-head">
-                <span>내용</span>
-                <span>닉네임</span>
-                <span>작성일시</span>
+                <p>내용</p>
+                <p>닉네임</p>
+                <p>작성일시</p>
             </div>
-            <!-- <div v-for="item in boardReply" :key="item" class="replyList">
-                <span>{{ item.comment_content }}</span>
-                <span>{{ item.user_nickname }}</span>
-                <span>{{ item.created_at }}</span>
-            </div> -->
-            <div v-if="boardComment" class="replylist-comment">
-                <span>{{ boardComment.comments.comment_content }}</span>
-                <!-- <span>{{ boardComment.users.user_nickname }}</span>
-                <span>{{ boardComment.comments.created_at }}</span> -->
+            <div v-for="item in $store.state.board.boardComments" :key="item" class="replyList">
+                <p>{{ item.comment_content }}</p>
+                <p>{{ item.user_nickname }}</p>
+                <p>{{ item.created_at }}</p>
             </div>
             <div class="pagination-btn">
                 <!-- 페이지네이션 -->
@@ -72,23 +67,20 @@
         </div>
     </div>
 
-    </template>
+</template>
 
 <script setup>
-import { computed,onBeforeMount } from 'vue';
-import router from '../../../js/router'
+import PaginationComponent from '../PaginationComponent.vue';
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const route = useRoute();
 // board출력값
-const boardTitle = computed(() => store.state.board.boardTitle);
-const boardCategories = computed(() => store.state.board.boardCategories);
-const boardArea = computed(() => store.state.board.boardArea);
-const boardImg1 = computed(() => store.state.board.boardImg1);
-const boardImg2 =  computed(() => store.state.board.boardImg2);
-
-// 게시글 댓글 정보  ----------------------------------------
-const boardComment = computed(() => store.state.board.boardComment);
+const boardDetail = computed(() => store.state.board.boardDetail);
+// const boardImg1 = computed(() => store.state.board.boardImg1);
+// const boardImg2 =  computed(() => store.state.board.boardImg2);
 
 // alert 안내문구---------------------start-----------------
 const detailConfirm = () => {
@@ -113,11 +105,17 @@ const boardNotify= () => {
     }
 }
 // alert 안내문구---------------------end-----------------
+const actionName = 'board/boardCommentPagination';
+const searchData = reactive({
+    page: store.state.pagination.currentPage,
+    board_id: route.params.id,
+});
 
 // 비포마운트처리
 onBeforeMount(()=>{
-    console.log('')
-})
+    store.dispatch('board/showBoardDetail', route.params.id);
+    store.dispatch(actionName, searchData);
+});
 
 </script>
 
@@ -159,15 +157,22 @@ hr{
 .board-detail-head{
     display: grid;
     grid-template-columns: 7fr 2fr 1.5fr 1fr 1fr 1fr;
-    justify-content: center;
-    text-align: start;
-    margin-bottom: 30px;
-    align-items: flex-end;
+    grid-auto-rows: 100px;
+    align-items: center;
+    line-height: 1.5;
+    margin: 20px auto;
+    padding: 40% auto;
 }
+/* .board-detail-head>:nth-child(){
+    display: inline;
+    text-align: center;
+} */
 .board-detail-head>button{
     border: none;
     background: transparent;
     font-size: 1.2rem;
+    max-height: 0.8rem;
+
 }
 .board-detail-img{
     display: grid;
@@ -189,6 +194,7 @@ hr{
 .board-detail-content{
     min-height: 70px;
     padding: 20px 30px;
+    width: 100%;
 }
 .board-detail-replyList{
     /*width: 100%;
@@ -210,7 +216,7 @@ hr{
     width: 100%;
     gap: 5px;
     display: grid;
-    grid-template-columns: 1fr 8fr 1fr 2fr;
+    grid-template-columns: 7fr 1fr 2fr;
     justify-content: center;
     align-items: center;
     margin: 10px ;
@@ -226,12 +232,7 @@ hr{
 .board-detail-reply>button{
     margin-left: -30px;
 }
-.replyList-head, .replyList{
-    width: 100%;
-    display: grid;
-    grid-template-columns: 7fr 1fr 1.5fr;
-    align-items: center;
-}
+
 .replyList-head{
     height: 40px;
     font-weight: 700;
@@ -240,7 +241,7 @@ hr{
 .replyList{
     padding-left: 25px;
 }
-.replyList-head:nth-child(1), .replyList>span:nth-child(2), .replyList>span:nth-child(3){
+.replyList-head:nth-child(1), .replyList>p:nth-child(2), .replyList>p:nth-child(3){
     text-align: center;
 }
 .pagination {
@@ -284,8 +285,8 @@ hr{
    }  */
     .board-detail-head {
         display: flex; /* Flexbox로 전환 */
-        grid-row: span 3;
-        grid-column: span 1;
+        grid-row: p 3;
+        grid-column: p 1;
         flex-direction: column; /* 세로 정렬 */
         align-items: center; /* 가로 중앙 정렬 */
         text-align: center; /* 텍스트 중앙 정렬 */

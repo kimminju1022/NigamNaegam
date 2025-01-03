@@ -16,11 +16,16 @@ class Board extends Model
     protected $fillable = [
         'user_id',
         'bc_type',
+        'bc_name',
         'board_title',
         'board_content',
         'board_img1',
         'board_img2',
+        'coment_content',
         'view_cnt',
+        'rc_type',
+        'rate',
+        'like_flg',
     ];
 
     /**
@@ -39,15 +44,11 @@ class Board extends Model
         }
     }
 
-    public function users() {
-        return $this->belongsTo(User::class, 'user_id')->select('user_id', 'user_nickname');
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'user_id')->select('user_id', 'user_nickname');
     }
 
-    public function areas(){
-        return $this->belongsTo(review::class, 'user_id')->select('user_id', 'user_nickname');
-    }
-
-    public function board_categories() {
+    public function board_category() {
         return $this->belongsTo(BoardCategory::class, 'bc_type', 'bc_type');
     }
 
@@ -63,7 +64,16 @@ class Board extends Model
         return $this->hasMany(Like::class, 'board_id', 'board_id')->where('like_flg', 1);
     }
 
-    public function reviews() {
+
+    public function review() {
         return $this->hasOne(Review::class, 'board_id', 'board_id');
+    }
+
+    public function area() {
+        return $this->hasOneThrough(Area::class, Review::class, 'board_id', 'area_code', 'board_id', 'area_code');
+    }
+    
+    public function review_category() {
+        return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_type', 'board_id', 'rc_type');
     }
 }
