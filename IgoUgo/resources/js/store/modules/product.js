@@ -12,7 +12,7 @@ export default {
         productDetail: {},
         productLat: null,
         productLng: null,
-        productRandom: {}
+        productRandom: null,
     }),
     mutations: {
         setProductTypeList(state, data) {

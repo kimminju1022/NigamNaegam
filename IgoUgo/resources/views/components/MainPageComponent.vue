@@ -111,7 +111,7 @@
         <div class="main-together-container">
             <h2>같이 갈래? 나랑! 너랑?</h2>
             <hr>
-            <div class="main-together-list">
+            <div v-if="productRandom" class="main-together-list">
                 <div class="main-card">
                     <router-link :to="`/products/12/${productRandom.spot.contentid}`" class="together-card-content">
                         <img :src="productRandom.spot.firstimage">
