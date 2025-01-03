@@ -165,7 +165,7 @@
                         <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
                             <img :src="item.board_img1">
                             <p>{{ item.board_title }}</p>
-                            <p>작성자 : {{ item.users.user_nickname }}</p>
+                            <p>작성자 : {{ item.user.user_nickname }}</p>
                         </router-link>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                         <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
                             <img :src="item.board_img1">
                             <p>{{ item.board_title }}</p>
-                            <p>작성자 : {{ item.users.user_nickname }}</p>
+                            <p>작성자 : {{ item.user.user_nickname }}</p>
                         </router-link>
                     </div>
                 </div>
