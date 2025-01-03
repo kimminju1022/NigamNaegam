@@ -12,12 +12,14 @@
     >
     <swiper-slide v-for="item in $store.state.product.productTypeList[condition]">
         <!-- <div class="slide-img" :style="{ backgroundImage: 'url(' + item.firstimage + ')' }"> -->
-        <div class="slide-card">
-            <img :src="item.firstimage" class="slide-img">
-            <div class="slide-title">
-                <p>{{ item.title }}</p>
+        <router-link :to="getProductLinkDetail(condition, item.contentid)">
+            <div class="slide-card">
+                <img :src="item.firstimage" class="slide-img">
+                <div class="slide-title">
+                    <p>{{ item.title }}</p>
+                </div>
             </div>
-        </div>
+        </router-link>
     </swiper-slide>
     <swiper-slide>
         <router-link :to="getProductLink(condition)">
@@ -64,6 +66,11 @@ const contentTypeId = {
 const getProductLink = (condition) => {
     const contentMatch = contentTypeId[condition];
     return `/products/${contentMatch}`;
+};
+// 조건에 따른 url 생성-상세
+const getProductLinkDetail = (condition, id) => {
+    const contentMatch = contentTypeId[condition];
+    return `/products/${contentMatch}/${id}`;
 };
 </script>
 

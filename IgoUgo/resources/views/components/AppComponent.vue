@@ -130,56 +130,49 @@
 
     <div v-if="flg === '0'">
         <footer>
-            <div class="footer-box">
-                <div class="footer-inner">
+            <div class="footer-inner">
+                <div class="footer-inner-box">
                     <div>
                         <img class="footer-logo" src="/logo_gam.png" alt="">
                     </div>
                     <div class="footer-text">
-                        <p>Tel : 053.572.1005</p>
-                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>후원계좌 : IM뱅크 111-1111-111</p>
                         <p>(주)  절어서 한국속으로</p>
-                        <p>대표 : 미어캣</p>
-                        <p>사업자 번호 : 123-45-678</p>
+                        <p>팀원 : 김민주</p>
+                        <p>얘들아 그만하고 제발 좀 자~</p>
                     </div>
                 </div>
-                <div class="footer-inner">
+                <div class="footer-inner-box">
                     <div>
                         <img class="footer-logo" src="/logo_gam.png" alt="">
                     </div>
                     <div class="footer-text">
-                        <p>Tel : 053.572.1005</p>
-                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>후원계좌 : IM뱅크 222-2222-222</p>
                         <p>(주)  절어서 한국속으로</p>
-                        <p>대표 : 미어캣</p>
-                        <p>사업자 번호 : 123-45-678</p>
+                        <p>팀원 : 김지민</p>
+                        <p>이게 왜 되지? 이게 왜 안 되지?</p>
                     </div>
                 </div>
-            </div>
-            <div class="footer-box">
-                    
-                <div class="footer-inner">
+                <div class="footer-inner-box">
                     <div>
                         <img class="footer-logo" src="/logo_gam.png" alt="">
                     </div>
                     <div class="footer-text">
-                        <p>Tel : 053.572.1005</p>
-                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>후원계좌 : IM뱅크 333-3333-333</p>
                         <p>(주)  절어서 한국속으로</p>
-                        <p>대표 : 미어캣</p>
-                        <p>사업자 번호 : 123-45-678</p>
+                        <p>팀원 : 윤종승</p>
+                        <p>(이마 탁!) 앗!</p>
                     </div>
                 </div>
-                <div class="footer-inner">
+                <div class="footer-inner-box">
                     <div>
                         <img class="footer-logo" src="/logo_gam.png" alt="">
                     </div>
                     <div class="footer-text">
-                        <p>Tel : 053.572.1005</p>
-                        <p>후원계좌 : IM뱅크 222-8282-222</p>
+                        <p>후원계좌 : IM뱅크 444-444-444</p>
                         <p>(주)  절어서 한국속으로</p>
-                        <p>대표 : 미어캣</p>
-                        <p>사업자 번호 : 123-45-678</p>
+                        <p>대표 : 이경진</p>
+                        <p>어?!아까 됐는데 왜 또 안되지?</p>
                     </div>
                 </div>
             </div>
@@ -572,13 +565,13 @@ header {
 
 /* 푸터푸터 */
 footer {
-    height: 430px;
+    /* height: 230px; */
     background-color: #e0e0e0;
-    position: relative;
-    transform: translateY(0%);
+    /* position: relative;
+    transform: translateY(0%); */
     display: grid;
-    grid-template-rows: 140px 60px;
-    z-index: 1;
+    grid-template-rows: 1fr 60px;
+    /* z-index: 1; */
     margin-top: 50px;
     gap: 30px;
 }
@@ -592,22 +585,28 @@ footer {
 
 /* 푸터 사업자번호 */
 .footer-inner {
-    padding-top: 40px;
+    /* padding-top: 40px; */
     /* display: grid;
-    grid-template-columns: 4fr 5fr; */
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; */
+    /* width: 80%; */
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 50px;
 }
 
-.footer-inner > :nth-child(1) {
+.footer-inner-box {
+    text-align: center;
+}
+
+/* .footer-inner > :nth-child(1) {
     justify-self: end;
 }
 
 .footer-inner > :nth-child(2) {
     justify-self: start;
-}
+} */
 
 .footer-logo {
     height: 140px;

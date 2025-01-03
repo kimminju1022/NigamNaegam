@@ -217,27 +217,27 @@
                     <div>
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p>
-                            <p>2024-12-17</p>
+                            <p class="announcement-date">2024-12-17</p>
                         </div>
                         <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
-                            <p>2024-12-17</p>
+                            <p class="announcement-date">2024-12-17</p>
                         </div>
                         <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
-                            <p>2024-12-17</p>
+                            <p class="announcement-date">2024-12-17</p>
                         </div>
                         <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
-                            <p>2024-12-17</p>
+                            <p class="announcement-date">2024-12-17</p>
                         </div>
                         <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
-                            <p>2024-12-17</p>
+                            <p class="announcement-date">2024-12-17</p>
                         </div>
                         <!-- <hr> -->
                     </div>
@@ -581,7 +581,7 @@ a, a:visited {
     /* display: flex;
     flex-direction: column; */
     display: grid;
-    grid-template-rows: 0.2fr 1fr 1fr;
+    grid-template-rows: 0fr 1fr 1fr;
     gap: 20px;
     margin-top: 50px;
 }
@@ -732,6 +732,10 @@ hr {
 
 .hr-style {
     border: 1px solid #01083a;
+}
+
+.announcement-date {
+    text-align: end;
 }
 
 /* ---------- 반응형 ---------- */

@@ -101,7 +101,7 @@ onMounted(() => {
 
 const loadKakaoMap = async () => {
     const container = document.getElementById("map");
-    console.log("Container:", container); // 확인용 로그
+    // console.log("Container:", container); // 확인용 로그
     if (container && productLat.value && productLng.value) {
         const options = {
             center: new window.kakao.maps.LatLng(productLat.value, productLng.value),
