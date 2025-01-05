@@ -38,8 +38,8 @@ class Board extends Model
     protected function serializeDate(\DateTimeInterface $date) {
         $today = Carbon::instance($date)->isToday();
         if($today) {
-        //     return $date->format('H:i');
-        // } else {
+            return $date->format('H:i');
+        } else {
             return $date->format('Y-m-d');
         }
     }

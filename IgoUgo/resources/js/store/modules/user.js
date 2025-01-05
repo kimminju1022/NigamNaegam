@@ -193,8 +193,12 @@ export default {
 
                         axios.delete(url, config)
                         .then(response => {
+                            localStorage.clear();
+                            
+                            context.commit('auth/setAuthFlg', false, {root:true});
+                            context.commit('auth/setUserInfo', {}, {root:true});
+                            
                             alert('탈퇴 성공');
-
                             router.replace('/');
                         })
                         .catch(error => {
@@ -269,7 +273,7 @@ export default {
 
                         axios.put(url, data, config)
                         .then(response => {
-                            alert('비밀번호가 성공적으로 변경되었습니다!');
+                            alert('비밀번호가 성공적으로 변경되었습니다.');
 
                             localStorage.clear();
                             context.commit('auth/setAuthFlg', false, {root: true});
@@ -280,17 +284,19 @@ export default {
                         .catch(error => {
                             console.log(error.response);
                             let errorMsgList = [];
-                            // const errorData = error.response.data;
+                            const errorData = error.response.data;
 
-                            if(error.response.status === 422) {
-                                // alert('비밀번호가 유효하지 않습니다.');
-                                errorMsgList.push('비밀번호가 유효하지 않습니다.');
-                                
-                            } else if(error.response.status === 401) {
-                                // alert('현재 비밀번호가 올바르지 않습니다.');
-                                errorMsgList.push('현재 비밀번호가 올바르지 않습니다.');
+                            if(error.response.status === 400) {
+                                errorMsgList.push('현재 비밀번호가 일치하지 않습니다.');
+                            // } else if(error.response.status === 401) {
+                            //     errorMsgList.push('현재 비밀번호가 올바르지 않습니다.');
+                            } else if(error.response.status === 422) {
+                                if(errorData.data.newPassword) {
+                                    errorMsgList.push('비밀번호 형식이 맞지 않습니다.');
+                                } else if(errorData.data.newPasswordChk)  {
+                                    errorMsgList.push('비밀번호가 일치하지 않습니다.');
+                                }
                             } else {
-                                // alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
                                 errorMsgList.push('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
                             }
 

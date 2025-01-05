@@ -2,6 +2,7 @@
     <div class="container" v-if="questionDetail">
         <h1>문의게시판</h1>
         <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
+            <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
             <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link>
             <!-- <router-link :to="`/questions/${$store.state.questions.questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link> -->
             <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
@@ -11,8 +12,8 @@
                 <p>제목</p>
                 <div class="board-num">
                     <textarea readonly>{{ questionDetail.board_title }}</textarea>
-                    <p>글 번호</p>
-                    <p>{{ questionDetail.board_id }}</p>
+                    <p>조회수</p>
+                    <p>{{ questionDetail.view_cnt }}</p>
                 </div>  
             </div>
             <div class="board-content-box">
@@ -143,12 +144,12 @@ const deleteQuestion = (id) => {
 .board-title-box textarea {
     font-size: 17px;
     resize: none;
-    margin: 10px;
+    margin: 5px;
 }
 
 .board-num {
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr;
+    grid-template-columns: 6fr 1fr 1fr;
 }
 
 .board-num :nth-child(2) {

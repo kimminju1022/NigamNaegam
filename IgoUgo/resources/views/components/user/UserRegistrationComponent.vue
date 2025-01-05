@@ -12,7 +12,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="emailError" class="error-message">{{ emailError }}</span>
                 </div>
-                <input v-model="userInfo.user_email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요">
+                <input v-model="userInfo.user_email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요" autofocus>
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -26,7 +26,7 @@
                         </ul>
                     </div>
                 </div>
-                <input v-model="userInfo.user_password" class="input-login" type="password" id="password" name="user_password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)">
+                <input v-model="userInfo.user_password" class="input-login" type="password" id="password" name="user_password" placeholder="비밀번호 입력(문자, 숫자, 특수문자 포함 8 - 20글자)" >
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -92,9 +92,9 @@ const msg1 = ref('✔ 문자');
 const msg2 = ref('✔ 숫자');
 const msg3 = ref('✔ 특수기호');
 
-const color1 = reactive({color: 'red'});
-const color2 = reactive({color: 'red'});
-const color3 = reactive({color: 'red'});
+const color1 = reactive({color: '#808080'});
+const color2 = reactive({color: '#808080'});
+const color3 = reactive({color: '#808080'});
 
 // 이메일 유효성 검사 함수
 const validateEmail = (user_email) => {
@@ -112,19 +112,19 @@ const validatePassword = (user_password) => {
     const passwordRegex3 = /^.*[!@#$%^&*].*$/;
 
     if (passwordRegex1.test(user_password)) {
-        color1.color = 'green';
+        color1.color = '#00bd00';
     } else {
-        color1.color = 'red';
+        color1.color = '#808080';
     }
     if (passwordRegex2.test(user_password)) {
-        color2.color = 'green';
+        color2.color = '#00bd00';
     } else {
-        color2.color = 'red';
+        color2.color = '#808080';
     }
     if (passwordRegex3.test(user_password)) {
-        color3.color = 'green';
+        color3.color = '#00bd00';
     } else {
-        color3.color = 'red';
+        color3.color = '#808080';
     }
 }
 
@@ -175,6 +175,10 @@ watch(userInfo, (newObj) => {
 </script>
 
 <style scoped>
+label::before {
+    content: '* ';
+    color: #ff0000;
+}
 input {
     border-bottom: 1px solid #01083a;
     background: transparent;

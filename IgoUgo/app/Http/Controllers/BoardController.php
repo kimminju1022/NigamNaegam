@@ -99,7 +99,13 @@ class BoardController extends Controller
     public function showReview(){
         $boardReview = Board::select('board_title', 'board_img1', 'board_id', 'user_id')
                                 ->withCount('likes')
-                                ->with(['user', 'likes'])
+                                // ->with(['user', 'likes'])
+                                ->with([
+                                    'user' => function ($query) {
+                                        $query->withTrashed();
+                                    },
+                                    'likes'
+                                ])
                                 ->where('bc_type', 0)
                                 ->groupBy('board_id', 'board_title', 'board_img1', 'user_id')
                                 ->orderBy('likes_count','DESC')
@@ -119,6 +125,12 @@ class BoardController extends Controller
         $boardFree = Board::select('board_title', 'board_img1', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 ->with(['user', 'likes'])
+                                ->with([
+                                    'user' => function ($query) {
+                                        $query->withTrashed();
+                                    },
+                                    'likes'
+                                ])
                                 ->where('bc_type', 1)
                                 ->groupBy('board_id', 'board_title', 'board_img1', 'user_id')
                                 ->orderBy('likes_count','DESC')

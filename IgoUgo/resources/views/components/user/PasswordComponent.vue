@@ -7,7 +7,7 @@
         </div>
         <div class="password-item">
             <p class="bg-navy">현재 비밀번호</p>
-            <input v-model="userInfo.user_password" type="password" name="user_password" placeholder="비밀번호 입력">
+            <input v-model="userInfo.user_password" type="password" name="user_password" placeholder="비밀번호 입력" autofocus>
         </div>
         <div class="my-profile-chk-btn">
             <button @click="$store.dispatch('user/chkPW', userInfo)" class="btn bg-navy btn-chk">확인</button>

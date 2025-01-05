@@ -10,15 +10,15 @@
         </div> -->
         <div class="password-item">
             <p class="bg-navy">현재 비밀번호</p>
-            <input v-model="user.currentPassword" type="password" name="currentPassword" placeholder="비밀번호 입력">
+            <input v-model="user.currentPassword" type="password" name="currentPassword" placeholder="현재 비밀번호 입력" autofocus>
         </div>
         <div class="password-item">
             <p class="bg-navy">변경할 비밀번호</p>
-            <input v-model="user.newPassword" type="password" name="newPassword" placeholder="비밀번호 입력">
+            <input v-model="user.newPassword" type="password" name="newPassword"  placeholder="문자, 숫자, 특수문자 포함 8-20글자">
         </div>
         <div class="password-item">
             <p class="bg-navy">변경할 비밀번호 확인</p>
-            <input v-model="user.newPasswordChk" type="password" name="newPasswordChk" placeholder="비밀번호 입력">
+            <input v-model="user.newPasswordChk" type="password" name="newPasswordChk" placeholder="비밀번호 확인">
         </div>
         <div class="my-profile-chk-btn">
             <!-- TODO : 버튼 디자인좀 -->

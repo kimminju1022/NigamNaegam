@@ -56,27 +56,29 @@ export default {
             .catch(error => {
                 let errorMsgList = [];
                 const errorData = error.response.data;
-                if(error.response.status === 422) {
-                    // 유효성 체크 에러
-                    if(errorData.data.email) {
-                        // errorMsgList.push(errorData.data.email[0]);
-                        errorMsgList.push('이메일이 유효하지 않습니다.');
-                    }
-                    if(errorData.data.password) {
-                        // errorMsgList.push(errorData.data.password[0]);
-                        errorMsgList.push('비밀번호가 유효하지 않습니다.');
-                    }
+                if(error.response.status === 422 || error.response.status === 401) {
+                    // // 유효성 체크 에러
+                    // if(errorData.data.user_email) {
+                    //     // errorMsgList.push(errorData.data.email[0]);
+                    //     errorMsgList.push('이메일 형식이 맞지 않습니다.');
+                    // }
+                    // if(errorData.data.user_password) {
+                    //     // errorMsgList.push(errorData.data.password[0]);
+                    //     errorMsgList.push('비밀번호 형식이 맞지 않습니다.');
+                    // }
                     
-                } else if(error.response.status === 401) {
-                    // 비밀번호 오류
-                    errorMsgList.push(errorData.msg);
+                    errorMsgList.push('아이디 또는 비밀번호가 틀렸습니다.');
+                // } else if(error.response.status === 401) {
+                //     // 비밀번호 오류
+                //     errorMsgList.push(errorData.msg);
                 } else {
                     errorMsgList.push('예기치 못한 오류 발생');
+                    // errorMsgList.push('아이디 또는 비밀번호가 틀렸습니다.');
                 }
 
-                // alert(errorMsgList.join('\n'));
                 context.commit('setErrorMsgList', errorMsgList);
-                alert('아이디 또는 비밀번호가 틀렸습니다.');
+                // alert(errorMsgList.join('\n'));
+                // alert('아이디 또는 비밀번호가 틀렸습니다.');
             });
         },
 
