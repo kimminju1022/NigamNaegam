@@ -23,7 +23,7 @@
                         <img :src="questionDetail.board_img1">
                         <img :src="questionDetail.board_img2">
                     </div>
-                    <p>{{ questionDetail.board_content }}</p>
+                    <textarea readonly>{{ questionDetail.board_content }}</textarea>
                     <div class="board-user">
                         <p>닉네임 : {{ questionDetail.user.user_nickname }}</p>
                         <p>{{ questionDetail.created_at }}</p>
@@ -75,8 +75,10 @@ onBeforeMount(()=>{
 // }
 
 const deleteQuestion = (id) => {
-    confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
-    store.dispatch('question/destroyQuestion', id);
+    const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    if(check) {
+        store.dispatch('question/destroyQuestion', id);
+    }
 }
 </script>
 

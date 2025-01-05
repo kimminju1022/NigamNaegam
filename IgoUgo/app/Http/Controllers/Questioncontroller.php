@@ -78,13 +78,13 @@ class QuestionController extends Controller
         $insertData['bc_type'] = 2;
 
         if ($request->hasFile('board_img1')) {
-            $insertData['board_img1'] = $request->file('board_img1')->store('img');
+            $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
         } else {
             $insertData['board_img1'] = '/default/board_default.png';
         }
 
         if ($request->hasFile('board_img2')) {
-            $insertData['board_img2'] = $request->file('board_img2')->store('img');
+            $insertData['board_img2'] = '/'.$request->file('board_img2')->store('img');
         } else {
             $insertData['board_img2'] = '/default/board_default.png';
         }

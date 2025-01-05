@@ -233,11 +233,15 @@ export default {
                         .catch(error => {
                             let errorMsgList = [];
                             const errorData = error.response.data;
+                            console.log(error.response.data);
 
                             if(error.response.status === 422) {
-                                if(errorData.data.password) {
-                                    errorMsgList.push('비밀번호가 유효하지 않습니다.');
-                                }
+                                // if(errorData.data.user_password) {
+                                    errorMsgList.push('비밀번호가 틀렸습니다.');
+                                // }
+                                // else {
+                                    // errorMsgList.push(errorData);
+                                // }
                             } 
                             else if(error.response.status === 401) {
                                 errorMsgList.push('비밀번호가 틀렸습니다.');
@@ -247,7 +251,7 @@ export default {
                             }
                             
                             context.commit('auth/setErrorMsgList', errorMsgList, {root: true});
-                            // alert(errorMsgList);
+                            alert(errorMsgList);
                         });
                     } 
                 }
@@ -295,6 +299,8 @@ export default {
                                     errorMsgList.push('비밀번호 형식이 맞지 않습니다.');
                                 } else if(errorData.data.newPasswordChk)  {
                                     errorMsgList.push('비밀번호가 일치하지 않습니다.');
+                                } else if(errorData.data.currentPassword) {
+                                    errorMsgList.push('현재 비밀번호가 올바르지 않습니다.');
                                 }
                             } else {
                                 errorMsgList.push('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');

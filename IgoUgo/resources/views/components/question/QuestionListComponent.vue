@@ -78,9 +78,7 @@
         </div>
     </div>
     <!-- 페이지네이션 -->
-    <div class="footer-box">
-        <PaginationComponent :actionName="actionName" :searchData="searchData" />
-    </div>
+    <PaginationComponent :actionName="actionName" :searchData="searchData" />
 </template>
 <script setup>
 
@@ -176,7 +174,7 @@ onBeforeMount(() => {
     font-size: 16px;
 }
 
-.board-content > :nth-child(3){
+.board-content > :nth-child(n + 3):nth-child(-n + 4){
     /* text-align: left;
     overflow: hidden; */
     white-space: nowrap;

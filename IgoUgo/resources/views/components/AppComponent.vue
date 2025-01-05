@@ -269,8 +269,10 @@ const toggleMenu = () => {
 }
 
 const logout = () =>{
-    confirm('로그아웃 하시겠습니까?');
-    store.dispatch('auth/logout');
+    const check = confirm('로그아웃 하시겠습니까?');
+    if(check) {
+        store.dispatch('auth/logout');
+    }
 }
 
 // ---------- 게시판 이동 관련 start ----------

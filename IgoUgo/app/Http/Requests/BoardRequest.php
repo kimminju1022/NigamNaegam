@@ -16,8 +16,8 @@ class BoardRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'board_title' => ['required', 'between:1,100', 'regex:/^[0-9a-zA-Z가-힣!@#$%^&*()]+$/'],
-            'board_content' => ['required', 'between:1,2000', 'regex:/^[0-9a-zA-Z가-힣!@#$%^&*()]+$/'],
+            'board_title' => ['required', 'between:1,100', 'regex:/^[0-9a-zA-Z가-힣!@#$%^&*?.,+-_<=>^_{}~() \s]+$/'],
+            'board_content' => ['required', 'between:1,2000', 'regex:/^[0-9a-zA-Z가-힣!@#$%^&*?.,+-_<=>^_{}~() \s]+$/'],
             'board_img1' => ['image'],
             'board_img2' => ['image'],
         ];
