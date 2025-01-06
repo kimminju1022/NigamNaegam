@@ -39,7 +39,7 @@ class UserRequest extends FormRequest
 
             // unique?
             $rules['user_nickname'] = ['required', 'between:1, 50', 'unique:users,user_nickname', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
-            $rules['user_phone'] = ['required', 'between:11,15', 'unique:users,user_phone', 'regex:/^[0-9]+$/u'];
+            $rules['user_phone'] = ['required', 'between:11,13', 'unique:users,user_phone', 'regex:/^[0-9]+$/u'];
         }
         
         // 유저 업데이트

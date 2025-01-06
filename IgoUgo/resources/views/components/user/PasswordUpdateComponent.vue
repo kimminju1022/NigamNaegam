@@ -10,7 +10,7 @@
         </div> -->
         <div class="password-item">
             <p class="bg-navy">현재 비밀번호</p>
-            <input v-model="user.currentPassword" type="password" name="currentPassword" placeholder="현재 비밀번호 입력" autofocus>
+            <input v-model="user.currentPassword" type="password" name="currentPassword" placeholder="현재 비밀번호 입력">
         </div>
         <div class="password-item">
             <p class="bg-navy">변경할 비밀번호</p>

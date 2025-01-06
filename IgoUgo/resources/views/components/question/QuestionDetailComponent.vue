@@ -7,6 +7,9 @@
             <!-- <router-link :to="`/questions/${$store.state.questions.questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link> -->
             <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
         </div>
+        <div v-else class="header-btn-box">
+            <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
+        </div>
         <div class="board-box">
             <div class="board-title-box">
                 <p>제목</p>

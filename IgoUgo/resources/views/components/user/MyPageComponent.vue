@@ -312,7 +312,7 @@ const deletemodal = (userInfo) => {
 
 .question-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 9fr 2.5fr;
+    grid-template-columns: 1fr 1fr 9fr 1.5fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -326,7 +326,7 @@ const deletemodal = (userInfo) => {
 
 .question-content {
     display: grid;
-    grid-template-columns: 1fr 1fr 9fr 2.5fr;
+    grid-template-columns: 1fr 1fr 9fr 1.5fr;
     text-align: center;
     padding: 10px;
 }

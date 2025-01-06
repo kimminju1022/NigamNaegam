@@ -12,12 +12,12 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="emailError" class="error-message">{{ emailError }}</span>
                 </div>
-                <input v-model="userInfo.user_email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요" autofocus>
+                <input v-model="userInfo.user_email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요">
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
                     <label for="password">비밀번호</label>
-                    <!-- 유효성 검사 실패 시 메시지 컬러 red -> green -->
+                    <!-- 유효성 검사 실패 시 메시지 컬러 gray -> green -->
                     <div>
                         <ul class="password-regex">
                             <li :style="color1">{{ msg1 }}</li> <!-- 대소문자 -->
@@ -58,7 +58,7 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="phoneError" >전화번호 형식에 맞지 않습니다.</span>
                 </div>
-                <input v-model="userInfo.user_phone" class="input-login" type="text" id="phone" name="user_phone" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
+                <input v-model="userInfo.user_phone" class="input-login" type="text" id="phone" name="user_phone" minlength="11" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
             </div>
         </div>
         <div class="registration-btn">
