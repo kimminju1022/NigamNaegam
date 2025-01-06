@@ -67,7 +67,9 @@ class BoardController extends Controller
     // 게시글 획득_상세
     public function show($id){
         $board_target = Board::find($id);
-        $board_target->view_cnt++;
+        
+        $board_target->view_cnt+=1;
+        // $board_target->view_cnt++;
         $board_target->save();
 
         $bc_type = $board_target->bc_type;

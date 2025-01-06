@@ -61,19 +61,19 @@
                     <div class="board-starGrade board-category">
                         <p>별점</p>
                         <div class="star-grade">
-                            <input type="radio" name="rate" id="star-1" class="star" value="1" v-model="boardInfo.rate">
+                            <input type="radio" name="rate" id="star-1" class="star" value="5" v-model="boardInfo.rate">
                             <label for="star-1" class="star-label"></label>
             
-                            <input type="radio" name="rate" id="star-2" class="star" value="2" v-model="boardInfo.rate">
+                            <input type="radio" name="rate" id="star-2" class="star" value="4" v-model="boardInfo.rate">
                             <label for="star-2" class="star-label"></label>
             
                             <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
                             <label for="star-3" class="star-label"></label>
             
-                            <input type="radio" name="rate" id="star-4" class="star" value="4" v-model="boardInfo.rate">
+                            <input type="radio" name="rate" id="star-4" class="star" value="2" v-model="boardInfo.rate">
                             <label for="star-4" class="star-label"></label>
             
-                            <input type="radio" name="rate" id="star-5" class="star" value="5" v-model="boardInfo.rate">
+                            <input type="radio" name="rate" id="star-5" class="star" value="1" v-model="boardInfo.rate">
                             <label for="star-5" class="star-label"></label>
                         </div>
                     </div>

@@ -116,7 +116,11 @@ const searchData = reactive({
 });
 
 // rate별점표기-----------------------start-----------------
-const boardRate = computed(() => 6 - boardDetail.value.rate);
+const boardRate = computed(() => boardDetail.value.rate);
+
+const boardInfo = reactive({
+    board_id: route.params.id,
+});
 
 // // boardRate = computed(() => {
 // //     return boardDetail.value?.rate ? 6 - boardDetail.value.rate
