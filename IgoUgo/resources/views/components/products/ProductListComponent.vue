@@ -86,7 +86,7 @@
 </template>
     
 <script setup>
-import { computed, onBeforeMount, reactive, ref} from 'vue';
+import { computed, onBeforeMount, reactive, ref, watch} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
@@ -130,8 +130,20 @@ function sortData(data) {
         searchData.sort = data;
         isActive = true
     }
-    store.dispatch('product/getProductsPagination', searchData);
+    // store.dispatch('product/getProductsPagination', searchData);
+    store.dispatch(actionName, searchData);
 }
+
+watch(
+    () => route.params.contenttypeid,
+    (newId) => {
+        searchData.contentTypeId = parseInt(newId);
+        productTitle.value = productIdList[newId];
+        store.dispatch(actionName, searchData);
+    }
+);
+
+store.dispatch(actionName, searchData);
 
 // const areaData = computed(() => store.state.hotel.hotelArea);
 

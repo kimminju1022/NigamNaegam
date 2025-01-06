@@ -5,9 +5,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductMainController;
 use App\Http\Controllers\QuestionController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,9 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// 테스트용 라우터
-Route::get('/testdata', [TestController::class, 'index']);
-
 // 호텔리스트 라우터
 Route::get('/hotels', [HotelController::class, 'hotels']);
 Route::get('/areas', [HotelController::class, 'areas']);
@@ -34,11 +29,11 @@ Route::get('/hotels/{contentid}', [HotelController::class, 'hotelsDetail']);
 
 // ----- 상품 관련 -----
 // 상품 메인 라우터
-Route::get('/products', [ProductMainController::class, 'getFilteredProducts']);
+Route::get('/products', [ProductController::class, 'getFilteredProducts']);
 // 각 카테고리별 상품리스트 라우터
-Route::get('/products/{contenttypeid}', [ProductMainController::class, 'showList']);
-Route::get('/products/{contenttypeid}/{contentid}', [ProductMainController::class, 'productDetail']);
-Route::get('/product/random', [ProductMainController::class, 'getProductRandom']);
+Route::get('/products/{contenttypeid}', [ProductController::class, 'showList']);
+Route::get('/products/{contenttypeid}/{contentid}', [ProductController::class, 'productDetail']);
+Route::get('/product/random', [ProductController::class, 'getProductRandom']);
 
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
