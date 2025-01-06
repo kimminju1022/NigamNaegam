@@ -60,7 +60,7 @@
                     <p>428</p>
                 </div>
             </div>
-            <div class="board-content-box">
+            <div class="board-content-box" v-if="questionList.length > 0">
                 <div v-for="item in questionList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
                     <div v-if="item.question.que_status === '0'">

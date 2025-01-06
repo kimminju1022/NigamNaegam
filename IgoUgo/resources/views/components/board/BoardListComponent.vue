@@ -1,61 +1,55 @@
 <template>
     <h2 style="margin: 30px 0; font-size: 3rem;">
         <!-- {{ bcName }} »  -->
-        {{ bcName }} »
+        {{ bcName }} 
         <!-- {{ selectArea }} -->
     </h2>
-    <div class="board-head">
-        <div class="board-category">
-            <div v-show="boardInfo.bc_type === '0'" class="board-selectType">
-                <h3 class="board-category">유형
-                    <select v-model="boardInfo.rc_type" name="rc_type" class="board-category">
-                        <option disabled hidden selected>--유형선택--</option>
-                        <option value="0">숙박</option>
-                        <option value="1">맛집</option>
-                        <option value="2">관광</option>
-                        <option value="3">문화</option>
-                        <option value="4">레포츠</option>
-                        <option value="5">쇼핑</option>
-                    </select>
-                </h3>
-                <h3 class="board-category">지역
-                    <select v-model="boardInfo.area_code" name="area_code" class="board-category">
-                        <option disabled hidden selected>--지역선택--</option>
-                        <option value="1">서울</option>
-                        <option value="2">인천</option>
-                        <option value="3">대전</option>
-                        <option value="4">대구</option>
-                        <option value="5">광주</option>
-                        <option value="6">부산</option>
-                        <option value="7">울산</option>
-                        <option value="8">세종</option>
-                        <option value="31">경기</option>
-                        <option value="32">강원</option>
-                        <option value="33">충북</option>
-                        <option value="34">충남</option>
-                        <option value="35">경북</option>
-                        <option value="36">경남</option>
-                        <option value="37">전북</option>
-                        <option value="38">전남</option>
-                        <option value="39">제주</option>
-                    </select>
-                </h3>
-            </div>
+    <!-- <div class="board-head">
+        <div class="board-selectType">
+            <h3>유형</h3>
+            <select v-model="boardInfo.rc_type" name="rc_type" class="board-category">
+                <option value="0">숙박</option>
+                <option value="1">맛집</option>
+                <option value="2">관광</option>
+                <option value="3">문화</option>
+                <option value="4">레포츠</option>
+                <option value="5">쇼핑</option>
+            </select>
+            
+            <h3>지역</h3>
+            <select v-model="boardInfo.area_code" name="area_code" class="board-category">
+                <option value="1">서울</option>
+                <option value="2">인천</option>
+                <option value="3">대전</option>
+                <option value="4">대구</option>
+                <option value="5">광주</option>
+                <option value="6">부산</option>
+                <option value="7">울산</option>
+                <option value="8">세종</option>
+                <option value="31">경기</option>
+                <option value="32">강원</option>
+                <option value="33">충북</option>
+                <option value="34">충남</option>
+                <option value="35">경북</option>
+                <option value="36">경남</option>
+                <option value="37">전북</option>
+                <option value="38">전남</option>
+                <option value="39">제주</option>
+            </select>
+            
         </div>
         <div id="board-search-tb">
-            <!--  v-model="keyword" -->
             <input class="board-search" type="text" placeholder="검색어를 입력해 주세요">
-            <!-- @click="keywordSearch"  -->
             <button class="btn bg-navy board-search-btn">검색</button>
         </div>
-    </div>
+    </div> -->
     
 <!-- 리스트항목 -->
     <div class="board-list">
         <!-- 리스트 헤드 -->
         <div class="board-li-title">
             <p>번호</p>
-            <p v-show="$store.state.board.bcType === 0">지역</p>
+            <p v-show="$store.state.board.bcType === '0'">지역</p>
             <p>제목</p>
             <p>닉네임</p>
             <p>작성일자</p>
@@ -118,16 +112,14 @@
             <div class="board-list" >
                 <div  id="board-li-item" v-for="item in boardList" :key="item">
                     <p>{{ item.board_id }}</p>
-                    <!-- v-if="item.board_type === 1" hidden -->
-                    <p >{{ item.area_name }}</p>
+                    <p v-show="$store.state.board.bcType === '0'">{{ item.area_name }}</p>
                     <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
-                    <!--  v-if="item.board_type === 1" hidden -->
-                    <p>{{ item.like_cnt }}</p>
+                    <p v-show="$store.state.board.bcType === '0'">{{ item.like_cnt }}</p>
                     <p>{{ item.view_cnt }}</p>
                 </div>
-                </div>
+            </div>
         </div>
     </div>
     <!-- 하단 기능버튼 -->
@@ -179,9 +171,9 @@ watch(
 onBeforeMount(async () => {
     // console.log('나온다아아아아앙')
     // 백앤드로 요청 보내는 액션메소드
-    if(boardList.value.length === 0){
+    // if(boardList.value.length === 0){
         store.dispatch('board/getBoardListPagination', searchData);
-    }
+    // }
 });
 
 // const keyword = ref('');
@@ -198,82 +190,44 @@ const keywordSearch = () => {
 // }
 </script>
 <style scoped>  
-/* 양식관련련 */
-footer{
-    height: 30px;
-    display: inline;
-}                  
+/* 양식관련련 */             
 .pagination-btn{
     display: inline-block;
     width: 100%;
-}                                                                    
-/* .scroll{
-    display: inline-block;
-    width: 100px;
-    height: 200px;  
-    padding: 20px;
-    overflow-y: scroll;
-    border: 1px solid black;
-    box-sizing: border-box;
-    color: white;
-    font-family: 'Nanum Gothic';
-    background-color: #01083a55;
-} */
-/* ------------------------------ */
-/*** Box1 스크롤바 설정 ***/
-/* 스크롤바 설정*/
-/* select-category::-webkit-scrollbar{
-    width: 10px;
-}
-.select-category::-webkit-scrollbar:vertical {
-    width: 10px;
-}
-.select-category::-webkit-scrollbar:horizontal {
-    height: 10px;
-}
-/* 스크롤바 막대 설정*/
-/* .select-category::-webkit-scrollbar-thumb{
-    background-color: rgba(239, 242, 247, 0.1);
-    border-radius: 10px;
-    border: 2px solid #1f2845;;
-}
-/* 스크롤바 뒷 배경 설정*/
-/* .select-category::-webkit-scrollbar-track{
-    border-radius: 10px;
-    background-color: #1f2845;
-} */
-/*  */
-main{
-    align-items: center;
-
-}
+} 
 
 .board-head{
     display: flex;
     justify-content: space-between;
-    /* display: grid; */
-    grid-template-columns: 2fr 7fr;
+    grid-template-columns: 5fr 4fr;
     align-items: center;    
     gap: 30px; 
     margin: 20px auto;
     min-width: 800px;
 }
 
-/* .board-category{
-    border-radius: 10px;
-    height: 1.2rem;
-    display: inline-flex;
-    justify-content:end;
+.board-category{
+    border: none;
+    border-bottom: solid 1px #01083a;
     margin: 20px 20px;
     gap: 30px;
-} */
-.board-category{
+}
+.board-selectType{
+    display: flex;
+    justify-content: left;
+    grid-template-columns: repeat(2, 1fr 2fr);
+    align-items: center; 
+    text-align: center;   
+    gap: 10px; 
+}
+/* .board-category{
     width: 200px;
+    height: 30px;
     border: none;
     border-bottom: solid 1px #01083a;
     text-align: center;
     margin-left: 30px;
-}
+} */
 /* 리스트 항목----------- */
 #board-li-notice {
     font-weight: 500;

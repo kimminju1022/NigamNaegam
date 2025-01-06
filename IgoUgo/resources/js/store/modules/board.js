@@ -176,45 +176,72 @@ export default {
         /** 게시글 수정
          * 
          */
-        boardUpdate(context){
-            const url = `/api/boards/update/${board.boardDetail.boad_id}`;
+        boardUpdate(context, boardInfo){
+            console.log(boardInfo.boardDetail);
+            const url = `/api/boards/${boardInfo.boardDetail.board_id}`;
             const config = {
-                header: {
+                headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                     'Content-Type': 'multipart/form-data',
                 }
             }
             const formData = new FormData();
-
-            formData.append('board_id', board.boardDetail.board_id);
-            formData.append('board_title', board.boardDetail.board_title);
-            formData.append('board_content', board.boardDetail.board_content);
-            if(question.board_img1) {
-                formData.append('board_img1', board.board_img1);
+            formData.append('bc_type', boardInfo.boardDetail.bc_type);
+            formData.append('board_title', boardInfo.boardDetail.board_title);
+            formData.append('board_content', boardInfo.boardDetail.board_content);
+            if(boardInfo.board_img1) {
+                formData.append('board_img1', boardInfo.board_img1);
             }
-            if(question.board_img2) {
-                formData.append('board_img2', board.board_img2);
+            if(boardInfo.board_img2) {
+                formData.append('board_img2', boardInfo.board_img2);
+            }
+            if(boardInfo.boardDetail.rc_type) {
+                formData.append('rc_type', boardInfo.boardDetail.rc_type);
+            } 
+            if(boardInfo.boardDetail.area_code) {
+                formData.append('area_code', boardInfo.boardDetail.area_code);
+            }
+            if(boardInfo.boardDetail.rate) {
+                formData.append('rate', boardInfo.boardDetail.rate);
             }
 
             // console.log('formData는', formData);
 
             axios.post(url, formData, config)
             .then(response => {
-                context.commit('setBoardList', response.data.data);
+
+                context.commit('setBoardDetail', response.data.board);
+                context.commit('setBcName', response.data.bcName);
+                context.commit('setRcName', response.data.rcName);
+                context.commit('setAreaName', response.data.areaName);
 
                 alert('수정 성공');
-                router.replace(`/boards/${board.boardDetail.board_id}`);
-                }
-            )
+                router.replace(`/boards/${boardInfo.boardDetail.board_id}`);
+            })
             .catch(error => {
                 alert('수정 실패');
                 console.error(error.response.data);
             });
         },
+        
+        // --------------------------------게시판 업데이트 관련련
+        // updateCreate(context,bc_type){
+        //     const url = '/api/boards/create';
+        //     const config = {
+        //         header: {
+        //             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+        //         }
+        //     }
+        //     axios.get(url, config)
+        //     .then()
+        //     .catch();
+        // }
+
+
         /** 게시글 삭제
          * 
          */
-        BoardDelete(context, id) {
+        boardDelete(context, id) {
             const url = `/api/boards/${id}`;
             const config = {
                 headers: {
@@ -224,8 +251,8 @@ export default {
 
             axios.delete(url, config)
             .then(response => {
+
                 alert('삭제 성공');
-                router.push('/questions');
             })
             .catch(error => {
                 // console.error(error);
@@ -234,7 +261,7 @@ export default {
         },
 
         /**게시글 신고 */
-        BoardNotify(context) {
+        boardNotify(context) {
             const url = `/api/board/${id}`;
             const config = {
                 header:{

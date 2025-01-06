@@ -45,7 +45,7 @@ Route::get('/boards/review', [BoardController::class, 'showReview']);
 Route::get('/boards/free', [BoardController::class, 'showFree']);
 Route::get('/boards/{id}', [BoardController::class, 'show'])->name('board.show');
 
-// 코켄트 관련
+// 코멘트 관련
 Route::get('/comments', [CommentController::class, 'index'])->name('comment.index');
 
 // 문의 게시판용 라우터
@@ -70,7 +70,9 @@ Route::middleware('my.auth')->group(function() {
     // 게시판 관련
     Route::post('/boards',[BoardController::class, 'store']);
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
-    Route::put('/boards/{id}/update',[BoardController::class, 'update'])->name('board.update');
+    Route::post('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
+    Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
+    
     // 댓글관련 생성예정
 
     // 문의게시판 관련

@@ -20,6 +20,10 @@ class BoardRequest extends FormRequest
             'board_content' => ['required', 'between:1,2000', 'regex:/^[0-9a-zA-Z가-힣!@#$%^&*?.,+-_<=>^_{}~() \s]+$/'],
             'board_img1' => ['image'],
             'board_img2' => ['image'],
+            'bc_type' => ['regex:/^[0-9]{1,2}$/u'],
+            'area_code' => ['regex:/^[0-9]{1,2}$/u'],
+            'rc_type' => ['regex:/^[0-9]{1,2}$/u'],
+            'rate' => ['regex:/^[0-5]{1}$/u'],
         ];
 
         return $rules;

@@ -8,21 +8,22 @@ use App\Models\BoardCategory;
 use App\Models\Comment;
 use App\Models\Review;
 use Database\Seeders\AreaSeeder;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use MyToken;
+use Throwable;
 
 class BoardController extends Controller
 {
-    // action-Method
-
+    //리스트정보_ action-Method
     public function index(Request $request) {
         $boardList = Board::select('boards.*')->
             join('users', 'users.user_id', '=', 'boards.user_id')
             ->when($request->bc_type === '0', function(Builder $query) {
-                return $query->join('reviews', function ($join) {
+                $query->join('reviews', function ($join) {
                         $join->on('reviews.board_id', '=', 'boards.board_id');
                     })
                     ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
@@ -35,7 +36,8 @@ class BoardController extends Controller
                         'boards.board_id',
                         '=',
                         'like_tmp.board_id'
-                    );
+                    )
+                    ->select('boards.*', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
             })
             ->where('boards.bc_type', '=', $request->bc_type)
             ->orderBy('boards.created_at', 'desc')
@@ -62,10 +64,13 @@ class BoardController extends Controller
         return response()->json($responseData, 200);
     }
         
-    // 디테일페이지
+    // 게시글 획득_상세
     public function show($id){
-        $bc_type = Board::select('bc_type')->find($id)->bc_type;
+        $board_target = Board::find($id);
+        $board_target->view_cnt++;
+        $board_target->save();
 
+        $bc_type = $board_target->bc_type;
         // $board = Board::with(['user', 'board_category'])->when($bc_type === '0', function($query) {
         //                 $query->with(['area', 'review', 'review_category']);
         //             })
@@ -76,9 +81,9 @@ class BoardController extends Controller
                     ->join('users', 'users.user_id', '=', 'boards.user_id')
                     ->when($bc_type === '0', function($query) {
                         $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
-                        ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
-                        ->join('review_categories', 'review_categories.rc_type', '=', 'reviews.rc_type')
-                        ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate');
+                            ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
+                            ->join('review_categories', 'review_categories.rc_type', '=', 'reviews.rc_type')
+                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.rc_type', 'reviews.area_code');
                     })
                     ->withCount('likes')
                     ->where('boards.board_id', '=', $id)
@@ -94,6 +99,142 @@ class BoardController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+
+    // 게시글 작성
+    public function store(BoardRequest $request) {
+        $insertData = $request->only('board_title','board_content');
+        $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+        $insertData['view_cnt'] = 0;
+        $insertData['bc_type'] = $request->bc_type;
+
+        if ($request->hasFile('board_img1')) {
+            $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
+        } else {
+            $insertData['board_img1'] = '/default/board_default.png';
+        }
+
+        if ($request->hasFile('board_img2')) {
+            $insertData['board_img2'] = '/'.$request->file('board_img2')->store('img');
+        } else {
+            $insertData['board_img2'] = '/default/board_default.png';
+        }
+
+        $board = Board::create($insertData);
+
+        if($request->bc_type === '0') {
+            $insertReview['board_id'] = $board->board_id;
+            $insertReview['area_code'] = $request->area_code;
+            $insertReview['rc_type'] = $request->rc_type;
+            $insertReview['rate'] = $request->rate;
+            
+            $review = Review::create($insertReview);
+        }
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '게시글 작성 성공'
+            ,'board' => $board->toArray()
+            ,'review' => isset($review) ? $review->toArray() : null
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 게시글 수정
+    public function update(BoardRequest $request) {
+        try {
+            DB::beginTransaction();
+            $boardTarget = Board::find($request->id);
+
+            if($boardTarget-> bc_type !== $request->bc_type){
+                $boardTarget->bc_type = $request->bc_type;
+            }
+            // $boardTarget->bc_type = $request->bc_type;
+            $boardTarget->board_title = $request->board_title;
+            $boardTarget->board_content = $request->board_content;
+            // 민주 작업----------------------------------------(수정가능성 만%)
+            // img일치 확인 및 불일치 시 새정보 적용
+            if($request->hasFile('board_img1') && $request->file('board_img1')->isValid()) {
+                $path = '/'.$request->file('board_img1')->store('img');
+                $boardTarget->board_img1 = $path;
+            }
+            if($request->hasFile('board_img2') && $request->file('board_img2')->isValid()) {
+                $path = '/'.$request->file('board_img2')->store('img');
+                $boardTarget->board_img2 = $path;
+            }
+
+            // 4가지 상황에 따른 쿼리-------------------------------------------start------
+            // 리뷰에서 자유로 변경 시 저장 방법 변경(리뷰테이블 내 정보 삭제)
+            if($boardTarget->getOriginal('bc_type') === '0') {
+                $review = Review::where('board_id', $request->id)->first();
+
+                if($boardTarget->bc_type === '0') {
+                    $review->area_code = $request->area_code;
+                    $review->rc_type = $request->rc_type;
+                    $review->rate = $request->rate;
+                    $review->save();
+                } else if($boardTarget->bc_type === '1') {
+                    $review->delete();
+                }
+            } else if($boardTarget->getOriginal('bc_type') === '1') {
+                if($boardTarget->bc_type === '0') {
+                    $review = new Review();
+                    $review->board_id = $request->id;
+                    $review->area_code = $request->area_code;
+                    $review->rc_type = $request->rc_type;
+                    $review->rate = $request->rate;
+                    $review->save();
+                }
+            }
+
+            // boards update
+            $boardTarget->save();
+
+            $board = Board::select('boards.*', 'users.user_nickname', 'board_categories.bc_name')
+                        ->join('board_categories', 'board_categories.bc_type', '=', 'boards.bc_type')
+                        ->join('users', 'users.user_id', '=', 'boards.user_id')
+                        ->when($boardTarget->bc_type === '0', function($query) {
+                            $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
+                            ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
+                            ->join('review_categories', 'review_categories.rc_type', '=', 'reviews.rc_type')
+                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.rc_type', 'reviews.area_code');
+                        })
+                        ->withCount('likes')
+                        ->where('boards.board_id', '=', $boardTarget->board_id)
+                        ->first();
+            DB::commit();
+        } catch(Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>'게시글 수정 성공'
+            ,'bcName' => $board->bc_name
+            ,'rcName' => $board->bc_type === '0' ? $board->rc_name : ''
+            ,'areaName' => $board->bc_type === '0' ? $board->area_name : ''
+            ,'board' => $board->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 게시글 수정 시 리뷰테이블 삭제 --------------------------!!!!!!!!!!!!
+
+    // 게시글 삭제
+    public function destroy($id) {
+        $board = Board::destroy($id);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '게시글 삭제 성공'
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+// 게시글-------------------------------------update end---------------------
 
     // 게시판 리뷰 top4
     public function showReview(){
@@ -144,44 +285,5 @@ class BoardController extends Controller
         ];
         return response()->json($responseData, 200);
     }
-
-    // 게시글 작성
-    public function store(BoardRequest $request) {
-        $insertData = $request->only('board_title','board_content');
-        $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
-        $insertData['view_cnt'] = 0;
-        $insertData['bc_type'] = $request->bc_type;
-
-        if ($request->hasFile('board_img1')) {
-            $insertData['board_img1'] = $request->file('board_img1')->store('img');
-        } else {
-            $insertData['board_img1'] = '/default/board_default.png';
-        }
-
-        if ($request->hasFile('board_img2')) {
-            $insertData['board_img2'] = $request->file('board_img2')->store('img');
-        } else {
-            $insertData['board_img2'] = '/default/board_default.png';
-        }
-
-        $board = Board::create($insertData);
-
-        if($request->bc_type === '0') {
-            $insertReview['board_id'] = $board->board_id;
-            $insertReview['area_code'] = $request->area_code;
-            $insertReview['rc_type'] = $request->rc_type;
-            $insertReview['rate'] = $request->rate;
-            
-            $review = Review::create($insertReview);
-        }
-
-        $responseData = [
-            'success' => true
-            ,'msg' => '게시글 작성 성공'
-            ,'board' => $board->toArray()
-            ,'review' => isset($review) ? $review->toArray() : null
-        ];
-
-        return response()->json($responseData, 200);
-    }
 }
+

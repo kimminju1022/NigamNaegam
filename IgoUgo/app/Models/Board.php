@@ -16,16 +16,11 @@ class Board extends Model
     protected $fillable = [
         'user_id',
         'bc_type',
-        'bc_name',
         'board_title',
         'board_content',
         'board_img1',
         'board_img2',
-        'coment_content',
         'view_cnt',
-        'rc_type',
-        'rate',
-        'like_flg',
     ];
 
     /**
@@ -75,4 +70,5 @@ class Board extends Model
     public function review_category() {
         return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_type', 'board_id', 'rc_type');
     }
+    
 }
