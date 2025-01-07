@@ -47,20 +47,21 @@
 <!-- 리스트항목 -->
     <div class="board-list">
         <!-- 리스트 헤드 -->
-        <div class="board-li-title">
+        <div class="board-li-title" :class="gridClass" >
             <p>번호</p>
-            <p v-show="$store.state.board.bcType === '0'">지역</p>
+            <p v-if="$store.state.board.bcType === '0'">지역</p>
             <p>제목</p>
             <p>닉네임</p>
             <p>작성일자</p>
             <p>좋아요</p>
             <p>조회수</p>
         </div>
+        
         <!-- [관리자] 리스트 목록 -->
         <div>
-            <div id="board-li-notice" >
-                <div id="board-li-item">
-                    <p>5</p>
+            <div class="board-li-notice" >
+                <div class="board-li-item" :class="gridClass">
+                    <p v-if="$store.state.board.bcType === '0'">5</p>
                     <!-- v-show="$store.state.board.bcType === 0" -->
                     <p>공지</p>
                     <p class="board-li-innertitle">12월 여행 주의 사항</p>
@@ -69,8 +70,8 @@
                     <p>-</p>
                     <p>50</p>
                 </div>
-                <div id="board-li-item">
-                    <p>4</p>
+                <div class="board-li-item" :class="gridClass">
+                    <p v-if="$store.state.board.bcType === '0'"p>4</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">11월 단풍놀이 명소 전국 Top 20</p>
                     <p>차나핑</p>
@@ -78,8 +79,8 @@
                     <p>-</p>
                     <p>50</p>
                 </div>
-                <div id="board-li-item">
-                    <p>3</p>
+                <div class="board-li-item" :class="gridClass">
+                    <p v-if="$store.state.board.bcType === '0'">3</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">11월 여행 주의 사항</p>
                     <p>라라핑</p>
@@ -87,8 +88,8 @@
                     <p>-</p>
                     <p>30</p>
                 </div>
-                <div id="board-li-item">
-                    <p>2</p>
+                <div class="board-li-item" :class="gridClass">
+                    <p v-if="$store.state.board.bcType === '0'">2</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
                     <p>믿어핑</p>
@@ -96,8 +97,8 @@
                     <p>-</p>
                     <p>50</p>
                 </div>
-                <div id="board-li-item">
-                    <p>1</p>
+                <div class="board-li-item" :class="gridClass">
+                    <p v-if="$store.state.board.bcType === '0'">1</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">10월 여행 주의 사항</p>
                     <p>차캐핑</p>
@@ -110,13 +111,14 @@
             <!-- [유저] 리스트 시작 -->
             
             <div class="board-list" >
-                <div  id="board-li-item" v-for="item in boardList" :key="item">
+                <div  class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
                     <p>{{ item.board_id }}</p>
-                    <p v-show="$store.state.board.bcType === '0'">{{ item.area_name }}</p>
+                    <p v-if="$store.state.board.bcType === '0'">{{ item.area_name }}</p>
+                    <!-- <router-link v-if="$store.state.board.bcType === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcType === '2', 'grid-5': $store.state.board.bcType === '1'}">{{ item.board_title }}</router-link> -->
                     <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
-                    <p v-show="$store.state.board.bcType === '0'">{{ item.like_cnt }}</p>
+                    <p>{{ item.like_cnt }}</p>
                     <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
@@ -141,16 +143,21 @@ const bcName = computed(() => store.state.board.bcName);
 // boardlist
 const boardList = computed(() => store.state.board.boardList);
 
-const boardInfo = reactive({
-    board_title: ''
-    ,board_content: ''
-    ,board_img1: null
-    ,board_img2: null
-    ,bc_type: ''
-    ,area_code: ''
-    ,rc_type: ''
-    ,rate: ''
+const gridClass = computed(() => {
+    return store.state.board.bcType === '0' ? 'grid-7' : 'grid-6';
 });
+
+// const boardInfo = reactive({
+//     board_title: ''
+//     ,board_content: ''
+//     ,board_img1: null
+//     ,board_img2: null
+//     ,bc_type: ''
+//     ,area_code: ''
+//     ,rc_type: ''
+//     ,rate: ''
+//     ,
+// });
 
 // // -------------------------------
 // 페이지네이션 관련
@@ -228,31 +235,7 @@ const keywordSearch = () => {
     text-align: center;
     margin-left: 30px;
 } */
-/* 리스트 항목----------- */
-#board-li-notice {
-    font-weight: 500;
-    font-size: 1.2rem;
-    background-color: #eeeeeec0;
-    padding: 10px;
-}
-/* #board-li-item>p:nth-child(3){
-    text-align: left;
-    overflow: hidden; */
-.board-li-innertitle{
-    /* text-align: left;
-    white-space: normal;
-    overflow-wrap: normal;
-    word-break: break-word;
-    text-decoration: none;
-    display: inline-block;
-    width: 100%; */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #000;
-    padding: 0 10px;
-    text-align: left;
-}
+
 /* 검색 및 버튼---------------- */
 #board-search-tb{
     display: inline-flex;
@@ -292,6 +275,61 @@ const keywordSearch = () => {
     /* margin-left: -30px; */
 }
 /* -------------------------- */
+/* 리스트 항목----------- */
+.board-li-notice {
+    /* display: inline-block; */
+    font-weight: 500;
+    font-size: 1.2rem;
+    background-color: #eeeeeec0;
+    width: 100%;
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.board-li-innertitle{
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: break-word;
+    text-decoration: none;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    padding: 0 10px;
+    text-align: left;
+}
+.board-li-item{
+    width: 100%;
+    height: 40px;
+    font-size: 1.2rem;
+    letter-spacing: 0.3rem;
+    margin-top: 20px;
+}
+.board-li-item > p {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    gap:10px
+}
+.grid-6{
+    display: grid;
+    grid-template-columns: 1fr 5fr 1.5fr 2fr 1fr 1fr;
+    text-align: center;
+    width: 100%;
+}
+
+.grid-7{
+    display: grid;
+    grid-template-columns: 1fr 1fr 5fr 1.5fr 2fr 1fr 1fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+}
+
 .board-list{
     height: auto;
     width: 100%;
@@ -299,15 +337,16 @@ const keywordSearch = () => {
     align-content: center; */
 }
 .board-li-title{
-    display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
-    text-align: center;
-    width: 100%;
-    height: 40px;
-    font-weight: 600;
-    font-size: 1.2rem;
-    letter-spacing: 0.3rem;
-    margin-top: 20px;
+font-weight: 600;
+font-size: 1.5rem;
+padding-bottom: 5px;
+border-bottom: double #01083a 5px;
+overflow: hidden;
+width: 100%;
+height: 40px;
+font-size: 1.2rem;
+letter-spacing: 0.3rem;
+margin-top: 20px;
 }
 .select-category{
     width: 100px;
@@ -320,14 +359,7 @@ const keywordSearch = () => {
 .select-category>option{
     border: none;
 }
-#board-li-item{
-    display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1.5fr 1fr 1fr 1fr;
-    text-align: center;
-    width: 100%;
-    height: 30px;
-    margin-top: 10px;
-}
+
 
 .pagination {
     display: flex;

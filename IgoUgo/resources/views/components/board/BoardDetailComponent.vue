@@ -22,15 +22,15 @@
     
     <!-- 상세 글머리_정보불러오기-->
     <h1>{{ boardDetail.board_title }}</h1>
-    <div class="board-detail-head">
+    <div class="board-detail-head" :class="gridDetail">
         <p v-if="boardDetail.bc_type === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
-        <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button>
+        <!-- <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button> -->
         <!-- <p> {{ loveIt[0] }}</p> -->
-        <p>조회 : </p>
+        <!-- <p>조회 : </p> -->
         <!-- {{ absolve[1]++ }} -->
-        <button @click="boardNotify">🚨 신고</button>
+        <!-- <button @click="boardNotify">🚨 신고</button> -->
     </div>
     
     <!-- 등록이미지 불러오기 -->
@@ -122,6 +122,9 @@ const boardInfo = reactive({
     board_id: route.params.id,
 });
 
+const gridDetail = computed(() => {
+    return store.state.board.bcType === '0' ? 'grid-3' : 'grid-2';
+});
 // // boardRate = computed(() => {
 // //     return boardDetail.value?.rate ? 6 - boardDetail.value.rate
 // });
@@ -186,17 +189,30 @@ hr{
     justify-content: center;
 }
 .board-detail-head{
-    display: grid;
-    grid-template-columns: 7fr 4fr 3fr 2fr 2fr 2fr;
-    grid-auto-rows: 50px;
-    justify-content: space-between;
-    align-items:end;
-    line-height: 1.5;
     margin: 20px auto;
     border-bottom: double #01083a 5px;
     font-size: 1.2rem;
     text-align: center;
 }
+.grid-2{
+    display: grid;
+    grid-template-columns: 9fr 2fr;
+    grid-auto-rows: 50px;
+    align-items:end;
+    line-height: 1.5;
+    text-align: right;
+}
+.grid-3{
+    display: grid;
+    grid-template-columns: 9fr 4fr 3fr;
+    grid-auto-rows: 50px;
+    justify-content: space-between;
+    align-items:end;
+    line-height: 1.5;
+}
+
+    /* grid-template-columns: 7fr 4fr 3fr 2fr 2fr 2fr; */
+
 /* .board-detail-head>:nth-child(){
     display: inline;
     text-align: center;
@@ -208,7 +224,7 @@ hr{
 }
 .star-label {
     font-size: 30px;
-    color: rgba(255, 217, 0, 0.5);
+    color: rgba(255, 217, 1, 0.932);
     text-align: left;
     margin-left: 10px;
 }

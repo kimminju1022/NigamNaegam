@@ -20,7 +20,7 @@ class BoardController extends Controller
 {
     //리스트정보_ action-Method
     public function index(Request $request) {
-        $boardList = Board::select('boards.*')->
+        $boardList = Board::select('boards.*','users.user_nickname')->
             join('users', 'users.user_id', '=', 'boards.user_id')
             ->when($request->bc_type === '0', function(Builder $query) {
                 $query->join('reviews', function ($join) {
@@ -37,7 +37,7 @@ class BoardController extends Controller
                         '=',
                         'like_tmp.board_id'
                     )
-                    ->select('boards.*', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
+                    ->select('boards.*', 'users.user_nickname', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
             })
             ->where('boards.bc_type', '=', $request->bc_type)
             ->orderBy('boards.created_at', 'desc')
