@@ -326,7 +326,6 @@ const keywordSearch = () => {
     grid-template-columns: 1fr 1fr 5fr 1.5fr 2fr 1fr 1fr;
     text-align: center;
     width: 100%;
-    height: 30px;
 }
 
 .board-list{
