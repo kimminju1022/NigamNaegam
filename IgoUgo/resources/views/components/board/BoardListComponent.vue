@@ -304,7 +304,7 @@ const keywordSearch = () => {
 }
 .board-li-item{
     width: 100%;
-    height: 40px;
+    /* height: 40px; */
     margin-top: 20px;
 }
 .board-li-item > p {
@@ -334,6 +334,7 @@ const keywordSearch = () => {
     /* justify-content: center;
     align-content: center; */
 }
+
 .board-li-title{
 font-weight: 600;
 font-size: 1.5rem;

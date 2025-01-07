@@ -146,6 +146,9 @@ const clearFile2 = () => {
     preview2.value = null;
 }
 
+// const gridUpdate =  computed(() => {
+//     return store.state.board.bcType === '0' ? 'grid-3' : 'grid-2';
+// });
 
 onBeforeMount(() => {
     if(!boardInfo.boardDetail.board_id) {
@@ -216,6 +219,23 @@ watch(boardDetail, (newVal) => {
     text-align: center;
     font-weight: 600;
 }
+
+/* .grid-2{
+    display: grid;
+    grid-template-columns: 9fr 2fr;
+    grid-auto-rows: 50px;
+    align-items:end;
+    line-height: 1.5;
+    text-align: right;
+}
+.grid-3{
+    display: grid;
+    grid-template-columns: 9fr 4fr 3fr;
+    grid-auto-rows: 50px;
+    justify-content: space-between;
+    align-items:end;
+    line-height: 1.5;
+} */
 
 .board-box p, .board-title-box > input ,.board-content > textarea {
     padding: 10px;
