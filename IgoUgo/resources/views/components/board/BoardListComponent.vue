@@ -290,22 +290,21 @@ const keywordSearch = () => {
 
 .board-li-innertitle{
     text-align: left;
-    white-space: normal;
     overflow-wrap: normal;
     word-break: break-word;
     text-decoration: none;
     display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
     color: #000;
     padding: 0 10px;
     text-align: left;
+    white-space: nowrap; /* 줄바꿈 금지 */
+    overflow: hidden; /* 초과 텍스트 숨김 */
+    text-overflow: ellipsis; /* 말줄임 효과 */
+    width: 100%; /* 고정 너비 */
 }
 .board-li-item{
     width: 100%;
     height: 40px;
-    font-size: 1.2rem;
-    letter-spacing: 0.3rem;
     margin-top: 20px;
 }
 .board-li-item > p {
