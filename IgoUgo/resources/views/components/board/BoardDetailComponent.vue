@@ -96,7 +96,7 @@ const deleteConfirm = () => {
     const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n 삭제 시 게시글을 되돌릴 수 없습니다');    
     if (userResponse) {
         store.dispatch('board/boardDelete', route.params.id);
-        router.back();
+        router.push('/boards/');
     }
 }
 
