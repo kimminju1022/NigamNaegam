@@ -45,7 +45,7 @@ const loadKakaoMap = async () => {
             if (container && lat && lon) {
                 const options = {
                     center: new window.kakao.maps.LatLng(lat, lon),
-                    level: 5,
+                    level: 8,
                 };
                 map.value = new window.kakao.maps.Map(container, options);
                 console.log("Map loaded successfully.");
