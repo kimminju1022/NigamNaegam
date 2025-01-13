@@ -34,6 +34,7 @@ Route::get('/products', [ProductController::class, 'getFilteredProducts']);
 Route::get('/products/{contenttypeid}', [ProductController::class, 'showList']);
 Route::get('/products/{contenttypeid}/{contentid}', [ProductController::class, 'productDetail']);
 Route::get('/product/random', [ProductController::class, 'getProductRandom']);
+Route::get('/testtest', [ProductController::class, 'getNearbyPlaces']);
 
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
