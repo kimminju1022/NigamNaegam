@@ -165,6 +165,7 @@
                         <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
                             <img :src="item.board_img1">
                             <p>{{ item.board_title }}</p>
+                            <p>{{ item.board_content }}</p>
                             <p>작성자 : {{ item.user.user_nickname }}</p>
                         </router-link>
                     </div>
@@ -178,6 +179,7 @@
                         <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
                             <img :src="item.board_img1">
                             <p>{{ item.board_title }}</p>
+                            <p>{{ item.board_content }}</p>
                             <p>작성자 : {{ item.user.user_nickname }}</p>
                         </router-link>
                     </div>
@@ -189,7 +191,7 @@
             <div class="announcement">
                 <div class="announcement-sidebar">
                     <div>
-                        <p>내 감!니 감? 의 소식을<br>확인해보세요</p>
+                        <p>내 감! 니 감? 의 소식을<br>확인해보세요</p>
                     </div>
                     <div class="announcement-info">
                         <router-link to="/questions">
@@ -618,7 +620,7 @@ a, a:visited {
 
 .main-card-content {
     display: grid;
-    grid-template-rows: 200px 90px 40px;
+    grid-template-rows: 200px 40px 80px 40px;
     gap: 10px;
 }
 
@@ -631,12 +633,22 @@ a, a:visited {
     border-radius: 10px 10px 0px 0px;
 }
 
-.main-card p {
+.main-card p:not(:nth-child(2)) {
     width: 90%;
     margin: 0 auto;
     /* white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; */
+}
+
+.main-card p:nth-child(2) {
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 }
 
 /* 공지사항 부분 */
