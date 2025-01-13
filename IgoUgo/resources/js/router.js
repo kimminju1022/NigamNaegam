@@ -31,6 +31,9 @@ import QuestionUpdateComponent from '../views/components/question/QuestionUpdate
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 
+// 테스트
+import TestComponent from '../views/components/products/TestComponent.vue';
+
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg;
@@ -111,6 +114,13 @@ const routes = [
         path: '/products/:contenttypeid/:contentid',
         component: ProductDetailComponent,
     },
+    // -------------------------------
+    // 테스트
+    {
+        path: '/testtest',
+        component: TestComponent,
+    },
+    // -------------------------------
     // 게시판
     {
         path: '/boards',

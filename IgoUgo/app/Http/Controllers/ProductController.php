@@ -120,6 +120,27 @@ class ProductController extends Controller
 
         return response()->json($responseData);
     }
+
+    // public function getNearbyPlaces($lat, $lon) {
+    public function getNearbyPlaces() {
+        // $currentLat = $lat; // 현재 위치 위도
+        // $currentLng = $lon; // 현재 위치 경도
+        $currentLat = 35.9417258; // 현재 위치 위도
+        $currentLng = 128.5585313; // 현재 위치 경도
+
+        $places = 
+            Product::selectRaw("*, (6371 * acos(
+                cos(radians(?)) * cos(radians(mapy)) *
+                cos(radians(mapx) - radians(?)) +
+                sin(radians(?)) * sin(radians(mapy))
+            )) AS distance", [$currentLat, $currentLng, $currentLat])
+            ->having('distance', '<=', 15) // km 기준
+            ->orderBy('distance')
+            ->get();
+
+        return response()->json($places);
+    }
+
     // public function productDetail($contenttypeid, $id) {
     //     $url = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
     //     $serviceKey = env('API_KEY');
