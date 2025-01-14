@@ -640,8 +640,7 @@ header {
     width: 100%;
     left: 0;
     z-index: 1;
-    background-color: #fff;
-    /* background-color: rgba(41, 41, 41, 0.781); */
+    background-color: #F4F6F8;
 }
 
 .dropdown-menu {
@@ -687,7 +686,7 @@ header {
 /* 메인메인 */
 .main {
     /* padding: 30px 25px 25px 25px; */
-    padding: 30px 5px 25px 5px;
+    padding: 30px 0 25px 0;
     margin: 0 auto;
     max-width: 1300px;
 }

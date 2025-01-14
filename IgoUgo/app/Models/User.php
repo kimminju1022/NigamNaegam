@@ -26,6 +26,7 @@ class User extends Authenticatable
         'user_profile',
         'user_phone',
         'refresh_token',
+        'email_verified_at',
     ];
 
     /**
