@@ -620,7 +620,7 @@ a, a:visited {
 
 .main-card-content {
     display: grid;
-    grid-template-rows: 200px 40px 80px 40px;
+    grid-template-rows: 200px 40px 70px 40px;
     gap: 10px;
 }
 
@@ -641,14 +641,16 @@ a, a:visited {
     text-overflow: ellipsis; */
 }
 
-.main-card p:nth-child(2) {
+.main-card p {
     width: 90%;
     margin: 0 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    --webkit-box-orient: vertical;
-    --webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    word-break: break-all;
+    height: 60px;
 }
 
 /* 공지사항 부분 */

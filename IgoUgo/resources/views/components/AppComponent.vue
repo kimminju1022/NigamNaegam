@@ -88,7 +88,7 @@
                                 </div>
                             </li>
                             <li class="header-list-hover">
-                                <router-link to="">추천 루트</router-link>
+                                <router-link to="">리뷰</router-link>
                                 <div class="dropdown-content">
                                     <div class="dropdown-menu">
                                         <div class="dropdown-list">
@@ -104,9 +104,13 @@
                                             <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
                                         </div>
                                         <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
+                                            <p>호텔</p>
+                                            <p>관광지</p>
+                                            <p>문화시설</p>
+                                            <p>레포츠</p>
+                                            <p>쇼핑</p>
+                                            <p>음식점</p>
+                                            <p>코스 추천</p>
                                         </div>
                                         <div class="dropdown-list">
                                             <a @click="redirectBoards('0')">리뷰게시판</a>
@@ -536,6 +540,12 @@ header {
     justify-content: center;
 }
 
+.header-bg-btn:hover {
+    color: #01083a;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px #01083a inset;
+}
+
 /* 헤더 로그아웃 버튼 */
 .header-logout {
     font-size: 18px;
@@ -658,7 +668,7 @@ header {
     background-color: white;
 }
 
-.dropdown-list a {
+.dropdown-list a, .dropdown-list p {
     font-size: 20px;
 }
 
