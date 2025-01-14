@@ -125,8 +125,8 @@ class ProductController extends Controller
     public function getNearbyPlaces() {
         // $currentLat = $lat; // 현재 위치 위도
         // $currentLng = $lon; // 현재 위치 경도
-        $currentLat = 35.9417258; // 현재 위치 위도
-        $currentLng = 128.5585313; // 현재 위치 경도
+        $currentLat = 35.8779995; // 현재 위치 위도
+        $currentLng = 128.5893712; // 현재 위치 경도
 
         $places = 
             Product::selectRaw("*, (6371 * acos(

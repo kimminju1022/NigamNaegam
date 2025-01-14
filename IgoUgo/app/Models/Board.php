@@ -18,9 +18,8 @@ class Board extends Model
         'bc_type',
         'board_title',
         'board_content',
-        'board_img1',
-        'board_img2',
         'view_cnt',
+        'board_flg',
     ];
 
     /**

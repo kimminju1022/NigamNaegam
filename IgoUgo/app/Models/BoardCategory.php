@@ -14,11 +14,6 @@ class BoardCategory extends Model
     protected $fillable = [
         'bc_type',
         'bc_name',
-        'user_id',
-        'board_title',
-        'board_content',
-        'board_img1',
-        'board_img2',
     ];
 
     public function boards() {

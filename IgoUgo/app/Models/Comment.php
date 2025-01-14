@@ -17,6 +17,7 @@ class Comment extends Model
         'user_id',
         'board_id',
         'comment_content',
+        'comment_flg',
     ];
 
     /**

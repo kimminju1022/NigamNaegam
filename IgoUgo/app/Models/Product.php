@@ -19,7 +19,10 @@ class Product extends Model
         ,'addr2'
         ,'tel'
         ,'area_code'
+        ,'benikia'
         ,'booktour'
+        ,'goodstay'
+        ,'hanok'
         ,'cat1'
         ,'cat2'
         ,'cat3'
@@ -32,7 +35,6 @@ class Product extends Model
         ,'mapy'
         ,'mlevel'
         ,'sigungucode'
-        ,'zipcode'
         ,'createdtime'
         ,'modifiedtime'
     ];
