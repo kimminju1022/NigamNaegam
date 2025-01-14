@@ -83,8 +83,9 @@
             <div class="board-img">
                 <p>파일 첨부</p>
                 <div class="board-img-content">
-                    <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*">
-                    <div class="img-preview" v-for="(preview, index) in previews" :key="index">
+                    <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
+                    <input @change="setFile" type="file" multiple accept="image/*">
+                    <div class="img-preview" :class="gridDetail" v-for="(preview, index) in previews" :key="index">
                         <img :src="preview" alt="Uploaded Image"> 
                         <button @click="clearFile(index)" class="btn bg-clear">X</button> 
                     </div>
@@ -110,7 +111,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, computed} from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -125,16 +126,29 @@ const boardInfo = reactive({
     ,rate: ''
 });
 
-const preview = ref('');
+// img관련 ----------------------start *****
+const previews = ref([]);
+
+// const gridDetail = computed(() => {
+//     return ? 'grid-5' : 'grid-4' : 'grid-3' : 'grid-2' :'grid-1';
+// });
 
 const setFile = (e) => {
-    boardInfo.board_img = e.target.files[0];
-    preview.value = URL.createObjectURL(boardInfo.board_img);
+    // boardInfo.board_img = e.target.files[0];
+    console.log(e.target.files);
+    boardInfo.board_img = e.target.files;
+    previews.value = Array.from(boardInfo.board_img).map(file => URL.createObjectURL(file));
 }
-const clearFile = () => {
+// const clearFile = () => {
+//     boardInfo.board_img = null;
+//     previews.value = null;
+// }
+const clearFile = (fileNum) => {
+
     boardInfo.board_img = null;
-    preview.value = null;
+    previews.value = null;
 }
+// img관련 ----------------------end *****
 
 /**------------(기존) 이미지등록 삭제
  * const preview2 = ref('');
