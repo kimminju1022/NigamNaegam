@@ -38,7 +38,8 @@ class ReviewSeeder extends Seeder
      */
     public function run()
     {
-        $boards = Board::select('board_id')->where('bc_type', '0')->get();
+        // $boards = Board::select('board_id')->where('bc_type', '0')->get();
+        $boards = Board::select('board_id')->where('bc_code', '0')->get();
         // $area_arr = $areas->toArray();
         // $area_rand = Arr::random($area_arr);
         
@@ -47,7 +48,8 @@ class ReviewSeeder extends Seeder
 
             $review->board_id = $item->board_id;
             $review->area_code = Area::select('area_code')->inRandomOrder()->first()->area_code;
-            $review->rc_type = ReviewCategory::select('rc_type')->inRandomOrder()->first()->rc_type;
+            // $review->rc_type = ReviewCategory::select('rc_type')->inRandomOrder()->first()->rc_type;
+            $review->rc_code = ReviewCategory::select('rc_code')->inRandomOrder()->first()->rc_code;
             $review->rate = random_int(1, 5);
     
             $review->save();

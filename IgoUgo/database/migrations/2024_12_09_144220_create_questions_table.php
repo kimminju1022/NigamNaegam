@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id('que_id');
+            $table->bigInteger('board_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('que_content', 2000)->nullable();
             $table->char('que_status', 1)->default(0);
             $table->timestamps();
             $table->softDeletes();
-            $table->bigInteger('board_id')->unsigned();
         });
     }
 

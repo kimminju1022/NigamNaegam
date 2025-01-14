@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id('review_id');
             $table->bigInteger('board_id')->unsigned();
             $table->string('area_code', 3);
-            $table->string('rc_type', 50);
+            $table->char('rc_code', 1)->unique();
+            $table->bigInteger('product_id')->unsigned();
             $table->char('rate', 1)->default(5);
         });
     }

@@ -37,7 +37,8 @@ class QuestionSeeder extends Seeder
      */
     public function run()
     {        
-        $boards = Board::select('board_id', 'created_at')->where('bc_type', '2')->get();
+        // $boards = Board::select('board_id', 'created_at')->where('bc_type', '2')->get();
+        $boards = Board::select('board_id', 'created_at')->where('bc_code', '2')->get();
 
         foreach($boards as $item) {
             $random_status = random_int(0, 1);

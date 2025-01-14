@@ -12,13 +12,8 @@ class HotelCategory extends Model
     protected $primaryKey = 'hc_id';
 
     protected $fillable = [
-        'hotel_id',
-        'pool',
-        'grill',
-        'fire',
-        'beauty',
-        'fitness',
-        'pickup',
+        'hc_code',
+        'hc_name',
     ];
 
     public function hotelCategory() {

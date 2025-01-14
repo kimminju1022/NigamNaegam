@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('user_profile', 100)->default('/default/profile_default.png');
             $table->string('user_phone', 50)->unique();
             $table->string('refresh_token', 512)->nullable();
+            $table->timestamp('email_verified_at');
+            $table->char('user_flg', 1)->default('0');
+            $table->char('manager_flg', 1)->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

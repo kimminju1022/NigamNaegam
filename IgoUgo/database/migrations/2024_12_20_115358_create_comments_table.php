@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('board_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->string('comment_content', 200);
+            $table->char('comment_flg', 1)->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

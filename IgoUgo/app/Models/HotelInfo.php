@@ -14,8 +14,8 @@ class HotelInfo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'hotel_id',
-        'hc_type',
+        'product_id',
+        'hc_code',
     ];
 
     // public function hotel() {

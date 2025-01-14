@@ -15,6 +15,7 @@ class Question extends Model
 
     protected $fillable = [
         'board_id',
+        'user_id',
         'que_content',
         'que_status',
     ];

@@ -37,8 +37,10 @@ class LikeSeeder extends Seeder
     public function run()
     {
         $boards = Board::select('board_id', 'created_at')
-                        ->where('bc_type', '0')
-                        ->orWhere('bc_type', '1')
+                        // ->where('bc_type', '0')
+                        // ->orWhere('bc_type', '1')
+                        ->where('bc_code', '0')
+                        ->orWhere('bc_code', '1')
                         ->get();
         foreach($boards as $item) {
             $like = new Like();

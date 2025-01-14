@@ -19,13 +19,15 @@ class BoardFactory extends Factory
     public function definition()
     {
         $user = User::select('user_id', 'created_at')->inRandomOrder()->first();
-        $bc_type = BoardCategory::select('bc_type')->inRandomOrder()->first();
+        // $bc_type = BoardCategory::select('bc_type')->inRandomOrder()->first();
+        $bc_code = BoardCategory::select('bc_code')->inRandomOrder()->first();
 
         $date = $this->faker->dateTimeBetween($user->created_at, now());
 
         return [
             'user_id' => $user->user_id
-            ,'bc_type' => $bc_type->bc_type
+            // ,'bc_type' => $bc_type->bc_type
+            ,'bc_code' => $bc_code->bc_code
             ,'board_title' => $this->faker->realText(rand(10, 100))
             ,'board_content' => $this->faker->realText(rand(10, 2000))
             ,'board_img1' => '/img_main/back'.rand(1,5).'.jpg'

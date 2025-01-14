@@ -21,12 +21,14 @@ class ReviewFactory extends Factory
     {
         $board = Board::select('board_id')->where('bc_type', '0')->inRandomOrder()->first();  // bc_type 0만 들고와야해
         $area = Area::select('area_code')->inRandomOrder()->first();
-        $review_cat = ReviewCategory::select('rc_type')->inRandomOrder()->first();
+        // $review_cat = ReviewCategory::select('rc_type')->inRandomOrder()->first();
+        $review_cat = ReviewCategory::select('rc_code')->inRandomOrder()->first();
 
         return [
             'board_id' => $board->board_id,
             'area_code' => $area->area_code,
-            'rc_type' => $review_cat->rc_type,
+            // 'rc_type' => $review_cat->rc_type,
+            'rc_code' => $review_cat->rc_code,
             'rate' => rand(1,5),
         ];
     }

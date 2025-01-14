@@ -16,9 +16,12 @@ class BoardCategorySeeder extends Seeder
     public function run()
     {
         BoardCategory::insert([
-            ['bc_type' => '0', 'bc_name' => '리뷰게시판']
-            ,['bc_type' => '1', 'bc_name' => '자유게시판']
-            ,['bc_type' => '2', 'bc_name' => '문의게시판']
+            // ['bc_type' => '0', 'bc_name' => '리뷰게시판']
+            // ,['bc_type' => '1', 'bc_name' => '자유게시판']
+            // ,['bc_type' => '2', 'bc_name' => '문의게시판']
+            ['bc_code' => '0', 'bc_name' => '리뷰게시판']
+            ,['bc_code' => '1', 'bc_name' => '자유게시판']
+            ,['bc_code' => '2', 'bc_name' => '문의게시판']
         ]);
     }
 }
