@@ -44,7 +44,7 @@ return new class extends Migration
 
         Schema::table('comment_reports', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('board_id')->references('board_id')->on('boards');
+            $table->foreign('comment_id')->references('comment_id')->on('comments');
         });
 
         Schema::table('likes', function(Blueprint $table) {

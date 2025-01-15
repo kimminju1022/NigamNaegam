@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('addr1', 255)->nullable();
             $table->string('addr2', 255)->nullable();
             // $table->string('tel', 255)->nullable();
-            $table->string('tel', 50)->nullable();
+            $table->string('tel', 255)->nullable();
             $table->string('area_code', 3)->nullable();
             // $table->boolean('booktour')->default(false);
             $table->char('cat1', 3)->nullable();

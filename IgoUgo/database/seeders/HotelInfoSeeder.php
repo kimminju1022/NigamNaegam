@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Hotel;
 use App\Models\HotelCategory;
 use App\Models\HotelInfo;
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,7 @@ class HotelInfoSeeder extends Seeder
 
     public function run()
     {   
-        $hotels = Hotel::select('hotel_id')->get();
+        $hotels = Product::select('product_id')->where('contenttypeid', 32)->get();
 
         foreach($hotels as $hotelItem){
             $random_limit = random_int(1, HotelCategory::count());
@@ -28,7 +29,7 @@ class HotelInfoSeeder extends Seeder
 
             foreach($categories as $categoryItem) {
                 $hotelInfo = new HotelInfo();
-                $hotelInfo->hotel_id = $hotelItem->hotel_id;
+                $hotelInfo->product_id = $hotelItem->product_id;
                 // $hotelInfo->hc_type = $categoryItem->hc_type;
                 $hotelInfo->hc_code = $categoryItem->hc_code;
                 $hotelInfo->save();
