@@ -111,7 +111,7 @@ const loadKakaoMap = async () => {
         console.log("Map loaded successfully.");
         loadMaker();
     } else {
-        console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
+        // console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
     }
 };
 
