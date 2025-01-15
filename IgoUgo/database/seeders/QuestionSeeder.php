@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Board;
 use App\Models\Question;
+use App\Models\User;
 use Faker\Generator;
 use Illuminate\Container\Container;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -38,7 +39,7 @@ class QuestionSeeder extends Seeder
     public function run()
     {        
         // $boards = Board::select('board_id', 'created_at')->where('bc_type', '2')->get();
-        $boards = Board::select('board_id', 'created_at')->where('bc_code', '2')->get();
+        $boards = Board::select('board_id', 'board_flg', 'created_at', 'deleted_at')->where('bc_code', '2')->get();
 
         foreach($boards as $item) {
             $random_status = random_int(0, 1);
@@ -46,8 +47,10 @@ class QuestionSeeder extends Seeder
 
             $question = new Question();
             $question->board_id = $item->board_id;
+            $question->user_id = User::select('user_id')->where('manager_flg' === '1')->inRandomOrder()->first()->user_id;
             $question->que_content = $random_status === 0 ? null : $this->faker->realText(rand(10, 2000));
             $question->que_status = (string)$random_status;
+            $question->que_flg = $boards->board_flg === '0' ? '0' : '1';
             $question->created_at = $item->created_at;
             $question->updated_at = $random_status === 0 ? $item->created_at : $date;
 

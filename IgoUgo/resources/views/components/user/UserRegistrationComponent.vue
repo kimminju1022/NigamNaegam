@@ -13,6 +13,7 @@
                     <span v-if="emailError" class="error-message">{{ emailError }}</span>
                 </div>
                 <input v-model="userInfo.user_email" class="input-login" type="text" id="email" name="user_email" placeholder="이메일을 입력해주세요">
+                <button class="btn bg-clear">인증번호 전송</button>
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">

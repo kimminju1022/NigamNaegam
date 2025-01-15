@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Area;
 use App\Models\Board;
+use App\Models\Product;
 use App\Models\Review;
 use App\Models\ReviewCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -40,8 +41,6 @@ class ReviewSeeder extends Seeder
     {
         // $boards = Board::select('board_id')->where('bc_type', '0')->get();
         $boards = Board::select('board_id')->where('bc_code', '0')->get();
-        // $area_arr = $areas->toArray();
-        // $area_rand = Arr::random($area_arr);
         
         foreach($boards as $item) {
             $review = new Review();
@@ -50,6 +49,7 @@ class ReviewSeeder extends Seeder
             $review->area_code = Area::select('area_code')->inRandomOrder()->first()->area_code;
             // $review->rc_type = ReviewCategory::select('rc_type')->inRandomOrder()->first()->rc_type;
             $review->rc_code = ReviewCategory::select('rc_code')->inRandomOrder()->first()->rc_code;
+            $review->product_id = Product::select('product_id')->inRandomOrder()->first()->product_id;
             $review->rate = random_int(1, 5);
     
             $review->save();

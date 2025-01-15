@@ -129,11 +129,6 @@ class UserController extends Controller
         }
     }
 
-    // 유저 비밀번호 수정페이지로 이동
-    // public function editPW() {
-
-    // }
-
     // 유저 비밀번호 업데이트
     public function updatePW(UserRequest $request) {
 
@@ -162,4 +157,6 @@ class UserController extends Controller
         // 변경 성공 메시지 반환
         return response()->json(['message' => '비밀번호가 성공적으로 변경되었습니다.']);
     }
+
+
 }

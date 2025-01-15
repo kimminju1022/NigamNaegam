@@ -25,7 +25,10 @@ class UserFactory extends Factory
             ,'user_name' => $this->faker->name()
             ,'user_nickname' => $this->faker->unique()->name()
             ,'user_phone' => '0' . $this->faker->randomElement(['10', '11', '17']) . $this->faker->numerify('########')
-            ,'refresh_token' => Str::random(10)
+            // ,'refresh_token' => Str::random(10)
+            ,'email_verified_at'=> $date
+            // ,'password_reset_token'=> null
+            // ,'password_reset_expires_at'=> null
             ,'created_at' => $date
             ,'updated_at' => $date
         ];
