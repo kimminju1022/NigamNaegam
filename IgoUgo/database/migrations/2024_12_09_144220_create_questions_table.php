@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id('que_id');
             $table->bigInteger('board_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
+            $table->char('que_flg', 1)->default('0');
+            $table->char('que_status', 1)->default('0');
             $table->string('que_content', 2000)->nullable();
-            $table->char('que_status', 1)->default(0);
+            // $table->char('que_status', 1)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

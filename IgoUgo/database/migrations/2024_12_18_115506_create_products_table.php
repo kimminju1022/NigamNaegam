@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('title', 100);
             $table->string('addr1', 255)->nullable();
             $table->string('addr2', 255)->nullable();
-            $table->string('tel', 255)->nullable();
+            // $table->string('tel', 255)->nullable();
+            $table->string('tel', 50)->nullable();
             $table->string('area_code', 3)->nullable();
-            $table->boolean('booktour')->default(false);
+            // $table->boolean('booktour')->default(false);
             $table->char('cat1', 3)->nullable();
             $table->char('cat2', 5)->nullable();
             $table->char('cat3', 9)->nullable();
@@ -33,7 +34,7 @@ return new class extends Migration
             $table->string('mapy', 50)->nullable();
             $table->string('mlevel', 50)->nullable();
             $table->string('sigungucode', 3)->nullable();
-            $table->string('zipcode', 20)->nullable();
+            // $table->string('zipcode', 20)->nullable();
             $table->timestamp('createdtime');
             $table->timestamp('modifiedtime');
             $table->timestamps();
