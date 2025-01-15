@@ -6,6 +6,7 @@ export default {
     state: () => ({
         hotelList: [],
         hotelArea: [],
+        // hotelArea: JSON.parse(localStorage.getItem('hotelArea')) || [],
         hotelCategory: [],
         count: [],
         hotelDetail: [],
@@ -17,6 +18,7 @@ export default {
         },
         setHotelArea(state, list) {
             state.hotelArea = list;
+            // localStorage.setItem('hotelArea', JSON.stringify(list));
         },
         setHotelCategory(state, list) {
             state.hotelCategory = list;

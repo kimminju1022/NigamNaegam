@@ -81,7 +81,15 @@
 
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelArea" :key="item">
-                    <input v-model="searchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
+                    <input 
+                        v-model="searchData.area_code" 
+                        :value="item.area_code" 
+                        @change="updateFilters($event)"
+                        class="modal-input" 
+                        type="checkbox" 
+                        :id="'input-' + item.area_code"
+                        :checked="selectedArea === item.area_code"
+                    >
                     <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
@@ -89,7 +97,14 @@
             <p class="modal-region-text2 font-bold">카테고리</p>
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
-                    <input v-model="searchData.hc_type" :value="item.hc_type"  @change="updateFilters()" class="modal-input" type="checkbox" :id="'input2-' + item.hc_type">
+                    <input
+                        v-model="searchData.hc_type" 
+                        :value="item.hc_type" 
+                        @change="updateFilters()" 
+                        class="modal-input" 
+                        type="checkbox" 
+                        :id="'input2-' + item.hc_type"
+                    >
                     <label :for="'input2-' + item.hc_type">{{ item.hc_name }}</label>
                 </div>
             </div>
@@ -106,7 +121,7 @@
 </template>
     
 <script setup>
-import { computed, onBeforeMount, onMounted, reactive, ref} from 'vue';
+import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
@@ -163,10 +178,15 @@ window.addEventListener('resize', flgSetup);
     
 // 카테카테고리고리
 // const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+let selectedArea = null;
 
-function updateFilters() {
+function updateFilters(e) {
+    if(e && searchData.area_code.length > 1) {
+        searchData.area_code = [e.target.value];
+    }
     searchData.page = 1;
     store.dispatch('hotel/getHotelsPagination', searchData);
+    store.dispatch('hotel/getHotelsArea')
 }
 
 function closeFilter(value) {
@@ -228,7 +248,7 @@ const loadKakaoMapScript = () => {
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
     script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
-
+    
     document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
 }
 
