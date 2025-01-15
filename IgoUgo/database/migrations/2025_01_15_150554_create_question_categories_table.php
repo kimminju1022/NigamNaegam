@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('question_categories', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('qc_id');
+            $table->bigInteger('board_id')->unsigned();
+            $table->char('qc_code', 1)->unique();
+            $table->string('qc_name', 10);
         });
     }
 

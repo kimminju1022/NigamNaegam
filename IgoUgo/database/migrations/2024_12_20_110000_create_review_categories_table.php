@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('review_categories', function (Blueprint $table) {
             $table->id('rc_id');
             $table->char('rc_code', 1)->unique();
-            $table->string('rc_name', 7);
+            $table->string('rc_name', 10);
         });
     }
 

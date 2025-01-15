@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('route_spots', function (Blueprint $table) {
-            $table->id();
+            $table->id('spot_id');
+            $table->bigInteger('route_id')->unsigned();
+            $table->string('spot_name', 100);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

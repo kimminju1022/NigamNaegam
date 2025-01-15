@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('hotel_categories', function (Blueprint $table) {
             $table->id('hc_id');
-            $table->integer('hc_code')->unique(); // 얘는 왜 또 integer?
+            // $table->integer('hc_code')->unique(); // 얘는 왜 또 integer?
+            $table->char('hc_code', 1)->unique();
             $table->string('hc_name', 10);
         });
     }

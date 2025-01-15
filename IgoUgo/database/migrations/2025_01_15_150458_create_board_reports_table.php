@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('board_reports', function (Blueprint $table) {
-            $table->id();
+            $table->id('board_report_id');
+            $table->bigInteger('board_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('comment_reports', function (Blueprint $table) {
-            $table->id();
+            $table->id('comment_report_id');
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('comment_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

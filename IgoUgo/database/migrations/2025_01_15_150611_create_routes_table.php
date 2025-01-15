@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('routes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('route_id');
+            $table->bigInteger('board_id')->unsigned();
+            $table->char('route_theme', 1)->unique();
+            $table->char('route_people', 1)->unique();
         });
     }
 

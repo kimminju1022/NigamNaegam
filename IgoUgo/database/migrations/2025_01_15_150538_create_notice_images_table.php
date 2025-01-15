@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('notice_images', function (Blueprint $table) {
-            $table->id();
+            $table->id('notice_img_id');
+            $table->bigInteger('notice_id')->unsigned();
+            $table->string('notice_img', 100);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
