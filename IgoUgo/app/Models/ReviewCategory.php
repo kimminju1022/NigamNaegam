@@ -18,7 +18,8 @@ class ReviewCategory extends Model
      */
     protected $fillable = [
         'rc_name',
-        'rc_type',
+        // 'rc_type',
+        'rc_code',
     ];
 
     public function reviews() {

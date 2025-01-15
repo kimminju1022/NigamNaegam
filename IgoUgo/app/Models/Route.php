@@ -21,4 +21,15 @@ class Route extends Model
         'route_theme',
         'route_people',
     ];
+
+    /**
+     * TimeZone format when serializing JSON
+     * 
+     * @param \DateTimeInterface $date
+     * 
+     * @return String('Y-m-d H:i:s)
+     */
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

@@ -18,7 +18,8 @@ class QuestionCategory extends Model
      */
     protected $fillable = [
         'board_id',
-        'qc_type',
+        // 'qc_type',
+        'qc_code',
         'qc_name',
     ];
 }
