@@ -109,17 +109,27 @@ class BoardController extends Controller
         $insertData['view_cnt'] = 0;
         $insertData['bc_type'] = $request->bc_type;
 
-        if ($request->hasFile('board_img1')) {
-            $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
-        } else {
-            $insertData['board_img1'] = '/default/board_default.png';
-        }
+        // 3차 보드 이미지 저장작업
+        if ($request->hasFile('board_img')){
+            $insertData['board_img'] = '/'.$request->file('board_img')->store('img');
+            } else {
+                $insertData['board_img1'] = '/default/board_default.png';
+            }
+        
+        // 2차 보드 이미지 작업---------------------*start*
+        // if ($request->hasFile('board_img1')) {
+        //     $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
+        // } else {
+        //     $insertData['board_img1'] = '/default/board_default.png';
+        // }
 
-        if ($request->hasFile('board_img2')) {
-            $insertData['board_img2'] = '/'.$request->file('board_img2')->store('img');
-        } else {
-            $insertData['board_img2'] = '/default/board_default.png';
-        }
+        // if ($request->hasFile('board_img2')) {
+        //     $insertData['board_img2'] = '/'.$request->file('board_img2')->store('img');
+        // } else {
+        //     $insertData['board_img2'] = '/default/board_default.png';
+        // }
+        // 2차 보드 이미지 작업---------------------*end*
+
 
         $board = Board::create($insertData);
 
@@ -156,14 +166,21 @@ class BoardController extends Controller
             $boardTarget->board_content = $request->board_content;
             // 민주 작업----------------------------------------(수정가능성 만%)
             // img일치 확인 및 불일치 시 새정보 적용
-            if($request->hasFile('board_img1') && $request->file('board_img1')->isValid()) {
-                $path = '/'.$request->file('board_img1')->store('img');
-                $boardTarget->board_img1 = $path;
+            if ($request->hasFile('board_img') && $request->file('board_img')->isValid()) {
+                $path = '/'.$request->file('board_img')->store('img');
+                $boardTarget->board_img = $path;
+            } else {
+                unset($boardTarget->board_img); 
             }
-            if($request->hasFile('board_img2') && $request->file('board_img2')->isValid()) {
-                $path = '/'.$request->file('board_img2')->store('img');
-                $boardTarget->board_img2 = $path;
-            }
+            
+            // if($request->hasFile('board_img') && $request->file('board_img')->isValid()) {
+            //     $path = '/'.$request->file('board_img')->store('img');
+            //     $boardTarget->board_img = $path;
+            // }
+            // if($request->hasFile('board_img2') && $request->file('board_img2')->isValid()) {
+            //     $path = '/'.$request->file('board_img2')->store('img');
+            //     $boardTarget->board_img2 = $path;
+            // }
 
             // 4가지 상황에 따른 쿼리-------------------------------------------start------
             // 리뷰에서 자유로 변경 시 저장 방법 변경(리뷰테이블 내 정보 삭제)

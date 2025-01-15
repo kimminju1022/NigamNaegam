@@ -82,10 +82,10 @@
             </div>
             <div class="board-img">
                 <p>파일 첨부</p>
-                <div class="board-img-content">
+                <div class="board-img-content":class="gridDetail">
                     <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
-                    <input @change="setFile" type="file" multiple accept="image/*">
-                    <div class="img-preview" :class="gridDetail" v-for="(preview, index) in previews" :key="index">
+                    <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="board_img">
+                    <div class="img-preview" v-for="(preview, index) in previews" :key="index">
                         <img :src="preview" alt="Uploaded Image"> 
                         <button @click="clearFile(index)" class="btn bg-clear">X</button> 
                     </div>
@@ -98,7 +98,7 @@
             </div>
             <div class="board-content">
                 <p>내용</p>
-                <textarea v-model="boardInfo.board_content" name="board_content"></textarea>
+                <textarea v-model="boardInfo.board_content" name="board_content" placeholder="당신의 이야기를 남겨주세요\n ο"></textarea>
             </div>
         </div>
         <div class="success-btn-box"> 
@@ -128,10 +128,128 @@ const boardInfo = reactive({
 
 // img관련 ----------------------start *****
 const previews = ref([]);
+const selectedFiles = ref([]);
 
-// const gridDetail = computed(() => {
-//     return ? 'grid-5' : 'grid-4' : 'grid-3' : 'grid-2' :'grid-1';
+const gridDetail = computed(() => {
+    return previews.value.length >= 5
+        ? 'grid-5'
+        : previews.value.length === 4
+        ? 'grid-4'
+        : 'grid-3';
+});
+
+        // : previews.length === 4 ? 'grid-4' : 'grid-3';
+        // : previews.length === 2 ? 'grid-2' :'grid-1';
 // });
+
+const setFile = (e) => {
+    // 최대 5개까지만 선택 가능
+    const newFiles = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024);  // 5MB 이하 파일만
+
+    // 이미 추가된 파일 수와 새로운 파일 수가 합쳐서 5개를 초과하면 경고
+    const maxFiles = 5;
+    const availableSlots = maxFiles - selectedFiles.value.length;  // 이미 등록된 파일 수에 따른 추가 가능한 파일 수
+
+    if (newFiles.length > availableSlots) {
+        alert(`최대 ${availableSlots}개까지만 선택할 수 있습니다.`);
+        return;
+    }
+
+    // 기존 파일에 새로 선택한 파일만 추가
+    selectedFiles.value = [...selectedFiles.value, ...newFiles];
+    // 미리보기 URL 생성
+    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file));
+};
+
+const clearFile = (index) => {
+    // 해당 파일을 삭제
+    const fileToRemove = selectedFiles.value[index];
+    selectedFiles.value.splice(index, 1);
+    previews.value.splice(index, 1);
+
+    // URL 객체 해제 (메모리 누수 방지)
+    URL.revokeObjectURL(fileToRemove);
+};
+
+/*
+const setFile = (e) => {
+    // 최대 5개까지만, 5MB 이하의 파일만 추가
+    const newFiles = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024);
+
+    // 선택된 파일이 5개를 초과하면 경고 메시지 표시
+    if (selectedFiles.value.length + newFiles.length > 5) {
+        alert("최대 5개까지만 선택할 수 있습니다.");
+        return;
+    }
+
+    // 새로운 파일을 기존 파일 목록에 추가
+    selectedFiles.value = [...selectedFiles.value, ...newFiles];
+
+    // 미리보기 URL 생성
+    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file));
+
+    // input 값 초기화 하지 않음. 기존 파일을 유지하면서 새 파일만 추가됨.
+};
+
+const clearFile = (index) => {
+    // 해당 파일을 삭제
+    const fileToRemove = selectedFiles.value[index];
+    selectedFiles.value.splice(index, 1);
+
+    // 미리보기에서 해당 파일 제거
+    previews.value.splice(index, 1);
+
+    // URL 객체 해제 (메모리 누수 방지)
+    URL.revokeObjectURL(fileToRemove);
+};
+*/
+
+/*
+const setFile = (e) => {
+    // 최대 5개까지, 5MB 까지 선택 가능하도록 제한
+    const newFiles = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024);
+    if (selectedFiles.value.length + e.target.files.length > 5) {
+        alert("최대 5개까지만 선택할 수 있습니다.");
+        return;
+    }
+    // 기존 파일과 새로운 파일 병합
+    selectedFiles.value = [...selectedFiles.value, ...newFiles];
+    // 미리보기 URL 생성
+    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file)); 
+
+    // e.target.value = ''; // <input> 초기화하여 동일한 파일 다시 선택 가능
+};
+
+const clearFile = (index) => {
+    // 선택한 파일 배열에서 해당 파일 제거
+    selectedFiles.value.splice(index, 1);
+    // 미리보기 배열에서 해당 파일 제거
+    previews.value.splice(index, 1);
+
+    // URL 객체 해제 (메모리 누수 방지)
+    URL.revokeObjectURL(previews.value[index]);
+};
+*/
+/* ---------------
+const setFile = (e) => {
+    const newFiles = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024);  // 새로 선택한 파일
+    selectedFiles.value = [...selectedFiles.value, ...newFiles]; // 기존 파일과 병합
+    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file)); // 미리보기 업데이트
+};
+const clearFile = (fileNum) => {
+    const filesArray = Array.from(boardInfo.board_img);
+    filesArray.splice(fileNum, 1); // 해당 img파일만 제거
+    boardInfo.board_img = filesArray;
+    previews.value = filesArray.map(file => URL.createObjectURL(file));
+};
+
+
+const setFile = (e) => {
+    // img파일 5MB제한
+    const files = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024); 
+    boardInfo.board_img = files;
+    previews.value = files.map(file => URL.createObjectURL(file));
+};
 
 const setFile = (e) => {
     // boardInfo.board_img = e.target.files[0];
@@ -139,15 +257,13 @@ const setFile = (e) => {
     boardInfo.board_img = e.target.files;
     previews.value = Array.from(boardInfo.board_img).map(file => URL.createObjectURL(file));
 }
-// const clearFile = () => {
+*/
+
+// img파일 - 전체 삭제
+// const clearFile = (fileNum) => {
 //     boardInfo.board_img = null;
 //     previews.value = null;
 // }
-const clearFile = (fileNum) => {
-
-    boardInfo.board_img = null;
-    previews.value = null;
-}
 // img관련 ----------------------end *****
 
 /**------------(기존) 이미지등록 삭제
@@ -268,30 +384,76 @@ select {
     height: 300px;
     margin: 10px;
 }
+/* -------------------contents */
 
-.board-img-content {
+/* 이미지 파일 등록 관련련 */
+
+/* .board-img-content {
     padding: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-}
+} */
 
-.board-img-content :nth-child(-n + 2) {
+/* .board-img-content :nth-child(-n + 2) {
     margin-bottom: 10px;
-} 
-
+}  */
+.file-btn{
+    margin: 5px;
+    color: #01083a;
+    font-weight: 500;
+}
 .board-img-content img {
     max-width: 150px;
     max-height: 150px;
 }
 
 .img-preview {
+    background-color: #01083a52;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 20px auto 20px auto;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
 }
 
 .img-preview > button {
     width: 20px;
     height: 20px;
+    margin: 10px;
 }
+.grid-3{
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px 20px;
+    text-align: center;
+    background-repeat: no-repeat;
+}
+
+.grid-4{
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);;
+    gap: 10px 20px;
+    text-align: center;
+    background-repeat: no-repeat;
+}
+
+.grid-5{
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);;
+    gap: 10px 20px;
+    text-align: center;
+    background-repeat: no-repeat;
+} 
+
+
+/* -------------------img */
 
 /* 별점 */
 
@@ -327,6 +489,7 @@ select {
     content: '★';
     color: rgba(255, 217, 0, 1);
 }
+/* -------------------star */
 
 /* 모달 - 검색 */
 /* 모달 시 메인 배경 */
@@ -352,13 +515,29 @@ select {
     text-align: center;
     width: 300px;
 }
+/* -------------------modal */
 
-@media screen and (max-width: 800px) {
-    .board-detail-head {
-        grid-template-columns: none; /*기존 가로 정렬 해제 */
-        grid-template-rows: auto;  /*세로로 요소 쌓기 */
-        align-items: center;  /*중앙 정렬 */
-        text-align: center;  /*텍스트 중앙정렬 */
+@media screen and (max-width: 1000px) {
+    .container{
+        margin: 10px;
+        padding: 5px;
     }
+
+    .board-content{
+        display: ;
+    }
+
+    .success-btn-box{
+        display: inline;
+    }
+    
+    /* -------------------------기존
+    .board-detail-head {
+        grid-template-columns: none;
+        grid-template-rows: auto;  
+        align-items: center;  
+        text-align: center;  
+    }
+    */
 }
 </style>
