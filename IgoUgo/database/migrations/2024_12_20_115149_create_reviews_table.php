@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id('review_id');
             $table->bigInteger('board_id')->unsigned();
-            $table->char('rc_code', 1)->unique();
+            // $table->char('rc_code', 1)->unique();
+            $table->char('rc_code', 1);
             $table->string('area_code', 3);
             $table->bigInteger('product_id')->unsigned();
             // $table->char('rate', 1)->default(5);
