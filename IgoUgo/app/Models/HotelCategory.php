@@ -12,11 +12,13 @@ class HotelCategory extends Model
     protected $primaryKey = 'hc_id';
 
     protected $fillable = [
+        // 'hc_type',
         'hc_code',
         'hc_name',
     ];
 
     public function hotelCategory() {
-        return $this->hasMany(HotelInfo::class, 'hc_type');
+        // return $this->hasMany(HotelInfo::class, 'hc_type');
+        return $this->hasMany(HotelInfo::class, 'hc_code');
     }
 }

@@ -12,11 +12,13 @@ class BoardCategory extends Model
     protected $primaryKey = 'bc_id';
 
     protected $fillable = [
-        'bc_type',
+        // 'bc_type',
+        'bc_code',
         'bc_name',
     ];
 
     public function boards() {
-        return $this->hasMany(Board::class, 'bc_type');
+        // return $this->hasMany(Board::class, 'bc_type');
+        return $this->hasMany(Board::class, 'bc_code');
     }
 }

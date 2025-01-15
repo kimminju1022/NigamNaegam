@@ -15,6 +15,7 @@ class HotelInfo extends Model
 
     protected $fillable = [
         'product_id',
+        // 'hc_type',
         'hc_code',
     ];
 

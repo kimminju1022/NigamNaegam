@@ -15,11 +15,11 @@ class Board extends Model
 
     protected $fillable = [
         'user_id',
+        'board_flg',
         'bc_type',
         'board_title',
         'board_content',
         'view_cnt',
-        'board_flg',
     ];
 
     /**
@@ -31,11 +31,17 @@ class Board extends Model
      */
     protected function serializeDate(\DateTimeInterface $date) {
         $today = Carbon::instance($date)->isToday();
-        if($today) {
-            return $date->format('H:i');
-        } else {
-            return $date->format('Y-m-d');
-        }
+        // $manager = User::where('manager_flg' === '1')->all(); // 매니저 여부 체크
+        
+        // if(!$manager) {
+            if($today) {
+                return $date->format('H:i');
+            } else {
+                return $date->format('Y-m-d');
+            } // 매니저가 아닐 경우 보드리스트에서 보일 시간
+        // } else {
+            // return $date->format('Y-m-d H:i:s'); // 매니저일 경우 관리자사이트에서 보일 시간
+        // }
     }
 
     public function user() {
@@ -43,7 +49,8 @@ class Board extends Model
     }
 
     public function board_category() {
-        return $this->belongsTo(BoardCategory::class, 'bc_type', 'bc_type');
+        // return $this->belongsTo(BoardCategory::class, 'bc_type', 'bc_type');
+        return $this->belongsTo(BoardCategory::class, 'bc_code', 'bc_code');
     }
 
     public function comments() {
@@ -67,7 +74,8 @@ class Board extends Model
     }
     
     public function review_category() {
-        return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_type', 'board_id', 'rc_type');
+        // return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_type', 'board_id', 'rc_type');
+        return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_code', 'board_id', 'rc_code');
     }
     
 }
