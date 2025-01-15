@@ -6,9 +6,28 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Faker\Generator;
+use Illuminate\Container\Container;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * The current Faker instance.
+     *
+     * @var \Faker\Generator
+     */
+    protected $faker;
+
+    /**
+     * Create a new seeder instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->faker = Container::getInstance()->make(Generator::class);
+    }
+
     /**
      * Run the database seeds.
      *
@@ -16,12 +35,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
+        $date = $this->faker->dateTimeBetween('-1 year');
+        
         $data = [
-            ['user_email' => 'test@test.com', 'user_password' => Hash::make('qwe123!@#'), 'user_name' => '김유저', 'user_nickname' => '테스트유저', 'user_profile' => '/default/profile_default.png', 'user_phone' => '01111111111'],
-            ['user_email' => 'test2@test.com', 'user_password' => Hash::make('qwe123!@#'), 'user_name' => '박유저', 'user_nickname' => '테스트유저2', 'user_profile' => '/default/profile_default.png', 'user_phone' => '01122222222'],
-            ['user_email' => 'test3@test.com', 'user_password' => Hash::make('qwe123!@#'), 'user_name' => '이유저', 'user_nickname' => '테스트유저3', 'user_profile' => '/default/profile_default.png', 'user_phone' => '01133333333'],
-            ['user_email' => 'test4@test.com', 'user_password' => Hash::make('qwe123!@#'), 'user_name' => '윤유저', 'user_nickname' => '테스트유저4', 'user_profile' => '/default/profile_default.png', 'user_phone' => '01144444444'],
-            ['user_email' => 'test5@test.com', 'user_password' => Hash::make('qwe123!@#'), 'user_name' => '최유저', 'user_nickname' => '테스트유저5', 'user_profile' => '/default/profile_default.png', 'user_phone' => '01155555555'],
+            ['manager_flg'=> '1', 'user_flg' => '0', 'user_email' => 'test@test.com', 'user_password' => Hash::make('qwer1234!'), 'user_name' => '이경진', 'user_nickname' => '이경진',  'user_phone' => '01111111111', 'user_profile' => '/default/profile_default.png', 'email_verified_at' => now(), 'created_at' => $date, 'updated_at' => $date],
+            ['manager_flg'=> '1', 'user_flg' => '0', 'user_email' => 'test2@test.com', 'user_password' => Hash::make('qwer1234!'), 'user_name' => '김지민', 'user_nickname' => '김지민', 'user_phone' => '01122222222', 'user_profile' => '/default/profile_default.png', 'email_verified_at' => now(), 'created_at' => $date, 'updated_at' => $date],
+            ['manager_flg'=> '1', 'user_flg' => '0', 'user_email' => 'test3@test.com', 'user_password' => Hash::make('qwer1234!'), 'user_name' => '윤종승', 'user_nickname' => '윤종승', 'user_phone' => '01133333333', 'user_profile' => '/default/profile_default.png', 'email_verified_at' => now(), 'created_at' => $date, 'updated_at' => $date],
+            ['manager_flg'=> '1', 'user_flg' => '0', 'user_email' => 'test4@test.com', 'user_password' => Hash::make('qwer1234!'), 'user_name' => '김민주', 'user_nickname' => '김민주', 'user_phone' => '01144444444', 'user_profile' => '/default/profile_default.png', 'email_verified_at' => now(), 'created_at' => $date, 'updated_at' => $date],
         ];
         foreach($data as $item) {
             User::create($item);
