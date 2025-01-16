@@ -35,11 +35,11 @@ class NoticeImageSeeder extends Seeder
      */
     public function run()
     {
-        $notices = Notice::select('notice_id')->get();
+        $notices = Notice::select('notice_id', 'created_at')->get();
         
         foreach($notices as $noticeItem){
             $random_cnt = random_int(0, 5);
-            $date = $this->faker->dateTimeBetween('-1 year');
+            $date = $noticeItem->created_at;
             if($random_cnt){
                 for($i = 0; $i < $random_cnt; $i++){
                     $noticeImage = new NoticeImage();
