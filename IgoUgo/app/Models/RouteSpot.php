@@ -21,4 +21,6 @@ class RouteSpot extends Model
         'route_id',
         'spot_name',
     ];
+
+    
 }

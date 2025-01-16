@@ -79,4 +79,11 @@ class Board extends Model
         return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_code', 'board_id', 'rc_code');
     }
     
+    public function route() {
+        return $this->hasOne(Route::class, 'board_id', 'board_id');
+    }
+
+    public function route_spots() {
+        return $this->hasManyThrough(RouteSpot::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
+    }
 }

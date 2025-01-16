@@ -35,7 +35,7 @@ class RouteSeeder extends Seeder
      */
     public function run()
     {
-        $boards = Board::select('board_id')->where('bc_code', '3')->get();
+        $boards = Board::select('board_id', 'created_at', 'updated_at')->where('bc_code', '3')->get();
 
         foreach($boards as $item) {
             $route = new Route();
@@ -43,8 +43,10 @@ class RouteSeeder extends Seeder
             $route->board_id = $item->board_id;
             $route->route_theme = rand(0,3);
             $route->route_people = rand(0,3);
+            $route->created_at = $item->created_at;
+            $route->updated_at = $item->updated_at;
 
-            $route->timestamps = false;
+            // $route->timestamps = false;
             $route->save();
         }
     }
