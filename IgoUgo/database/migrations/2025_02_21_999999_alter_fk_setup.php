@@ -39,7 +39,7 @@ return new class extends Migration
 
         Schema::table('comments', function(Blueprint $table) {
             $table->foreign('board_id')->references('board_id')->on('boards');
-            $table->foreign('comment_id')->references('comment_id')->on('comments');
+            // $table->foreign('comment_id')->references('comment_id')->on('comments');
         });
 
         Schema::table('comment_reports', function(Blueprint $table) {
@@ -129,7 +129,7 @@ return new class extends Migration
 
         Schema::table('comments', function(Blueprint $table) {
             $table->dropForeign(['board_id']);
-            $table->dropForeign(['comment_id']);
+            // $table->dropForeign(['comment_id']);
         });
 
         Schema::table('comment_reports', function(Blueprint $table) {
