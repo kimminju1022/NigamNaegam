@@ -2,14 +2,18 @@
     <div class="total-container"> 
         <div>
             <div class="category-name">
-                <span class="content-title">{{ productTitle }}</span>
+                <span class="name-hotel">호텔</span>
             </div>
             <div class="right-small-container select-result-box">
-                <h2><span class="font-blue">{{ productsCnt }}</span> 개의 결과</h2>
+                <h2><span class="font-blue">{{ $store.state.hotel.count }}</span> 개의 결과</h2>
                 <div class="select-list font-default-size" :class="{'dis-none':flg}">
                     <div v-for="code in searchData.area_code" :key="code" class="select-list-item">
                         <p>{{ getAreaNameWithAreaCode(code) }}</p>
-                        <img src="/img_product/img_x.png" @click="closeFilter(code)" class="img-x">
+                        <img src="img_product/img_x.png" @click="closeFilter(code)" class="img-x">
+                    </div>
+                    <div v-for="type in searchData.hc_type" :key="type" class="select-list-item">
+                        <p>{{ getHcNameWithHcType(type) }}</p>
+                        <img src="img_product/img_x.png" @click="closeFilter(type)" class="img-x">
                     </div>
                 </div>
             </div>
@@ -22,7 +26,7 @@
                     <p>|</p>
                     <div class="order-list-item">
                         <p>에디터 추천</p>
-                        <img src="/img_product/img_star.png" class="img-order">
+                        <img src="img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
                     <div @click="sortData('modifiedtime')" class="order-list-item">
@@ -32,24 +36,25 @@
                     <p>|</p>
                     <div class="order-list-item">
                         <p>별점순</p>
-                        <img src="/img_product/img_thumb.png" class="img-order">
+                        <img src="img_product/img_thumb.png" class="img-order">
                     </div>
                 </div>
                 <div class="order-box-last">
                     <div @click="openmodal" class="order-list-item">
                         <p class >필터</p>
-                        <img src="/img_product/img_filter.png" class="img-order">
+                        <img src="img_product/img_filter.png" class="img-order">
                     </div>
                     <p>|</p>
                     <div @click="openmodalMap" class="order-list-item">
-                        <img src="/img_product/img_placeholder.png" class="img-map">
+                        <img src="img_product/img_placeholder.png" class="img-map">
                         <p>지도 보기</p>
                     </div>
                 </div>
             </div>
             <div>
+                <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div class="card-list">
-                    <div v-for="item in products" :key="item">
+                    <div v-for="item in hotels" :key="item" >
                         <router-link :to="route.path + '/' + item.contentid">
                             <div class="card">
                                 <img :src="item.firstimage" @error="e => e.target.src='default/board_default.png'" class="img-card">
@@ -58,6 +63,7 @@
                         </router-link>
                     </div>
                 </div>
+                <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
 
                 <!-- 페이지네이션 -->
                 <PaginationComponent :actionName="actionName" :searchData="searchData" />
@@ -65,7 +71,7 @@
         </div>
     </div> 
 
-    <!-- 필터 모달 -->
+    <!-- 모달모달 -->
     <div v-if="isVisible" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-x-button">
@@ -74,15 +80,38 @@
             <p class="modal-region-text1 font-bold">지역</p>
 
             <div class="modal-region">
-                <div v-for="item in $store.state.product.productArea" :key="item">
-                    <input v-model="searchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
+                <div v-for="item in $store.state.hotel.hotelArea" :key="item">
+                    <input 
+                        v-model="searchData.area_code" 
+                        :value="item.area_code" 
+                        @change="updateFilters($event)"
+                        class="modal-input" 
+                        type="checkbox" 
+                        :id="'input-' + item.area_code"
+                        :checked="selectedArea === item.area_code"
+                    >
                     <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
+                </div>
+            </div>
+
+            <p class="modal-region-text2 font-bold">카테고리</p>
+            <div class="modal-region">
+                <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
+                    <input
+                        v-model="searchData.hc_type" 
+                        :value="item.hc_type" 
+                        @change="updateFilters()" 
+                        class="modal-input" 
+                        type="checkbox" 
+                        :id="'input2-' + item.hc_type"
+                    >
+                    <label :for="'input2-' + item.hc_type">{{ item.hc_name }}</label>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 지도 모달 -->
+    <!-- 호텔 모달 -->
     <div v-if="isVisibleMap" class="modal-overlay">
         <div class="modal-content-map">
             <img @click="closemodalMap" class="modal_x_img modal_x_img_position" src="/img_product/img_x.png" alt="">
@@ -92,7 +121,7 @@
 </template>
     
 <script setup>
-import { computed, nextTick, onBeforeMount, reactive, ref, watch} from 'vue';
+import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
@@ -101,32 +130,20 @@ import env from '../../../js/env';
 const store = useStore();
 const route = useRoute();
 
-// id에 따른 타이틀명 - 객체
-const productIdList = {
-    12: '관광지',
-    14: '문화시설',
-    28: '레포츠',
-    38: '쇼핑',
-    39: '음식점',
-};
-
-// 상품 리스트 타이틀
-const productTitle = ref('');
-
-// 상품 리스트 관련
-const products = computed(() => store.state.product.productList);
-const productsCnt = computed(() => store.state.product.productCnt);
-const actionName = 'product/getProductsPagination';
+// console.log(route.path);
+// 호텔 리스트 관련
+// const count = computed(() => store.getters['model/itemCount']);
+const hotels = computed(() => store.state.hotel.hotelList);
+const actionName = 'hotel/getHotelsPagination';
+let isActive = false;
 
 // 필터 관련
 const searchData = reactive({
     page: store.state.pagination.currentPage,
-    contentTypeId: route.params.contenttypeid,
     area_code: [],
+    hc_type: [],
     sort: 'createdtime',
 });
-
-let isActive = false;
 
 function sortData(data) {
     if(searchData.sort === data) {
@@ -136,19 +153,12 @@ function sortData(data) {
         searchData.sort = data;
         isActive = true
     }
-    store.dispatch(actionName, searchData);
+    store.dispatch('hotel/getHotelsPagination', searchData);
 }
 
-watch(
-    () => route.params.contenttypeid,
-    (newId) => {
-        searchData.contentTypeId = parseInt(newId);
-        productTitle.value = productIdList[newId];
-        store.dispatch(actionName, searchData);
-    }
-);
 
-store.dispatch(actionName, searchData);
+
+// const areaData = computed(() => store.state.hotel.hotelArea);
 
 // 반응형
 const flg = ref(false);
@@ -156,36 +166,54 @@ const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
 onBeforeMount(async () => {
-    // 타이틀
-    productTitle.value = productIdList[route.params.contenttypeid];
-
     flgSetup(); // 리사이즈 이벤트
     await store.dispatch(actionName, searchData);
-    await store.dispatch('product/getProductsArea', searchData);
+    await store.dispatch('hotel/getHotelsArea', searchData);
+    await store.dispatch('hotel/getHotelsCategory', searchData);
+    // console.log('카운트되나?',count.value)
 });
 
 window.addEventListener('resize', flgSetup);
 
-function getAreaNameWithAreaCode(code) {
-    const areaList = store.state.product.productArea.filter((item) => item.area_code === code);
-    return areaList[0].area_name;
-}
-
     
 // 카테카테고리고리
-const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+// const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+let selectedArea = null;
 
-function updateFilters() {
-    store.dispatch(actionName, searchData);
+function updateFilters(e) {
+    if(e && searchData.area_code.length > 1) {
+        searchData.area_code = [e.target.value];
+    }
+    searchData.page = 1;
+    store.dispatch('hotel/getHotelsPagination', searchData);
+    store.dispatch('hotel/getHotelsArea')
 }
 
 function closeFilter(value) {
+    // console.log(searchData.area_code);
     searchData.area_code = searchData.area_code.filter(
         (item) => item !== value
     );
-    store.dispatch('product/getProductsPagination', searchData);
+    searchData.hc_type = searchData.hc_type.filter(
+        (item) => item !== value
+    )
+    store.dispatch('hotel/getHotelsPagination', searchData);
+    // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
 
+function getAreaNameWithAreaCode(code) {
+    const areaList = store.state.hotel.hotelArea.filter((item) => item.area_code === code);
+    return areaList[0].area_name;
+}
+
+function getHcNameWithHcType(type) {
+    const HcList = store.state.hotel.hotelCategory.filter((item) => item.hc_type === type);
+    return HcList[0].hc_name;
+}
+
+// window.onbeforeunload = function() {
+//     // localStorage.clear();
+// };
 
 // 모달모달
 const isVisible = ref(false);
@@ -201,57 +229,87 @@ function closemodal() {
 
 function openmodalMap() {
     isVisibleMap.value = true;
-
-    nextTick(() => {
-        if (!env.kakaoMapAppKey) {
-            console.error("env.js is not loaded or kakaoMapAppKey is missing.");
-            return;
-        }
-
-        if(window.kakao && window.kakao.maps) {
-            loadKakaoMap();
-        } else {
-            loadKakaoMapScript(env.kakaoMapAppKey);
-        }
-    });
+    if (window.kakao && window.kakao.maps) {
+        loadKakaoMap();
+    } else {
+        loadKakaoMapScript();
+    }
 }
 
 function closemodalMap() {
     isVisibleMap.value = false;
 }
 
-const map = ref(null);
+// 지도지도
+// let map = null;
 
 // 카카오맵 스크립트 다운로드
-const loadKakaoMapScript = (appKey) => {
+const loadKakaoMapScript = () => {
     const script = document.createElement('script');
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${appKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
-    script.onload = () => {
-        console.log("Kakao Map script loaded.");
-        window.kakao.maps.load(() => {
-            loadKakaoMap(); // 스크립트가 로드된 후 `loadKakaoMap` 실행
-        });
-    };
-
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
+    script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+    
     document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
 }
 
-// 카카오맵 화면에 로드
-const loadKakaoMap = () => {
-    const container = document.getElementById("map"); 
-    const options = {
-        center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
-        level: 3
-    };
+// 카카오 지도 api 사용
+const loadKakaoMap = async () => {
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude; // 위도
+            const lon = position.coords.longitude; // 경도
+            
+            const container = document.getElementById("map");
+            // console.log("Container:", container); // 확인용 로그
+            if (container && lat && lon) {
+                const options = {
+                    center: new window.kakao.maps.LatLng(lat, lon),
+                    level: 8,
+                };
+                map.value = new window.kakao.maps.Map(container, options);
+                console.log("Map loaded successfully.");
+                loadMaker();
+            } else {
+                console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
+            }
+        });
+    } else {
+        alert('Geolocation을 지원하지 않는 브라우저입니다.');
+    }
+};
 
-    map.value = new window.kakao.maps.Map(container, options);
-    console.log(map);
+// 카카오 지도 api함수 사용
+const loadMaker = () => {
+    if(map.value) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude; // 위도
+            const lon = position.coords.longitude; // 경도
+            const markerPosition = new window.kakao.maps.LatLng(lat, lon);
+            const markerTitle = '나 여기있음';
+            const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
+    
+            const marker = new window.kakao.maps.Marker({
+                position: markerPosition
+            });
+    
+            marker.setMap(map.value);
+    
+            const infowindow = new window.kakao.maps.InfoWindow({
+                position: markerPosition,
+                content: content
+                // content: markerTitle
+            });
+    
+            infowindow.open(map.value, marker);
+        });
+    } else {
+        console.log("no marker");
+    }
 }
-
 </script>
     
 <style scoped>
-    .content-title {
+    .name-hotel {
         font-size: 50px;
     }
     .category-name {
@@ -275,6 +333,9 @@ const loadKakaoMap = () => {
         border: 1px solid #01083A;
         border-radius: 20px;
         padding: 10px;
+    }
+    .active-font-bold {
+        font-weight: 900;
     }
     
     /* 정렬 순서 관련 */
@@ -360,9 +421,7 @@ const loadKakaoMap = () => {
     .font-bold {
         font-weight: 900;
     }
-    .active-font-bold {
-        font-weight: 900;
-    }
+    
     /* 기타 등등 */
     .img-x { 
         width: 12px;
@@ -433,7 +492,7 @@ const loadKakaoMap = () => {
         z-index: 2;
     }
     .modal-content {
-        width: 500px;
+        width: 340px;
         background-color: white;
         padding: 20px 30px 40px 30px;
         border-radius: 10px;
@@ -464,6 +523,19 @@ const loadKakaoMap = () => {
         cursor: pointer;
     }
 
+    /* 지도 모달모달 */
+    .modal-content-map {
+        display: grid;
+        grid-template-rows: 40px 1fr;
+        width: 1100px;
+        height: 800px;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .modal_x_img_position {
+        justify-self: end;
+    }
     
     /* 미디어쿼리 */
     @media (max-width: 1000px) {
