@@ -20,18 +20,26 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class
             ,AreaSeeder::class
-            ,FestivalSeeder::class
-            ,HotelSeeder::class
+            // ,FestivalSeeder::class
+            // ,HotelSeeder::class
+            ,ProductSeeder::class
             ,HotelCategorySeeder::class
             ,HotelInfoSeeder::class
-            ,ProductSeeder::class
             ,BoardCategorySeeder::class
             ,BoardSeeder::class
+            ,BoardImageSeeder::class
+            ,BoardReportSeeder::class
             ,CommentSeeder::class
+            ,CommentReportSeeder::class
             ,LikeSeeder::class
+            ,NoticeSeeder::class
+            ,NoticeImageSeeder::class
+            ,QuestionCategorySeeder::class
             ,QuestionSeeder::class
             ,ReviewCategorySeeder::class
             ,ReviewSeeder::class
+            ,RouteSeeder::class
+            ,RouteSpotSeeder::class
         ]);
     }
 }
