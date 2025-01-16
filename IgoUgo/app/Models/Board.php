@@ -86,4 +86,8 @@ class Board extends Model
     public function route_spots() {
         return $this->hasManyThrough(RouteSpot::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
     }
+    
+    public function board_images(){
+        return $this->hasMany(BoardImage::class, 'board_id', 'board_id');
+    }
 }

@@ -22,7 +22,7 @@ class BoardController extends Controller
     public function index(Request $request) {
         $boardList = Board::select('boards.*','users.user_nickname')->
             join('users', 'users.user_id', '=', 'boards.user_id')
-            ->when($request->bc_type === '0', function(Builder $query) {
+            ->when($request->bc_code === '0', function(Builder $query) {
                 $query->join('reviews', function ($join) {
                         $join->on('reviews.board_id', '=', 'boards.board_id');
                     })
@@ -39,13 +39,13 @@ class BoardController extends Controller
                     )
                     ->select('boards.*', 'users.user_nickname', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
             })
-            ->where('boards.bc_type', '=', $request->bc_type)
+            ->where('boards.bc_code', '=', $request->bc_code)
             ->orderBy('boards.created_at', 'desc')
             ->paginate(15);
 
         // 보드 타이틀 획득
         $boardTitle = BoardCategory::select('bc_name')
-                        ->where('bc_type', '=', $request->bc_type)
+                        ->where('bc_code', '=', $request->bc_code)
                         ->first();
         // 게시물정보 획득
         $responseData = [
@@ -72,22 +72,23 @@ class BoardController extends Controller
         // $board_target->view_cnt++;
         $board_target->save();
 
-        $bc_type = $board_target->bc_type;
-        // $board = Board::with(['user', 'board_category'])->when($bc_type === '0', function($query) {
+        $bc_code = $board_target->bc_code;
+        // $board = Board::with(['user', 'board_category'])->when($bc_code === '0', function($query) {
         //                 $query->with(['area', 'review', 'review_category']);
         //             })
         //             ->find($id);
 
         $board = Board::select('boards.*', 'users.user_nickname', 'board_categories.bc_name')
-                    ->join('board_categories', 'board_categories.bc_type', '=', 'boards.bc_type')
+                    ->join('board_categories', 'board_categories.bc_code', '=', 'boards.bc_code')
                     ->join('users', 'users.user_id', '=', 'boards.user_id')
-                    ->when($bc_type === '0', function($query) {
+                    ->when($bc_code === '0', function($query) {
                         $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
                             ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
-                            ->join('review_categories', 'review_categories.rc_type', '=', 'reviews.rc_type')
-                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.rc_type', 'reviews.area_code');
+                            ->join('review_categories', 'review_categories.rc_code', '=', 'reviews.rc_code')
+                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.rc_code', 'reviews.area_code');
                     })
                     ->withCount('likes')
+                    ->with('board_images') // add 3rd
                     ->where('boards.board_id', '=', $id)
                     ->first();
 
@@ -95,8 +96,8 @@ class BoardController extends Controller
             'success' => true
             ,'msg' =>'게시글획득성공'
             ,'bcName' => $board->bc_name
-            ,'rcName' => $bc_type === '0' ? $board->rc_name : ''
-            ,'areaName' => $bc_type === '0' ? $board->area_name : ''
+            ,'rcName' => $bc_code === '0' ? $board->rc_name : ''
+            ,'areaName' => $bc_code === '0' ? $board->area_name : ''
             ,'board' => $board->toArray()
         ];
         return response()->json($responseData, 200);
@@ -107,13 +108,13 @@ class BoardController extends Controller
         $insertData = $request->only('board_title','board_content');
         $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
         $insertData['view_cnt'] = 0;
-        $insertData['bc_type'] = $request->bc_type;
+        $insertData['bc_code'] = $request->bc_code;
 
         // 3차 보드 이미지 저장작업
         if ($request->hasFile('board_img')){
             $insertData['board_img'] = '/'.$request->file('board_img')->store('img');
             } else {
-                $insertData['board_img1'] = '/default/board_default.png';
+                $insertData['board_img'] = '/default/board_default.png';
             }
         
         // 2차 보드 이미지 작업---------------------*start*
@@ -133,10 +134,10 @@ class BoardController extends Controller
 
         $board = Board::create($insertData);
 
-        if($request->bc_type === '0') {
+        if($request->bc_code === '0') {
             $insertReview['board_id'] = $board->board_id;
             $insertReview['area_code'] = $request->area_code;
-            $insertReview['rc_type'] = $request->rc_type;
+            $insertReview['rc_code'] = $request->rc_code;
             $insertReview['rate'] = $request->rate;
             
             $review = Review::create($insertReview);
@@ -158,13 +159,12 @@ class BoardController extends Controller
             DB::beginTransaction();
             $boardTarget = Board::find($request->id);
 
-            if($boardTarget-> bc_type !== $request->bc_type){
-                $boardTarget->bc_type = $request->bc_type;
+            if($boardTarget-> bc_code !== $request->bc_code){
+                $boardTarget->bc_code = $request->bc_code;
             }
-            // $boardTarget->bc_type = $request->bc_type;
+            // $boardTarget->bc_code = $request->bc_code;
             $boardTarget->board_title = $request->board_title;
             $boardTarget->board_content = $request->board_content;
-            // 민주 작업----------------------------------------(수정가능성 만%)
             // img일치 확인 및 불일치 시 새정보 적용
             if ($request->hasFile('board_img') && $request->file('board_img')->isValid()) {
                 $path = '/'.$request->file('board_img')->store('img');
@@ -184,23 +184,23 @@ class BoardController extends Controller
 
             // 4가지 상황에 따른 쿼리-------------------------------------------start------
             // 리뷰에서 자유로 변경 시 저장 방법 변경(리뷰테이블 내 정보 삭제)
-            if($boardTarget->getOriginal('bc_type') === '0') {
+            if($boardTarget->getOriginal('bc_code') === '0') {
                 $review = Review::where('board_id', $request->id)->first();
 
-                if($boardTarget->bc_type === '0') {
+                if($boardTarget->bc_code === '0') {
                     $review->area_code = $request->area_code;
-                    $review->rc_type = $request->rc_type;
+                    $review->rc_code = $request->rc_code;
                     $review->rate = $request->rate;
                     $review->save();
-                } else if($boardTarget->bc_type === '1') {
+                } else if($boardTarget->bc_code === '1') {
                     $review->delete();
                 }
-            } else if($boardTarget->getOriginal('bc_type') === '1') {
-                if($boardTarget->bc_type === '0') {
+            } else if($boardTarget->getOriginal('bc_code') === '1') {
+                if($boardTarget->bc_code === '0') {
                     $review = new Review();
                     $review->board_id = $request->id;
                     $review->area_code = $request->area_code;
-                    $review->rc_type = $request->rc_type;
+                    $review->rc_code = $request->rc_code;
                     $review->rate = $request->rate;
                     $review->save();
                 }
@@ -210,13 +210,13 @@ class BoardController extends Controller
             $boardTarget->save();
 
             $board = Board::select('boards.*', 'users.user_nickname', 'board_categories.bc_name')
-                        ->join('board_categories', 'board_categories.bc_type', '=', 'boards.bc_type')
+                        ->join('board_categories', 'board_categories.bc_code', '=', 'boards.bc_code')
                         ->join('users', 'users.user_id', '=', 'boards.user_id')
-                        ->when($boardTarget->bc_type === '0', function($query) {
+                        ->when($boardTarget->bc_code === '0', function($query) {
                             $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
                             ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
-                            ->join('review_categories', 'review_categories.rc_type', '=', 'reviews.rc_type')
-                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.rc_type', 'reviews.area_code');
+                            ->join('review_categories', 'review_categories.rc_code', '=', 'reviews.rc_code')
+                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.rc_code', 'reviews.area_code');
                         })
                         ->withCount('likes')
                         ->where('boards.board_id', '=', $boardTarget->board_id)
@@ -231,8 +231,8 @@ class BoardController extends Controller
             'success' => true
             ,'msg' =>'게시글 수정 성공'
             ,'bcName' => $board->bc_name
-            ,'rcName' => $board->bc_type === '0' ? $board->rc_name : ''
-            ,'areaName' => $board->bc_type === '0' ? $board->area_name : ''
+            ,'rcName' => $board->bc_code === '0' ? $board->rc_name : ''
+            ,'areaName' => $board->bc_code === '0' ? $board->area_name : ''
             ,'board' => $board->toArray()
         ];
 
@@ -257,7 +257,7 @@ class BoardController extends Controller
 
     // 게시판 리뷰 top4
     public function showReview(){
-        $boardReview = Board::select('board_title', 'board_content', 'board_id', 'user_id')
+        $boardReview = Board::select('board_title', 'board_content', 'board_img', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 // ->with(['user', 'likes'])
                                 ->with([
@@ -267,7 +267,7 @@ class BoardController extends Controller
                                     'likes'
                                 ])
                                 ->where('bc_code', 0)
-                                ->groupBy('board_id', 'board_title', 'board_content', 'user_id')
+                                ->groupBy('board_id', 'board_title', 'board_content',  'board_img', 'user_id')
                                 ->orderBy('likes_count','DESC')
                                 ->limit(4)
                                 ->get();
@@ -282,7 +282,7 @@ class BoardController extends Controller
 
     // 게시판 자유 top4
     public function showFree(){
-        $boardFree = Board::select('board_title', 'board_content', 'board_id', 'user_id')
+        $boardFree = Board::select('board_title', 'board_content', 'board_img', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 ->with(['user', 'likes'])
                                 ->with([
@@ -292,7 +292,7 @@ class BoardController extends Controller
                                     'likes'
                                 ])
                                 ->where('bc_code', 1)
-                                ->groupBy('board_id', 'board_title', 'board_content', 'user_id')
+                                ->groupBy('board_id', 'board_title', 'board_content',  'board_img', 'user_id')
                                 ->orderBy('likes_count','DESC')
                                 ->limit(4)
                                 ->get();

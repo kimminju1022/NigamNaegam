@@ -23,7 +23,7 @@
     <!-- 상세 글머리_정보불러오기-->
     <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head" :class="gridDetail">
-        <p v-if="boardDetail.bc_type === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
+        <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
         <!-- <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button> -->
@@ -35,9 +35,13 @@
     
     <!-- 등록이미지 불러오기 -->
     <div class="board-detail-img">
-        <img :src="boardDetail.board_img1">
-        <img :src="boardDetail.board_img2">
+        <div v-for="image in boardDetail.board_images" :key="index">
+            <img :src="image.board_img" class="detailImg_slot"/>
+        </div>
     </div>
+    <!-- <div class="board-detail-img">
+        <img :src="boardDetail.board_img">
+    </div> -->
     <!-- 내용 -->
     <!-- <textarea readonly class="board-detail-content" ref="boardTextarea" :style="{height: 'auto'}">{{ boardDetail.board_content}}</textarea> -->
     <textarea readonly class="board-detail-content">{{ boardDetail.board_content}}</textarea>
@@ -52,13 +56,13 @@
             <p style="text-align: end; padding-right: 40px;">총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
         <hr>
-        <div class="board-detail-replyList">
-            <div class="replyList-head">
+        <div class="board-detail-comments">
+            <div class="comments-head">
                 <p>내용</p>
                 <p>닉네임</p>
                 <p>작성일시</p>
             </div>
-            <div v-for="item in $store.state.board.boardComments" :key="item" class="replyList">
+            <div v-for="item in $store.state.board.boardComments" :key="item" class="comments">
                 <p>{{ item.comment_content }}</p>
                 <p>{{ item.user_nickname }}</p>
                 <p>{{ item.created_at }}</p>
@@ -83,6 +87,15 @@ const route = useRoute();
 const router = useRouter();
 // board출력값
 const boardDetail = computed(() => store.state.board.boardDetail);
+
+
+// 좋아요 on off기능------------------start-----------------
+// const btn = document.getElementById("like")
+//     btn.addEventListener('click',function(){
+//             btn.classList.toggle('active')
+//     })
+
+// 좋아요 on off기능--------------------end-----------------
 
 // alert 안내문구---------------------start-----------------
 const detailConfirm = () => {
@@ -123,7 +136,7 @@ const boardInfo = reactive({
 });
 
 const gridDetail = computed(() => {
-    return store.state.board.bcType === '0' ? 'grid-3' : 'grid-2';
+    return store.state.board.bcCode === '0' ? 'grid-3' : 'grid-2';
 });
 // // boardRate = computed(() => {
 // //     return boardDetail.value?.rate ? 6 - boardDetail.value.rate
@@ -253,12 +266,12 @@ hr{
 
 .board-detail-img{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
     margin: 20px;
     padding: 10px;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 90%;
     max-height: 300px;
 }
 .board-detail-img>img{
@@ -266,6 +279,12 @@ hr{
     margin: 0 auto;
     max-width: 450px;
     max-height: 270px;
+}
+.detailImg_slot{
+    width: 250px;
+    height: 250px;
+    gap: 10px;
+    margin: 10px;
 }
 .board-detail-content{
     padding: 20px 30px;
@@ -281,19 +300,19 @@ hr{
 .board-reply-container{
     margin-top: 100px;
 }
-.replyList-head, .replyList{
+.comments-head, .comments{
     display: grid;
     grid-template-columns: 7fr 1fr 2fr;
     align-items: center;
 }
 
-.board-detail-replyList{
+.board-detail-comments{
     display: grid;
     /* grid-template-rows: repeat(1fr); */
     gap: 20px 40px;
     /* column-gap: 40px; */
 }
-.board-detail-replyList:nth-last-child(1){
+.board-detail-comments:nth-last-child(1){
     padding-bottom: 10px;
     border-bottom: solid #01083a 1px;
 }
@@ -319,12 +338,12 @@ hr{
     margin-left: -30px;
 }
 
-.replyList-head{
+.comments-head{
     height: 40px;
     font-weight: 700;
     border-bottom: solid #071055b9 1px;
 }
-.replyList-head:nth-child(1), .replyList>p:nth-child(2), .replyList>p:nth-child(3){
+.comments-head:nth-child(1), .comments>p:nth-child(2), .comments>p:nth-child(3){
     text-align: center;
 }
 .pagination {
@@ -395,7 +414,7 @@ hr{
         gap: 30px; 
         margin: 50px auto;
     }
-    .replyList{
+    .comments{
         width: 800px;
         display: grid;
         grid-template-columns: 7fr 1fr 1.5fr;

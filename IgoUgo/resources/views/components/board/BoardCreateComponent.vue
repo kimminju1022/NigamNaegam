@@ -85,8 +85,8 @@
                 <div class="board-img-content":class="gridDetail">
                     <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
                     <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="board_img">
-                    <div class="img-preview" v-for="(preview, index) in previews" :key="index">
-                        <img :src="preview" alt="Uploaded Image"> 
+                    <div class="img-preview" v-for="(previewImage, index) in previews" :key="index">
+                        <img :src="previewImage" alt="Uploaded Image"> 
                         <button @click="clearFile(index)" class="btn bg-clear">X</button> 
                     </div>
                     <!-- <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
@@ -129,6 +129,7 @@ const boardInfo = reactive({
 // img관련 ----------------------start *****
 const previews = ref([]);
 const selectedFiles = ref([]);
+const maxFiles = 5; // 최대 파일 개수
 
 const gridDetail = computed(() => {
     return previews.value.length >= 5
@@ -141,17 +142,147 @@ const gridDetail = computed(() => {
         // : previews.length === 4 ? 'grid-4' : 'grid-3';
         // : previews.length === 2 ? 'grid-2' :'grid-1';
 // });
+/*
+const setFile = (e) => {
+    e.preventDefault(); // 기본 이벤트 막기 (새로고침 방지)
 
+    const newFiles = Array.from(e.target.files).filter(
+        (file) => file.size <= 5 * 1024 * 1024 // 5MB 이하 파일만 허용
+    );
+    const uniqueFiles = newFiles.filter(newFile => 
+        !selectedFiles.value.some(existingFile => existingFile.name === newFile.name && existingFile.size === newFile.size)
+    );
+    const currentFileCount = selectedFiles.value.length; // 현재 등록된 파일 수
+    const availableSlots = maxFiles - currentFileCount; // 남은 파일 등록 가능 수
+
+    if (availableSlots <= 0) {
+        alert(`이미 ${maxFiles}개의 파일이 등록되어 있습니다.`);
+        e.target.value = ''; // 파일 입력 초기화
+        return;
+    }
+
+    const filesToAdd = newFiles.slice(0, availableSlots); // 남은 슬롯만큼만 추가
+    if (newFiles.length !== uniqueFiles.length) {
+        alert("중복된 파일이 있습니다. 다른 파일을 선택해주세요.");
+    }
+
+    // 남은 슬롯보다 추가하려는 파일이 많을 경우 경고
+    if (filesToAdd.length < newFiles.length) {
+        alert(`최대 ${availableSlots}개까지만 추가할 수 있습니다.`);
+    }
+    // 선택한 파일과 미리보기 업데이트
+    selectedFiles.value = [...selectedFiles.value, ...filesToAdd];
+    previews.value = selectedFiles.value.map((file) => URL.createObjectURL(file));
+
+    e.target.value = ''; // 파일 입력 초기화
+};
+
+const clearFile = (index) => {
+    // 미리보기 URL 해제 및 파일 제거
+    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
+    selectedFiles.value.splice(index, 1); // 파일 제거
+    previews.value.splice(index, 1); // 미리보기 제거
+};
+*/
+
+    const setFile = (e) => {
+    const newFiles = Array.from(e.target.files)
+    .filter(file => file.size <= 5 * 1024 * 1024)  // 5MB 이하 파일만 허용
+    
+    const currentFileCount = selectedFiles.value.length; // 현재 등록된 파일 수
+    const availableSlots = maxFiles - selectedFiles.value.length; // 잔여 슬롯 수 계산
+    const filesToAdd = newFiles.slice(0, availableSlots);  // 남은 슬롯만큼만 추가
+
+    if (filesToAdd.length !== newFiles.length) {
+        alert(`최대 ${availableSlots}개까지만 추가할 수 있습니다.`);
+
+    
+    // if (selectedFiles.value.length + newFiles.length > maxFiles) {
+    // alert("최대 5개까지 파일을 등록할 수 있습니다.");
+    // return;
+    }
+
+    // 남은 슬롯보다 추가하려는 파일이 많을 경우
+    if (newFiles.length > availableSlots) {
+        alert(
+            availableSlots > 0
+                ? `최대 ${availableSlots}개까지만 추가할 수 있습니다.`
+                : `이미 ${maxFiles}개가 등록되어 있습니다.`
+        );
+        return;
+    }
+
+    // 기존 파일과 새로운 파일 병합
+    selectedFiles.value = [...selectedFiles.value, ...filesToAdd];
+
+    // 미리보기 URL 생성
+    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file));
+
+    // <input> 초기화하여 동일한 파일 다시 선택 가능
+    e.target.value = '';
+};
+
+const clearFile = (index) => {
+    // 삭제할 파일과 미리보기 URL 제거
+    const fileToRemove = selectedFiles.value[index];
+    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
+    selectedFiles.value.splice(index, 1); // 파일 제거
+    previews.value.splice(index, 1); // 미리보기 제거
+};
+
+
+/*
+const setFile = (e) => {
+    const maxFiles = 5; // 최대 파일 개수
+    const currentFileCount = selectedFiles.value.length; // 현재 등록된 파일 개수
+    const newFiles = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024); // 5MB 이하 파일 필터링
+    const totalFiles = currentFileCount + newFiles.length; // 현재 등록된 파일과 새로 추가된 파일의 총 개수를 계산
+
+
+    // 현재 슬롯이 없으면 경고 후 종료
+    if (totalFiles > maxFiles) {
+        const availableSlots = maxFiles - currentFileCount; // 남은 슬롯 계산
+        alert(
+            availableSlots > 0
+                ? `최대 ${availableSlots}개까지만 추가할 수 있습니다.`
+                : `이미 ${maxFiles}개가 등록되어 있습니다.`
+        );
+        return;
+    }
+
+
+    // 기존 파일과 새로운 파일 병합
+    selectedFiles.value = [...selectedFiles.value, ...newFiles];
+
+    // 미리보기 URL 생성
+    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file));
+};
+
+const clearFile = (index) => {
+    // 삭제할 파일 URL 해제
+    const fileToRemove = selectedFiles.value[index];
+    URL.revokeObjectURL(previews.value[index]);
+
+    // 해당 파일과 미리보기 URL 배열에서 삭제
+    selectedFiles.value.splice(index, 1);
+    previews.value.splice(index, 1);
+};
+*/
+/*
 const setFile = (e) => {
     // 최대 5개까지만 선택 가능
     const newFiles = Array.from(e.target.files).filter(file => file.size <= 5 * 1024 * 1024);  // 5MB 이하 파일만
 
     // 이미 추가된 파일 수와 새로운 파일 수가 합쳐서 5개를 초과하면 경고
     const maxFiles = 5;
-    const availableSlots = maxFiles - selectedFiles.value.length;  // 이미 등록된 파일 수에 따른 추가 가능한 파일 수
+    const availableSlots = maxFiles - selectedFiles.value.length;  // 이미 등록된 파일 수에 따른 추가 가능한 파일 수 계산산
 
+    // 계산값에 따른 안내문
     if (newFiles.length > availableSlots) {
         alert(`최대 ${availableSlots}개까지만 선택할 수 있습니다.`);
+        if(0 === availableSlots){
+            alert(`이미 ${maxFiles}개가 등록되어 있습니다.`); 
+        }
         return;
     }
 
@@ -170,7 +301,7 @@ const clearFile = (index) => {
     // URL 객체 해제 (메모리 누수 방지)
     URL.revokeObjectURL(fileToRemove);
 };
-
+*/
 /*
 const setFile = (e) => {
     // 최대 5개까지만, 5MB 이하의 파일만 추가
@@ -524,7 +655,7 @@ select {
     }
 
     .board-content{
-        display: ;
+        display: grid;
     }
 
     .success-btn-box{

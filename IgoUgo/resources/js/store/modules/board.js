@@ -12,7 +12,7 @@ export default {
         areaName:'',
         mapNames: {},
         boardList: [],
-        bcType: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
+        bcCode: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
         boardReview: [],
         boardFree: [],
     }),
@@ -27,9 +27,9 @@ export default {
         setCommentsTotal(state, data) {
             state.commentsTotal = data;
         },
-        setBcType(state, bcType) {
-            state.bcType = bcType;
-            localStorage.setItem('boardBcType', bcType);
+        setBcType(state, bcCode) {
+            state.bcCode = bcCode;
+            localStorage.setItem('boardBcType', bcCode);
         },
         setBoardList(state, boardList) {
             state.boardList = boardList;
@@ -126,14 +126,11 @@ export default {
             }
 
             const formData = new FormData();
-            formData.append('bc_type', data.bc_type);
+            formData.append('bc_code', data.bc_code);
             formData.append('board_title', data.board_title);
             formData.append('board_content', data.board_content);
-            if(data.board_img1) {
-                formData.append('board_img1', data.board_img1);
-            }
-            if(data.board_img2) {
-                formData.append('board_img2', data.board_img2);
+            if(data.board_img) {
+                formData.append('board_img', data.board_img);
             }
             if(data.area_code) {
                 formData.append('area_code', data.area_code);
@@ -177,7 +174,7 @@ export default {
          * 
          */
         boardUpdate(context, boardInfo){
-            console.log(boardInfo.boardDetail);
+            // console.log(boardInfo.boardDetail);
             const url = `/api/boards/${boardInfo.boardDetail.board_id}`;
             const config = {
                 headers: {
@@ -186,14 +183,11 @@ export default {
                 }
             }
             const formData = new FormData();
-            formData.append('bc_type', boardInfo.boardDetail.bc_type);
+            formData.append('bc_code', boardInfo.boardDetail.bc_code);
             formData.append('board_title', boardInfo.boardDetail.board_title);
             formData.append('board_content', boardInfo.boardDetail.board_content);
-            if(boardInfo.board_img1) {
-                formData.append('board_img1', boardInfo.board_img1);
-            }
-            if(boardInfo.board_img2) {
-                formData.append('board_img2', boardInfo.board_img2);
+            if(boardInfo.boardDetail.board_img) {
+                formData.append('board_img', boardInfo.boardDetail.board_img);
             }
             if(boardInfo.boardDetail.rc_type) {
                 formData.append('rc_type', boardInfo.boardDetail.rc_type);
@@ -225,7 +219,7 @@ export default {
         },
         
         // --------------------------------게시판 업데이트 관련련
-        // updateCreate(context,bc_type){
+        // updateCreate(context,bc_code){
         //     const url = '/api/boards/create';
         //     const config = {
         //         header: {

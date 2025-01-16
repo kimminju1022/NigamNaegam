@@ -49,7 +49,7 @@
         <!-- 리스트 헤드 -->
         <div class="board-li-title" :class="gridClass" >
             <p>번호</p>
-            <p v-if="$store.state.board.bcType === '0'">지역</p>
+            <p v-if="$store.state.board.bcCode === '0'">지역</p>
             <p>제목</p>
             <p>닉네임</p>
             <p>작성일자</p>
@@ -61,8 +61,8 @@
         <div>
             <div class="board-li-notice" >
                 <div class="board-li-item" :class="gridClass">
-                    <p v-if="$store.state.board.bcType === '0'">5</p>
-                    <!-- v-show="$store.state.board.bcType === 0" -->
+                    <p v-if="$store.state.board.bcCode === '0'">5</p>
+                    <!-- v-show="$store.state.board.bcCode === 0" -->
                     <p>공지</p>
                     <p class="board-li-innertitle">12월 여행 주의 사항</p>
                     <p>라라핑</p>
@@ -71,7 +71,7 @@
                     <p>50</p>
                 </div>
                 <div class="board-li-item" :class="gridClass">
-                    <p v-if="$store.state.board.bcType === '0'"p>4</p>
+                    <p v-if="$store.state.board.bcCode === '0'"p>4</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">11월 단풍놀이 명소 전국 Top 20</p>
                     <p>차나핑</p>
@@ -80,7 +80,7 @@
                     <p>50</p>
                 </div>
                 <div class="board-li-item" :class="gridClass">
-                    <p v-if="$store.state.board.bcType === '0'">3</p>
+                    <p v-if="$store.state.board.bcCode === '0'">3</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">11월 여행 주의 사항</p>
                     <p>라라핑</p>
@@ -89,7 +89,7 @@
                     <p>30</p>
                 </div>
                 <div class="board-li-item" :class="gridClass">
-                    <p v-if="$store.state.board.bcType === '0'">2</p>
+                    <p v-if="$store.state.board.bcCode === '0'">2</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">전국 여행자랑~ 여행자협회와 함께하는 여행후기 공모전</p>
                     <p>믿어핑</p>
@@ -98,7 +98,7 @@
                     <p>50</p>
                 </div>
                 <div class="board-li-item" :class="gridClass">
-                    <p v-if="$store.state.board.bcType === '0'">1</p>
+                    <p v-if="$store.state.board.bcCode === '0'">1</p>
                     <p>공지</p>
                     <p class="board-li-innertitle">10월 여행 주의 사항</p>
                     <p>차캐핑</p>
@@ -113,8 +113,8 @@
             <div class="board-list" >
                 <div  class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
                     <p>{{ item.board_id }}</p>
-                    <p v-if="$store.state.board.bcType === '0'">{{ item.area_name }}</p>
-                    <!-- <router-link v-if="$store.state.board.bcType === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcType === '2', 'grid-5': $store.state.board.bcType === '1'}">{{ item.board_title }}</router-link> -->
+                    <p v-if="$store.state.board.bcCode === '0'">{{ item.area_name }}</p>
+                    <!-- <router-link v-if="$store.state.board.bcCode === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcCode === '2', 'grid-5': $store.state.board.bcCode === '1'}">{{ item.board_title }}</router-link> -->
                     <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
@@ -144,7 +144,7 @@ const bcName = computed(() => store.state.board.bcName);
 const boardList = computed(() => store.state.board.boardList);
 
 const gridClass = computed(() => {
-    return store.state.board.bcType === '0' ? 'grid-7' : 'grid-6';
+    return store.state.board.bcCode === '0' ? 'grid-7' : 'grid-6';
 });
 
 // const boardInfo = reactive({
@@ -152,7 +152,7 @@ const gridClass = computed(() => {
 //     ,board_content: ''
 //     ,board_img1: null
 //     ,board_img2: null
-//     ,bc_type: ''
+//     ,bc_code: ''
 //     ,area_code: ''
 //     ,rc_type: ''
 //     ,rate: ''
@@ -164,12 +164,12 @@ const gridClass = computed(() => {
 const actionName = 'board/getBoardListPagination';
 const searchData = reactive({
     page: store.state.pagination.currentPage,
-    bc_type: store.state.board.bcType,
+    bc_code: store.state.board.bcCode,
 });
 watch(
-    () => store.state.board.bcType,
+    () => store.state.board.bcCode,
     (newVal) => {
-        searchData.bc_type = newVal;
+        searchData.bc_code = newVal;
     }
 );
 // -------------------------------
