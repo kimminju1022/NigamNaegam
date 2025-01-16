@@ -28,13 +28,13 @@ class BoardFactory extends Factory
         $board_flg = rand(0,1);
         $flg_date = Carbon::now()->subMonths(6);
 
-        if($board_flg = 1) {
+        if($board_flg === 1) {
             if(Carbon::parse($date)->lt($flg_date)) {
                 $update = Carbon::parse($date)->addMonths(6);
             } else {
                 $update = $date;
             }
-        } else if ($board_flg = 0) {
+        } else if($board_flg === 0) {
             $update = $date;
         }
 
