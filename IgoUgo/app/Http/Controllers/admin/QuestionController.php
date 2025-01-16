@@ -17,7 +17,8 @@ class QuestionController extends Controller
     public function index(){
         $bcType = '2';
         $questionList = Board::with(['question', 'user', 'board_category'])
-                                ->where('bc_type', $bcType)
+                                // ->where('bc_type', $bcType)
+                                ->where('bc_code', $bcType)
                                 ->orderBy('created_at','DESC')
                                 ->paginate(15);
 
@@ -56,7 +57,8 @@ class QuestionController extends Controller
         $bcType = '2';
         $questionList = Board::with(['question', 'user', 'board_category'])
                                 ->where('user_id', $id)
-                                ->where('bc_type', $bcType)
+                                // ->where('bc_type', $bcType)
+                                ->where('bc_code', $bcType)
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
         // Log::debug($questionList);
@@ -75,7 +77,8 @@ class QuestionController extends Controller
         $insertData = $request->only('board_title','board_content');
         $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
         $insertData['view_cnt'] = 0;
-        $insertData['bc_type'] = 2;
+        // $insertData['bc_type'] = 2;
+        $insertData['bc_code'] = 2;
 
         if ($request->hasFile('board_img1')) {
             $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');

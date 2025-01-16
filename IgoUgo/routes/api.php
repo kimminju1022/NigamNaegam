@@ -7,6 +7,8 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -84,3 +86,28 @@ Route::middleware('my.auth')->group(function() {
     Route::delete('/questions/{id}', [QuestionController::class, 'destroy']);
 });
 
+
+// 이메일 인증
+Route::get('/email/verify', [VerificationController::class, 'verify'])->name('verification.notice'); // 이메일 검증 링크 발송
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verifiedEmail'])->name('verification.verify'); // 이메일 검증 핸들러
+Route::post('/email/verification-notification', [VerificationController::class, 'verifiedEmail'])->name('verification.send'); // 재전송?
+
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->name('verification.notice');
+
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+
+//     return redirect('/home');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
+
+// Route::post('/email/verification-notification', function (Request $request) {
+//     $request->user()->sendEmailVerificationNotification();
+
+//     return back()->with('message', 'Verification link sent!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/profile', function () {
+    // Only verified users may access this route...
+})->middleware(['auth', 'verified']);

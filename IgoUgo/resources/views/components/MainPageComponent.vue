@@ -633,7 +633,7 @@ a, a:visited {
     border-radius: 10px 10px 0px 0px;
 }
 
-.main-card p:not(:nth-child(2)) {
+.main-card p:not(:nth-child(3)) {
     width: 90%;
     margin: 0 auto;
     /* white-space: nowrap;
@@ -641,7 +641,19 @@ a, a:visited {
     text-overflow: ellipsis; */
 }
 
-.main-card p {
+.main-card p:nth-child(2) {
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    word-break: break-all;
+    height: 40px;
+}
+
+.main-card p:nth-child(3) {
     width: 90%;
     margin: 0 auto;
     overflow: hidden;
