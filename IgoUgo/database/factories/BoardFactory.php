@@ -25,17 +25,22 @@ class BoardFactory extends Factory
 
         $date = $this->faker->dateTimeBetween($user->created_at, now());
 
-        $board_flg = Carbon::now()->subMonths(6);
+        $board_flg = rand(0,1);
+        $flg_date = Carbon::now()->subMonths(6);
 
-        if(Carbon::parse($date)->lt($board_flg)) {
-            $update = Carbon::parse($date)->addMonths(6);
-        } else {
+        if($board_flg = 1) {
+            if(Carbon::parse($date)->lt($flg_date)) {
+                $update = Carbon::parse($date)->addMonths(6);
+            } else {
+                $update = $date;
+            }
+        } else if ($board_flg = 0) {
             $update = $date;
         }
 
         return [
             'user_id' => $user->user_id
-            ,'board_flg' => rand(0,1)
+            ,'board_flg' => $board_flg
             // ,'bc_type' => $bc_type->bc_type
             ,'bc_code' => $bc_code->bc_code
             ,'board_title' => $this->faker->realText(rand(10, 100))
