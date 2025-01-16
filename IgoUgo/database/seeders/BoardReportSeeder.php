@@ -37,14 +37,15 @@ class BoardReportSeeder extends Seeder
      */
     public function run()
     {
-        $board = Board::select('board_id', 'user_id', 'created_at')->inRandomOrder()->get();
+        $board = Board::select('board_id', 'user_id', 'created_at')->where('bc_code', '!=', '2')->whereNull('deleted_at')->inRandomOrder()->get();
 
         foreach($board as $boardItem){
-            $random_limit = random_int(0, 4);
-            $users = User::select('user_id')->where('user_id', '!=', $boardItem->user_id)->where('manager_flg', '0')->inRandomOrder()->limit($random_limit)->get();
+            $random_limit = random_int(0, 15);
+            $users = User::select('user_id', 'created_at')->where('user_id', '!=', $boardItem->user_id)->where('manager_flg', '0')->inRandomOrder()->limit($random_limit)->get();
             if($random_limit){
                 foreach($users as $user){
-                    $date = $this->faker->dateTimeBetween($boardItem->created_at, now());
+                    $startDate = max($boardItem->created_at, $user->created_at);
+                    $date = $this->faker->dateTimeBetween($startDate, now());
 
                     $boardReport = new BoardReport();
                     $boardReport->board_id = $boardItem->board_id;

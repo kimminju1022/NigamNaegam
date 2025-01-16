@@ -15,7 +15,7 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        $total = 200;
+        $total = 500;
         $interval = 50;
         for($i = 0; $i < $total; $i += $interval){
             Comment::factory($interval)->create();

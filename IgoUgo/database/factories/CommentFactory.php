@@ -25,20 +25,27 @@ class CommentFactory extends Factory
         // $board = Board::select('board_id', 'created_at')->where('bc_type', '0')->orWhere('bc_type', '1')->inRandomOrder()->first(); // bc_type 0,1만 들고와야해
         $board = Board::select('board_id', 'created_at')->whereIn('bc_code', ['0', '1', '3'])->inRandomOrder()->first(); // bc_type 0,1,3만 들고와야해
         // $date = $this->faker->dateTimeBetween($board->created_at);
+        
         $startDate = max($board->created_at, $user->created_at);
         $date = $this->faker->dateTimeBetween($startDate, now());
-        $comment_flg = Carbon::now()->subMonth(6);
+        
+        $comment_flg = rand(0,1);
+        $flg_date = Carbon::now()->subMonths(6);
 
-        if(Carbon::parse($date)->lt($comment_flg)){
-            $update = Carbon::parse($date)->addMonths(6);
-        } else {
+        if($comment_flg === 1) {
+            if(Carbon::parse($date)->lt($flg_date)) {
+                $update = Carbon::parse($date)->addMonths(6);
+            } else {
+                $update = $date;
+            }
+        } else if($comment_flg === 0) {
             $update = $date;
         }
 
         return [
             'user_id' => $user->user_id,
             'board_id' => $board->board_id,
-            'comment_flg' => rand(0,1),
+            'comment_flg' => $comment_flg,
             'comment_content' => $this->faker->realText(rand(10, 200)),
             'created_at' => $date,
             'updated_at' => $update,

@@ -17,6 +17,8 @@ class BoardReportFactory extends Factory
      */
     public function definition()
     {
+        // 이거 안씀
+        
         // $user = User::select('user_id', 'created_at')->inRandomOrder()->first();
         $board = Board::select('board_id', 'created_at')->inRandomOrder()->first();
         $user = $board->user_id;
