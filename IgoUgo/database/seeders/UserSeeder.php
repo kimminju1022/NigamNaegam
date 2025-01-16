@@ -49,10 +49,10 @@ class UserSeeder extends Seeder
             User::create($item);
         }
 
-        // $total = 200;
-        // $interval = 50;
-        // for($i = 0; $i < $total; $i += $interval){
-        //     User::factory($interval)->create();
-        // }
+        $total = 200;
+        $interval = 50;
+        for($i = 0; $i < $total; $i += $interval){
+            User::factory($interval)->create();
+        }
     }
 }

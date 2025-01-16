@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('notices', function (Blueprint $table) {
             $table->id('notice_id');
             $table->bigInteger('user_id')->unsigned()->comment('관리자만 작성 가능');
+            $table->char('notice_flg', 1)->default('0');
             $table->string('notice_title', 100);
             $table->string('notice_content', 2000);
             $table->timestamps();

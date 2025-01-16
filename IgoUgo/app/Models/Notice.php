@@ -21,6 +21,7 @@ class Notice extends Model
         'user_id',
         'notice_title',
         'notice_content',
+        'notice_flg',
     ];
 
     /**
