@@ -257,7 +257,7 @@ class BoardController extends Controller
 
     // 게시판 리뷰 top4
     public function showReview(){
-        $boardReview = Board::select('board_title', 'board_content', 'board_img', 'board_id', 'user_id')
+        $boardReview = Board::select('board_title', 'board_content', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 // ->with(['user', 'likes'])
                                 ->with([
@@ -267,7 +267,7 @@ class BoardController extends Controller
                                     'likes'
                                 ])
                                 ->where('bc_code', 0)
-                                ->groupBy('board_id', 'board_title', 'board_content',  'board_img', 'user_id')
+                                ->groupBy('board_id', 'board_title', 'board_content', 'user_id')
                                 ->orderBy('likes_count','DESC')
                                 ->limit(4)
                                 ->get();
@@ -282,7 +282,7 @@ class BoardController extends Controller
 
     // 게시판 자유 top4
     public function showFree(){
-        $boardFree = Board::select('board_title', 'board_content', 'board_img', 'board_id', 'user_id')
+        $boardFree = Board::select('board_title', 'board_content', 'board_id', 'user_id')
                                 ->withCount('likes')
                                 ->with(['user', 'likes'])
                                 ->with([
@@ -292,7 +292,7 @@ class BoardController extends Controller
                                     'likes'
                                 ])
                                 ->where('bc_code', 1)
-                                ->groupBy('board_id', 'board_title', 'board_content',  'board_img', 'user_id')
+                                ->groupBy('board_id', 'board_title', 'board_content', 'user_id')
                                 ->orderBy('likes_count','DESC')
                                 ->limit(4)
                                 ->get();
