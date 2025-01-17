@@ -122,11 +122,12 @@ class ProductController extends Controller
     }
 
     // public function getNearbyPlaces($lat, $lon) {
-    public function getNearbyPlaces() {
-        // $currentLat = $lat; // 현재 위치 위도
-        // $currentLng = $lon; // 현재 위치 경도
-        $currentLat = 35.8779995; // 현재 위치 위도
-        $currentLng = 128.5893712; // 현재 위치 경도
+    public function getNearbyPlaces($searchData) {
+        $currentLat = $searchData->Lat; // 현재 위치 위도
+        $currentLng = $searchData->Lon; // 현재 위치 경도
+        
+        // $currentLat = 35.8779995; // 현재 위치 위도
+        // $currentLng = 128.5893712; // 현재 위치 경도
 
         $places = 
             Product::selectRaw("*, (6371 * acos(
@@ -134,7 +135,7 @@ class ProductController extends Controller
                 cos(radians(mapx) - radians(?)) +
                 sin(radians(?)) * sin(radians(mapy))
             )) AS distance", [$currentLat, $currentLng, $currentLat])
-            ->having('distance', '<=', 15) // km 기준
+            ->having('distance', '<=', 1) // km 기준
             ->orderBy('distance')
             ->get();
 

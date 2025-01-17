@@ -215,25 +215,52 @@ function getHcNameWithHcType(type) {
 //     // localStorage.clear();
 // };
 
-// 모달모달
+// 필터모달
 const isVisible = ref(false);
-const isVisibleMap = ref(false);
 
 function openmodal() {
     isVisible.value = true;
 }
-    
+
 function closemodal() {
     isVisible.value = false;
 }
 
+// 지도모달
+const isVisibleMap = ref(false);
+
 function openmodalMap() {
     isVisibleMap.value = true;
-    if (window.kakao && window.kakao.maps) {
-        loadKakaoMap();
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const Lat = position.coords.latitude; // 위도
+            const Lon = position.coords.longitude; // 경도
+            console.log(Lat, Lon);
+
+            // 현재 위치 반경 1km 내의 product 리스트
+            const searchData = reactive({
+                Lat: Lat,
+                Lon: Lon,
+            });
+            await store.dispatch('map/takeNearbyPlaces', searchData);
+
+            if(Lat && Lon){
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    await loadKakaoMap(Lat, Lon);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    await loadKakaoMap(Lat, Lon);
+                }
+            } else {
+                console.log('no lat or lon');
+            }
+        });
     } else {
-        loadKakaoMapScript();
+        alert('Geolocation을 지원하지 않는 브라우저입니다.');
     }
+
 }
 
 function closemodalMap() {
@@ -241,70 +268,119 @@ function closemodalMap() {
 }
 
 // 지도지도
-// let map = null;
+const map = ref(null);
 
 // 카카오맵 스크립트 다운로드
 const loadKakaoMapScript = () => {
-    const script = document.createElement('script');
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
-    script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+    return new Promise((resolve, reject) => {
+        const existingScript = document.querySelector('script[src*="kakao.com"]');
+        if (existingScript) {
+            // 이미 로드된 스크립트가 있으면 바로 resolve
+            resolve();
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`;
+        script.onload = () => {
+            window.kakao.maps.load(resolve); // 카카오맵 API 로드 후 resolve
+        };
+        script.onerror = () => {
+            reject(new Error('Kakao map script load failed.'));
+        };
+        document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+    });
+
+    // const script = document.createElement('script');
+    // script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
+    // script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
     
-    document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+    // document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
 }
 
 // 카카오 지도 api 사용
-const loadKakaoMap = async () => {
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const lat = position.coords.latitude; // 위도
-            const lon = position.coords.longitude; // 경도
-            
-            const container = document.getElementById("map");
-            // console.log("Container:", container); // 확인용 로그
-            if (container && lat && lon) {
-                const options = {
-                    center: new window.kakao.maps.LatLng(lat, lon),
-                    level: 8,
-                };
-                map.value = new window.kakao.maps.Map(container, options);
-                console.log("Map loaded successfully.");
-                loadMaker();
-            } else {
-                console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
-            }
-        });
+const loadKakaoMap = async (Lat, Lon) => {
+    const container = document.getElementById("map");
+    // console.log("Container:", container); // 확인용 로그
+    if (container && Lat && Lon) {
+        const options = {
+            center: new window.kakao.maps.LatLng(Lat, Lon),
+            level: 7,
+        };
+        map.value = new window.kakao.maps.Map(container, options);
+        console.log("Map loaded successfully.");
+        loadMaker(Lat, Lon);
     } else {
-        alert('Geolocation을 지원하지 않는 브라우저입니다.');
+        console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
     }
+
+    // if(navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(function(position) {
+    //         const lat = position.coords.latitude; // 위도
+    //         const lon = position.coords.longitude; // 경도
+            
+    //         const container = document.getElementById("map");
+    //         // console.log("Container:", container); // 확인용 로그
+    //         if (container && lat && lon) {
+    //             const options = {
+    //                 center: new window.kakao.maps.LatLng(lat, lon),
+    //                 level: 7,
+    //             };
+    //             map.value = new window.kakao.maps.Map(container, options);
+    //             console.log("Map loaded successfully.");
+    //             loadMaker();
+    //         } else {
+    //             console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
+    //         }
+    //     });
+    // } else {
+    //     alert('Geolocation을 지원하지 않는 브라우저입니다.');
+    // }
 };
 
 // 카카오 지도 api함수 사용
-const loadMaker = () => {
-    if(map.value) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const lat = position.coords.latitude; // 위도
-            const lon = position.coords.longitude; // 경도
-            const markerPosition = new window.kakao.maps.LatLng(lat, lon);
-            const markerTitle = '나 여기있음';
-            const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
+const loadMaker = (Lat, Lon) => {
+    const markerPosition = new window.kakao.maps.LatLng(Lat, Lon);
+    const markerTitle = '나 여기있음';
+    const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
+
+    const marker = new window.kakao.maps.Marker({
+        position: markerPosition
+    });
+
+    marker.setMap(map.value);
+
+    const infowindow = new window.kakao.maps.InfoWindow({
+        position: markerPosition,
+        content: content
+        // content: markerTitle
+    });
+
+    infowindow.open(map.value, marker);
+    // if(map.value) {
+    //     navigator.geolocation.getCurrentPosition(function(position) {
+    //         const lat = position.coords.latitude; // 위도
+    //         const lon = position.coords.longitude; // 경도
+    //         const markerPosition = new window.kakao.maps.LatLng(lat, lon);
+    //         const markerTitle = '나 여기있음';
+    //         const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
     
-            const marker = new window.kakao.maps.Marker({
-                position: markerPosition
-            });
+    //         const marker = new window.kakao.maps.Marker({
+    //             position: markerPosition
+    //         });
     
-            marker.setMap(map.value);
+    //         marker.setMap(map.value);
     
-            const infowindow = new window.kakao.maps.InfoWindow({
-                position: markerPosition,
-                content: content
-                // content: markerTitle
-            });
+    //         const infowindow = new window.kakao.maps.InfoWindow({
+    //             position: markerPosition,
+    //             content: content
+    //             // content: markerTitle
+    //         });
     
-            infowindow.open(map.value, marker);
-        });
-    } else {
-        console.log("no marker");
-    }
+    //         infowindow.open(map.value, marker);
+    //     });
+    // } else {
+    //     console.log("no marker");
+    // }
 }
 </script>
     
