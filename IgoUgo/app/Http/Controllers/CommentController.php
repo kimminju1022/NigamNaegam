@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\MyAuthException;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
+use App\Models\CommentReport;
 use Illuminate\Http\Request;
 use MyToken;
 
@@ -69,5 +70,43 @@ class CommentController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // 댓글 신고
+    public function commentReport(Request $request)
+    {
+    // 1. 클라이언트로부터 받는 데이터 (예: comment_id, 신고 사유, 유저 ID 등)
+        $commentRId = $request->comment_id; // 신고할 댓글 ID
+        $userId = auth()->id();           // 로그인된 사용자 ID
 
+        // 2. 중복 신고 방지 체크
+        $existingReport = CommentReport::where('comment_report_id', $commentRId)
+                                ->where('user_id', $userId)
+                                ->first();
+        if ($existingReport) {
+            return response()->json([
+                'success' => false,
+                'msg' => '이미 신고한 댓글입니다.'
+            ], 400);
+        }
+
+        // 3. 댓글 존재 여부 확인
+        $comment = Comment::find($commentRId);
+        if (!$comment) {
+            return response()->json([
+                'success' => false,
+                'msg' => '존재하지 않는 댓글입니다.'
+            ], 404);
+        }
+
+        // 4. 신고 정보 저장
+        $report = new CommentReport();
+        $report->comment_id = $commentRId;
+        $report->user_id = $userId;
+        $report->save();
+
+        // 5. 성공 응답
+        return response()->json([
+            'success' => true,
+            'msg' => '신고가 접수되었습니다.'
+            ], 201);
+    }
 }

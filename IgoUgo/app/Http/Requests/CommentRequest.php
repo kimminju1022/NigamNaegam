@@ -18,8 +18,8 @@ class CommentRequest extends FormRequest
     {
         $rules = [
                 'comment_content' => ['required', 'string','max:500'],
-                'board_id' => ['required', 'integer', 'exists:boards,board_id']
-        ];
+                'board_id' => ['required', 'integer', 'exists:boards,board_id'],
+            ];
 
         return $rules;
     }

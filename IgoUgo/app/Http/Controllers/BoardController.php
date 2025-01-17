@@ -254,6 +254,18 @@ class BoardController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // 게시글 신고
+    public function report($id){
+        $board = Board::report($id);
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '게시글 신고 성공'
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
 // 게시글-------------------------------------update end---------------------
 
     // 게시판 리뷰 top4

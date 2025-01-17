@@ -77,10 +77,12 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/boards',[BoardController::class, 'store']);
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
     Route::post('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
+    Route::post('/boards/{id}',[BoardController::class, 'report'])->name('board.report'); //가능한지 물어보기
     Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
     
     // 댓글  관련
     Route::post('/comments', [CommentController::class, 'store']);
+    Route::post('/comments/{id}',[CommentController::class, 'report'])->name('comment.report'); //가능한지 물어보기
     Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
 
     // 문의게시판 관련
