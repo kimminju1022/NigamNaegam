@@ -64,9 +64,9 @@ class MyVerifyEmail extends Notification
     protected function verificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
-            'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-            ['id' => $notifiable->getKey()]
+            'verification.verify', // 이메일 인증 링크가 유효한지 검사하는 컨트롤러의 라우트 이름
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), // auth.php에 값이 있으면 그 값 이용, 없으면 60분 세팅
+            ['id' => $notifiable->getKey()] // 이건 사용자 id
         );    }
 
     /**

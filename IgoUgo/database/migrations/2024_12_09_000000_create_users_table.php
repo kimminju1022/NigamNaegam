@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('user_phone', 50)->unique();
             $table->string('user_profile', 100)->default('/default/profile_default.png');
             $table->string('refresh_token', 512)->nullable();
-            $table->timestamp('email_verified_at');
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password_reset_token', 512)->nullable();
             $table->timestamp('password_reset_expires_at')->nullable();
             $table->timestamps();

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
-    public function verify() {
+    public function notice(Request $request) {
 
-
-        
         $responseData = [
             'success' => true
             ,'msg' => '이메일 성공'
@@ -19,16 +19,15 @@ class VerificationController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function verifiedEmail(EmailVerificationRequest $request) {
-        $request->fulfill();
-    
-        // 이미 인증한 이메일이 input으로 적혀있게는 어떻게 함?
-        return redirect('/registration');
+    public function verify(EmailVerificationRequest $request) {
+        $request->fulfill(); // 1. 이메일 검증 처리
+
+        return redirect('/registration'); // 2. 이메일 검증 후 홈으로 리다이렉트
     }
 
-    public function sendEmail(Request $request) {
-        $request->user()->sendEmailVerificationNotification();
+    public function sendVerificationLink(Request $request) {
+        $request->user()->sendEmailVerificationNotification(); // 1. 이메일 검증 링크 재전송
     
-        return back()->with('message', 'Verification link sent!');
+        return back()->with('message', 'Verification link sent!'); // 2. 성공 메시지 반환
     }
 }

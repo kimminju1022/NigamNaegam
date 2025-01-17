@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,9 @@ class UserController extends Controller
         $insertData['user_phone'] = $request->user_phone;
         $insertData['user_password'] = Hash::make($request->user_password);
 
-        User::create($insertData);
+        $user = User::create($insertData);
+
+        event(new Registered($user));
 
         $responseData = [
             'success' => true
