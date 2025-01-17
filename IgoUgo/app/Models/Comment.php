@@ -42,4 +42,12 @@ class Comment extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
+    public function board() {
+        return $this->belongsTo(board::class, 'board_id', 'board_id');
+    }
+
+    // 댓글 좋아요 최후에 시간남으면 하기
+    // public function likes() {
+    //     return $this->hasMany(Like::class, 'board_id', 'board_id')->where('like_flg', 1);
+    // }
 }

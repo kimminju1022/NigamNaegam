@@ -93,25 +93,6 @@ export default {
                 console.error(error.response.data);
             });
         },
-        /**
-         *  코멘트 획득
-         */
-        boardCommentPagination(context, searchData) {
-            const url = '/api/comments';
-            const config = {
-                params: searchData
-            };
-
-            axios.get(url, config)
-            .then(response =>{
-                context.commit('setBoardComments', response.data.comments.data);
-                context.commit('setCommentsTotal', response.data.comments.total);
-                context.commit('pagination/setPagination', response.data.comments, {root: true});
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        },
 
         /** 게시글 작성
          * 
@@ -126,22 +107,9 @@ export default {
             }
 
             const formData = new FormData();
-            formData.append('bc_code', data.bc_code);
-            formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);
-            if(data.board_img) {
-                formData.append('board_img', data.board_img);
-            }
-            if(data.area_code) {
-                formData.append('area_code', data.area_code);
-            }
-            if(data.rc_type) {
-                formData.append('rc_type', data.rc_type);
-            }
-            if(data.rate) {
-                formData.append('rate', data.rate);
-            }
-
+            formData.append('bc_code', data.boardComments);
+            formData.append('board_title', data.commentsTotal);
+            
             // console.log(data);
 
             axios.post(url,formData, config)
@@ -296,32 +264,81 @@ export default {
             });
         },
 
-        // 댓글 획득
-        getBoardReply(context, searchData) {
-            return new Promise((resolve, reject) => {
-                const url = `/api/boards/${id}`;
-                const config = {
-                    params: searchData
-                };
-                
-                axios.get(url, config)
-                .then(response =>{
-                    // console.log(response);
-                    context.commit('setBcName', response.data.bcName);
-                    context.commit('setBoardList', response.data.boardList.data);
-                    context.commit('pagination/setPagination', response.data.boardList, {root: true});
-                    // context.commit('setboardCategories', response.data.boardCategoryBctype.data);
-                    // context.commit('setboardCategoryArea', response.data.boardCategoryArea.data);
+        // 댓글 ------------------------------------start
+        // 댓글 작성
+        storeComment(context, data){
+            const url = '/api/boards';
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
 
-                    return resolve();
-                })
-                .catch(error => {
-                    console.error(error);
-                    return reject();
-                });
+            const formData = new FormData();
+            formData.append('bc_code', data.bc_code);
+            formData.append('board_title', data.board_title);
+            formData.append('board_content', data.board_content);
+            if(data.board_img) {
+                formData.append('board_img', data.board_img);
+            }
+            if(data.area_code) {
+                formData.append('area_code', data.area_code);
+            }
+            if(data.rc_type) {
+                formData.append('rc_type', data.rc_type);
+            }
+            if(data.rate) {
+                formData.append('rate', data.rate);
+            }
+
+            // console.log(data);
+
+            axios.post(url,formData, config)
+            .then(response => {
+                // console.log(response.data);
+                // console.log(response.data.board);
+                // console.log(response.data.review);
+                
+                context.commit('setBoardList', response.data.data);
+                
+                router.replace('/boards');
+            })
+            .catch(error => {
+                console.error(error.response.data);
             });
         },
-    },
+        postCommentCreate(context){
+            const url = '/api/boards/create';
+            const config = {
+                header: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+
+            axios.get(url, config)
+            .then()
+            .catch();
+        },
+        /**
+         *  댓글 획득
+         */
+        boardCommentPagination(context, searchData) {
+            const url = '/api/comments';
+            const config = {
+                params: searchData
+            };
+
+            axios.get(url, config)
+            .then(response =>{
+                context.commit('setBoardComments', response.data.comments.data);
+                context.commit('setCommentsTotal', response.data.comments.total);
+                context.commit('pagination/setPagination', response.data.comments, {root: true});
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        },
         /** 게시글획득
          *  @param{*} context
          * @param{int} id
@@ -352,4 +369,5 @@ export default {
         
     getters: {
     },
+    }
 }

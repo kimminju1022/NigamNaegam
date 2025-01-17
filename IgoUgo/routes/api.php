@@ -79,7 +79,9 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
     Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
     
-    // 댓글관련 생성예정
+    // 댓글  관련
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
 
     // 문의게시판 관련
     Route::get('/user/questions/{id}', [QuestionController::class, 'showMyQuestion']);

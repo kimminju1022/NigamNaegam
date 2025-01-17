@@ -52,7 +52,7 @@
         <div class="board-detail-reply ">
             <p>댓글</p>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
-            <button class="btn bg-navy board-detail-btn">작성</button>
+            <button @click="$store.dispatch('comment/storeComment',commentsInfo)" class="btn bg-navy board-detail-btn">작성</button>
             <p style="text-align: end; padding-right: 40px;">총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
         <hr>
@@ -87,6 +87,10 @@ const route = useRoute();
 const router = useRouter();
 // board출력값
 const boardDetail = computed(() => store.state.board.boardDetail);
+const commentsInfo =  reactive({
+    comment_content: ''
+    ,user_email: []
+});
 
 
 // 좋아요 on off기능------------------start-----------------

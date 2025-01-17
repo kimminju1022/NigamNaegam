@@ -23,6 +23,7 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
+
 // 문의게시판
 import QuestionListComponent from '../views/components/question/QuestionListComponent.vue';
 import QuestionCreateComponent from '../views/components/question/QuestionCreateComponent.vue';

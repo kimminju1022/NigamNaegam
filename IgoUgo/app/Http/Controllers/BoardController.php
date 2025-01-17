@@ -89,6 +89,7 @@ class BoardController extends Controller
                     })
                     ->withCount('likes')
                     ->with('board_images') // add 3rd
+                    ->with('comment_content') // add 3rd
                     ->where('boards.board_id', '=', $id)
                     ->first();
 
