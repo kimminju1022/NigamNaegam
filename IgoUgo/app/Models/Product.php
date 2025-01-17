@@ -49,4 +49,8 @@ class Product extends Model
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function hotel_infos() {
+        return $this->hasMany(HotelInfo::class, 'product_id', 'product_id');
+    }
 }

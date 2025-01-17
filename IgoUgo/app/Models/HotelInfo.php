@@ -19,11 +19,11 @@ class HotelInfo extends Model
         'hc_code',
     ];
 
-    // public function hotel() {
-    //     return $this->belongsTo(Hotel::class, 'hotel_id');
-    // }
+    public function product() {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
     
-    // public function hotelCategory() {
-    //     return $this->belongsTo(HotelCategory::class, 'hc_type');
-    // }
+    public function hotelCategory() {
+        return $this->belongsTo(HotelCategory::class, 'hc_code');
+    }
 }

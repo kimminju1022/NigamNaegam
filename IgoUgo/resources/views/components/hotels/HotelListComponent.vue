@@ -11,7 +11,7 @@
                         <p>{{ getAreaNameWithAreaCode(code) }}</p>
                         <img src="img_product/img_x.png" @click="closeFilter(code)" class="img-x">
                     </div>
-                    <div v-for="type in searchData.hc_type" :key="type" class="select-list-item">
+                    <div v-for="type in searchData.hc_code" :key="type" class="select-list-item">
                         <p>{{ getHcNameWithHcType(type) }}</p>
                         <img src="img_product/img_x.png" @click="closeFilter(type)" class="img-x">
                     </div>
@@ -98,14 +98,14 @@
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
                     <input
-                        v-model="searchData.hc_type" 
-                        :value="item.hc_type" 
+                        v-model="searchData.hc_code" 
+                        :value="item.hc_code"
                         @change="updateFilters()" 
                         class="modal-input" 
                         type="checkbox" 
-                        :id="'input2-' + item.hc_type"
+                        :id="'input2-' + item.hc_code"
                     >
-                    <label :for="'input2-' + item.hc_type">{{ item.hc_name }}</label>
+                    <label :for="'input2-' + item.hc_code">{{ item.hc_name }}</label>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@ let isActive = false;
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     area_code: [],
-    hc_type: [],
+    hc_code: [],
     sort: 'createdtime',
 });
 
@@ -182,11 +182,12 @@ let selectedArea = null;
 
 function updateFilters(e) {
     if(e && searchData.area_code.length > 1) {
-        searchData.area_code = [e.target.value];
+        searchData.area_code = [e.target.value]; // area_code 에 타겟벨류 값이 들어가네?
     }
     searchData.page = 1;
     store.dispatch('hotel/getHotelsPagination', searchData);
-    store.dispatch('hotel/getHotelsArea')
+    store.dispatch('hotel/getHotelsArea', searchData);
+    store.dispatch('hotel/getHotelAreaCode', searchData);
 }
 
 function closeFilter(value) {
@@ -194,11 +195,10 @@ function closeFilter(value) {
     searchData.area_code = searchData.area_code.filter(
         (item) => item !== value
     );
-    searchData.hc_type = searchData.hc_type.filter(
+    searchData.hc_code = searchData.hc_code.filter(
         (item) => item !== value
     )
     store.dispatch('hotel/getHotelsPagination', searchData);
-    // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
 
 function getAreaNameWithAreaCode(code) {
@@ -207,7 +207,7 @@ function getAreaNameWithAreaCode(code) {
 }
 
 function getHcNameWithHcType(type) {
-    const HcList = store.state.hotel.hotelCategory.filter((item) => item.hc_type === type);
+    const HcList = store.state.hotel.hotelCategory.filter((item) => item.hc_code === type);
     return HcList[0].hc_name;
 }
 
@@ -263,86 +263,6 @@ const loadKakaoMap = () => {
     const map = new window.kakao.maps.Map(container, options);
     console.log(map);
 }
-
-
-
-
-// 컨트롤러로 데이터 전송하는법?
-// const category = ref([
-//     { id: 1, name: '서울' },
-// ]);
-
-// async function applyFilters() { 
-//     try {
-//         await axios.get('/api/filters', {
-//         filters: selectedFilters.value
-//         });
-//     } catch {
-//         console.error(error);
-//     }
-// }
-
-
-
-// ----------------------------------------------------------------------------    
-// // 마운트된 후
-// onMounted(async() => {
-//     await loadHotels()
-//     // console.log(hotels)
-// });
-
-// // 호텔 불러오기
-// const hotels = ref([]);
-// let current_page = ref(1)
-
-// async function loadHotels() {
-//     try {
-//         const response = await axios.get(`/api/hotels?page=${current_page.value}`);
-//         // console.log(response.data.data);
-//         hotels.value = response.data.data
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
-
-// // 페이지네이션
-
-// // 페이지 버튼 계산
-// // function maxPage() {
-// //     loadHotels();
-// //     console.log(hotels.value.per_page);
-// //     return hotels.value.per_page;
-// // }
-
-
-// const pages = computed(() => {
-//     // maxPage()
-//     const totalPages = 46;
-//     const pageCount = 5;
-//     const startPage = Math.max(current_page.value - Math.floor(pageCount / 2), 1);
-//     // 만약 current_page.value가 5면? 5 빼기 5/2=2(나머지버림)  3이나오니까 max에서 3이반환됨됨
-//     const endPage = Math.min(startPage + pageCount - 1, totalPages);
-//     // 3이 반환되서 5랑 더하면 8이됨 8이 나오니까 8-1 해서 min에서 7이 반환됨
-//     const adjustedStartPage = Math.max(endPage - pageCount + 1, 1);
-//     // 7-3+1 해서 5이된다 
-    
-//     return Array.from({ length: Math.min(pageCount, totalPages) }, (_, i) => adjustedStartPage + i)
-//     // Array에서 i를쓰면 0에서 부터 반복됨
-//     // 7-3에 +1 이니까 5가출력됨 5개의 공간을가진 배열이 만들어지고 5 i는 1씩상승하고 i가 증가할 때마다 startPage 값에 더해지는 구조
-//     // 3이니까 3+0 은 3 3+1은 4... 해서 배열에 3 4 5 6 7 결국 현제페이지인 5가 가운데 오도록 작동
-// });
-
-// // 페이지 변경
-// function changePage(page) {
-//     // maxPage()
-//     const totalPages = hotels.value.per_page;
-//     if (page < 1 || page > totalPages) {
-//         return 
-//         // page가 1이하거나 46이상이면 작동안하고 리턴시켜버려서 함수를 나가버리기기
-//     }
-//     current_page.value = page;
-//     loadHotels()
-// }
 </script>
     
 <style scoped>

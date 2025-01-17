@@ -6,6 +6,7 @@ export default {
     state: () => ({
         hotelList: [],
         hotelArea: [],
+        hotelAreaCode: null,
         // hotelArea: JSON.parse(localStorage.getItem('hotelArea')) || [],
         hotelCategory: [],
         count: [],
@@ -18,7 +19,9 @@ export default {
         },
         setHotelArea(state, list) {
             state.hotelArea = list;
-            // localStorage.setItem('hotelArea', JSON.stringify(list));
+        },
+        setHotelAreaCode(state, list) {
+            localStorage.setItem('hotelAreaCode', JSON.stringify(list));
         },
         setHotelCategory(state, list) {
             state.hotelCategory = list;
@@ -73,6 +76,12 @@ export default {
                     return reject();
                 });
             });
+        },
+
+        getHotelAreaCode(context, data) {
+            const areaCode = data.area_code;
+            console.log(data.area_code)
+            context.commit('setHotelAreaCode', areaCode);
         },
 
         getHotelsCategory(context) {
