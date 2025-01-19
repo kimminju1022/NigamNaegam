@@ -6,11 +6,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
-use App\Mail\MyTestEmail;
-use App\Mail\TestMail;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +42,9 @@ Route::post('/testtest', [ProductController::class, 'getNearbyPlaces']);
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
+Route::post('/available/email', [UserController::class, 'chkEmail'])->name('user.email');
+Route::post('/available/nickname', [UserController::class, 'chkNickname'])->name('user.nickname');
+Route::post('/available/phone', [UserController::class, 'chkPhone'])->name('user.phone');
 
 // 리뷰/자유 게시판용 라우터
 Route::get('/boards', [BoardController::class, 'index'])->name('board.index');
@@ -98,10 +99,11 @@ Route::middleware('my.auth')->group(function() {
 // Route::get('/email/verify', [VerificationController::class, 'verify'])->name('verification.notice'); // 이메일 검증 링크 발송
 // Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verifiedEmail'])->name('verification.verify'); // 이메일 검증 핸들러
 // Route::post('/email/verification-notification', [VerificationController::class, 'verifiedEmail'])->name('verification.send'); // 재전송?
-Route::get('/email/verify', [VerificationController::class, 'notice'])->middleware('my.auth')->name('verification.notice');
+Route::get('/email/verify/{id}', [VerificationController::class, 'notice'])->middleware('my.auth')->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['my.auth', 'signed'])->name('verification.verify');
-Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->middleware(['my.auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->middleware('my.auth')->name('verification.send');
 
+Route::get('/test-email', [TestController::class, 'sendTestEmail']);
 
 // 이메일 검증 링크 요청
 // 사용자가 이메일 주소를 검증하지 않은 상태로 접근하면 이 라우트가 호출되어 이메일 검증을 요청하는 뷰를 표시합니다.

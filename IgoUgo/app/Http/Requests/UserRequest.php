@@ -67,6 +67,36 @@ class UserRequest extends FormRequest
             unset($rules['user_password']);
         }
 
+        // 중복 체크
+        else if($this->routeIs('user.email')) {
+            $rules['user_email'][] = 'unique:users,user_email';
+
+            unset($rules['user_name']);
+            unset($rules['user_nickname']);
+            unset($rules['user_phone']);
+            unset($rules['user_profile']);
+            unset($rules['user_password']);
+        }
+        else if($this->routeIs('user.nickname')) {
+            $rules['user_nickname'] = ['required', 'between:1,50', 'regex:/^[0-9a-zA-Z가-힣]+$/u'];
+
+            unset($rules['user_email']);
+            unset($rules['user_name']);
+            unset($rules['user_phone']);
+            unset($rules['user_profile']);
+            unset($rules['user_password']);
+        }
+        else if($this->routeIs('user.phone')) {
+            $rules['user_phone'] = ['required', 'between:11,15', 'regex:/^[0-9]+$/u'];
+
+            unset($rules['user_email']);
+            unset($rules['user_name']);
+            unset($rules['user_nickname']);
+            unset($rules['user_profile']);
+            unset($rules['user_password']);
+        }
+
+
         return $rules;
     }
 

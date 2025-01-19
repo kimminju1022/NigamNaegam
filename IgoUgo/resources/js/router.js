@@ -4,7 +4,10 @@ import { useStore } from 'vuex';
 import MainPageComponent from '../views/components/MainPageComponent.vue';
 // 로그인 관련
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
+import BeforeUserRegistrationComponent from '../views/components/user/BeforeUserRegistrationComponent.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
+// 이메일 인증
+import VerifiedEmailComponent from '../views/components/auth/VerifiedEmailComponent.vue';
 // 유저
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
@@ -41,7 +44,7 @@ import AdminMainComponent from '../views/adminComponents/AppComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg;
-    const noAuthPassFlg = (to.path === '/login' || to.path === '/registration');
+    const noAuthPassFlg = (to.path === '/login' || to.path === '/registration' || to.path === '/registration/chk');
     
     if(authFlg && noAuthPassFlg) {
         next('/');
@@ -74,8 +77,19 @@ const routes = [
         beforeEnter: chkAuth,
     },
     {
+        path: '/registration/chk',
+        component: BeforeUserRegistrationComponent,
+        beforeEnter: chkAuth,
+    },
+    {
         path: '/registration',
         component: UserRegistrationComponent,
+        beforeEnter: chkAuth,
+    },
+    // 이메일
+    {
+        path: '/email/verify/:id',
+        component: VerifiedEmailComponent,
         beforeEnter: chkAuth,
     },
     // 유저

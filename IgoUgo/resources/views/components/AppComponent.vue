@@ -3,156 +3,150 @@
         <!-- header -->
 
         <div class="header-header" v-if="flg === '0'">
-            <div>
-                <div class="header-title">
-                    <!-- <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link> -->
-                    <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
-                    <div class="header-search"> 
-                        <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                        <button class="btn bg-navy header-bg-btn">검색</button>
-                    </div>
-                    <div v-if="!$store.state.auth.authFlg" class="header-title-button">
-                        <!-- FAQ는 통계기능이 생기면 합시당 -->
-                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
-                        <router-link to="/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
-                        <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
-                    </div>
-                    <div v-else class="header-title-button">
-                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
-                        <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button> -->
-                        <button @click="logout" class="btn bg-logout header-logout">로그아웃</button>
-                        <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="user.user_profile" alt=""></router-link>
-                    </div>
+            <div class="header-title">
+                <!-- <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link> -->
+                <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
+                <div class="header-search"> 
+                    <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                    <button class="btn bg-navy header-bg-btn">검색</button>
                 </div>
-                <div class="header-list">
-                    <div class="header-list-box">
-                        <ul class="header-list-flex">
-                            <li class="header-list-hover">
-                                <router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link>
-                                <div class="dropdown-content">
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
-                                            <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
-                                            <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
-                                            <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
-                                            <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <a @click="redirectBoards('0')">리뷰게시판</a>
-                                            <a @click="redirectBoards('1')">자유게시판</a>
-                                            <router-link to="">공지사항</router-link>
-                                            <router-link to="/questions">문의사항</router-link>
-                                        </div>
+                <div v-if="!$store.state.auth.authFlg" class="header-title-button">
+                    <!-- FAQ는 통계기능이 생기면 합시당 -->
+                    <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
+                    <router-link to="/registration/chk"><button class="btn bg-clear header-btn">회원가입</button></router-link>
+                    <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
+                </div>
+                <div v-else class="header-title-button">
+                    <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
+                    <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button> -->
+                    <button @click="logout" class="btn bg-logout header-logout">로그아웃</button>
+                    <router-link :to="`/user/${user.user_id}`" @click="$store.commit('pagination/setPaginationInitialize')"><img :src="user.user_profile"></router-link>
+                </div>
+            </div>
+            <div class="header-list">
+                <div class="header-list-box">
+                    <ul class="header-list-flex">
+                        <li class="header-list-hover">
+                            <router-link to="/hotels" @click="$store.commit('pagination/setPaginationInitialize')">호텔</router-link>
+                            <div class="dropdown-content">
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
+                                        <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
+                                        <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
+                                        <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
+                                        <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <a @click="redirectBoards('0')">리뷰게시판</a>
+                                        <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="">공지사항</router-link>
+                                        <router-link to="/questions">문의사항</router-link>
                                     </div>
                                 </div>
-                            </li>
-                            <li class="header-list-hover">
-                                <router-link to="/products" @click="$store.commit('pagination/setPaginationInitialize')">즐길거리</router-link>
-                                <div class="dropdown-content">
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
-                                            <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
-                                            <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
-                                            <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
-                                            <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <a @click="redirectBoards('0')">리뷰게시판</a>
-                                            <a @click="redirectBoards('1')">자유게시판</a>
-                                            <router-link to="">공지사항</router-link>
-                                            <router-link to="/questions">문의사항</router-link>
-                                        </div>
+                            </div>
+                        </li>
+                        <li class="header-list-hover">
+                            <router-link to="/products" @click="$store.commit('pagination/setPaginationInitialize')">즐길거리</router-link>
+                            <div class="dropdown-content">
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
+                                        <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
+                                        <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
+                                        <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
+                                        <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <a @click="redirectBoards('0')">리뷰게시판</a>
+                                        <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="">공지사항</router-link>
+                                        <router-link to="/questions">문의사항</router-link>
                                     </div>
                                 </div>
-                            </li>
-                            <li class="header-list-hover">
-                                <router-link to="">리뷰</router-link>
-                                <div class="dropdown-content">
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
-                                            <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
-                                            <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
-                                            <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
-                                            <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <p>호텔</p>
-                                            <p>관광지</p>
-                                            <p>문화시설</p>
-                                            <p>레포츠</p>
-                                            <p>쇼핑</p>
-                                            <p>음식점</p>
-                                            <p>코스 추천</p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <a @click="redirectBoards('0')">리뷰게시판</a>
-                                            <a @click="redirectBoards('1')">자유게시판</a>
-                                            <router-link to="">공지사항</router-link>
-                                            <router-link to="/questions">문의사항</router-link>
-                                        </div>
+                            </div>
+                        </li>
+                        <li class="header-list-hover">
+                            <router-link to="">코스추천</router-link>
+                            <div class="dropdown-content">
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
+                                        <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
+                                        <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
+                                        <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
+                                        <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <a @click="redirectBoards('0')">리뷰게시판</a>
+                                        <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="">공지사항</router-link>
+                                        <router-link to="/questions">문의사항</router-link>
                                     </div>
                                 </div>
-                            </li>
-                            <li class="header-list-hover">
-                                <p>커뮤니티</p>
-                                <div class="dropdown-content">
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
-                                            <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
-                                            <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
-                                            <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
-                                            <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <p></p>
-                                            <p></p>
-                                            <p></p>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            <a @click="redirectBoards('0')">리뷰게시판</a>
-                                            <a @click="redirectBoards('1')">자유게시판</a>
-                                            <router-link to="">공지사항</router-link>
-                                            <router-link to="/questions">문의사항</router-link>
-                                        </div>
+                            </div>
+                        </li>
+                        <li class="header-list-hover">
+                            <p>커뮤니티</p>
+                            <div class="dropdown-content">
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
+                                        <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
+                                        <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
+                                        <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
+                                        <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <a @click="redirectBoards('0')">리뷰게시판</a>
+                                        <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="">공지사항</router-link>
+                                        <router-link to="/questions">문의사항</router-link>
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
-                    </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -174,7 +168,7 @@
                         <div class="app-resist-login-div" @click="toggleMenu">
                             <div class="close close3"></div>
                             <div v-if="!$store.state.auth.authFlg" class="app-header-btn">
-                                <router-link to="/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
+                                <router-link to="/registration/chk"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
                                 <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
                             </div>
                             <div v-else class="app-resist-logout">
@@ -556,6 +550,7 @@ header {
     align-items: center;
     justify-content: center;
 }
+
 .bg-logout {
     background-color: #c9c9c9;
 }
@@ -566,7 +561,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 8px;
+    /* margin: 0 8px; */
     gap: 20px;
 }
 
@@ -651,6 +646,7 @@ header {
     left: 0;
     z-index: 1;
     background-color: #F4F6F8;
+    padding: 20px;
 }
 
 .dropdown-menu {
@@ -664,15 +660,13 @@ header {
     display: block;
 }
 
-.dropdown-list a:hover  {
+/* .dropdown-list a:hover  {
     background-color: white;
-}
+} */
 
 .dropdown-list a, .dropdown-list p {
     font-size: 20px;
 }
-
-
 
 
 /* 헤더 검색바 */

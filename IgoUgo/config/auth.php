@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'token',  // 기본적으로 token 인증 방식
+            'provider' => 'users',  // 'users' provider를 사용
+        ],
     ],
 
     /*

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -161,5 +162,61 @@ class UserController extends Controller
         return response()->json(['message' => '비밀번호가 성공적으로 변경되었습니다.']);
     }
 
+    // 이메일 중복확인
+    public function chkEmail(UserRequest $request) {
+        $request->validate([
+            'user_email' => 'required|email',
+        ]);
+    
+        // Log::debug($request->all());
 
+        $userInfo = User::where('user_email', $request->user_email)->first();
+        // Log::debug($userInfo);
+        
+        if($userInfo) {
+            return response()->json(['message' => '이미 있는 이메일입니다.'], 409);
+            // throw new AuthenticationException('이메일 중복 체크 오류');
+        }
+        
+        // return response()->json(['message' => '사용할 수 있는 이메일입니다.']);
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '이메일 중복확인 성공'
+            // ,'data' => $userInfo->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // 닉네임 중복확인
+    public function chkNickname(UserRequest $request) {
+        $userInfo = User::where('user_nickname', $request->user_nickname)->first();
+        // Log::debug($userInfo);
+        
+        if($userInfo) {
+            return response()->json(['message' => '이미 있는 닉네임입니다.'], 409);
+        }
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '닉네임 중복확인 성공'
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // 전화번호 중복확인
+    public function chkPhone(UserRequest $request) {
+        $userInfo = User::where('user_phone', $request->user_phone)->first();
+        // Log::debug($userInfo);
+        
+        if($userInfo) {
+            return response()->json(['message' => '이미 있는 전화번호입니다.'], 409);
+        }
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '전화번호 중복확인 성공'
+        ];
+        return response()->json($responseData, 200);
+    }
 }

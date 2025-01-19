@@ -8,6 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
 class MyVerifyEmail extends Notification
@@ -35,6 +37,18 @@ class MyVerifyEmail extends Notification
         return ['mail'];
     }
 
+    
+    protected function verificationUrl($notifiable)
+    {
+        Log::debug('chk: ', ['id' => $notifiable->getKey()]);
+        return URL::temporarySignedRoute(
+            'verification.send', // 이메일 인증 링크가 유효한지 검사하는 컨트롤러의 라우트 이름
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 30)), // auth.php에 값이 있으면 그 값 이용, 없으면 30분 세팅
+            ['id' => $notifiable->getKey()] // 이건 사용자 id
+        );    
+    }
+
+
     /**
      * Get the mail representation of the notification.
      *
@@ -45,9 +59,7 @@ class MyVerifyEmail extends Notification
     {
         $url = $this->verificationUrl($notifiable);
 
-        // if (static::$toMailCallback) {
-        //     return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
-        // }
+        Log::debug($url);
 
         return (new MailMessage)
                     // ->line('The introduction to the notification.')
@@ -59,15 +71,21 @@ class MyVerifyEmail extends Notification
                     ->line('이메일 인증을 완료하려면 아래 버튼을 클릭하세요.')
                     ->action('이메일 인증하기', $url)
                     ->line('인증 후 서비스를 정상적으로 이용하실 수 있습니다.');
-    }
 
-    protected function verificationUrl($notifiable)
-    {
-        return URL::temporarySignedRoute(
-            'verification.verify', // 이메일 인증 링크가 유효한지 검사하는 컨트롤러의 라우트 이름
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), // auth.php에 값이 있으면 그 값 이용, 없으면 60분 세팅
-            ['id' => $notifiable->getKey()] // 이건 사용자 id
-        );    }
+        // Mail::send([], [], function ($message) use ($notifiable, $url) {
+        //     $message->to($notifiable->user_email)
+        //             ->subject('이메일 인증을 완료해 주세요!')
+        //             ->greeting('안녕하세요!')
+        //             ->line('이메일 인증을 완료하려면 아래 버튼을 클릭하세요.')
+        //             ->action('이메일 인증하기', $url)
+        //             ->line('인증 후 서비스를 정상적으로 이용하실 수 있습니다.');
+        // });
+
+        // Mail::raw($content, function ($message) use ($to, $subject) {
+        //         $message->to($to)
+        //         ->subject($subject);
+        // });
+    }
 
     /**
      * Get the array representation of the notification.

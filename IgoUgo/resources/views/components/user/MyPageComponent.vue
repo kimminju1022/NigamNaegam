@@ -27,6 +27,9 @@
                 </div>
             </div>
             <div class="my-profile-update-btn">
+                <!-- <router-link :to="`/email/verify/${$store.state.auth.userInfo.user_id}`"><button class="btn bg-clear">이메일 인증하기</button></router-link> -->
+                <button @click="verifyEmail(userInfo)" class="btn bg-clear">인증하기</button>
+                <!-- <button @click="$store.dispatch('verification/send', userInfo)" class="btn bg-clear">인증하기</button> -->
                 <router-link :to="`/password/${$store.state.auth.userInfo.user_id}`"><button class="btn bg-clear">비밀번호 변경</button></router-link>
                 <router-link :to="`/user/${$store.state.auth.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
@@ -138,6 +141,10 @@ const store = useStore();
 const userInfo = computed(()=> store.state.auth.userInfo);
 const actionName = 'question/userQuestionList';
 
+// ***************** 이메일 인증 *****************
+const verifyEmail = (userInfo) => {
+    store.dispatch('verification/send', userInfo);
+}
 
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
