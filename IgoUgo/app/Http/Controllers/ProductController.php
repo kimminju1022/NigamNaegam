@@ -7,7 +7,6 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Termwind\Components\Raw;
 
 class ProductController extends Controller
 {
@@ -124,7 +123,7 @@ class ProductController extends Controller
 
     // public function getNearbyPlaces($lat, $lon) {
     public function getNearbyPlaces(Request $request) {
-        // 유효성 검사사
+        // 유효성 검사
         $validated = $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -132,11 +131,6 @@ class ProductController extends Controller
         
         $currentLat = $validated['latitude'];
         $currentLon = $validated['longitude'];
-        // $currentLat = $searchData->Lat; // 현재 위치 위도
-        // $currentLng = $searchData->Lon; // 현재 위치 경도
-        
-        // $currentLat = 35.8779995; // 현재 위치 위도
-        // $currentLng = 128.5893712; // 현재 위치 경도
 
         $places = 
             Product::selectRaw("*, (6371 * acos(
@@ -150,31 +144,4 @@ class ProductController extends Controller
 
         return response()->json($places);
     }
-
-    // public function productDetail($contenttypeid, $id) {
-    //     $url = 'http://apis.data.go.kr/B551011/KorService1/detailCommon1';
-    //     $serviceKey = env('API_KEY');
-
-    //     // HTTP 요청
-    //     $productDetail = Http::get($url, [
-    //         'serviceKey' => $serviceKey,
-    //         'MobileOS' => 'ETC',
-    //         'MobileApp' => 'IgoUgo',
-    //         '_type' => 'json',
-    //         'contentTypeId' => $contenttypeid,
-    //         'contentId' => $id,
-    //         'defaultYN' => 'Y',
-    //         'firstImageYN' => 'Y',
-    //         'addrinfoYN' => 'Y',
-    //         'mapinfoYN' => 'Y',
-    //         'overviewYN' => 'Y',
-    //     ]);
-    //     $resultCode = $productDetail->header('resultCode');
-
-    //     if($productDetail->failed() && $resultCode !== '0000') {
-    //         throw new \Exception('API 받아오기 실패'. $productDetail->status());
-    //     }
-        
-    //     return response()->json($productDetail->json());
-    // }
 }
