@@ -6,6 +6,7 @@ import MainPageComponent from '../views/components/MainPageComponent.vue';
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import BeforeUserRegistrationComponent from '../views/components/user/BeforeUserRegistrationComponent.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
+import VerifiedLoadingComponent from '../views/components/auth/VerifiedLoadingComponent.vue';
 // 이메일 인증
 import VerifiedEmailComponent from '../views/components/auth/VerifiedEmailComponent.vue';
 // 유저
@@ -91,6 +92,11 @@ const routes = [
     {
         path: '/email/verify',
         component: VerifiedEmailComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/email/verify/:id/:hash',
+        component: VerifiedLoadingComponent,
         beforeEnter: chkAuth,
     },
     // 유저

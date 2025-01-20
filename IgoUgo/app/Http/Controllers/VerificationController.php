@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Verification;
 use App\Notifications\MyVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -32,12 +33,7 @@ class VerificationController extends Controller
         // Log::debug('인증이메일', $request->all());
         // $request->fulfill(); // 1. 이메일 검증 처리
         
-        $user = Verification::where('verified_email_id', $id->verified_email_id)->first();
-        Log::debug('User : '.$user->toArray());
-        if(!$user) {
-            return redirect('/')->with('error', '잘못된 인증 요청입니다.');
-        }
-        
+        // $user = Verification::find($id);        
         $user = Verification::where('verified_email_id', $id)->first();
 
         if (!$user) {
@@ -46,7 +42,12 @@ class VerificationController extends Controller
 
         $hashedEmail = sha1($user->user_email);
 
+        // if (hash_equals($hashedEmail, $hash)) { // hash 비교에 이게 더 좋나?
         if ($hashedEmail === $hash) {
+            // email_verified_at = now(); 이거 넣어줘야하는뎁
+            Verification::where('verified_email_id', $id)
+                        ->update(['email_verified_at' => Carbon::now()]);
+
             return redirect('/registration')->with('success', '이메일 인증이 완료되었습니다.');
         } else {
             return redirect('/')->with('error', '잘못된 인증 요청입니다.');
