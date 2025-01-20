@@ -185,13 +185,13 @@ const clearFile = (index) => {
     e.target.value = '';
 };
 
-const clearFile = (index) => {
-    // 삭제할 파일과 미리보기 URL 제거
-    const fileToRemove = selectedFiles.value[index];
-    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
-    selectedFiles.value.splice(index, 1); // 파일 제거
-    previews.value.splice(index, 1); // 미리보기 제거
-};
+// const clearFile = (index) => {
+//     // 삭제할 파일과 미리보기 URL 제거
+//     const fileToRemove = selectedFiles.value[index];
+//     URL.revokeObjectURL(previews.value[index]); // 메모리 해제
+//     selectedFiles.value.splice(index, 1); // 파일 제거
+//     previews.value.splice(index, 1); // 미리보기 제거
+// };
 
 
 </script>
