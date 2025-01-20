@@ -134,7 +134,7 @@ const route = useRoute();
 // 호텔 리스트 관련
 // const count = computed(() => store.getters['model/itemCount']);
 const hotels = computed(() => store.state.hotel.hotelList);
-const hotelAreaCode = computed(() => store.state.hotelAreaCode);
+// const hotelAreaCode = computed(() => store.state.hotelAreaCode);
 const actionName = 'hotel/getHotelsPagination';
 let isActive = false;
 
@@ -144,6 +144,7 @@ const searchData = reactive({
     area_code: [],
     hc_code: [],
     sort: 'createdtime',
+    category_code: [],
 });
 
 function sortData(data) {
@@ -195,7 +196,7 @@ function updateFilters(e) {
     store.dispatch('hotel/getHotelsPagination', searchData);
     store.dispatch('hotel/getHotelsArea', searchData);
     store.dispatch('hotel/getHotelAreaCode', searchData);
-    console.log(searchData.area_code)
+    // console.log(searchData.area_code)
 }
 
 function closeFilter(value) {
