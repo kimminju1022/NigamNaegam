@@ -13,7 +13,7 @@
                 <div v-if="!$store.state.auth.authFlg" class="header-title-button">
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
                     <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
-                    <router-link to="/registration/chk"><button class="btn bg-clear header-btn">회원가입</button></router-link>
+                    <router-link to="/before/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
                     <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                 </div>
                 <div v-else class="header-title-button">
@@ -168,7 +168,7 @@
                         <div class="app-resist-login-div" @click="toggleMenu">
                             <div class="close close3"></div>
                             <div v-if="!$store.state.auth.authFlg" class="app-header-btn">
-                                <router-link to="/registration/chk"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
+                                <router-link to="/before/registration"><button class="app-resist-login btn bg-navy">회원가입</button></router-link>
                                 <router-link to="/login"><button class="app-resist-login btn bg-navy">로그인</button></router-link>
                             </div>
                             <div v-else class="app-resist-logout">

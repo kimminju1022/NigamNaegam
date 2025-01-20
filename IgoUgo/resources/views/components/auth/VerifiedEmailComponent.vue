@@ -2,40 +2,33 @@
     <div class="form-box">
         <h1>이메일 인증하기</h1>
         <!-- <p v-for="msg in $store.state.auth.errorMsgList" :key="msg">{{ msg }}</p> -->
-        <input v-model="user_email" type="email" name="user_email" class="input-verify" placeholder="이메일 입력">
-        <button @click="verifyEmail" class="btn bg-navy btn-verify">인증하기</button>
-        <div v-if="errMsg">{{ Msg }}</div>
+        <input v-model="userInfo.user_email" type="email" name="user_email" class="input-verify" placeholder="이메일 입력">
+        <button @click="chkEmail" class="btn bg-clear btn-chk">중복확인</button>
+        <button @click="verifyEmail(userInfo)" class="btn bg-clear">인증하기</button>
+        <!-- <div v-if="errMsg">{{ Msg }}</div> -->
     </div>
-<!-- 
-    <div class="form-box">
-        <h1>이메일 인증하기</h1>
-        <div class="login-form">
-            <p v-for="msg in $store.state.auth.errorMsgList" :key="msg">{{ msg }}</p>
-            <input v-model="userInfo.user_email" class="input-login" type="email" placeholder="e-mail" name="user_email">
-        </div>
-        <div class="login-btn">
-            <button @click="$store.dispatch('auth/login', userInfo)" class="btn bg-navy btn-login">인증하기</button>
-        </div>
-    </div> -->
 </template>
 
 <script setup>
-import { reactive, ref, } from 'vue';
+import { reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-
-// const userInfo = reactive({
-//     user_email: ''
-// });
 // const user_email = ref('');
+const userInfo = reactive({
+    user_email: '',
+});
 
-const userInfo = computed(()=> store.state.auth.userInfo);
-const errMsg = '';
+const chkEmail = () => {
+    store.dispatch('user/chkAvailableEmail', userInfo.user_email);
+}
+// const userInfo = computed(()=> store.state.auth.userInfo);
+// const errMsg = '';
 
-const verifyEmail = () => {
-    store.dispatch('verification/send', userInfo.user_email.value);
-};
+const verifyEmail = (userInfo) => {
+    console.log('이메일 값:', userInfo.user_email);  
+    store.dispatch('verification/send', userInfo);
+}
 </script>
 
 <style scoped>

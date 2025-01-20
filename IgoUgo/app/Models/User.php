@@ -13,10 +13,10 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use  HasFactory, Notifiable, SoftDeletes;
 
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new MyVerifyEmail);
-    }
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new MyVerifyEmail);
+    // }
 
     protected $primaryKey = 'user_id';
 

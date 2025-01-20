@@ -21,9 +21,10 @@ class UserController extends Controller
         $insertData['user_phone'] = $request->user_phone;
         $insertData['user_password'] = Hash::make($request->user_password);
 
-        $user = User::create($insertData);
+        User::create($insertData);
+        // $user = User::create($insertData);
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
         $responseData = [
             'success' => true

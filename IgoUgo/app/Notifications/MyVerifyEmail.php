@@ -40,11 +40,14 @@ class MyVerifyEmail extends Notification
     
     protected function verificationUrl($notifiable)
     {
-        Log::debug('chk: ', ['id' => $notifiable->getKey()]);
+        // Log::debug('chk: ', ['id' => $notifiable->getKey()]);
+        // Log::debug('tt', $notifiable->toArray());
         return URL::temporarySignedRoute(
-            'verification.send', // 이메일 인증 링크가 유효한지 검사하는 컨트롤러의 라우트 이름
+            'verification.verify', // 이메일 인증 링크가 유효한지 검사하는 컨트롤러의 라우트 이름
             Carbon::now()->addMinutes(Config::get('auth.verification.expire', 30)), // auth.php에 값이 있으면 그 값 이용, 없으면 30분 세팅
-            ['id' => $notifiable->getKey()] // 이건 사용자 id
+            [
+                'id' => $notifiable->getKey() // 이건 사용자 id
+            ]
         );    
     }
 
@@ -62,15 +65,14 @@ class MyVerifyEmail extends Notification
         Log::debug($url);
 
         return (new MailMessage)
+                ->subject('이메일 인증을 완료해 주세요!')
+                ->greeting('안녕하세요!')
+                ->line('이메일 인증을 완료하려면 아래 버튼을 클릭하세요.')
+                ->action('이메일 인증하기', $url)
+                ->line('인증 후 서비스를 정상적으로 이용하실 수 있습니다.');
                     // ->line('The introduction to the notification.')
                     // ->action('Notification Action', url('/'))
                     // ->line('Thank you for using our application!');
-
-                    ->subject('이메일 인증을 완료해 주세요!')
-                    ->greeting('안녕하세요!')
-                    ->line('이메일 인증을 완료하려면 아래 버튼을 클릭하세요.')
-                    ->action('이메일 인증하기', $url)
-                    ->line('인증 후 서비스를 정상적으로 이용하실 수 있습니다.');
 
         // Mail::send([], [], function ($message) use ($notifiable, $url) {
         //     $message->to($notifiable->user_email)

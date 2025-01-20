@@ -100,8 +100,10 @@ Route::middleware('my.auth')->group(function() {
 // Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verifiedEmail'])->name('verification.verify'); // 이메일 검증 핸들러
 // Route::post('/email/verification-notification', [VerificationController::class, 'verifiedEmail'])->name('verification.send'); // 재전송?
 Route::get('/email/verify/{id}', [VerificationController::class, 'notice'])->middleware('my.auth')->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['my.auth', 'signed'])->name('verification.verify');
-Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->middleware('my.auth')->name('verification.send');
+// Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['my.auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+// Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->middleware('my.auth')->name('verification.send');
+Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->name('verification.send');
 
 Route::get('/test-email', [TestController::class, 'sendTestEmail']);
 

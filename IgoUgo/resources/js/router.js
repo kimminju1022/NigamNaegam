@@ -44,7 +44,7 @@ import AdminMainComponent from '../views/adminComponents/AppComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg;
-    const noAuthPassFlg = (to.path === '/login' || to.path === '/registration' || to.path === '/registration/chk');
+    const noAuthPassFlg = (to.path === '/login' || to.path === '/registration' || to.path === '/before/registration' || to.path === '/email/verify');
     
     if(authFlg && noAuthPassFlg) {
         next('/');
@@ -77,18 +77,19 @@ const routes = [
         beforeEnter: chkAuth,
     },
     {
-        path: '/registration/chk',
+        path: '/before/registration',
         component: BeforeUserRegistrationComponent,
         beforeEnter: chkAuth,
     },
     {
         path: '/registration',
+        // path: '/:id/registration',
         component: UserRegistrationComponent,
         beforeEnter: chkAuth,
     },
     // 이메일
     {
-        path: '/email/verify/:id',
+        path: '/email/verify',
         component: VerifiedEmailComponent,
         beforeEnter: chkAuth,
     },

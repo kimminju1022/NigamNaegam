@@ -277,7 +277,8 @@ function submitForm() {
         return;
     }
     
-    router.push('/registration');
+    // router.push('/registration');
+    router.push('/email/verify');
 }
 </script>
 

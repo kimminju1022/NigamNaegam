@@ -26,9 +26,11 @@ class MyAuth
 
         // $user = MyToken::getUserFromToken($request->bearerToken());  // 예를 들어 MyToken::getUserFromToken()을 사용하여 사용자 가져오기
 
+        // *************************************************
         $userEmail = MyToken::getValueInPayload($request->bearerToken(), 'acc');
 
         $user = User::where('user_email', $userEmail)->first();
+        // *************************************************
         // Log::debug($user);
 
         // $request->attributes->add(['user' => $user]);

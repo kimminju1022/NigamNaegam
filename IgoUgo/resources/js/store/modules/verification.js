@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../../router';
 
 export default {
     namespaced: true,
@@ -18,35 +19,35 @@ export default {
 
     actions: {
         send(context, userInfo) {
-            // const url = `/api/email/verify/${userInfo.user_id}`;
             const url = '/api/email/verification-notification';
             // const data = JSON.stringify(userInfo.user_email);
             const data = {
                 user_email: userInfo.user_email,
-                user_id: userInfo.user_id,
+                // user_id: userInfo.user_id, 
             };
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            };
+            // const config = {
+            //     headers: {
+            //         'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            //     }
+            // };
 
-            // console.log(data);
+            console.log(data);
 
-            axios.post(url, data, config)
+            axios.post(url, data)
             .then((response) => {
                 console.log(response.data);
-                console.log('성공??');
-                alert('성공인가');
+                console.log('이메일 전송 성공');
+                alert('이메일 전송 성공');
                 // errMsg.value = "이메일 전송 성공"
+                // router.replace('/');
             })
             .catch((error) => {
                 console.error(error.response.data);
-                console.log('실패??');
-                alert('실패인가');
+                console.log('이메일 전송 실패');
+                alert('이메일 전송 실패');
                 // errMsg.value = "이메일 전송 실패"
             })
-        }
+        },
     },
 
     getters: {
