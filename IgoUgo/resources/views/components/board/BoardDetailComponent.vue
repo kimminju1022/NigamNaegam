@@ -26,11 +26,10 @@
         <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
-        <!-- <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button> -->
-        <!-- <p> {{ loveIt[0] }}</p> -->
-        <!-- <p>조회 : </p> -->
-        <!-- {{ absolve[1]++ }} -->
-        <!-- <button @click="boardNotify">🚨 신고</button> -->
+        <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button>
+        <p> {{ loveIt[0] }}</p>
+        <p>조회 : {{ absolve[1]++ }}</p>
+        <button @click="boardNotify">🚨 신고 </button>
     </div>
     
     <!-- 등록이미지 불러오기 -->

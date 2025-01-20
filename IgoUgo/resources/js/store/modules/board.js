@@ -105,11 +105,14 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
-
+            
             const formData = new FormData();
             formData.append('bc_code', data.boardComments);
             formData.append('board_title', data.commentsTotal);
             
+            data.board_img.forEach((file) => {
+                formData.append('board_img[]', file);
+            });
             // console.log(data);
 
             axios.post(url,formData, config)
@@ -154,9 +157,15 @@ export default {
             formData.append('bc_code', boardInfo.boardDetail.bc_code);
             formData.append('board_title', boardInfo.boardDetail.board_title);
             formData.append('board_content', boardInfo.boardDetail.board_content);
-            if(boardInfo.boardDetail.board_img) {
-                formData.append('board_img', boardInfo.boardDetail.board_img);
-            }
+            
+            boardInfo.boardDetail.board_img.forEach((file) => {
+                formData.append('board_img[]', file);
+            });  //3rd
+            
+            // if(boardInfo.boardDetail.board_img) {
+            //     formData.append('board_img', boardInfo.boardDetail.board_img);
+            // }2nd
+
             if(boardInfo.boardDetail.rc_type) {
                 formData.append('rc_type', boardInfo.boardDetail.rc_type);
             } 
