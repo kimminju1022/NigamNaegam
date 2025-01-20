@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Termwind\Components\Raw;
 
 class ProductController extends Controller
 {
@@ -122,9 +123,17 @@ class ProductController extends Controller
     }
 
     // public function getNearbyPlaces($lat, $lon) {
-    public function getNearbyPlaces($searchData) {
-        $currentLat = $searchData->Lat; // 현재 위치 위도
-        $currentLng = $searchData->Lon; // 현재 위치 경도
+    public function getNearbyPlaces(Request $request) {
+        // 유효성 검사사
+        $validated = $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
+        
+        $currentLat = $validated['latitude'];
+        $currentLon = $validated['longitude'];
+        // $currentLat = $searchData->Lat; // 현재 위치 위도
+        // $currentLng = $searchData->Lon; // 현재 위치 경도
         
         // $currentLat = 35.8779995; // 현재 위치 위도
         // $currentLng = 128.5893712; // 현재 위치 경도
@@ -134,7 +143,7 @@ class ProductController extends Controller
                 cos(radians(?)) * cos(radians(mapy)) *
                 cos(radians(mapx) - radians(?)) +
                 sin(radians(?)) * sin(radians(mapy))
-            )) AS distance", [$currentLat, $currentLng, $currentLat])
+            )) AS distance", [$currentLat, $currentLon, $currentLat])
             ->having('distance', '<=', 1) // km 기준
             ->orderBy('distance')
             ->get();

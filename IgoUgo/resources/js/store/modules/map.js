@@ -3,28 +3,31 @@ import axios from "../../axios";
 export default {
     namespaced: true,
     state: () => ({
-        nearbyPlaceList: {},
+        nearbyPlaceList: [], // 장소 목록록
     }),
     mutations: {
-        setNearbyPlaceList(state, data) {
-            state.nearbyPlaceList = data;
-        }
+        setNearbyPlaceList(state, list) {
+            state.nearbyPlaceList = list;
+        },
     },
     actions: {
-        takeNearbyPlaces(context, searchData) {
+        // 현재 위치 넘겨줘서 컨트롤러를 통해 받아온 결과값 반환
+        takeNearbyPlaces(context, location) {
             return new Promise((resolve, reject) => {
                 const url = '/api/testtest';
                 const config = {
-                    params: searchData
+                    latitude: location.latitude,
+                    longitude: location.longitude,
                 };
-                axios.get(url, config)
+                axios.post(url, config)
                 .then(response => {
+                    console.log('API : ', response.data);
                     context.commit('setNearbyPlaceList', response.data);
-                    return resolve();
+                    resolve(response.data);
                 })
                 .catch(error => {
                     console.log(error.response);
-                    return reject();
+                    reject(error);
                 });
             });
         }

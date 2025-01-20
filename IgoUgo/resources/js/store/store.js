@@ -7,6 +7,7 @@ import hotel from './modules/hotel';
 import pagination from './modules/pagination';
 import product from './modules/product';
 import verification from './modules/verification';
+import map from './modules/map';
 
 export default createStore({
     modules: {
@@ -18,5 +19,6 @@ export default createStore({
         pagination,
         product,
         verification,
+        map,
     }
 })
