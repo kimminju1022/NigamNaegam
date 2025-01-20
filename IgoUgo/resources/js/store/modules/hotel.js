@@ -6,7 +6,7 @@ export default {
     state: () => ({
         hotelList: [],
         hotelArea: [],
-        hotelAreaCode: JSON.parse(localStorage.getItem('hotelAreaCode')),
+        hotelAreaCode: JSON.parse(localStorage.getItem('hotelAreaCode')) ? JSON.parse(localStorage.getItem('hotelAreaCode')) : [],
         // hotelArea: JSON.parse(localStorage.getItem('hotelArea')) || [],
         hotelCategory: [],
         count: [],

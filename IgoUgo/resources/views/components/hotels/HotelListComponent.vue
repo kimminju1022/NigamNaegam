@@ -171,15 +171,12 @@ onBeforeMount(async () => {
 
     const saveAreaCode = store.state.hotel.hotelAreaCode;
     
-    if (saveAreaCode === []) {
-        searchData.area_code = []
-    } else {
-        searchData.area_code = saveAreaCode
-    }
+    searchData.area_code = saveAreaCode
 
     await store.dispatch(actionName, searchData);
     await store.dispatch('hotel/getHotelsArea', searchData);
     await store.dispatch('hotel/getHotelsCategory', searchData);
+    await store.dispatch('hotel/getHotelAreaCode', searchData);
     // console.log('카운트되나?',count.value)
 });
 
