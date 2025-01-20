@@ -9,6 +9,7 @@ export default {
         hotelAreaCode: JSON.parse(localStorage.getItem('hotelAreaCode')) ? JSON.parse(localStorage.getItem('hotelAreaCode')) : [],
         // hotelArea: JSON.parse(localStorage.getItem('hotelArea')) || [],
         hotelCategory: [],
+        hotelCategoryCode: JSON.parse(localStorage.getItem('hotelCategoryCode')) ? JSON.parse(localStorage.getItem('hotelCategoryCode')) : [],
         count: [],
         hotelDetail: [],
         hotelDetailImg: [],
@@ -26,6 +27,10 @@ export default {
         },
         setHotelCategory(state, list) {
             state.hotelCategory = list;
+        },
+        setHotelCategoryCode(state, list) {
+            state.hotelCategoryCode = list;
+            localStorage.setItem('hotelCategoryCode', JSON.stringify(list));
         },
         setCount(state, list) {
             state.count = list;
@@ -81,7 +86,7 @@ export default {
 
         getHotelAreaCode(context, data) {
             const areaCode = data.area_code;
-            console.log(data.area_code)
+            // console.log(data.area_code);
             context.commit('setHotelAreaCode', areaCode);
         },
 
@@ -99,6 +104,12 @@ export default {
                     return reject();
                 });
             });
+        },
+
+        getHotelCategoryCode(context, data) {
+            const categoryCode = data.category_code;
+            console.log(data.category_code);
+            context.commit('setHotelCategoryCode', categoryCode);
         },
 
         getHotelsDetail(context, findData) {

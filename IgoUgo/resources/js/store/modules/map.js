@@ -21,7 +21,7 @@ export default {
                 };
                 axios.post(url, config)
                 .then(response => {
-                    console.log('API : ', response.data);
+                    // console.log('API : ', response.data);
                     context.commit('setNearbyPlaceList', response.data);
                     resolve(response.data);
                 })
