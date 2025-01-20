@@ -134,6 +134,7 @@ const route = useRoute();
 // 호텔 리스트 관련
 // const count = computed(() => store.getters['model/itemCount']);
 const hotels = computed(() => store.state.hotel.hotelList);
+const hotelAreaCode = computed(() => store.state.hotelAreaCode);
 const actionName = 'hotel/getHotelsPagination';
 let isActive = false;
 
@@ -167,6 +168,15 @@ const flgSetup = () => {
 }
 onBeforeMount(async () => {
     flgSetup(); // 리사이즈 이벤트
+
+    const saveAreaCode = store.state.hotel.hotelAreaCode;
+    
+    if (saveAreaCode === []) {
+        searchData.area_code = []
+    } else {
+        searchData.area_code = saveAreaCode
+    }
+
     await store.dispatch(actionName, searchData);
     await store.dispatch('hotel/getHotelsArea', searchData);
     await store.dispatch('hotel/getHotelsCategory', searchData);
@@ -182,12 +192,13 @@ let selectedArea = null;
 
 function updateFilters(e) {
     if(e && searchData.area_code.length > 1) {
-        searchData.area_code = [e.target.value]; // area_code 에 타겟벨류 값이 들어가네?
+        searchData.area_code = [e.target.value];
     }
     searchData.page = 1;
     store.dispatch('hotel/getHotelsPagination', searchData);
     store.dispatch('hotel/getHotelsArea', searchData);
     store.dispatch('hotel/getHotelAreaCode', searchData);
+    console.log(searchData.area_code)
 }
 
 function closeFilter(value) {
@@ -199,6 +210,7 @@ function closeFilter(value) {
         (item) => item !== value
     )
     store.dispatch('hotel/getHotelsPagination', searchData);
+    store.dispatch('hotel/getHotelAreaCode', searchData)
 }
 
 function getAreaNameWithAreaCode(code) {
