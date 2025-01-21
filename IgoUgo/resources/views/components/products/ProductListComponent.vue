@@ -157,8 +157,10 @@ onBeforeMount(async () => {
     productTitle.value = productIdList[route.params.contenttypeid];
 
     flgSetup(); // 리사이즈 이벤트
+    
     await store.dispatch(actionName, searchData);
     await store.dispatch('product/getProductsArea', searchData);
+    await store.dispatch('product/getProductsAreaCode', searchData);
     // console.log('에리아데이터', areaData);
 });
 
@@ -176,6 +178,7 @@ const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) 
 function updateFilters() {
     // console.log(searchData.area_code);
     store.dispatch(actionName, searchData);
+    store.dispatch('product/getProductsAreaCode', searchData);
 }
 
 function closeFilter(value) {
@@ -184,6 +187,7 @@ function closeFilter(value) {
         (item) => item !== value
     );
     store.dispatch('product/getProductsPagination', searchData);
+    store.dispatch('product/getProductsAreaCode', searchData);
     // localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters.value));
 }
 

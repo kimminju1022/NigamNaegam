@@ -25,7 +25,7 @@
                     </div>
                     <p>|</p>
                     <div class="order-list-item">
-                        <p>에디터 추천</p>
+                        <p>가까운순</p>
                         <img src="img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
@@ -88,9 +88,9 @@
                         class="modal-input" 
                         type="checkbox" 
                         :id="'input-' + item.area_code"
-                        :checked="selectedArea === item.area_code"
                     >
-                    <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
+                        <!-- :checked="selectedArea === item.area_code" -->
+                        <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
 
@@ -141,8 +141,8 @@ let isActive = false;
 // 필터 관련
 const searchData = reactive({
     page: store.state.pagination.currentPage,
-    area_code: [],
-    hc_code: [],
+    area_code: store.state.hotel.hotelAreaCode,
+    hc_code: store.state.hotel.hotelCategoryCode,
     sort: 'createdtime',
     category_code: [],
 });
@@ -170,14 +170,13 @@ const flgSetup = () => {
 onBeforeMount(async () => {
     flgSetup(); // 리사이즈 이벤트
 
-    const saveAreaCode = store.state.hotel.hotelAreaCode;
+    // const saveAreaCode = store.state.hotel.hotelAreaCode;
     
-    searchData.area_code = saveAreaCode
-
     await store.dispatch(actionName, searchData);
     await store.dispatch('hotel/getHotelsArea', searchData);
     await store.dispatch('hotel/getHotelsCategory', searchData);
     await store.dispatch('hotel/getHotelAreaCode', searchData);
+    await store.dispatch('hotel/getHotelCategoryCode', searchData);
     // console.log('카운트되나?',count.value)
 });
 
@@ -186,7 +185,7 @@ window.addEventListener('resize', flgSetup);
     
 // 카테카테고리고리
 // const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
-let selectedArea = null;
+// let selectedArea = null;
 
 function updateFilters(e) {
     if(e && searchData.area_code.length > 1) {
@@ -196,7 +195,8 @@ function updateFilters(e) {
     store.dispatch('hotel/getHotelsPagination', searchData);
     store.dispatch('hotel/getHotelsArea', searchData);
     store.dispatch('hotel/getHotelAreaCode', searchData);
-    // console.log(searchData.area_code)
+    store.dispatch('hotel/getHotelCategoryCode', searchData);
+    // console.log([e.target.value]);
 }
 
 function closeFilter(value) {
@@ -209,21 +209,35 @@ function closeFilter(value) {
     )
     store.dispatch('hotel/getHotelsPagination', searchData);
     store.dispatch('hotel/getHotelAreaCode', searchData)
+    store.dispatch('hotel/getHotelCategoryCode', searchData);
 }
 
+// function getAreaNameWithAreaCode(code) {
+//     const areaList = store.state.hotel.hotelArea.filter((item) => item.area_code === code);
+//     return areaList[0].area_name;
+// }
+
+// function getHcNameWithHcType(type) {
+//     const HcList = store.state.hotel.hotelCategory.filter((item) => item.hc_code === type);
+//     return HcList[0].hc_name;
+// }
+
+const areaList = computed(() => store.state.hotel.hotelArea);
+const hcList = computed(() => store.state.hotel.hotelCategory);
+
 function getAreaNameWithAreaCode(code) {
-    const areaList = store.state.hotel.hotelArea.filter((item) => item.area_code === code);
-    return areaList[0].area_name;
+    const area = areaList.value.filter(item => item.area_code === code);
+    return area.length > 0 ? area[0].area_name : '';  // 기본값 설정
 }
 
 function getHcNameWithHcType(type) {
-    const HcList = store.state.hotel.hotelCategory.filter((item) => item.hc_code === type);
-    return HcList[0].hc_name;
+    const hc = hcList.value.filter(item => item.hc_code === type);
+    return hc.length > 0 ? hc[0].hc_name : ''; 
 }
 
-// window.onbeforeunload = function() {
-//     // localStorage.clear();
-// };
+window.onbeforeunload = function() {
+    // localStorage.clear();
+};
 
 // 모달모달
 const isVisible = ref(false);
@@ -271,7 +285,7 @@ const loadKakaoMap = () => {
     };
 
     const map = new window.kakao.maps.Map(container, options);
-    console.log(map);
+    // console.log(map);
 }
 </script>
     
