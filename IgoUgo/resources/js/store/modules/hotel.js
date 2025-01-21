@@ -107,8 +107,8 @@ export default {
         },
 
         getHotelCategoryCode(context, data) {
-            const categoryCode = data.category_code;
-            console.log(data.category_code);
+            const categoryCode = data.hc_code;
+            // console.log(data.hc_code);
             context.commit('setHotelCategoryCode', categoryCode);
         },
 

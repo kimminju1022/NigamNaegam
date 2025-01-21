@@ -7,6 +7,7 @@ export default {
         productTypeList: {},
         productList: [],
         productArea: [],
+        productAreaCode : JSON.parse(localStorage.getItem('productAreaCode')) ? JSON.parse(localStorage.getItem('productAreaCode')) : [],
         productCnt: '',
         productImg: [],
         productDetail: {},
@@ -23,6 +24,10 @@ export default {
         },
         setProductArea(state, data) {
             state.productArea = data;
+        },
+        setProductAreaCode(state, data) {
+            state.productAreaCode = data;
+            localStorage.setItem('productAreaCode',JSON.stringify(data));
         },
         setProductCnt(state, data) {
             state.productCnt = data;
@@ -86,7 +91,7 @@ export default {
 
                 axios.get(url)
                 .then(response => {
-                    context.commit('setProductArea', response.data);
+                    context.commit('setProductAreaCode', response.data);
                     return resolve();
                 })
                 .catch(error => {
@@ -94,6 +99,11 @@ export default {
                     return reject();
                 });
             });
+        },
+
+        getProductsAreaCode(context, data) {
+            const productAreaCode = data.area_code
+            context.commit('setProductAreaCode', productAreaCode)
         },
 
         takeProductDetail(context, findData) {
