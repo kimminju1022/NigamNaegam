@@ -4,11 +4,20 @@
     </div>
 </template>
 <script setup>
-const store = useStore();
-const userInfo  = computed(() => store.state.verification.verifiedUser);
+import { onMounted, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
-beforeMount(()=>{
-    store.dispatch('verification.verifiedChk', userInfo);
+const store = useStore();
+const route = useRoute();
+
+const verifiedInfo = reactive({
+    id: route.params.id,
+    hash: route.params.hash,
+});
+
+onMounted(()=>{
+    store.dispatch('verification/verifiedChk', verifiedInfo);
 });
 </script>
 <style>

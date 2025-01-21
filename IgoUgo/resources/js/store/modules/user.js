@@ -36,6 +36,7 @@ export default {
             .then(response => {
                 alert('회원가입 성공');
 
+                localStorage.removeItem('verifiedEmail');
                 router.replace('/login');
             })
             .catch(error => {               

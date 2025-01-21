@@ -92,12 +92,12 @@ const routes = [
     {
         path: '/email/verify',
         component: VerifiedEmailComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     {
         path: '/email/verify/:id/:hash',
         component: VerifiedLoadingComponent,
-        beforeEnter: chkAuth,
+        // beforeEnter: chkAuth,
     },
     // 유저
     {

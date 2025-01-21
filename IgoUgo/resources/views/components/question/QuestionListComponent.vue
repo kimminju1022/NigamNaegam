@@ -69,7 +69,8 @@
                     <div v-else>
                         <p class="reply-done">완료</p>
                     </div>
-                    <router-link :to="`/questions/${item.board_id}`">{{ item.board_title }}</router-link>
+                    <router-link :to="`/questions/${item.board_id}`" v-if="$store.state.auth.userInfo.user_id === item.user.user_id">{{ item.board_title }}</router-link>
+                    <p v-if="$store.state.auth.userInfo.user_id !== item.user.user_id"><img src="/images/lock.png">  비밀글입니다.</p>
                     <p>{{ item.user.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
                     <p>{{ item.view_cnt }}</p>
@@ -186,6 +187,12 @@ onBeforeMount(() => {
 
 .board-content-box > .board-content > :nth-child(3){
     text-align: left;
+}
+
+.board-content img {
+    width: 16px;
+    height: 16px;
+    /* line-height: 16px; */
 }
 
 .reply-yet {

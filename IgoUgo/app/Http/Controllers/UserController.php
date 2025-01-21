@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Models\Verification;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -20,11 +21,12 @@ class UserController extends Controller
         $insertData['user_nickname'] = $request->user_nickname;
         $insertData['user_phone'] = $request->user_phone;
         $insertData['user_password'] = Hash::make($request->user_password);
+        
+        $verified_email = Verification::where('user_email', $request->user_email)->first();
 
+        $insertData['email_verified_at'] = $verified_email->email_verified_at;
+        
         User::create($insertData);
-        // $user = User::create($insertData);
-
-        // event(new Registered($user));
 
         $responseData = [
             'success' => true

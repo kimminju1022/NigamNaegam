@@ -34,31 +34,45 @@ class VerificationController extends Controller
         // $request->fulfill(); // 1. 이메일 검증 처리
         
         // $user = Verification::find($id);        
-        $user = Verification::where('verified_email_id', $id)->first();
+        $verification = Verification::where('verified_email_id', $id)
+                        ->first();
 
-        if (!$user) {
-            return redirect('/')->with('error', '사용자를 찾을 수 없습니다.');
+        if (!$verification) {
+            // return redirect('/')->with('error', '사용자를 찾을 수 없습니다.');
+
+            $responseData = [
+                'success' => false
+                ,'msg' => '사용자 확인 실패'
+            ];
+            
+            return response()->json($responseData, 401);
         }
 
-        $hashedEmail = sha1($user->user_email);
+        $hashedEmail = sha1($verification->user_email);
 
-        // if (hash_equals($hashedEmail, $hash)) { // hash 비교에 이게 더 좋나?
         if ($hashedEmail === $hash) {
             // email_verified_at = now(); 이거 넣어줘야하는뎁
             Verification::where('verified_email_id', $id)
                         ->update(['email_verified_at' => Carbon::now()]);
 
-            return redirect('/registration')->with('success', '이메일 인증이 완료되었습니다.');
-        } else {
-            return redirect('/')->with('error', '잘못된 인증 요청입니다.');
-        }
-        // if(sha1($user->user_email) === $request->hash_email){
+            $responseData = [
+                'success' => true
+                ,'msg' => '이메일 인증 성공'
+                ,'user_email' => $verification->user_email
+            ];
             
-        //     // // return redirect('/'.$id.'/registration'); // 2. 이메일 검증 후 리다이렉트
-        //     // return redirect('/registration');
-        // } else {
-        //     return redirect('/')->with('error', '잘못된 인증 요청입니다.');
-        // }
+            return response()->json($responseData, 200);
+        } else {
+            $verifiedEmail = Verification::find($id);
+            $verifiedEmail->delete();
+
+            $responseData = [
+                'success' => false
+                ,'msg' => '이메일 인증 실패'
+            ];
+
+            return response()->json($responseData, 401);
+        }
     }
 
     public function sendVerificationLink(Request $request) {

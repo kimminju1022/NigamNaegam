@@ -10,12 +10,13 @@
                 <div class="login-label-flex">
                     <label for="email">이메일</label>
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
-                    <span v-if="emailError" class="error-message">{{ emailError }}</span>
+                    <!-- <span v-if="emailError" class="error-message">{{ emailError }}</span> -->
                 </div>   
-                <div class="login-btn-flex">
+                <!-- <div class="login-btn-flex">
                     <input v-model="userInfo.user_email" class="input-login" type="email" id="email" name="user_email" placeholder="이메일을 입력해주세요">
                     <button @click="chkEmail" class="btn bg-clear btn-chk">중복확인</button>
-                </div>
+                </div> -->
+                <input @click="setEmail" v-model="userInfo.user_email" class="input-login input_email" type="email" id="email" name="user_email" readonly>
             </div>
             <div class="login-input-box">
                 <div class="login-label-flex">
@@ -71,7 +72,8 @@
             </div>
         </div>
         <div class="registration-btn">
-            <button @click="$router.replace('/login')" class="btn bg-clear btn-cancel">취소</button>
+            <!-- <button @click="$router.replace('/')" class="btn bg-clear btn-cancel">취소</button> -->
+            <button @click="backToRoot" class="btn bg-clear btn-cancel">취소</button>
             <button @click="$store.dispatch('user/registration', userInfo)" class="btn bg-navy btn-registration">회원가입</button>
         </div>
     </div>
@@ -79,12 +81,14 @@
 
 <script setup>
 import { reactive, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const router = useRouter();
 
 const userInfo = reactive({
-    user_email: ''
+    user_email: localStorage.getItem('verifiedEmail')
     ,user_password: ''
     ,user_password_chk: ''
     ,user_name: ''
@@ -92,10 +96,14 @@ const userInfo = reactive({
     ,user_phone: ''
 });
 
-// 중복 확인
-const chkEmail = () => {
-    store.dispatch('user/chkAvailableEmail', userInfo.user_email);
+const setEmail = () => {
+    alert('수정 불가');
 }
+
+// 중복 확인
+// const chkEmail = () => {
+//     store.dispatch('user/chkAvailableEmail', userInfo.user_email);
+// }
 const chkNickname = () => {
     store.dispatch('user/chkAvailableNickname', userInfo.user_nickname);
 }
@@ -103,8 +111,9 @@ const chkPhone = () => {
     store.dispatch('user/chkAvailablePhone', userInfo.user_phone);
 }
 
+
 // 에러메시지
-const emailError = ref('');
+// const emailError = ref('');
 const passwordError = ref('');
 const passwordChkError = ref('');
 const nameError = ref('');
@@ -120,14 +129,14 @@ const color2 = reactive({color: '#808080'});
 const color3 = reactive({color: '#808080'});
 
 // 이메일 유효성 검사 함수
-const validateEmail = (user_email) => {
-    if (!user_email) {
-        return ''; // input 비어 있을 때 메시지 숨김
-    }
+// const validateEmail = (user_email) => {
+//     if (!user_email) {
+//         return ''; // input 비어 있을 때 메시지 숨김
+//     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(user_email) ? '' : '이메일 형식에 맞지 않습니다.';
-};
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     return emailRegex.test(user_email) ? '' : '이메일 형식에 맞지 않습니다.';
+// };
 
 const validatePassword = (user_password) => {
     const passwordRegex1 = /^.*[a-zA-Z].*$/;
@@ -187,7 +196,7 @@ const validatePhone = (user_phone) => {
 };
 
 watch(userInfo, (newObj) => {
-    emailError.value = validateEmail(newObj.user_email);
+    // emailError.value = validateEmail(newObj.user_email);
     passwordError.value = validatePassword(newObj.user_password);
     passwordChkError.value = validatePasswordChk(newObj.user_password_chk, newObj.user_password);
     nameError.value = validateName(newObj.user_name);
@@ -195,6 +204,10 @@ watch(userInfo, (newObj) => {
     phoneError.value = validatePhone(newObj.user_phone);
 });
 
+const backToRoot = () => {
+    localStorage.removeItem('verifiedEmail');
+    router.replace('/');
+}
 </script>
 
 <style scoped>
@@ -306,6 +319,11 @@ span {
     height: 50px;
     padding: 5px 10px;
     font-size: 15px;
+}
+
+.input_email {
+    color: #6e6e6e;
+    /* background-color: #d6d6d6; */
 }
 
 .registration-btn {
