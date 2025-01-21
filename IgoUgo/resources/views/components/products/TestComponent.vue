@@ -283,8 +283,8 @@ function closemodalMap() {
 // 지도지도
 const map = ref(null);
 
-// 마커
-const markers = ref([]);
+const markers = ref([]); // 마커
+// const infowindows = ref([]); // 인포윈도우
 
 // Debounce 함수 정의
 const debounce = (func, delay) => {
@@ -354,9 +354,10 @@ const loadKakaoMap = async (Lat, Lon) => {
     }
 };
 
+
 // 카카오맵 마커
 const loadMarker = (placeList) => {
-    // console.log(placeList);
+    // console.log(placeList.length);
 
     if(!placeList || placeList.length === 0) {
         console.log("No placeList to load.");
@@ -366,58 +367,138 @@ const loadMarker = (placeList) => {
     // 기존 마커 제거 -> 중심좌표 이동하기 전에
     clearMarkers();
 
-    // 새로운 마커 추가
+    // // 새로운 마커 추가
     placeList.forEach(place => {
         const markerPosition = new window.kakao.maps.LatLng(place.mapy, place.mapx);
         // const content = '<div style="width: 150px"><p style="text-align: center">' + place.title + '</p></div>';
     
         const marker = new window.kakao.maps.Marker({
+            map: map.value, // 마커를 표시할 지도
             position: markerPosition,
         });
 
         // 마커 지도에 추가
-        marker.setMap(map.value);
+        // marker.setMap(map.value);
         
         // 인포윈도우 생성
         const infowindow = new window.kakao.maps.InfoWindow({
             // position: markerPosition,
             content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
         });
+        // infowindow.open(map.value, marker);
+
+        // 마커에 마우스 이벤트 등록
+        window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map.value, marker, infowindow));
+        window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
         
-        // 마커에 마우스오버 이벤트 등록
-        const showInfoWindow = () => {
-            infowindow.open(map.value, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
-        };
+
+        // 플래그 이용해 인포윈도우 상태 관리
+        // let isInfoWindowOpen = false;
+
+        // // 마커 이벤트
+        // const showInfoWindow = () => {
+        //     if(!isInfoWindowOpen) {
+        //         infowindow.open(map.value, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        //         isInfoWindowOpen = true;
+        //         console.log("show");
+        //     } else {
+        //         infowindow.close(); // 인포윈도우 닫기
+        //         isInfoWindowOpen = false;
+        //         console.log("hide");
+        //     }
+        // };
         // window.kakao.maps.event.addListener(marker, "mouseover", () => {
         //     console.log(`Mouseover on marker:${place.title}`);
         //     infowindow.open(map.value, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
         // });
+
+        // // 마커 이벤트
+        // const showInfoWindow = () => {
+        //     if(!isInfoWindowOpen) {
+        //         infowindow.open(map.value, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        //         isInfoWindowOpen = true;
+        //         console.log("show");
+        //     }
+        // };
+        // // window.kakao.maps.event.addListener(marker, "mouseover", () => {
+        // //     console.log(`Mouseover on marker:${place.title}`);
+        // //     infowindow.open(map.value, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        // // });
         
-        // 마커에 마우스아웃 이벤트 등록
-        const hideInfoWindow = () => {
-            infowindow.close(); // 인포윈도우 닫기
-        };
-        // window.kakao.maps.event.addListener(marker, "mouseout", () => {
-        //     console.log(`Mouseout on marker:${place.title}`);
-        //     infowindow.close(); // 인포윈도우 닫기
-        // });
+        // // 마커에 마우스아웃 이벤트 등록
+        // const hideInfoWindow = () => {
+        //     if(isInfoWindowOpen) {
+        //         infowindow.close(); // 인포윈도우 닫기
+        //         isInfoWindowOpen = false;
+        //         console.log("hide");
+        //     }
+        // };
+        // // window.kakao.maps.event.addListener(marker, "mouseout", () => {
+        // //     console.log(`Mouseout on marker:${place.title}`);
+        // //     infowindow.close(); // 인포윈도우 닫기
+        // // });
 
         // 마커에 마우스 이벤트 등록
-        window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow);
-        window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow);
+        // window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow);
+        // window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow);
+
+        // window.kakao.maps.event.addListener(marker, "click", showInfoWindow);
         
-        // 마커 배열에 저장
+        // 마커 이벤트 등록
+        // setMarkerEvent(marker, infowindow);
+
+        // 배열에 저장
         markers.value.push(marker);
     });
 }
 
+// 마커 이벤트
+const showInfoWindow = (map, marker, infowindow) => {
+    return function() {
+        // console.log("mouseover : show");
+        infowindow.open(map, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        // window.kakao.maps.event.removeListener(marker, "mouseover");
+        console.log("Infowindow DOM element:", infowindow); 
+    };
+};
+
+// 마커에 마우스아웃 이벤트 등록
+const hideInfoWindow = (infowindow) => {
+    return function() {
+        // console.log("mouseout : hide");
+        console.log("Is infowindow open? ", infowindow);
+        infowindow.close(); // 인포윈도우 닫기
+        // window.kakao.maps.event.removeListener(marker, "mouseout");
+    };
+};
+
+
+// // 인포윈도우 생성
+// const setMarkerEvent = (marker, infowindow) => {
+//     // const infowindow = new window.kakao.maps.InfoWindow({
+//     //     content: `<div style="width: 150px"><p style="text-align: center">${title}</p></div>`,
+//     // });
+
+//     window.kakao.maps.event.addListener(marker, "mouseover", () => {
+//         console.log('Mouseover');
+//         infowindow.open(map.value, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+//     });
+//     window.kakao.maps.event.addListener(marker, "mouseout", () => {
+//         console.log('Mouseout');
+//         infowindow.close();
+//     });
+// }
+
 // 마커 제거
 const clearMarkers = () => {
-    markers.value.forEach(marker => {
+    console.log('clearing....');
+    markers.value.forEach((marker) => {
+        // 기존 마커 이벤트 제거
         // window.kakao.maps.event.removeListener(marker, "mouseover");
         // window.kakao.maps.event.removeListener(marker, "mouseout");
-        marker.setMap(null);
+        marker.setMap(null); // 마커 지도에서 제거
     });
+    // 배열 초기화
     markers.value = [];
 }
 </script>
