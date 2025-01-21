@@ -1,14 +1,17 @@
 <template>
     <div class="form-box">
-        <h1>이메일 인증하기</h1>
+        <div class="title-box">
+            <h1>비밀번호 찾기</h1>
+            <p>이메일 인증 후 비밀번호를 변경하실 수 있습니다.</p>
+        </div>
         <!-- <p v-for="msg in $store.state.auth.errorMsgList" :key="msg">{{ msg }}</p> -->
         <div class="verify-box">
             <div class="login-btn-flex">
                 <input v-model="userInfo.user_email" type="email" name="user_email" class="input-verify" placeholder="이메일 입력">
                 <!-- <span v-if="emailError" class="error-message">{{ emailError }}</span> -->
-                <button @click="chkEmail" class="btn bg-clear btn-chk">중복확인</button>
+                <button @click="findPassword(userInfo)" class="btn bg-navy btn-verify">인증메일 발송</button>
+                <!-- <button @click="chkEmail" class="btn bg-clear btn-chk">중복확인</button> -->
             </div>
-            <button @click="verifyEmail(userInfo)" class="btn bg-navy btn-verify">인증하기</button>
             <!-- <div v-if="errMsg">{{ Msg }}</div> -->
         </div>
     </div>
@@ -23,13 +26,9 @@ const userInfo = reactive({
     user_email: '',
 });
 
-const chkEmail = () => {
-    store.dispatch('user/chkAvailableEmail', userInfo.user_email);
-}
-
-const verifyEmail = (userInfo) => {
-    // console.log('이메일 값:', userInfo.user_email);  
-    store.dispatch('verification/send', userInfo);
+const findPassword = (userInfo) => {
+    console.log('유저정보 :', userInfo.user_email);  
+    store.dispatch('auth/findPW', userInfo);
 }
 </script>
 
@@ -46,22 +45,23 @@ const verifyEmail = (userInfo) => {
     grid-template-columns: 1fr; */
     gap: 30px;
     place-items: center;
-    margin: 100px auto 55px auto;
+    /* margin: 100px auto 55px auto; */
+    margin: 100px auto 23px auto;
     /* max-width: 450px; */
     padding: 0 20px 20px;
 }
 
-/* .login-form{
-    display: grid;
-    gap: 10px;
-    margin: 0 auto;
-} */
+.title-box {
+    color: #01083a;
+    margin-bottom: 90px;
+}
 
 h1 {
-    color: #01083a;
+    /* color: #01083a; */
     font-size: 3.5rem;
     font-weight: 900;
-    margin-bottom: 100px;
+    /* margin-bottom: 100px; */
+    margin-bottom: 20px;
 }
 
 .verify-box {
@@ -121,15 +121,9 @@ h1 {
 }
 
 .btn-verify {
-    /* min-width: 150px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: 500;
-    border-radius: 20px; */
-    
     width: 120px;
     height: 40px;
-    font-size: 20px;
+    font-size: 18px;
     border-radius: 50px;
     margin: 0 auto;
 }

@@ -9,6 +9,8 @@ import UserRegistrationComponent from '../views/components/user/UserRegistration
 import VerifiedLoadingComponent from '../views/components/auth/VerifiedLoadingComponent.vue';
 // 이메일 인증
 import VerifiedEmailComponent from '../views/components/auth/VerifiedEmailComponent.vue';
+// 비밀번호 찾기
+import FindPasswordComponent from '../views/components/auth/FindPasswordComponent.vue';
 // 유저
 import MyPageComponent from '../views/components/user/MyPageComponent.vue';
 import MyPageUpdateComponent from '../views/components/user/MyPageUpdateComponent.vue';
@@ -41,6 +43,7 @@ import TestComponent from '../views/components/products/TestComponent.vue';
 
 // admin
 import AdminMainComponent from '../views/adminComponents/AppComponent.vue';
+import FindPasswordLoadingComponent from '../views/components/auth/FindPasswordLoadingComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -98,6 +101,15 @@ const routes = [
         path: '/email/verify/:id/:hash',
         component: VerifiedLoadingComponent,
         // beforeEnter: chkAuth,
+    },
+    // 비밀번호 찾기
+    {
+        path: '/find/pw/send-email',
+        component: FindPasswordComponent,
+    },
+    {
+        path: '/find/pw/:id/:hash',
+        component: FindPasswordLoadingComponent,
     },
     // 유저
     {

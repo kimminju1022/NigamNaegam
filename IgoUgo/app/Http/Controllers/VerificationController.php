@@ -102,7 +102,8 @@ class VerificationController extends Controller
             $insertData['hash_email'] = sha1($request->user_email);
         
             Verification::create($insertData);
-            $verified_user = Verification::where('user_email', $request->user_email)->first();
+            $verified_user = Verification::where('user_email', $request->user_email)
+                                            ->first();
     
             // Log::debug('verified_user :'.$verified_user);
     
@@ -111,10 +112,9 @@ class VerificationController extends Controller
             $url = env('APP_URL').'/email/verify/'.$verified_user->verified_email_id.'/'.sha1($verified_user->user_email);
             // $url = env('APP_URL').'/email/verify/'.sha1($request->user_email);
     
-            // // 이메일 보내기
+            // 이메일 보내기
             Mail::send('verificationEmail', [
-                'name' => $request->user_name,  // Blade 템플릿에서 사용할 변수
-                'url' => $url,          // 인증 URL
+                'url' => $url,
             ], function ($message) use ($to, $subject) {
                 $message->to($to)
                         ->subject($subject);

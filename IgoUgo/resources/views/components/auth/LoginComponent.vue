@@ -8,8 +8,13 @@
         </div>
         <div class="login-btn">
             <button @click="$store.dispatch('auth/login', userInfo)" class="btn bg-navy btn-login">로그인</button>
-            <div class="go-registration">
+            <!-- <div class="go-registration">
                 <p>회원이 아니시라면?</p>
+                <router-link to="/registration/chk"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
+            </div> -->
+            <div class="go-registration">
+                <router-link to="/find/pw/send-email"><button class="btn bg-clear btn-password">비밀번호 찾기</button></router-link>
+                <p>|</p>
                 <router-link to="/registration/chk"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
             </div>
         </div>
@@ -25,7 +30,6 @@ const userInfo = reactive({
     user_email: ''
     ,user_password: ''
 });
-
 </script>
 
 <style scoped>
@@ -41,7 +45,7 @@ const userInfo = reactive({
     grid-template-columns: 1fr;
     gap: 30px;
     place-items: center;
-    margin: 41px auto 0 auto;
+    margin: 50px auto 23px auto;
     max-width: 450px;
     padding: 0 20px 20px;
 }
@@ -75,7 +79,7 @@ h1 {
 .login-btn {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .btn-login {
@@ -88,27 +92,25 @@ h1 {
 
 .go-registration {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
+    /* justify-content: center;
+    align-items: center; */
+    margin: 0 auto;
+    gap: 10px;
 }
 
 .go-registration > p {
     color: #4C4C4C;
 }
 
-.btn-registration {
-    width: 80px;
-    font-size: 20px;
+.btn-password {
+    width: 110px;
+    font-size: 18px;
     font-weight: 500;
 }
 
-
-/* .test {
-    color:gray;
+.btn-registration {
+    width: 80px;
+    font-size: 18px;
+    font-weight: 500;
 }
-
-.test1 {
-    color: green !important;
-} */
 </style>
