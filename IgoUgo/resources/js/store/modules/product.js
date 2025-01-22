@@ -91,7 +91,7 @@ export default {
 
                 axios.get(url)
                 .then(response => {
-                    context.commit('setProductAreaCode', response.data);
+                    context.commit('setProductArea', response.data);
                     return resolve();
                 })
                 .catch(error => {

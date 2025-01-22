@@ -77,7 +77,14 @@
 
             <div class="modal-region">
                 <div v-for="item in $store.state.product.productArea" :key="item">
-                    <input v-model="searchData.area_code" :value="item.area_code" @change="updateFilters()" class="modal-input" type="checkbox" :id="'input-' + item.area_code">
+                    <input 
+                        v-model="searchData.area_code" 
+                        :value="item.area_code" 
+                        @change="updateFilters($event)" 
+                        class="modal-input" 
+                        type="checkbox" 
+                        :id="'input-' + item.area_code"
+                    >
                     <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
@@ -116,7 +123,7 @@ const actionName = 'product/getProductsPagination';
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     contentTypeId: route.params.contenttypeid,
-    area_code: [],
+    area_code: store.state.product.productAreaCode,
     sort: 'createdtime',
 });
 
@@ -166,16 +173,21 @@ onBeforeMount(async () => {
 
 window.addEventListener('resize', flgSetup);
 
+const areaList = computed(() => store.state.product.productArea);
+
 function getAreaNameWithAreaCode(code) {
-    const areaList = store.state.product.productArea.filter((item) => item.area_code === code);
-    return areaList[0].area_name;
+    const area = areaList.value.filter((item) => item.area_code === code);
+    return area.length > 0 ? area[0].area_name : '';
 }
 
     
 // 카테카테고리고리
-const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
+// const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 
-function updateFilters() {
+function updateFilters(e) {
+    if(e && searchData.area_code.length > 1) {
+        searchData.area_code = [e.target.value]
+    }
     // console.log(searchData.area_code);
     store.dispatch(actionName, searchData);
     store.dispatch('product/getProductsAreaCode', searchData);
