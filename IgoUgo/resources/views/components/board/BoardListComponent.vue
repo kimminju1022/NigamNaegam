@@ -1,48 +1,11 @@
 <template>
     <h2 style="margin: 30px 0; font-size: 3rem;">
-        <!-- {{ bcName }} »  -->
         {{ bcName }} 
-        <!-- {{ selectArea }} -->
     </h2>
-    <!-- <div class="board-head">
-        <div class="board-selectType">
-            <h3>유형</h3>
-            <select v-model="boardInfo.rc_type" name="rc_type" class="board-category">
-                <option value="0">숙박</option>
-                <option value="1">맛집</option>
-                <option value="2">관광</option>
-                <option value="3">문화</option>
-                <option value="4">레포츠</option>
-                <option value="5">쇼핑</option>
-            </select>
-            
-            <h3>지역</h3>
-            <select v-model="boardInfo.area_code" name="area_code" class="board-category">
-                <option value="1">서울</option>
-                <option value="2">인천</option>
-                <option value="3">대전</option>
-                <option value="4">대구</option>
-                <option value="5">광주</option>
-                <option value="6">부산</option>
-                <option value="7">울산</option>
-                <option value="8">세종</option>
-                <option value="31">경기</option>
-                <option value="32">강원</option>
-                <option value="33">충북</option>
-                <option value="34">충남</option>
-                <option value="35">경북</option>
-                <option value="36">경남</option>
-                <option value="37">전북</option>
-                <option value="38">전남</option>
-                <option value="39">제주</option>
-            </select>
-            
-        </div>
-        <div id="board-search-tb">
-            <input class="board-search" type="text" placeholder="검색어를 입력해 주세요">
-            <button class="btn bg-navy board-search-btn">검색</button>
-        </div>
-    </div> -->
+    <div id="board-search-tb">
+        <input class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+        <button class="btn bg-navy board-search-btn">검색</button>
+    </div>
     
 <!-- 리스트항목 -->
     <div class="board-list">
@@ -146,18 +109,6 @@ const boardList = computed(() => store.state.board.boardList);
 const gridClass = computed(() => {
     return store.state.board.bcCode === '0' ? 'grid-7' : 'grid-6';
 });
-
-// const boardInfo = reactive({
-//     board_title: ''
-//     ,board_content: ''
-//     ,board_img1: null
-//     ,board_img2: null
-//     ,bc_code: ''
-//     ,area_code: ''
-//     ,rc_type: ''
-//     ,rate: ''
-//     ,
-// });
 
 // // -------------------------------
 // 페이지네이션 관련

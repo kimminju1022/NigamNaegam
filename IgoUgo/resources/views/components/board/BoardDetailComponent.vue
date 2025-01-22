@@ -27,15 +27,15 @@
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
         <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button>
-        <p> {{ loveIt[0] }}</p>
+        <!-- <p> {{ loveIt[0] }}</p> -->
         <p>조회 : {{ absolve[1]++ }}</p>
         <button @click="boardNotify">🚨 신고 </button>
     </div>
     
     <!-- 등록이미지 불러오기 -->
     <div class="board-detail-img">
-        <div v-for="image in boardDetail.board_images" :key="index">
-            <img :src="image.board_img" class="detailImg_slot"/>
+        <div v-for="(image, index) in boardDetail.board_images" :key="index">
+            <img :src="image.board_img" class="detailImg_slot" alt="등록 이미지" />
         </div>
     </div>
     <!-- <div class="board-detail-img">
@@ -86,6 +86,7 @@ const route = useRoute();
 const router = useRouter();
 // board출력값
 const boardDetail = computed(() => store.state.board.boardDetail);
+// const image = ;
 const commentsInfo =  reactive({
     comment_content: ''
     ,user_email: []

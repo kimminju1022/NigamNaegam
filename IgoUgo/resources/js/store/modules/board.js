@@ -27,7 +27,7 @@ export default {
         setCommentsTotal(state, data) {
             state.commentsTotal = data;
         },
-        setBcType(state, bcCode) {
+        setBcCode(state, bcCode) {
             state.bcCode = bcCode;
             localStorage.setItem('boardBcType', bcCode);
         },
@@ -107,21 +107,29 @@ export default {
             }
             
             const formData = new FormData();
-            formData.append('bc_code', data.boardComments);
-            formData.append('board_title', data.commentsTotal);
-            
-            data.board_img.forEach((file) => {
-                formData.append('board_img[]', file);
-            });
+            formData.append('bc_code', data.bc_code);
+            formData.append('board_title', data.board_title);
+            formData.append('board_content', data.board_content);
+            if(data.board_img) {
+                data.board_img.forEach(file => formData.append('board_img[]', file));
+            }
+            if(data.rc_code) {
+                formData.append('rc_code', data.rc_code);
+            } 
+            if(data.area_code) {
+                formData.append('area_code', data.area_code);
+            }
+            if(data.rate) {
+                formData.append('rate', data.rate);
+            }
             // console.log(data);
 
             axios.post(url,formData, config)
             .then(response => {
-                // console.log(response.data);
-                // console.log(response.data.board);
+                // console.log(response);
                 // console.log(response.data.review);
                 
-                context.commit('setBoardList', response.data.data);
+                // context.commit('setBoardList', response.data.data);
                 
                 router.replace('/boards');
             })
@@ -166,8 +174,8 @@ export default {
             //     formData.append('board_img', boardInfo.boardDetail.board_img);
             // }2nd
 
-            if(boardInfo.boardDetail.rc_type) {
-                formData.append('rc_type', boardInfo.boardDetail.rc_type);
+            if(boardInfo.boardDetail.rc_code) {
+                formData.append('rc_code', boardInfo.boardDetail.rc_code);
             } 
             if(boardInfo.boardDetail.area_code) {
                 formData.append('area_code', boardInfo.boardDetail.area_code);
@@ -195,20 +203,6 @@ export default {
             });
         },
         
-        // --------------------------------게시판 업데이트 관련련
-        // updateCreate(context,bc_code){
-        //     const url = '/api/boards/create';
-        //     const config = {
-        //         header: {
-        //             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-        //         }
-        //     }
-        //     axios.get(url, config)
-        //     .then()
-        //     .catch();
-        // }
-
-
         /** 게시글 삭제
          * 
          */
@@ -294,8 +288,8 @@ export default {
             if(data.area_code) {
                 formData.append('area_code', data.area_code);
             }
-            if(data.rc_type) {
-                formData.append('rc_type', data.rc_type);
+            if(data.rc_code) {
+                formData.append('rc_code', data.rc_code);
             }
             if(data.rate) {
                 formData.append('rate', data.rate);

@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BoardRequest;
 use App\Models\Board;
 use App\Models\BoardCategory;
-use App\Models\Comment;
+use App\Models\BoardImage;
 use App\Models\Review;
-use Database\Seeders\AreaSeeder;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -106,18 +104,54 @@ class BoardController extends Controller
 
     // 게시글 작성
     public function store(BoardRequest $request) {
-        $insertData = $request->only('board_title','board_content');
-        $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
-        $insertData['view_cnt'] = 0;
-        $insertData['bc_code'] = $request->bc_code;
+        Log::debug('files', $request->board_img);
 
-        // 3차 보드 이미지 저장작업
-        if ($request->hasFile('board_img')){
-            $insertData['board_img'] = '/'.$request->file('board_img')->store('img');
-            } else {
-                $insertData['board_img'] = '/default/board_default.png';
+        try {
+            DB::beginTransaction();
+            $insertData = $request->only('board_title','board_content');
+            $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+            $insertData['view_cnt'] = 0;
+            $insertData['bc_code'] = $request->bc_code;
+
+            $board = Board::create($insertData);
+            
+            // 3차 보드 이미지 저장작업
+            if($request->has('board_img')) {
+                foreach ($request->board_img as $file) {
+                    $path = '/'.$file->store('img');
+                    BoardImage::create([
+                        'board_id' => $board->board_id,
+                        'board_img' => $path,
+                    ]);
+                }
             }
-        
+            
+            if($request->bc_code === '0') {
+                $insertReview['board_id'] = $board->board_id;
+                // $insertReview['area_code'] = $request->area_code;
+                // $insertReview['rc_code'] = $request->rc_code;
+                $insertReview['rate'] = $request->rate;
+                $insertReview['product_id'] = $request->rate;
+                
+                $review = Review::create($insertReview);
+            }
+            DB::commit();
+        } catch(Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        $responseData = [
+            'success' => true,
+            'msg' => '게시글 작성 성공',
+            'board' => $board->toArray(),
+        ];
+        // if ($request->hasFile('board_img')){
+            // $insertData['board_img'] = '/'.$request->file('board_img')->store('img');
+            // } else {
+            //     $insertData['board_img'] = '/default/board_default.png';
+            // }
+        // 
         // 2차 보드 이미지 작업---------------------*start*
         // if ($request->hasFile('board_img1')) {
         //     $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
@@ -132,26 +166,15 @@ class BoardController extends Controller
         // }
         // 2차 보드 이미지 작업---------------------*end*
 
-
-        $board = Board::create($insertData);
-
-        if($request->bc_code === '0') {
-            $insertReview['board_id'] = $board->board_id;
-            $insertReview['area_code'] = $request->area_code;
-            $insertReview['rc_code'] = $request->rc_code;
-            $insertReview['rate'] = $request->rate;
-            
-            $review = Review::create($insertReview);
-        }
-
-        $responseData = [
-            'success' => true
-            ,'msg' => '게시글 작성 성공'
-            ,'board' => $board->toArray()
-            ,'review' => isset($review) ? $review->toArray() : null
-        ];
-
         return response()->json($responseData, 200);
+    }
+    public function rules(){
+        return [
+            'board_title' => 'required|string|max:255',
+            'board_content' => 'required|string',
+            'board_img.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120', // 파일별 크기와 형식 제한
+            'board_img' => 'array|max:5', // 최대 5개의 파일만 허용
+        ];
     }
 
     // 게시글 수정

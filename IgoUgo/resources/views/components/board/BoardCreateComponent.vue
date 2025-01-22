@@ -5,17 +5,17 @@
             <div class="board-select-container">
                 <div class="select-board-type">
                     <p>게시판</p>
-                    <select v-model="boardInfo.bc_type" name="bc_type" class="board-categories">
+                    <select v-model="boardInfo.bc_code" name="bc_code" class="board-categories" readonly>
                         <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
-                        <option disabled hidden selected>--게시판선택--</option>
+                        <!-- <option disabled hidden selected>--게시판선택--</option> -->
                         <option value="0">리뷰게시판</option>
                         <option value="1">자유게시판</option>
                     </select>
                 </div>
-                <div v-show="boardInfo.bc_type === '0'" class="board-review-box">
+                <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
                     <div class="board-category">
                         <p>유형</p>
-                        <select v-model="boardInfo.rc_type" name="rc_type">
+                        <select v-model="boardInfo.rc_code" name="rc_code">
                             <option disabled hidden selected>--유형선택--</option>
                             <option value="0">숙박</option>
                             <option value="1">맛집</option>
@@ -120,15 +120,14 @@ const boardInfo = reactive({
     board_title: ''
     ,board_content: ''
     ,board_img: []
-    ,bc_type: ''
+    ,bc_code: store.state.board.bcCode
     ,area_code: ''
-    ,rc_type: ''
+    ,rc_code: ''
     ,rate: ''
 });
 
 // img관련 ----------------------start *****
 const previews = ref([]);
-const selectedFiles = ref([]);
 const maxFiles = 5; // 최대 파일 개수
 
 const gridDetail = computed(() => {
@@ -138,61 +137,33 @@ const gridDetail = computed(() => {
         ? 'grid-4'
         : 'grid-3';
 });
-const clearFile = (index) => {
-    // 삭제할 파일과 미리보기 URL 제거
-    const fileToRemove = selectedFiles.value[index];
-    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
-    selectedFiles.value.splice(index, 1); // 파일 제거
-    previews.value.splice(index, 1); // 미리보기 제거
-};
 
-    const setFile = (e) => {
-        const newFiles = Array.from(e.target.files)
-        .filter(file => file.size <= 5 * 1024 * 1024)  // 5MB 이하 파일만 허용
+const setFile = (e) => {
+    const arrayFiles = Array.from(e.target.files);
+    const emptyFilesSpace = maxFiles - boardInfo.board_img.length - arrayFiles.length;
+
+    // 5MB 이하 파일만 허용
+    if(!arrayFiles.every(file => file.size <= 5 * 1024 * 1024)) {
+        alert(`파일 크기가 5MB이하만 추가할 수 있습니다.`);
+    } else if (emptyFilesSpace < 0) {
+        alert(`최대 ${maxFiles}개까지만 추가할 수 있습니다.`);
+    } else {
+        // 기존 파일과 새로운 파일 병합
+        boardInfo.board_img = [...boardInfo.board_img, ...arrayFiles];
     
-        // const setFile = (e) => {
-        //     userData.file = newFiles;
-        //     preview.value = URL.createObjectURL(userData.file);
-        //     }
-        const currentFileCount = selectedFiles.value.length; // 현재 등록된 파일 수
-        const availableSlots = maxFiles - currentFileCount; // 잔여 슬롯 수 계산
-        const filesToAdd = newFiles.slice(0, availableSlots);  // 남은 슬롯만큼만 추가
-
-        if (filesToAdd.length !== newFiles.length) {
-            alert(`최대 ${availableSlots}개까지만 추가할 수 있습니다.`);
-        // if (selectedFiles.value.length + newFiles.length > maxFiles) {
-        // alert("최대 5개까지 파일을 등록할 수 있습니다.");
-        // return;
-        }
-
-        // 남은 슬롯보다 추가하려는 파일이 많을 경우
-        if (newFiles.length > availableSlots) {
-            alert(
-                availableSlots > 0
-                    ? `최대 ${availableSlots}개까지만 추가할 수 있습니다.`
-                    : `이미 ${maxFiles}개가 등록되어 있습니다.`
-            );
-            return;
-        }
-
-    // 기존 파일과 새로운 파일 병합
-    selectedFiles.value = [...selectedFiles.value, ...filesToAdd];
-
-    // 미리보기 URL 생성
-    previews.value = selectedFiles.value.map(file => URL.createObjectURL(file));
+        // 미리보기 URL 생성
+        previews.value = boardInfo.board_img.map(file => URL.createObjectURL(file));
+    }
 
     // <input> 초기화하여 동일한 파일 다시 선택 가능
     e.target.value = '';
 };
-
-// const clearFile = (index) => {
-//     // 삭제할 파일과 미리보기 URL 제거
-//     const fileToRemove = selectedFiles.value[index];
-//     URL.revokeObjectURL(previews.value[index]); // 메모리 해제
-//     selectedFiles.value.splice(index, 1); // 파일 제거
-//     previews.value.splice(index, 1); // 미리보기 제거
-// };
-
+const clearFile = (index) => {
+    // 삭제할 파일과 미리보기 URL 제거
+    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
+    boardInfo.board_img.splice(index, 1); // 파일 제거
+    previews.value.splice(index, 1); // 미리보기 제거
+};
 
 </script>
 
@@ -275,6 +246,11 @@ select {
     border: none;
     font-size: 17px;
     padding: 10px;
+}
+select {
+    -webkit-appearance:none; /* 크롬 화살표 없애기 */
+    -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
+    appearance:none /* 화살표 없애기 */
 }
 
 .select-board-type select {
@@ -429,6 +405,11 @@ select {
     text-align: center;
     width: 300px;
 }
+
+select[readonly] {
+    pointer-events: none;
+}
+
 /* -------------------modal */
 
 @media screen and (max-width: 1000px) {

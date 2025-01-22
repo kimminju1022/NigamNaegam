@@ -365,10 +365,10 @@ const logout = () =>{
 }
 
 // ---------- 게시판 이동 관련 start ----------
-const redirectBoards = async (bcType) => {
+const redirectBoards = async (bcCode) => {
     store.commit('pagination/setPaginationInitialize');
-    store.commit('board/setBcType', bcType);
-    await store.dispatch('board/getBoardListPagination', {page: 1, bc_type: bcType});
+    store.commit('board/setBcCode', bcCode);
+    await store.dispatch('board/getBoardListPagination', {page: 1, bc_code: bcCode});
     router.push('/boards');
 }
 // ---------- 게시판 이동 관련 end ----------
