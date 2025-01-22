@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function store(UserRequest $request) {
         // Log::debug('user request : ', $request->all());
-        $insertData['user_email'] = $request->user_email;
+        // $insertData['user_email'] = $request->user_email;
         $insertData['user_name'] = $request->user_name;
         $insertData['user_nickname'] = $request->user_nickname;
         $insertData['user_phone'] = $request->user_phone;
@@ -24,6 +24,7 @@ class UserController extends Controller
         
         $verified_email = Verification::where('user_email', $request->user_email)->first();
 
+        $insertData['user_email'] = $verified_email->user_email;
         $insertData['email_verified_at'] = $verified_email->email_verified_at;
         
         User::create($insertData);
@@ -221,5 +222,36 @@ class UserController extends Controller
             ,'msg' => '전화번호 중복확인 성공'
         ];
         return response()->json($responseData, 200);
+    }
+
+    // 이메일 인증 후 비밀번호 변경
+    public function verifiedUpdatePW(UserRequest $request) {
+
+        Log::debug($request->all());
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['message' => '사용자를 찾을 수 없습니다.'], 404);
+        }
+
+        if (Hash::make($request->newPassword) === $user->user_password) {
+            return response()->json(['message' => '현재와 같은 비밀번호를 사용하실 수 없습니다.'], 401);
+        }
+
+        if ($request->newPassword !== $request->newPasswordChk) {
+            return response()->json(['message' => '새 비밀번호와 비밀번호 확인이 일치하지 않습니다.'], 400);
+        }
+
+        // 새 비밀번호 해싱 후 저장
+        $user->user_password = Hash::make($request->newPassword);
+        $user->password_reset_token = null;
+        $user->password_reset_expires_at = null;
+
+        // 비밀번호 변경
+        $user->save();
+
+        // 변경 성공 메시지 반환
+        return response()->json(['message' => '비밀번호가 성공적으로 변경되었습니다.']);
     }
 }

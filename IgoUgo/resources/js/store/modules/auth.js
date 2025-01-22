@@ -167,7 +167,7 @@ export default {
                 user_email: userInfo.user_email,
             };
 
-            console.log(data);
+            console.log('findPW : ',data);
 
             axios.post(url, data)
             .then((response) => {
@@ -180,7 +180,7 @@ export default {
 
                 window.close();
                 // window.location.href = 'about:blank';
-                router.replace('/');
+                // router.replace('/');
             })
             .catch((error) => {
                 console.error(error.response);
@@ -195,16 +195,15 @@ export default {
 
             axios.get(url)
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 console.log('이메일 인증 성공');
                 alert('이메일 인증 성공\n비밀번호 페이지로 이동');
                 // errMsg.value = "이메일 전송 성공"
 
-                // localStorage.setItem('verifiedEmail', response.data.user_email);
+                localStorage.setItem('verifiedEmail', response.data.user_email);
 
-                // 이거 비밀번호 변경 컴포넌트로 가야함
-                // PasswordChangeComponent
-                router.replace('/registration');
+                // router.replace('/');
+                router.replace(`/verify/pw/${verifiedInfo.id}`);
             })
             .catch((error) => {
                 console.error(error.response.data);

@@ -404,6 +404,48 @@ export default {
                 alert(errorMsgList.join('\n'));
             });
         },
+
+        // 이메일 인증 후 비밀번호 변경
+        verifiedPWUpdate(context, userInfo) {
+            const url = `/api/verify/pw/${userInfo.user_id}`;
+            const data = {
+                user_id: userInfo.id,
+                newPassword: userInfo.newPassword,
+                newPasswordChk: userInfo.newPasswordChk,
+            };
+
+
+            axios.put(url, data)
+            .then(response => {
+                alert('비밀번호가 성공적으로 변경되었습니다.');
+
+                localStorage.clear();
+                // context.commit('auth/setUserInfo', {}, {root: true});
+    
+                router.replace('/login');
+            })
+            .catch(error => {
+                console.log(error.response);
+                let errorMsgList = [];
+                const errorData = error.response.data;
+
+                if(error.response.status === 400) {
+                    errorMsgList.push('현재 비밀번호가 일치하지 않습니다.');
+                // } else if(error.response.status === 401) {
+                //     errorMsgList.push('현재 비밀번호가 올바르지 않습니다.');
+                } else if(error.response.status === 422) {
+                    if(errorData.data.newPassword) {
+                        errorMsgList.push('비밀번호 형식이 맞지 않습니다.');
+                    } else if(errorData.data.newPasswordChk)  {
+                        errorMsgList.push('비밀번호가 일치하지 않습니다.');
+                    }
+                } else {
+                    errorMsgList.push('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+                }
+
+                alert(errorMsgList.join('\n'));
+            });
+        }
     },
     getters: {
 

@@ -27,7 +27,7 @@ const userInfo = reactive({
 });
 
 const findPassword = (userInfo) => {
-    console.log('유저정보 :', userInfo.user_email);  
+    // console.log('유저정보 :', userInfo.user_email);  
     store.dispatch('auth/findPW', userInfo);
 }
 </script>

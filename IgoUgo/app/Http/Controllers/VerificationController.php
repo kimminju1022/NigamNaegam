@@ -28,53 +28,6 @@ class VerificationController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function verify($id, $hash) {
-    // public function verify(Request $request) {
-        // Log::debug('인증이메일', $request->all());
-        // $request->fulfill(); // 1. 이메일 검증 처리
-        
-        // $user = Verification::find($id);        
-        $verification = Verification::where('verified_email_id', $id)
-                        ->first();
-
-        if (!$verification) {
-            // return redirect('/')->with('error', '사용자를 찾을 수 없습니다.');
-
-            $responseData = [
-                'success' => false
-                ,'msg' => '사용자 확인 실패'
-            ];
-            
-            return response()->json($responseData, 401);
-        }
-
-        $hashedEmail = sha1($verification->user_email);
-
-        if ($hashedEmail === $hash) {
-            // email_verified_at = now(); 이거 넣어줘야하는뎁
-            Verification::where('verified_email_id', $id)
-                        ->update(['email_verified_at' => Carbon::now()]);
-
-            $responseData = [
-                'success' => true
-                ,'msg' => '이메일 인증 성공'
-                ,'user_email' => $verification->user_email
-            ];
-            
-            return response()->json($responseData, 200);
-        } else {
-            $verifiedEmail = Verification::find($id);
-            $verifiedEmail->delete();
-
-            $responseData = [
-                'success' => false
-                ,'msg' => '이메일 인증 실패'
-            ];
-
-            return response()->json($responseData, 401);
-        }
-    }
-
     public function sendVerificationLink(Request $request) {
 
         // $user = $request->user; // 인증된 사용자
@@ -100,6 +53,7 @@ class VerificationController extends Controller
             
             $insertData['user_email'] = $request->user_email;
             $insertData['hash_email'] = sha1($request->user_email);
+            $insertData['email_expires_at'] = Carbon::now()->addMinutes(30);
         
             Verification::create($insertData);
             $verified_user = Verification::where('user_email', $request->user_email)
@@ -132,6 +86,55 @@ class VerificationController extends Controller
             DB::rollBack();
             Log::debug($th->getMessage());
         }
-
     }
+    
+    public function verify($id, $hash) {
+    // public function verify(Request $request) {
+        // Log::debug('인증이메일', $request->all());
+        // $request->fulfill(); // 1. 이메일 검증 처리
+        
+        // $user = Verification::find($id);        
+        $verification = Verification::where('verified_email_id', $id)
+                        ->first();
+
+        if (!$verification) {
+            // return redirect('/')->with('error', '사용자를 찾을 수 없습니다.');
+
+            $responseData = [
+                'success' => false
+                ,'msg' => '사용자 확인 실패'
+            ];
+            
+            return response()->json($responseData, 401);
+        }
+
+        $hashedEmail = sha1($verification->user_email);
+
+        if ($hashedEmail === $hash && $verification->email_expires_at > now()) {
+            // email_verified_at = now(); 이거 넣어줘야하는뎁
+            // Verification::where('verified_email_id', $id)
+            //             ->update(['email_verified_at' => Carbon::now()]);
+
+            $verification->email_verified_at = Carbon::now();
+
+            $responseData = [
+                'success' => true
+                ,'msg' => '이메일 인증 성공'
+                ,'user_email' => $verification->user_email
+            ];
+            
+            return response()->json($responseData, 200);
+        } else {
+            $verifiedEmail = Verification::find($id);
+            $verifiedEmail->delete();
+
+            $responseData = [
+                'success' => false
+                ,'msg' => '이메일 인증 실패'
+            ];
+
+            return response()->json($responseData, 401);
+        }
+    }
+
 }

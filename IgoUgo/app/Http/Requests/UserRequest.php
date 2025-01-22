@@ -96,6 +96,18 @@ class UserRequest extends FormRequest
             unset($rules['user_password']);
         }
 
+        // 이메일 인증 후 비밀번호 변경
+        else if($this->routeIs('verify.password.update')) {
+            $rules['newPassword'] = ['required', 'between:5,20', 'regex:/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{5,}$/'];
+            $rules['newPasswordChk'] = ['same:newPassword'];
+
+            unset($rules['user_email']);
+            unset($rules['user_name']);
+            unset($rules['user_nickname']);
+            unset($rules['user_phone']);
+            unset($rules['user_profile']);
+            unset($rules['user_password']);
+        }
 
         return $rules;
     }

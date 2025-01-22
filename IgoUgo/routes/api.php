@@ -54,6 +54,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 // 비밀번호 찾기
 Route::post('/find/pw/send-email', [AuthController::class, 'sendEmail'])->name('auth.send');
 Route::get('/find/pw/{id}/{hash}', [AuthController::class, 'verify'])->name('auth.verify');
+Route::put('/verify/pw/{id}', [UserController::class, 'verifiedUpdatePW'])->name('verify.password.update');
 
 // 리뷰/자유 게시판용 라우터
 Route::get('/boards', [BoardController::class, 'index'])->name('board.index');

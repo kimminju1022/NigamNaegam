@@ -15,7 +15,7 @@
             <div class="go-registration">
                 <router-link to="/find/pw/send-email"><button class="btn bg-clear btn-password">비밀번호 찾기</button></router-link>
                 <p>|</p>
-                <router-link to="/registration/chk"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
+                <router-link to="/before/registration"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
             </div>
         </div>
     </div>

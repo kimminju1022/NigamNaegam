@@ -36,8 +36,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        if ($this->app->environment('local')) {
-            Mail::alwaysTo('taylor@example.com'); // 이거 주소 env랑 똑같이 해야하나?
-        }
+        // if ($this->app->environment('local')) {
+        //     Mail::alwaysTo('taylor@example.com');
+        // }
     }
 }

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('verifications', function (Blueprint $table) {
             $table->id('verified_email_id');
-            $table->string('user_email', 50)->unique();
-            $table->string('hash_email', 100)->unique();
+            $table->string('user_email', 50);
+            $table->string('hash_email', 100);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

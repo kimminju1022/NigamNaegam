@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use MyToken;
 
 class AuthController extends Controller
@@ -94,18 +95,26 @@ class AuthController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // 비밀번호 변경 이메일 보내기
     public function sendEmail(Request $request) {
-
         $verified_user = User::where('user_email', $request->user_email)
                                 ->first();
 
-        Log::debug('verified_user1 :'.$verified_user);
+        Log::debug('verified_user :'.$verified_user);
+
+        if (!$verified_user) {
+            return response()->json(['success' => false, 'msg' => '사용자를 찾을 수 없습니다.'], 404);
+        }
+
+        $verified_user->password_reset_token = Str::random(64);
+        $verified_user->password_reset_expires_at = Carbon::now()->addMinutes(30);
+        $verified_user->save();
 
         $subject = '비밀번호를 변경해주세요!';
         $to = $request->user_email; // 수신자 이메일 주소
-        $url = env('APP_URL').'/find/pw/'.$verified_user->user_id.'/'.sha1($verified_user->user_email);
+        $url = env('APP_URL').'/find/pw/'.$verified_user->user_id.'/'.sha1($verified_user->password_reset_token);
 
-        // // 이메일 보내기
+        // 이메일 보내기
         Mail::send('verificationPassword', [
             'url' => $url,
         ], function ($message) use ($to, $subject) {
@@ -121,10 +130,12 @@ class AuthController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function verify($id, $hash) {        
+    public function verify($id, $hash) {
         $verification = User::where('user_id', $id)
-                        ->first();
-        Log::debug($verification);
+                                ->first();
+
+        Log::debug('Autcontroller verify :'.$verification);
+        
         if (!$verification) {
             return redirect('/login')->with('error', '사용자를 찾을 수 없습니다.');
 
@@ -136,11 +147,11 @@ class AuthController extends Controller
             return response()->json($responseData, 401);
         }
 
-        $hashedEmail = sha1($verification->user_email);
+        $hashed = sha1($verification->password_reset_token);
 
-        if ($hashedEmail === $hash) {
-            User::where('user_email', $hash)
-                        ->first();
+        if ($hashed === $hash && $verification->password_reset_expires_at > now()) {
+            // User::where('user_email', $hash)
+            //             ->first();
 
             $responseData = [
                 'success' => true
