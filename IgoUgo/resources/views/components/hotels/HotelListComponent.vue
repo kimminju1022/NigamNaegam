@@ -111,7 +111,7 @@
         </div>
     </div>
 
-    <!-- 호텔 모달 -->
+    <!-- 지도 모달 -->
     <div v-if="isVisibleMap" class="modal-overlay">
         <div class="modal-content-map">
             <img @click="closemodalMap" class="modal_x_img modal_x_img_position" src="/img_product/img_x.png" alt="">
@@ -130,9 +130,7 @@ import env from '../../../js/env';
 const store = useStore();
 const route = useRoute();
 
-// console.log(route.path);
 // 호텔 리스트 관련
-// const count = computed(() => store.getters['model/itemCount']);
 const hotels = computed(() => store.state.hotel.hotelList);
 // const hotelAreaCode = computed(() => store.state.hotelAreaCode);
 const actionName = 'hotel/getHotelsPagination';
@@ -158,10 +156,6 @@ function sortData(data) {
     store.dispatch('hotel/getHotelsPagination', searchData);
 }
 
-
-
-// const areaData = computed(() => store.state.hotel.hotelArea);
-
 // 반응형
 const flg = ref(false);
 const flgSetup = () => {
@@ -177,14 +171,12 @@ onBeforeMount(async () => {
     await store.dispatch('hotel/getHotelsCategory', searchData);
     await store.dispatch('hotel/getHotelAreaCode', searchData);
     await store.dispatch('hotel/getHotelCategoryCode', searchData);
-    // console.log('카운트되나?',count.value)
 });
 
 window.addEventListener('resize', flgSetup);
 
     
 // 카테카테고리고리
-// const selectedFilters = ref(JSON.parse(localStorage.getItem('selectedFilters')) || []);
 // let selectedArea = null;
 
 function updateFilters(e) {
@@ -200,7 +192,6 @@ function updateFilters(e) {
 }
 
 function closeFilter(value) {
-    // console.log(searchData.area_code);
     searchData.area_code = searchData.area_code.filter(
         (item) => item !== value
     );
@@ -241,7 +232,6 @@ window.onbeforeunload = function() {
 
 // 모달모달
 const isVisible = ref(false);
-const isVisibleMap = ref(false);
 
 function openmodal() {
     isVisible.value = true;
@@ -251,12 +241,41 @@ function closemodal() {
     isVisible.value = false;
 }
 
+// 지도모달
+const isVisibleMap = ref(false);
+const latitude = ref(null);
+const longitude = ref(null);
+const location = reactive({});
+const nearbyPlaceList = computed(() => store.state.map.nearbyPlaceList);
+
 function openmodalMap() {
     isVisibleMap.value = true;
-    if (window.kakao && window.kakao.maps) {
-        loadKakaoMap();
+    // if (window.kakao && window.kakao.maps) {
+    //     loadKakaoMap();
+    // } else {
+    //     loadKakaoMapScript();
+    // }
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            latitude.value = position.coords.latitude; // 위도
+            longitude.value = position.coords.longitude; // 경도
+            location.latitude = latitude.value;
+            location.longitude = longitude.value;
+
+            // 현재 위치 전달
+            await store.dispatch('map/takeNearbyPlaces', location);
+
+            if (window.kakao && window.kakao.maps) {
+                // 스크립트가 이미 로드된 경우
+                await loadKakaoMap(location.latitude, location.longitude);
+            } else {
+                // 스크립트를 로드한 후 지도를 로드
+                await loadKakaoMapScript();
+                await loadKakaoMap(location.latitude, location.longitude);
+            }
+        });
     } else {
-        loadKakaoMapScript();
+        alert('Geolocation을 지원하지 않는 브라우저입니다.');
     }
 }
 
@@ -264,29 +283,158 @@ function closemodalMap() {
     isVisibleMap.value = false;
 }
 
-// 지도지도
-// let map = null;
+// 지도
+var map = '';
+const markers = ref([]); // 마커 배열
+
+// Debounce 함수 정의
+const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+        if (timer) clearTimeout(timer); // 이전 타이머 취소
+        timer = setTimeout(() => {
+            func(...args); // 마지막 이벤트 실행
+        }, delay);
+    };
+};
 
 // 카카오맵 스크립트 다운로드
 const loadKakaoMapScript = () => {
-    const script = document.createElement('script');
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
-    script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+    return new Promise((resolve, reject) => {
+        const existingScript = document.querySelector('script[src*="kakao.com"]');
+        if (existingScript) {
+            // 이미 로드된 스크립트가 있으면 바로 resolve
+            resolve();
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`;
+        script.onload = () => {
+            window.kakao.maps.load(resolve); // 카카오맵 API 로드 후 resolve
+        };
+        script.onerror = () => {
+            reject(new Error('Kakao map script load failed.'));
+        };
+        document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+    });
+}
+
+// 카카오맵 지도 - 현재위치 기준
+const loadKakaoMap = async (Lat, Lon) => {
+    const container = document.getElementById("map");
+    if (container && Lat && Lon) {
+        const options = {
+            center: new window.kakao.maps.LatLng(Lat, Lon),
+            level: 5,
+        };
+        map = new window.kakao.maps.Map(container, options);
+        console.log("Map loaded successfully.");
+
+        loadMarker(nearbyPlaceList.value);
+
+        // Debounce를 적용한 중심좌표 변경 이벤트 핸들러
+        const debouncedCenterChange = debounce(async () => {
+            // const level = map.value.getLevel(); // 지도 레벨
+            const center = map.getCenter(); // 지도 중심좌표
+
+            location.latitude = center.getLat(); // 중심좌표의 위도
+            location.longitude = center.getLng(); // 중심좌표의 경도
+
+            // 새로운 중심좌표 기준으로 서버에 데이터 요청
+            await store.dispatch('map/takeNearbyPlaces', location);
+            
+            // 새로운 마커 로드
+            loadMarker(nearbyPlaceList.value);
+        }, 1000); // 1초 간격으로 실행
+
+        // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록
+        window.kakao.maps.event.addListener(map, 'center_changed', debouncedCenterChange);
+    } else {
+        console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
+    }
+};
+
+// 카카오맵 마커
+const loadMarker = (placeList) => {
+    if(!placeList || placeList.length === 0) {
+        console.log("No placeList to load.");
+        return;
+    }
+
+    // 기존 마커 제거 -> 중심좌표 이동하기 전에
+    clearMarkers();
+
+    // 새로운 마커 추가
+    placeList.forEach(place => {
+        const markerPosition = new window.kakao.maps.LatLng(place.mapy, place.mapx);
     
-    document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+        const marker = new window.kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: markerPosition,
+        });
+        
+        // 인포윈도우 생성
+        const infowindow = new window.kakao.maps.InfoWindow({
+            content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
+        });
+
+        // 마커에 마우스 이벤트 등록
+        window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
+        window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
+
+        // 배열에 저장
+        markers.value.push(marker);
+    });
 }
 
-// 카카오맵 화면에 로드
-const loadKakaoMap = () => {
-    const container = document.getElementById("map"); 
-    const options = {
-        center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
-        level: 3
+// 마커 마우스오버 이벤트
+const showInfoWindow = (map, marker, infowindow) => {
+    return function() {
+        infowindow.open(map, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        // console.log("Infowindow DOM element:", infowindow); // 확인용
     };
+};
 
-    const map = new window.kakao.maps.Map(container, options);
-    // console.log(map);
+// 마커에 마우스아웃 이벤트 등록
+const hideInfoWindow = (infowindow) => {
+    return function() {
+        infowindow.close(); // 인포윈도우 닫기
+        // console.log("Is infowindow open? ", infowindow); // 확인용
+    };
+};
+
+// 마커 제거
+const clearMarkers = () => {
+    // console.log('clearing....');
+    markers.value.forEach((marker) => {
+        marker.setMap(null); // 마커 지도에서 제거
+    });
+    markers.value = []; // 배열 초기화
 }
+
+
+
+
+// // 카카오맵 스크립트 다운로드
+// const loadKakaoMapScript = () => {
+//     const script = document.createElement('script');
+//     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
+//     script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+    
+//     document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+// }
+
+// // 카카오맵 화면에 로드
+// const loadKakaoMap = () => {
+//     const container = document.getElementById("map"); 
+//     const options = {
+//         center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
+//         level: 3
+//     };
+
+//     const map = new window.kakao.maps.Map(container, options);
+//     // console.log(map);
+// }
 </script>
     
 <style scoped>

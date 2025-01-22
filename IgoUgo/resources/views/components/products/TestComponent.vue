@@ -250,10 +250,6 @@ function openmodalMap() {
             latitude.value = position.coords.latitude; // 위도
             longitude.value = position.coords.longitude; // 경도
 
-            // const location = reactive({
-            //     latitude: latitude.value,
-            //     longitude: longitude.value,
-            // });
             location.latitude = latitude.value;
             location.longitude = longitude.value;
 
@@ -281,7 +277,8 @@ function closemodalMap() {
 }
 
 // 지도지도
-const map = ref(null);
+// const map = ref(null);
+var map = '';
 
 const markers = ref([]); // 마커
 // const infowindows = ref([]); // 인포윈도우
@@ -327,7 +324,7 @@ const loadKakaoMap = async (Lat, Lon) => {
             center: new window.kakao.maps.LatLng(Lat, Lon),
             level: 5,
         };
-        map.value = new window.kakao.maps.Map(container, options);
+        map = new window.kakao.maps.Map(container, options);
         console.log("Map loaded successfully.");
 
         loadMarker(nearbyPlaceList.value);
@@ -335,7 +332,7 @@ const loadKakaoMap = async (Lat, Lon) => {
         // Debounce를 적용한 중심좌표 변경 이벤트 핸들러
         const debouncedCenterChange = debounce(async () => {
             // const level = map.value.getLevel(); // 지도 레벨
-            const center = map.value.getCenter(); // 지도 중심좌표
+            const center = map.getCenter(); // 지도 중심좌표
 
             location.latitude = center.getLat(); // 위도
             location.longitude = center.getLng(); // 경도
@@ -348,7 +345,7 @@ const loadKakaoMap = async (Lat, Lon) => {
         }, 1000); // 1초 간격으로 실행
 
         // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록
-        window.kakao.maps.event.addListener(map.value, 'center_changed',debouncedCenterChange);
+        window.kakao.maps.event.addListener(map, 'center_changed',debouncedCenterChange);
     } else {
         console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
     }
@@ -373,7 +370,7 @@ const loadMarker = (placeList) => {
         // const content = '<div style="width: 150px"><p style="text-align: center">' + place.title + '</p></div>';
     
         const marker = new window.kakao.maps.Marker({
-            map: map.value, // 마커를 표시할 지도
+            map: map, // 마커를 표시할 지도
             position: markerPosition,
         });
 
@@ -388,7 +385,7 @@ const loadMarker = (placeList) => {
         // infowindow.open(map.value, marker);
 
         // 마커에 마우스 이벤트 등록
-        window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map.value, marker, infowindow));
+        window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
         window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
         
 

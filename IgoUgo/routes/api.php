@@ -29,6 +29,7 @@ Route::get('/hotels', [HotelController::class, 'hotels']);
 Route::get('/areas', [HotelController::class, 'areas']);
 Route::get('/categories', [HotelController::class, 'categories']);
 Route::get('/hotels/{contentid}', [HotelController::class, 'hotelsDetail']);
+Route::post('/hotels', [HotelController::class, 'getNearbyPlaces']);
 
 // ----- 상품 관련 -----
 // 상품 메인 라우터
@@ -37,7 +38,7 @@ Route::get('/products', [ProductController::class, 'getFilteredProducts']);
 Route::get('/products/{contenttypeid}', [ProductController::class, 'showList']);
 Route::get('/products/{contenttypeid}/{contentid}', [ProductController::class, 'productDetail']);
 Route::get('/product/random', [ProductController::class, 'getProductRandom']);
-Route::post('/testtest', [ProductController::class, 'getNearbyPlaces']);
+// Route::post('/testtest', [HotelController::class, 'getNearbyPlaces']);
 
 // 로그인 관련
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
