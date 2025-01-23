@@ -30,4 +30,17 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // 소셜로그인 참고
+    // 'github' => [
+    //     'client_id' => env('GITHUB_CLIENT_ID'),
+    //     'client_secret' => env('GITHUB_CLIENT_SECRET'),
+    //     'redirect' => 'http://example.com/callback-url',
+    // ],
+
+    // 카카오 소셜로그인
+    'kakao' => [    
+        'client_id' => env('KAKAO_CLIENT_ID'),  
+        'client_secret' => env('KAKAO_CLIENT_SECRET'),  
+        'redirect' => env('KAKAO_REDIRECT_URI') 
+    ],
 ];

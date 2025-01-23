@@ -111,6 +111,7 @@ class VerificationController extends Controller
         $hashedEmail = sha1($verification->user_email);
 
         if ($hashedEmail === $hash && $verification->email_expires_at > now()) {
+        // if ($hashedEmail === $hash) {
             // email_verified_at = now(); 이거 넣어줘야하는뎁
             // Verification::where('verified_email_id', $id)
             //             ->update(['email_verified_at' => Carbon::now()]);

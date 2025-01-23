@@ -47,10 +47,24 @@ Route::post('/available/email', [UserController::class, 'chkEmail'])->name('user
 Route::post('/available/nickname', [UserController::class, 'chkNickname'])->name('user.nickname');
 Route::post('/available/phone', [UserController::class, 'chkPhone'])->name('user.phone');
 
+// 카카오 소셜로그인
+// Route::get('/auth/redirect', function () {
+//     return Socialite::driver('github')->redirect();
+// });
+
+// Route::get('/auth/callback', function () {
+//     $user = Socialite::driver('github')->user();
+
+//     // $user->token
+// });
+
 // 이메일 인증
 // Route::get('/email/verify/{id}', [VerificationController::class, 'notice'])->middleware('my.auth')->name('verification.notice');
 Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->name('verification.send');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+// Route::get('/profile', function () {
+//     // Only verified users may access this route...
+// })->middleware(['auth', 'verified']); // 1. 이메일 검증된 사용자만 접근 가능
 
 // 비밀번호 찾기
 Route::post('/find/pw/send-email', [AuthController::class, 'sendEmail'])->name('auth.send');
@@ -107,7 +121,3 @@ Route::middleware('my.auth')->group(function() {
 
 
 Route::get('/test-email', [TestController::class, 'sendTestEmail']);
-
-// Route::get('/profile', function () {
-//     // Only verified users may access this route...
-// })->middleware(['auth', 'verified']); // 1. 이메일 검증된 사용자만 접근 가능

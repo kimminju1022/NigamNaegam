@@ -12,6 +12,7 @@
                 <p>회원이 아니시라면?</p>
                 <router-link to="/registration/chk"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
             </div> -->
+            <button class="btn" style="height: 50px;">소셜 로그인</button>
             <div class="go-registration">
                 <router-link to="/find/pw/send-email"><button class="btn bg-clear btn-password">비밀번호 찾기</button></router-link>
                 <p>|</p>
