@@ -144,8 +144,11 @@ function sortData(data) {
 watch(
     () => route.params.contenttypeid,
     (newId) => {
+        store.dispatch('product/resetProductAreaCode');
         searchData.contentTypeId = parseInt(newId);
         productTitle.value = productIdList[newId];
+        searchData.area_code = [];
+        searchData.page = 1;
         store.dispatch(actionName, searchData);
     }
 );

@@ -7,7 +7,7 @@ export default {
         productTypeList: {},
         productList: [],
         productArea: [],
-        productAreaCode : JSON.parse(localStorage.getItem('productAreaCode')) ? JSON.parse(localStorage.getItem('productAreaCode')) : [],
+        productAreaCode : JSON.parse(sessionStorage.getItem('productAreaCode')) ? JSON.parse(sessionStorage.getItem('productAreaCode')) : [],
         productCnt: '',
         productImg: [],
         productDetail: {},
@@ -27,7 +27,7 @@ export default {
         },
         setProductAreaCode(state, data) {
             state.productAreaCode = data;
-            localStorage.setItem('productAreaCode',JSON.stringify(data));
+            sessionStorage.setItem('productAreaCode',JSON.stringify(data));
         },
         setProductCnt(state, data) {
             state.productCnt = data;
@@ -143,7 +143,11 @@ export default {
             .catch(error => {
                 console.log(error.response);
             });
-        }
+        },
+
+        resetProductAreaCode(context) {
+            context.commit('setProductAreaCode', []);
+        },
     },
     getters: {
     

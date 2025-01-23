@@ -39,6 +39,7 @@ import QuestionDetailComponent from '../views/components/question/QuestionDetail
 import QuestionUpdateComponent from '../views/components/question/QuestionUpdateComponent.vue';
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
+import LoadingComponent from '../views/components/LoadingComponent.vue';
 
 // 테스트
 import TestComponent from '../views/components/products/TestComponent.vue';
@@ -214,6 +215,11 @@ const routes = [
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
+    },
+    // 기타기타
+    {
+        path: '/loading',
+        component: LoadingComponent, 
     },
 ];
 
