@@ -18,7 +18,8 @@ class HotelController extends Controller
         $hcType = $request->hc_code;
         $sort = $request->sort;
 
-        $hotels = Product::whereIn('cat3', ['B02010100', 'B02010700', 'B02011100']) // 소분류에 맞는 호텔, 게스트하우스, 팬션 만 조회
+        $hotels = Product::where('contenttypeid', '32') // 호텔 모두 조회하는 걸로 변경
+            // ->whereIn('cat3', ['B02010100', 'B02010700', 'B02011100']) // 소분류에 맞는 호텔, 게스트하우스, 팬션 만 조회
             ->when($areaCode, function($query, $areaCode) { 
                 return $query->whereIn('products.area_code', $areaCode);  // 동적으로 주어진 $areaCode 배열에 포함된 hotels.area_code 값을 가진 데이터만 필터링한다
                 // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
@@ -114,8 +115,8 @@ class HotelController extends Controller
         $hcType = $request->hc_code;
 
         $places = 
-            Product::where("contenttypeid", "32")
-            ->whereIn('cat3', ['B02010100', 'B02010700', 'B02011100']) // 소분류에 맞는 호텔, 게스트하우스, 팬션 만 조회
+            Product::where("contenttypeid", "32") // 호텔 모두 조회하는 걸로 변경
+            // ->whereIn('cat3', ['B02010100', 'B02010700', 'B02011100']) // 소분류에 맞는 호텔, 게스트하우스, 팬션 만 조회
             ->when($areaCode, function($query, $areaCode) { 
                 return $query->whereIn('products.area_code', $areaCode);  // 동적으로 주어진 $areaCode 배열에 포함된 hotels.area_code 값을 가진 데이터만 필터링한다
                 // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
@@ -133,7 +134,7 @@ class HotelController extends Controller
                 cos(radians(mapx) - radians(?)) +
                 sin(radians(?)) * sin(radians(mapy))
             )) AS distance", [$currentLat, $currentLon, $currentLat])
-            ->having('distance', '<=', 1.2) // km 기준
+            ->having('distance', '<=', 3) // km 기준
             ->orderBy('distance')
             ->get();
 

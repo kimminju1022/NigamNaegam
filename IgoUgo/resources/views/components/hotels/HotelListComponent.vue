@@ -245,33 +245,91 @@ function closemodal() {
 const isVisibleMap = ref(false);
 const latitude = ref(null);
 const longitude = ref(null);
-const location = reactive({});
+const hotelArea = ref([]);
+const hotelCategory = ref([]);
+const findHotel = reactive({});
 const nearbyPlaceList = computed(() => store.state.map.nearbyPlaceList);
 
+// function openmodalMap() {
+//     isVisibleMap.value = true;
+//     if(navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition(async (position) => {
+//             latitude.value = position.coords.latitude; // 위도
+//             longitude.value = position.coords.longitude; // 경도
+//             location.latitude = latitude.value;
+//             location.longitude = longitude.value;
+
+//             // 현재 위치 전달
+//             await store.dispatch('map/takeNearbyPlaces', location);
+
+//             if (window.kakao && window.kakao.maps) {
+//                 // 스크립트가 이미 로드된 경우
+//                 await loadKakaoMap(location.latitude, location.longitude);
+//             } else {
+//                 // 스크립트를 로드한 후 지도를 로드
+//                 await loadKakaoMapScript();
+//                 await loadKakaoMap(location.latitude, location.longitude);
+//             }
+//         });
+//     } else {
+//         alert('Geolocation을 지원하지 않는 브라우저입니다.');
+//     }
+// }
 function openmodalMap() {
     isVisibleMap.value = true;
-    // if (window.kakao && window.kakao.maps) {
-    //     loadKakaoMap();
-    // } else {
-    //     loadKakaoMapScript();
-    // }
     if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
+        navigator.geolocation.getCurrentPosition(
+        // 위치 권한 설정을 허용했을 때
+        async (position) => {
             latitude.value = position.coords.latitude; // 위도
             longitude.value = position.coords.longitude; // 경도
-            location.latitude = latitude.value;
-            location.longitude = longitude.value;
+            hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+            hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+            
+            findHotel.latitude = latitude.value;
+            findHotel.longitude = longitude.value;
+            findHotel.area_code = hotelArea.value; // 지역 필터 적용
+            findHotel.hc_code = hotelCategory.value; // 카테고리 필터 적용
+            // console.log(findHotel);
 
             // 현재 위치 전달
-            await store.dispatch('map/takeNearbyPlaces', location);
+            await store.dispatch('map/takeNearbyPlaces', findHotel);
 
             if (window.kakao && window.kakao.maps) {
                 // 스크립트가 이미 로드된 경우
-                await loadKakaoMap(location.latitude, location.longitude);
+                await loadKakaoMap(findHotel.latitude, findHotel.longitude);
             } else {
                 // 스크립트를 로드한 후 지도를 로드
                 await loadKakaoMapScript();
-                await loadKakaoMap(location.latitude, location.longitude);
+                await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+            }
+        },
+
+        // 위치 권한 설정을 허용하지 않았을 때(기본좌표는 서울특별시청)
+        async () => {
+            // alert('위치 권한을 허용하지 않았습니다. 기본 위치(서울특별시청)로 설정합니다.');
+            
+            // 기본 좌표: 서울특별시청
+            latitude.value = 37.5665;
+            longitude.value = 126.9780;
+            hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+            hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+
+            findHotel.latitude = latitude.value;
+            findHotel.longitude = longitude.value;
+            findHotel.area_code = hotelArea.value; // 지역 필터 적용
+            findHotel.hc_code = hotelCategory.value; // 카테고리 필터 적용
+
+            // 현재 위치 전달
+            await store.dispatch('map/takeNearbyPlaces', findHotel);
+
+            if (window.kakao && window.kakao.maps) {
+                // 스크립트가 이미 로드된 경우
+                await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+            } else {
+                // 스크립트를 로드한 후 지도를 로드
+                await loadKakaoMapScript();
+                await loadKakaoMap(findHotel.latitude, findHotel.longitude);
             }
         });
     } else {
@@ -337,11 +395,11 @@ const loadKakaoMap = async (Lat, Lon) => {
             // const level = map.value.getLevel(); // 지도 레벨
             const center = map.getCenter(); // 지도 중심좌표
 
-            location.latitude = center.getLat(); // 중심좌표의 위도
-            location.longitude = center.getLng(); // 중심좌표의 경도
+            findHotel.latitude = center.getLat(); // 중심좌표의 위도
+            findHotel.longitude = center.getLng(); // 중심좌표의 경도
 
             // 새로운 중심좌표 기준으로 서버에 데이터 요청
-            await store.dispatch('map/takeNearbyPlaces', location);
+            await store.dispatch('map/takeNearbyPlaces', findHotel);
             
             // 새로운 마커 로드
             loadMarker(nearbyPlaceList.value);
@@ -357,34 +415,36 @@ const loadKakaoMap = async (Lat, Lon) => {
 // 카카오맵 마커
 const loadMarker = (placeList) => {
     if(!placeList || placeList.length === 0) {
-        console.log("No placeList to load.");
+        // console.log("No placeList to load.");
         return;
     }
 
     // 기존 마커 제거 -> 중심좌표 이동하기 전에
     clearMarkers();
 
-    // 새로운 마커 추가
-    placeList.forEach(place => {
-        const markerPosition = new window.kakao.maps.LatLng(place.mapy, place.mapx);
-    
-        const marker = new window.kakao.maps.Marker({
-            map: map, // 마커를 표시할 지도
-            position: markerPosition,
-        });
+    if(placeList || placeList.length !== 0) {
+        // 새로운 마커 추가
+        placeList.forEach(place => {
+            const markerPosition = new window.kakao.maps.LatLng(place.mapy, place.mapx);
         
-        // 인포윈도우 생성
-        const infowindow = new window.kakao.maps.InfoWindow({
-            content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
+            const marker = new window.kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: markerPosition,
+            });
+            
+            // 인포윈도우 생성
+            const infowindow = new window.kakao.maps.InfoWindow({
+                content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
+            });
+
+            // 마커에 마우스 이벤트 등록
+            window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
+            window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
+
+            // 배열에 저장
+            markers.value.push(marker);
         });
-
-        // 마커에 마우스 이벤트 등록
-        window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
-        window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
-
-        // 배열에 저장
-        markers.value.push(marker);
-    });
+    }
 }
 
 // 마커 마우스오버 이벤트

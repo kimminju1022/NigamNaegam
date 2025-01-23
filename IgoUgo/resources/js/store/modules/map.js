@@ -4,14 +4,10 @@ export default {
     namespaced: true,
     state: () => ({
         nearbyPlaceList: [], // 장소 목록
-        hotelAreaCode: JSON.parse(localStorage.getItem('hotelAreaCode')) ? JSON.parse(localStorage.getItem('hotelAreaCode')) : [],
     }),
     mutations: {
         setNearbyPlaceList(state, list) {
             state.nearbyPlaceList = list;
-        },
-        setHotelAreaCode(state, list) {
-            state.hotelAreaCode = list;
         },
     },
     actions: {
@@ -22,6 +18,8 @@ export default {
                 const config = {
                     latitude: location.latitude,
                     longitude: location.longitude,
+                    area_code: location.area_code,
+                    hc_code: location.hc_code,
                 };
                 axios.post(url, config)
                 .then(response => {
