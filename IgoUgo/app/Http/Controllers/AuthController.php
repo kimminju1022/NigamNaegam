@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 use MyToken;
 
 class AuthController extends Controller
@@ -161,5 +162,74 @@ class AuthController extends Controller
             
             return response()->json($responseData, 200);
         }
+    }
+
+
+    // 구글 로그인
+    public function redirectToProvider($provider){
+        return Socialite::driver($provider)->stateless()->redirect();
+
+        // // Google 로그인 URL을 반환
+        // $googleRedirectUrl = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+
+        // // 리디렉션 URL을 클라이언트로 반환
+        // return response()->json(['redirect_url' => $googleRedirectUrl]);
+        
+    }
+
+    public function handleProviderCallback($provider){
+        $socialInfo = Socialite::driver($provider)->stateless()->user();
+        Log::debug('getId : '.$socialInfo->getId());
+        Log::debug('getNickname : '.$socialInfo->getNickname());
+        Log::debug('getName : '.$socialInfo->getName());
+        Log::debug('getEmail : '.$socialInfo->getEmail());
+        Log::debug('getAvatar : '.$socialInfo->getAvatar());
+        // $user->getId();
+        // $user->getNickname();
+        // $user->getName();
+        // $user->getEmail();
+        // $user->getAvatar();
+        $userInfo = User::where('user_email', $socialInfo->getEmail())->first();
+
+        // if(!$userInfo) {
+        //     $insertData 
+        // }
+
+        // Log::debug('userInfo : '.$socialInfo);
+        // 토큰 발행
+        list($accessToken, $refreshToken) = MyToken::createTokens($userInfo);
+
+        // refreshToken 저장
+        MyToken::updateRefreshToken($userInfo, $refreshToken);
+        
+        $cookie = cookie('refreshToken', $refreshToken, 1, null, null, null, true);
+
+        return redirect('/social/login')->cookie($cookie);
+    }
+
+    public function socialLogin(Request $request) {
+        $refreshToken = $request->cookie('refreshToken');
+
+        $userInfo = User::find(MyToken::getValueInPayload($refreshToken, 'idt'));
+
+        if(!($userInfo || $userInfo->refreshToken === $refreshToken)) {
+            throw new MyAuthException('E24');
+        }
+
+        // 토큰 발행
+        list($accessToken, $refreshToken) = MyToken::createTokens($userInfo);
+
+        // refreshToken 저장
+        MyToken::updateRefreshToken($userInfo, $refreshToken);
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '로그인 성공'
+            ,'accessToken' => $accessToken
+            ,'refreshToken' => $refreshToken
+            ,'data' => $userInfo->toArray()
+        ];
+
+        return response()->json($responseData, 200);
     }
 }

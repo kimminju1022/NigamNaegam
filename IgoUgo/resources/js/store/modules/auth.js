@@ -107,6 +107,10 @@ export default {
                 // state 초기화
                 context.commit('setAuthFlg', false);
                 context.commit('setUserInfo', {});
+
+                // cookie.remove('refreshToken');
+                // removeCookie('refreshToken');
+                
     
                 router.replace('/');
             });
@@ -212,6 +216,26 @@ export default {
                 // errMsg.value = "이메일 전송 실패"
             })
         },
+        socialAuth(context) {
+            const url = '/api/auth/social';
+
+            axios.post(url)
+            .then(response => {
+                // 토큰 저장
+                localStorage.setItem('accessToken', response.data.accessToken);
+                localStorage.setItem('refreshToken', response.data.refreshToken);
+                localStorage.setItem('userInfo', JSON.stringify(response.data.data));
+                context.commit('setAuthFlg', true);
+                context.commit('setUserInfo', response.data.data);
+
+                alert('어서와 처음이지');
+
+                router.replace('/');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
     },
     getters: {
 

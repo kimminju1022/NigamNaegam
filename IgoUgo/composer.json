@@ -11,6 +11,7 @@
         "laravel/framework": "^9.0",
         "laravel/socialite": "^5.17",
         "laravel/tinker": "^2.7",
+        "socialiteproviders/google": "^4.1",
         "socialiteproviders/kakao": "^4.3"
     },
     "require-dev": {

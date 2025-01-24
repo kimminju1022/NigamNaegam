@@ -58,6 +58,10 @@ Route::post('/available/phone', [UserController::class, 'chkPhone'])->name('user
 //     // $user->token
 // });
 
+Route::get('/auth/login/{provider}', [AuthController::class, 'redirectToProvider']);
+Route::get('/auth/login/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
+Route::post('/auth/social', [AuthController::class, 'socialLogin']);
+
 // 이메일 인증
 // Route::get('/email/verify/{id}', [VerificationController::class, 'notice'])->middleware('my.auth')->name('verification.notice');
 Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->name('verification.send');

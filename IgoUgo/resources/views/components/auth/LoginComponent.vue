@@ -12,7 +12,9 @@
                 <p>회원이 아니시라면?</p>
                 <router-link to="/registration/chk"><button class="btn bg-clear btn-registration">회원가입</button></router-link> 
             </div> -->
-            <button class="btn" style="height: 50px;">소셜 로그인</button>
+            <!-- <a href="http://127.0.0.1:8000/auth/login/google"><button class="btn btn-goggle"><img src="/images/google_login2.png"></button></a> -->
+            <!-- <router-link to="/auth/login/google"><button class="btn btn-goggle"><img src="/images/google_login2.png"></button></router-link> -->
+            <button @click="loginWithGoogle" class="btn btn-goggle"><img src="/images/google_login2.png"></button>
             <div class="go-registration">
                 <router-link to="/find/pw/send-email"><button class="btn bg-clear btn-password">비밀번호 찾기</button></router-link>
                 <p>|</p>
@@ -31,6 +33,26 @@ const userInfo = reactive({
     user_email: ''
     ,user_password: ''
 });
+
+import axios from 'axios';
+
+// 로그인 함수
+const loginWithGoogle = async () => {
+    try {
+        window.location.href = 'http://localhost:8000/api/auth/login/google';
+    //     // 서버 API로 요청을 보내서 Google 로그인 URL을 받음
+    //     const response = await axios.get('http://localhost:8000/api/auth/login/google');
+        
+    //     // 서버에서 받은 리디렉션 URL로 페이지를 이동
+    //     window.location.href = response.data.redirect_url;
+    } catch (error) {
+        console.error('Google 로그인 실패:', error);
+    }
+};
+
+// const loginGoogle  = () => {
+//     store.dispatch('auth.google');
+// }
 </script>
 
 <style scoped>
@@ -81,6 +103,15 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.btn-goggle {
+    background-color: transparent;
+}
+
+.btn-goggle img{
+    min-width: 300px;
+    /* height: 50px; */
 }
 
 .btn-login {

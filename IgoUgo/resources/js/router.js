@@ -6,6 +6,7 @@ import MainPageComponent from '../views/components/MainPageComponent.vue';
 import LoginComponent from '../views/components/auth/LoginComponent.vue';
 import BeforeUserRegistrationComponent from '../views/components/user/BeforeUserRegistrationComponent.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
+import SocialLoginComponent from '../views/components/auth/SocialLoginComponent.vue';
 // 이메일 인증
 import VerifiedEmailComponent from '../views/components/auth/VerifiedEmailComponent.vue';
 import VerifiedLoadingComponent from '../views/components/auth/VerifiedLoadingComponent.vue';
@@ -93,6 +94,15 @@ const routes = [
         component: UserRegistrationComponent,
         beforeEnter: chkAuth,
     },
+    // 소셜 로그인
+    {
+        path: '/social/login',
+        component: SocialLoginComponent,
+    },
+    // {
+    //     path: '/auth/login/google/callback',
+    //     // component: VerifiedEmailComponent,
+    // },
     // 이메일
     {
         path: '/email/verify',
@@ -212,14 +222,14 @@ const routes = [
         component: QuestionUpdateComponent,
         beforeEnter: chkAuth,
     },
-    {
-        path: '/:catchAll(.*)',
-        component: NotFoundComponent,
-    },
     // 기타기타
     {
         path: '/loading',
         component: LoadingComponent, 
+    },
+    {
+        path: '/:catchAll(.*)',
+        component: NotFoundComponent,
     },
 ];
 
