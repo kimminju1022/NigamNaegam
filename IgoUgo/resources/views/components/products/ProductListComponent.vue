@@ -47,7 +47,10 @@
                     </div>
                 </div>
             </div>
-            <div>
+
+            <LoadingComponent v-if="loading" />
+
+            <div v-else>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div class="card-list">
                     <div v-for="item in products" :key="item">
@@ -97,6 +100,7 @@ import { computed, onBeforeMount, reactive, ref, watch} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
+import LoadingComponent from '../LoadingComponent.vue'
 
 const store = useStore();
 const route = useRoute();
@@ -118,6 +122,7 @@ const productTitle = ref('');
 const products = computed(() => store.state.product.productList);
 const productsCnt = computed(() => store.state.product.productCnt);
 const actionName = 'product/getProductsPagination';
+const loading = computed(() => store.state.loading.loading);
 
 // 필터 관련
 const searchData = reactive({
@@ -153,7 +158,7 @@ watch(
     }
 );
 
-store.dispatch(actionName, searchData);
+// store.dispatch(actionName, searchData);
 
 // const areaData = computed(() => store.state.hotel.hotelArea);
 
@@ -163,15 +168,17 @@ const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
 onBeforeMount(async () => {
+    store.commit('loading/setLoading', true);
     // 타이틀
     productTitle.value = productIdList[route.params.contenttypeid];
-
+    // searchData.sort = 'createdtime';
     flgSetup(); // 리사이즈 이벤트
     
     await store.dispatch(actionName, searchData);
     await store.dispatch('product/getProductsArea', searchData);
     await store.dispatch('product/getProductsAreaCode', searchData);
     // console.log('에리아데이터', areaData);
+    store.commit('loading/setLoading', false);
 });
 
 window.addEventListener('resize', flgSetup);

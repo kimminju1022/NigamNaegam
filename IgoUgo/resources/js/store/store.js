@@ -8,6 +8,7 @@ import pagination from './modules/pagination';
 import product from './modules/product';
 import verification from './modules/verification';
 import map from './modules/map';
+import loading from './modules/loading';
 
 export default createStore({
     modules: {
@@ -20,5 +21,6 @@ export default createStore({
         product,
         verification,
         map,
+        loading,
     }
 })
