@@ -21,10 +21,12 @@ export default {
                     area_code: location.area_code,
                     hc_code: location.hc_code,
                 };
+                console.log("api : ", config);
                 axios.post(url, config)
                 .then(response => {
                     // console.log('API : ', response.data);
                     context.commit('setNearbyPlaceList', response.data);
+                    console.log("list : ", response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
