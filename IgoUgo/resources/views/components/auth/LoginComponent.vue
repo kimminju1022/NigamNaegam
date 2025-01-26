@@ -14,7 +14,7 @@
             </div> -->
             <!-- <a href="http://127.0.0.1:8000/auth/login/google"><button class="btn btn-goggle"><img src="/images/google_login2.png"></button></a> -->
             <!-- <router-link to="/auth/login/google"><button class="btn btn-goggle"><img src="/images/google_login2.png"></button></router-link> -->
-            <button @click="loginWithGoogle" class="btn btn-goggle"><img src="/images/google_login2.png"></button>
+            <button @click="loginWithGoogle" class="btn btn-google"><img src="/images/google_login2.png"></button>
             <div class="go-registration">
                 <router-link to="/find/pw/send-email"><button class="btn bg-clear btn-password">비밀번호 찾기</button></router-link>
                 <p>|</p>
@@ -34,17 +34,10 @@ const userInfo = reactive({
     ,user_password: ''
 });
 
-import axios from 'axios';
-
-// 로그인 함수
+// 소셜 로그인 함수
 const loginWithGoogle = async () => {
     try {
         window.location.href = 'http://localhost:8000/api/auth/login/google';
-    //     // 서버 API로 요청을 보내서 Google 로그인 URL을 받음
-    //     const response = await axios.get('http://localhost:8000/api/auth/login/google');
-        
-    //     // 서버에서 받은 리디렉션 URL로 페이지를 이동
-    //     window.location.href = response.data.redirect_url;
     } catch (error) {
         console.error('Google 로그인 실패:', error);
     }
@@ -105,13 +98,13 @@ h1 {
     gap: 20px;
 }
 
-.btn-goggle {
+.btn-google {
     background-color: transparent;
 }
 
-.btn-goggle img{
-    min-width: 300px;
-    /* height: 50px; */
+.btn-google img{
+    /* min-width: 300px; */
+    height: 50px;
 }
 
 .btn-login {

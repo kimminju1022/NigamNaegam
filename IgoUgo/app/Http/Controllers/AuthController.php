@@ -179,23 +179,31 @@ class AuthController extends Controller
 
     public function handleProviderCallback($provider){
         $socialInfo = Socialite::driver($provider)->stateless()->user();
-        Log::debug('getId : '.$socialInfo->getId());
-        Log::debug('getNickname : '.$socialInfo->getNickname());
-        Log::debug('getName : '.$socialInfo->getName());
-        Log::debug('getEmail : '.$socialInfo->getEmail());
-        Log::debug('getAvatar : '.$socialInfo->getAvatar());
-        // $user->getId();
-        // $user->getNickname();
-        // $user->getName();
-        // $user->getEmail();
-        // $user->getAvatar();
+        
         $userInfo = User::where('user_email', $socialInfo->getEmail())->first();
 
-        // if(!$userInfo) {
-        //     $insertData 
-        // }
+        // 유저 없을 경우
+        if(!$userInfo) {
+            $insertData['user_email'] = $socialInfo->getEmai();
+            $insertData['user_name'] = $socialInfo->getName();
+            $insertData['user_nickname'] = $socialInfo->getNickname();
 
-        // Log::debug('userInfo : '.$socialInfo);
+            // 이거 어떻게 하지.....
+            $insertData['user_password'] = null;
+            $insertData['user_phone'] = null;
+
+            User::create($insertData);
+        }
+        
+        // $user = User::updateOrCreate([
+        //     'github_id' => $githubUser->id,
+        // ], [
+        //     'name' => $githubUser->name,
+        //     'email' => $githubUser->email,
+        //     'github_token' => $githubUser->token,
+        //     'github_refresh_token' => $githubUser->refreshToken,
+        // ]);
+        
         // 토큰 발행
         list($accessToken, $refreshToken) = MyToken::createTokens($userInfo);
 

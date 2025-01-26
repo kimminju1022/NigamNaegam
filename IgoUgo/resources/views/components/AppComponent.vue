@@ -43,15 +43,20 @@
                                         <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
                                     </div>
                                     <div class="dropdown-list">
-                                        <p></p>
-                                        <p></p>
-                                        <p></p>
-                                    </div>
-                                    <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
                                         <router-link to="">공지사항</router-link>
                                         <router-link to="/questions">문의사항</router-link>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
                                     </div>
                                 </div>
                             </div>
@@ -73,21 +78,26 @@
                                         <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
                                     </div>
                                     <div class="dropdown-list">
-                                        <p></p>
-                                        <p></p>
-                                        <p></p>
-                                    </div>
-                                    <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
                                         <router-link to="">공지사항</router-link>
                                         <router-link to="/questions">문의사항</router-link>
                                     </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
                                 </div>
                             </div>
                         </li>
                         <li class="header-list-hover">
-                            <router-link to="">코스추천</router-link>
+                            <router-link to="">커뮤니티</router-link>
                             <div class="dropdown-content">
                                 <div class="dropdown-menu">
                                     <div class="dropdown-list">
@@ -103,21 +113,26 @@
                                         <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
                                     </div>
                                     <div class="dropdown-list">
-                                        <p></p>
-                                        <p></p>
-                                        <p></p>
-                                    </div>
-                                    <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
                                         <router-link to="">공지사항</router-link>
                                         <router-link to="/questions">문의사항</router-link>
                                     </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
                                 </div>
                             </div>
                         </li>
                         <li class="header-list-hover">
-                            <p>커뮤니티</p>
+                            <router-link to="">체험단 신청</router-link>
                             <div class="dropdown-content">
                                 <div class="dropdown-menu">
                                     <div class="dropdown-list">
@@ -133,9 +148,39 @@
                                         <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
                                     </div>
                                     <div class="dropdown-list">
+                                        <a @click="redirectBoards('0')">리뷰게시판</a>
+                                        <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="">공지사항</router-link>
+                                        <router-link to="/questions">문의사항</router-link>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="header-list-hover">
+                            <router-link to="">이달의 추천</router-link>
+                            <div class="dropdown-content">
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-list">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <router-link to="/products/12" @click="$store.commit('pagination/setPaginationInitialize')">관광지</router-link>
+                                        <router-link to="/products/14" @click="$store.commit('pagination/setPaginationInitialize')">문화시설</router-link>
+                                        <router-link to="/products/28" @click="$store.commit('pagination/setPaginationInitialize')">레포츠</router-link>
+                                        <router-link to="/products/38" @click="$store.commit('pagination/setPaginationInitialize')">쇼핑</router-link>
+                                        <router-link to="/products/39" @click="$store.commit('pagination/setPaginationInitialize')">음식점</router-link>
                                     </div>
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
@@ -143,9 +188,19 @@
                                         <router-link to="">공지사항</router-link>
                                         <router-link to="/questions">문의사항</router-link>
                                     </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
+                                    <div class="dropdown-list dropdown-list2">
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                    </div>
                                 </div>
                             </div>
-                        </li>
+                        </li>   
                     </ul>
                 </div>
             </div>
@@ -569,12 +624,12 @@ header {
 .header-list-flex {
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    /* gap: 5px; */
 }
 
 .header-list-hover a, .header-list-hover p {
     color: #01083A;
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 500;
     padding: 5px 10px;
     position: relative;
@@ -582,13 +637,14 @@ header {
     text-decoration: none;
     text-transform: uppercase;
     text-align: center;
-    /* margin-top: 5px; */
 }
 
 .header-list-hover a:before
+, .header-list-hover a:after {
+/* .header-list-hover a:before
 , .header-list-hover a:after
 , .header-list-hover p:before
-, .header-list-hover p:after {
+, .header-list-hover p:after { */
     content: "";
     transition: 0.3s all ease;
     -webkit-backface-visibility: hidden;
@@ -611,9 +667,11 @@ header {
 }
 
 .header-list-hover a:hover:before
+, .header-list-hover a:hover:after {
+/* .header-list-hover a:hover:before
 , .header-list-hover a:hover:after
 , .header-list-hover p:hover:before
-, .header-list-hover p:hover:after {
+, .header-list-hover p:hover:after { */
     width: 100%;
     background: #01083A;
 }
@@ -653,19 +711,22 @@ header {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    gap: 50px;
 }
 
 .header-list-hover:hover .dropdown-content {
     display: block;
 }
 
-/* .dropdown-list a:hover  {
-    background-color: white;
-} */
+.dropdown-menu p {
+    width: 50px;
+}
 
-.dropdown-list a, .dropdown-list p {
-    font-size: 20px;
+.dropdown-list2 p {
+    width: 110px;
+}
+
+.dropdown-list a, .dropdown-list {
+    font-size: 18px;
 }
 
 
