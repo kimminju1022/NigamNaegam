@@ -22,7 +22,9 @@ class BoardCategorySeeder extends Seeder
             ['bc_code' => '0', 'bc_name' => '리뷰게시판']
             ,['bc_code' => '1', 'bc_name' => '자유게시판']
             ,['bc_code' => '2', 'bc_name' => '문의게시판']
-            ,['bc_code' => '3', 'bc_name' => '루트게시판']
+            ,['bc_code' => '3', 'bc_name' => '체험단 신청']
+            ,['bc_code' => '4', 'bc_name' => '이달의 추천']
+            ,['bc_code' => '5', 'bc_name' => '공지사항']
         ]);
     }
 }

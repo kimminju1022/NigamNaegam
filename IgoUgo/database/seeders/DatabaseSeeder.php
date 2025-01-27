@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         
         $this->call([
             UserSeeder::class
+            ,UserControlSeeder::class
             ,AreaSeeder::class
             // ,FestivalSeeder::class
             // ,HotelSeeder::class
@@ -32,14 +33,10 @@ class DatabaseSeeder extends Seeder
             ,CommentSeeder::class
             ,CommentReportSeeder::class
             ,LikeSeeder::class
-            ,NoticeSeeder::class
-            ,NoticeImageSeeder::class
             ,QuestionCategorySeeder::class
             ,QuestionSeeder::class
             ,ReviewCategorySeeder::class
             ,ReviewSeeder::class
-            ,RouteSeeder::class
-            ,RouteSpotSeeder::class
         ]);
     }
 }
