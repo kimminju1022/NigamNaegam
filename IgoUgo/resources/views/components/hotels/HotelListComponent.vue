@@ -252,20 +252,24 @@ const nearbyPlaceList = computed(() => store.state.map.nearbyPlaceList);
 
 function openmodalMap() {
     isVisibleMap.value = true;
+    hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+    hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+    findHotel.hc_code = hotelCategory.value; // 카테고리 필터 적용
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
         // 위치 권한 설정을 허용했을 때
         async (position) => {
-            latitude.value = position.coords.latitude; // 위도
-            longitude.value = position.coords.longitude; // 경도
-            hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
-            hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+            latitude.value = position.coords.latitude.toString(); // 위도
+            longitude.value = position.coords.longitude.toString(); // 경도
 
+            // 지역 필터 여부
             if(hotelArea.value.length === 0) {
+                findHotel.area_code = null;
+                // console.log('지역 필터 해제 시 초기화:', findHotel);
+
                 // 지역 필터가 적용되지 않았을 때 -> 중심좌표 : 현재 위치
                 findHotel.latitude = latitude.value;
                 findHotel.longitude = longitude.value;
-                findHotel.hc_code = hotelCategory.value; // 카테고리 필터 적용
                 // console.log(findHotel);
     
                 // 현재 위치 전달
@@ -282,10 +286,11 @@ function openmodalMap() {
             } else {
                 // 지역 필터가 적용되었을 때 -> 중심좌표 : 해당 지역의 시청
                 findHotel.area_code = hotelArea.value; // 지역 필터 적용
-                console.log(findHotel.area_code);
+                // console.log('지역필터 적용:', findHotel);
+
                 if (window.kakao && window.kakao.maps) {
                     // 스크립트가 이미 로드된 경우
-                    const location = await keywordLocation();
+                    const location = await keywordLocation(findHotel.area_code);
                     // console.log(location);
 
                     // 가져온 값으로 위도, 경도 재설정
@@ -297,8 +302,8 @@ function openmodalMap() {
                 } else {
                     // 스크립트를 로드한 후 지도를 로드
                     await loadKakaoMapScript();
-                    const location = await keywordLocation();
-                    // console.log(location);
+                    const location = await keywordLocation(findHotel.area_code);
+                    // console.log('시청 주소 : ', location);
 
                     // 가져온 값으로 위도, 경도 재설정
                     findHotel.latitude = location.latitude;
@@ -317,24 +322,57 @@ function openmodalMap() {
             // 기본 좌표: 서울특별시청
             latitude.value = 37.5665;
             longitude.value = 126.9780;
-            hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
-            hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+            // hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+            // hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
 
-            findHotel.latitude = latitude.value;
-            findHotel.longitude = longitude.value;
-            findHotel.area_code = hotelArea.value; // 지역 필터 적용
-            findHotel.hc_code = hotelCategory.value; // 카테고리 필터 적용
+            // 지역 필터 여부
+            if(hotelArea.value.length === 0) {
+                findHotel.area_code = null;
 
-            // 현재 위치 전달
-            await store.dispatch('map/takeNearbyPlaces', findHotel);
-
-            if (window.kakao && window.kakao.maps) {
-                // 스크립트가 이미 로드된 경우
-                await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+                // 지역 필터가 적용되지 않았을 때 -> 중심좌표 : 서울특별시청
+                findHotel.latitude = latitude.value;
+                findHotel.longitude = longitude.value;
+    
+                // 현재 위치 전달
+                await store.dispatch('map/takeNearbyPlaces', findHotel);
+    
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+                }
             } else {
-                // 스크립트를 로드한 후 지도를 로드
-                await loadKakaoMapScript();
-                await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+                // 지역 필터가 적용되었을 때 -> 중심좌표 : 해당 지역의 시청
+                findHotel.area_code = hotelArea.value; // 지역 필터 적용
+                // console.log('지역필터 적용:', findHotel);
+
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    const location = await keywordLocation(findHotel.area_code);
+                    // console.log(location);
+
+                    // 가져온 값으로 위도, 경도 재설정
+                    findHotel.latitude = location.latitude;
+                    findHotel.longitude = location.longitude;
+                    
+                    await store.dispatch('map/takeNearbyPlaces', findHotel);
+                    await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    const location = await keywordLocation(findHotel.area_code);
+                    // console.log('시청 주소 : ', location);
+
+                    // 가져온 값으로 위도, 경도 재설정
+                    findHotel.latitude = location.latitude;
+                    findHotel.longitude = location.longitude;
+                    
+                    await store.dispatch('map/takeNearbyPlaces', findHotel);
+                    await loadKakaoMap(findHotel.latitude, findHotel.longitude);
+                }
             }
         });
     } else {
@@ -383,16 +421,38 @@ const loadKakaoMapScript = () => {
 }
 
 // 키워드 검색을 통해 위도, 경도 값 반환
-const keywordLocation = async () => {
+const keywordLocation = async (areaCode) => {
+    const areaNum = areaCode[0];
+    console.log('지역은? : ', areaNum);
+    var areaName = '';
+    switch(areaNum) {
+        case '1': areaName = '서울특별시청'; break;
+        case '2': areaName = '인천광역시청'; break;
+        case '3': areaName = '대전광역시청'; break;        
+        case '4': areaName = '대구광역시청'; break;
+        case '5': areaName = '광주광역시청'; break;
+        case '6': areaName = '부산광역시청'; break;
+        case '7': areaName = '울산광역시청'; break;
+        case '8': areaName = '세종특별자치시청'; break;
+        case '31': areaName = '경기도청'; break;
+        case '32': areaName = '강원특별자치도청'; break;
+        case '33': areaName = '충청북도청'; break;
+        case '34': areaName = '충청남도청'; break;
+        case '35': areaName = '경상북도청'; break;
+        case '36': areaName = '경상남도청'; break;
+        case '37': areaName = '전북특별자치도청'; break;
+        case '38': areaName = '전라남도청'; break;
+        case '39': areaName = '제주특별자치도청'; break;
+    }
     return new Promise((resolve, reject) => {
         var places = new window.kakao.maps.services.Places(); // 장소 검색 서비스 객체 생성
-        places.keywordSearch('인천광역시청', (result, status) => {
+        places.keywordSearch(areaName, (result, status) => {
             if(status === window.kakao.maps.services.Status.OK) {
                 var townHall = {
                     latitude: result[0].y,
                     longitude: result[0].x,
                 };
-                // console.log(townHall);
+                console.log('townHall : ', townHall);
     
                 resolve(townHall);
             } else {
@@ -421,8 +481,8 @@ const loadKakaoMap = async (Lat, Lon) => {
             // const level = map.value.getLevel(); // 지도 레벨
             const center = map.getCenter(); // 지도 중심좌표
 
-            findHotel.latitude = center.getLat(); // 중심좌표의 위도
-            findHotel.longitude = center.getLng(); // 중심좌표의 경도
+            findHotel.latitude = center.getLat().toString(); // 중심좌표의 위도
+            findHotel.longitude = center.getLng().toString(); // 중심좌표의 경도
 
             // 새로운 중심좌표 기준으로 서버에 데이터 요청
             await store.dispatch('map/takeNearbyPlaces', findHotel);

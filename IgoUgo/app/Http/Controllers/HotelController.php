@@ -134,7 +134,7 @@ class HotelController extends Controller
                 cos(radians(mapx) - radians(?)) +
                 sin(radians(?)) * sin(radians(mapy))
             )) AS distance", [$currentLat, $currentLon, $currentLat])
-            ->having('distance', '<=', 3) // km 기준
+            ->having('distance', '<=', 5) // km 기준
             ->orderBy('distance')
             ->get();
 
