@@ -23,12 +23,24 @@ const userInfo = reactive({
     user_email: '',
 });
 
+const isEmailChecked = ref(false);
+
 const chkEmail = () => {
-    store.dispatch('user/chkAvailableEmail', userInfo.user_email);
+    store.dispatch('user/chkAvailableEmail', userInfo.user_email)
+    .then(() => {
+        isEmailChecked.value = true;
+    })
+    .catch(() => {
+        isEmailChecked.value = false;
+    });
 }
 
 const verifyEmail = (userInfo) => {
     // console.log('이메일 값:', userInfo.user_email);  
+    if (!isEmailChecked.value) {
+        alert('이메일 중복확인 먼저 해주세요.');
+        return; // 중복확인이 안 된 경우 함수 실행 중단
+    }
     store.dispatch('verification/send', userInfo);
 }
 </script>
