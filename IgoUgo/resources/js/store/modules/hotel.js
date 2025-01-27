@@ -6,10 +6,10 @@ export default {
     state: () => ({
         hotelList: [],
         hotelArea: [],
-        hotelAreaCode: JSON.parse(localStorage.getItem('hotelAreaCode')) ? JSON.parse(localStorage.getItem('hotelAreaCode')) : [],
+        hotelAreaCode: JSON.parse(sessionStorage.getItem('hotelAreaCode')) ? JSON.parse(localStorage.getItem('hotelAreaCode')) : [],
         // hotelArea: JSON.parse(localStorage.getItem('hotelArea')) || [],
         hotelCategory: [],
-        hotelCategoryCode: JSON.parse(localStorage.getItem('hotelCategoryCode')) ? JSON.parse(localStorage.getItem('hotelCategoryCode')) : [],
+        hotelCategoryCode: JSON.parse(sessionStorage.getItem('hotelCategoryCode')) ? JSON.parse(localStorage.getItem('hotelCategoryCode')) : [],
         count: [],
         hotelDetail: [],
         hotelDetailImg: [],
@@ -23,14 +23,14 @@ export default {
         },
         setHotelAreaCode(state, list) {
             state.hotelAreaCode = list
-            localStorage.setItem('hotelAreaCode', JSON.stringify(list));
+            sessionStorage.setItem('hotelAreaCode', JSON.stringify(list));
         },
         setHotelCategory(state, list) {
             state.hotelCategory = list;
         },
         setHotelCategoryCode(state, list) {
             state.hotelCategoryCode = list;
-            localStorage.setItem('hotelCategoryCode', JSON.stringify(list));
+            sessionStorage.setItem('hotelCategoryCode', JSON.stringify(list));
         },
         setCount(state, list) {
             state.count = list;

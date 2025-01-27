@@ -51,7 +51,10 @@
                     </div>
                 </div>
             </div>
-            <div>
+
+            <LoadingComponent v-if="loading" />
+
+            <div v-else>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div class="card-list">
                     <div v-for="item in hotels" :key="item" >
@@ -125,13 +128,16 @@ import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
+import LoadingComponent from '../LoadingComponent.vue';
 import env from '../../../js/env';
 
 const store = useStore();
 const route = useRoute();
 
+
 // 호텔 리스트 관련
 const hotels = computed(() => store.state.hotel.hotelList);
+const loading = computed(() => store.state.loading.loading);
 // const hotelAreaCode = computed(() => store.state.hotelAreaCode);
 const actionName = 'hotel/getHotelsPagination';
 let isActive = false;
@@ -162,6 +168,7 @@ const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
 onBeforeMount(async () => {
+    store.commit('loading/setLoading', true);
     flgSetup(); // 리사이즈 이벤트
 
     // const saveAreaCode = store.state.hotel.hotelAreaCode;
@@ -171,6 +178,8 @@ onBeforeMount(async () => {
     await store.dispatch('hotel/getHotelsCategory', searchData);
     await store.dispatch('hotel/getHotelAreaCode', searchData);
     await store.dispatch('hotel/getHotelCategoryCode', searchData);
+
+    store.commit('loading/setLoading', false);
 });
 
 window.addEventListener('resize', flgSetup);
