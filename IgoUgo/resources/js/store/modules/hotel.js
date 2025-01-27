@@ -13,6 +13,7 @@ export default {
         count: [],
         hotelDetail: [],
         hotelDetailImg: [],
+        hotelRank: [],
     }),
     mutations: {
         setHotelList(state, list) {
@@ -40,6 +41,9 @@ export default {
         },
         setHotelDetailImg(state, list) {
             state.hotelDetailImg = list;
+        },
+        setHotelsRank(state, list) {
+            state.hotelRank = list
         },
     },
     actions: {
@@ -135,6 +139,21 @@ export default {
                 });
             });
         },
+
+        getHotelsRank(context) {
+            return new Promise((resolve, reject) => {
+                const url = 'api/hotels/rank'
+                axios.get(url)
+                .then(response => {
+                    context.commit('setHotelsRank', response.data);
+                    return resolve;
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject;
+                })
+            })
+        }
     },
     getters: {
 

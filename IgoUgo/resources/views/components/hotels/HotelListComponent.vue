@@ -30,11 +30,11 @@
                     </div>
                     <p>|</p>
                     <div @click="sortData('modifiedtime')" class="order-list-item">
-                        <p :class="{ 'active-font-bold': isActive }">최신순</p>
+                        <p :class="{ 'active-font-bold': isActiveSort }">최신순</p>
                         <span class="order-list-item-update font-bold">NEW</span>
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
+                    <div @click="highRanking()"class="order-list-item">
                         <p>별점순</p>
                         <img src="img_product/img_thumb.png" class="img-order">
                     </div>
@@ -140,9 +140,11 @@ const hotels = computed(() => store.state.hotel.hotelList);
 const loading = computed(() => store.state.loading.loading);
 // const hotelAreaCode = computed(() => store.state.hotelAreaCode);
 const actionName = 'hotel/getHotelsPagination';
-let isActive = false;
 
 // 필터 관련
+let isActiveSort = false;
+// let isActiveRanking = false;
+
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     area_code: store.state.hotel.hotelAreaCode,
@@ -154,12 +156,16 @@ const searchData = reactive({
 function sortData(data) {
     if(searchData.sort === data) {
         searchData.sort = 'createdtime';
-        isActive = false
+        isActiveSort = false
     } else {
         searchData.sort = data;
-        isActive = true
+        isActiveSort = true
     }
     store.dispatch('hotel/getHotelsPagination', searchData);
+}
+
+function highRanking() {
+    
 }
 
 // 반응형

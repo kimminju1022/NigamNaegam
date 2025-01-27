@@ -30,6 +30,8 @@ Route::get('/areas', [HotelController::class, 'areas']);
 Route::get('/categories', [HotelController::class, 'categories']);
 Route::get('/hotels/{contentid}', [HotelController::class, 'hotelsDetail']);
 Route::post('/hotels', [HotelController::class, 'getNearbyPlaces']);
+Route::get('/hotels/align/rank', [HotelController::class, 'ranking']);
+
 
 // ----- 상품 관련 -----
 // 상품 메인 라우터

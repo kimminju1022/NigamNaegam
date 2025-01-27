@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\Hotel;
+// use App\Models\Hotel;
 use App\Models\HotelCategory;
 use App\Models\Product;
+// use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -98,6 +100,22 @@ class HotelController extends Controller
         $categories = HotelCategory::get();
 
         return response()->json($categories);
+    }
+
+    public function ranking(Request $request) {
+        // $ranking = Product::with('reviews')
+        // ->select('products.product_id', 'products.title', 'products.firstimage', DB::raw('IFNULL(AVG(reviews.rate), 0) as avg_rate'))
+        // ->leftJoin('reviews', 'products.product_id', '=', 'reviews.product_id')
+        // ->groupBy('products.product_id', 'products.title', 'products.firstimage')
+        // ->orderByDesc('avg_rate')
+        // ->get();
+        $ranking = Product::select('products.product_id', 'products.title', 'products.firstimage', DB::raw('IFNULL(AVG(reviews.rate), 0) as avg_rate'))
+        ->leftJoin('reviews', 'products.product_id', '=', 'reviews.product_id')
+        ->groupBy('products.product_id', 'products.title', 'products.firstimage')
+        ->orderByDesc('avg_rate')
+        ->get();
+
+        return response()->json($ranking->toArray());
     }
 
     // 반경 1km 내의 모든 데이터

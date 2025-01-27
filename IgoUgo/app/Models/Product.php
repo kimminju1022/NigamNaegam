@@ -53,4 +53,8 @@ class Product extends Model
     public function hotel_infos() {
         return $this->hasMany(HotelInfo::class, 'product_id', 'product_id');
     }
+    
+    public function reviews() {
+        return $this->hasMany(Review::class, 'product_id', 'product_id');
+    }
 }
