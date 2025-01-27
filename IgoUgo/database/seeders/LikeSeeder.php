@@ -37,9 +37,7 @@ class LikeSeeder extends Seeder
     public function run()
     {
         $boards = Board::select('board_id', 'user_id', 'created_at')
-                        // ->where('bc_type', '0')
-                        // ->orWhere('bc_type', '1')
-                        ->whereIn('bc_code', ['0', '1', '3'])
+                        ->whereIn('bc_code', ['0', '1', '3', '4']) // 문의, 공지사항 제외 모든 게시판
                         ->whereNull('deleted_at')
                         ->inRandomOrder()
                         ->get();
@@ -61,16 +59,6 @@ class LikeSeeder extends Seeder
                     $like->save(); 
                 }
             }
-            // $like = new Like();
-            // $date = $this->faker->dateTimeBetween($item->created_at, $item->created_at->copy()->addDays(7));
-
-            // $like->like_flg = rand(0,1);
-            // $like->board_id = $item->board_id;
-            // $like->user_id = User::select('user_id')->inRandomOrder()->first()->user_id;
-            // $like->created_at = $date;
-            // $like->updated_at = $date;
-    
-            // $like->save(); 
         }
     }
 }

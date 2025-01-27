@@ -18,14 +18,14 @@ class HotelInfoFactory extends Factory
      */
     public function definition()
     {
-        $hotel = Hotel::select('hotel_id')->inRandomOrder()->first();
-        // $hotel_cat = HotelCategory::select('hc_type')->inRandomOrder()->first();
-        $hotel_cat = HotelCategory::select('hc_code')->inRandomOrder()->first();
+        // $hotel = Hotel::select('hotel_id')->inRandomOrder()->first();
+        // // $hotel_cat = HotelCategory::select('hc_type')->inRandomOrder()->first();
+        // $hotel_cat = HotelCategory::select('hc_code')->inRandomOrder()->first();
 
-        return [
-            'hotel_id' => $hotel->hotel_id,
-            // 'hc_type' => $hotel_cat->hc_type,
-            'hc_code' => $hotel_cat->hc_code,
-        ];
+        // return [
+        //     'hotel_id' => $hotel->hotel_id,
+        //     // 'hc_type' => $hotel_cat->hc_type,
+        //     'hc_code' => $hotel_cat->hc_code,
+        // ];
     }
 }

@@ -18,13 +18,6 @@ class LikeFactory extends Factory
      */
     public function definition()
     {
-        // $user = User::select('user_id')->inRandomOrder()->first();
-        // $board = Board::select('board_id')->where('bc_type', '0')->orWhere('bc_type', '1')->inRandomOrder()->first();  // bc_type 0,1만 들고와야해
-        
-        // return [
-        //     'board_id' => $board->board_id
-        //     ,'user_id' => $user->user_id
-        //     ,'like_flg' => rand(0,1)
-        // ];
+        //
     }
 }
