@@ -20,7 +20,7 @@ class UserFactory extends Factory
     {
         $create_date = $this->faker->dateTimeBetween('-3 year');
         $update_date = $this->faker->dateTimeBetween('-3 year'); // 250101
-        $six_months = Carbon::now()->addmonths(-6); // 240727
+        $six_months = Carbon::now()->subMonths(6); // 240727
         $out = rand(0,1);
         $flg = rand(0,1);
 

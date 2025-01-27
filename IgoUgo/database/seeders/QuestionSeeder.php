@@ -44,9 +44,13 @@ class QuestionSeeder extends Seeder
 
         foreach($boards as $item) {
             $random_status = random_int(0, 1);
+
+            // created_at에서 7일 더한 날짜중 랜덤일 생성
             $date = $this->faker->dateTimeBetween($item->created_at, $item->created_at->copy()->addDays(7));
+            // 현재 날짜에서 6개월 뺀 날짜
             $flg_date = Carbon::now()->subMonths(6);
 
+            // 가져온 랜덤일이 6개월 이전보다 작은지 체크
             if(Carbon::parse($date)->lt($flg_date)) {
                 $update = Carbon::parse($date)->addMonths(6);
             } else {
@@ -60,11 +64,14 @@ class QuestionSeeder extends Seeder
             $question->que_content = $random_status === 0 ? null : $this->faker->realText(rand(10, 2000));
             $question->que_status = (string)$random_status;
 
+            // 게시글 삭제되지 않은 경우
             if($item->board_flg === '0') {
                 $question->que_flg = '0';
                 $question->created_at = $item->created_at;
                 $question->updated_at = $random_status === 0 ? $item->created_at : $date;
-            } else if($item->board_flg === '1') {
+            } 
+            // 게시글 삭제된 경우
+            else if($item->board_flg === '1') {
                 $question->que_flg = '1';
                 $question->created_at = $item->created_at;
                 $question->updated_at = $update;
