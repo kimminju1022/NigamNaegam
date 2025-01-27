@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('review_categories', function (Blueprint $table) {
             $table->id('rc_id');
-            $table->char('rc_code', 1)->unique()->comment('12 : 관광지, 14 : 문화시설, 28 : 레포츠, 32 : 호텔, 38 : 쇼핑, 39 : 음식점');
+            $table->char('rc_code', 2)->unique()->comment('12 : 관광지, 14 : 문화시설, 28 : 레포츠, 32 : 호텔, 38 : 쇼핑, 39 : 음식점');
             $table->string('rc_name', 10);
         });
     }
