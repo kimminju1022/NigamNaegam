@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('user_controls', function (Blueprint $table) {
             $table->id('control_id');
-            $table->bigInteger('user_id');
-            $table->timestamp('expired_at');
+            $table->bigInteger('user_id')->unsigned();
+            $table->timestamp('expires_at');
             $table->timestamps();
             $table->softDeletes();
         });
