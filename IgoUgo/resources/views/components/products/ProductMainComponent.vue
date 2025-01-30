@@ -4,7 +4,8 @@
     <div v-for="(condition, idx) in conditions" :key="idx" class="product-line">
         <!-- <div :style="{ backgroundImage: 'url(' + products.firstimage + ')' }" class="product-main-img"> -->
         <router-link :to="getProductLink(condition)">
-            <div class="product-main-img" :class="'back-' + condition">
+            <!-- <div class="product-main-img" :class="'back-' + condition"> -->
+            <div class="product-main-img">
                 <div class="product-main-title">
                     <p v-if="condition === 'spot'">관광지</p>
                     <p v-else-if="condition === 'culture'">문화시설</p>
@@ -57,31 +58,7 @@ const getProductLink = (condition) => {
 };
 
 // DB
-// const allProduct = ref({}); // 조건별 데이터를 저장
 const loading = ref(true); // 로딩 상태
-
-// const fetchConditionProduct = (condition) => {
-//     return axios.get('/api/products', condition)
-//     .then((response) => {
-//         allProduct.valueresponse.data;
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     })
-// }
-
-// const fetchAllProduct = () => {
-//     loading.value = true;
-//     const promises = conditions.map((condition) => fetchConditionProduct(condition));
-//     Promise.all(promises)
-//     .then(() => {
-//         loading.value = false;
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//         loading.value = false;
-//     })
-// }
 </script>
 
 <style scoped>
@@ -109,6 +86,8 @@ const loading = ref(true); // 로딩 상태
     object-fit: cover;
     background-position: center;
     padding: 20px 0;
+    background-image: url('/img_product/pattern2.png');
+    background-size: cover;
 }
 .product-main-title {
     padding: 30px 20px;
@@ -117,7 +96,7 @@ const loading = ref(true); // 로딩 상태
     font-weight: 900;
     margin-top: 140px;
 }
-.back-spot {
+/* .back-spot {
     background-image: url('/img_product/spot.png');
 }
 .back-culture {
@@ -131,5 +110,5 @@ const loading = ref(true); // 로딩 상태
 }
 .back-restaurant {
     background-image: url('/img_product/restaurant.png');
-}
+} */
 </style>

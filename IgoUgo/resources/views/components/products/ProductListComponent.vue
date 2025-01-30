@@ -41,7 +41,7 @@
                         <img src="/img_product/img_filter.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
+                    <div @click="openmodalMap" class="order-list-item">
                         <img src="/img_product/img_placeholder.png" class="img-map">
                         <p>지도 보기</p>
                     </div>
@@ -93,6 +93,14 @@
             </div>
         </div>
     </div>
+
+    <!-- 지도 모달 -->
+    <div v-if="isVisibleMap" class="modal-overlay">
+        <div class="modal-content-map">
+            <img @click="closemodalMap" class="modal_x_img modal_x_img_position" src="/img_product/img_x.png" alt="">
+            <div id="map"></div>
+        </div>
+    </div>
 </template>
     
 <script setup>
@@ -101,6 +109,7 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
 import LoadingComponent from '../LoadingComponent.vue'
+import env from '../../../js/env';
 
 const store = useStore();
 const route = useRoute();
@@ -155,6 +164,7 @@ watch(
         searchData.area_code = [];
         searchData.page = 1;
         store.dispatch(actionName, searchData);
+        findProduct.content_type_id = newId;
     }
 );
 
@@ -228,82 +238,321 @@ function closemodal() {
     isVisible.value = false;
 }
 
-// 컨트롤러로 데이터 전송하는법?
-// const category = ref([
-//     { id: 1, name: '서울' },
-// ]);
+// 지도모달
+const isVisibleMap = ref(false);
+const latitude = ref(null);
+const longitude = ref(null);
+const productArea = ref([]);
+const findProduct = reactive({});
+findProduct.content_type_id = route.params.contenttypeid;
+const nearbyProductList = computed(() => store.state.map.nearbyProductList);
 
-// async function applyFilters() { 
-//     try {
-//         await axios.get('/api/filters', {
-//         filters: selectedFilters.value
-//         });
-//     } catch {
-//         console.error(error);
-//     }
-// }
+function openmodalMap() {
+    isVisibleMap.value = true;
+    productArea.value = JSON.parse(sessionStorage.getItem('productAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+    // findProduct.content_type_id = productTypeId;
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+        // 위치 권한 설정을 허용했을 때
+        async (position) => {
+            latitude.value = position.coords.latitude.toString(); // 위도
+            longitude.value = position.coords.longitude.toString(); // 경도
 
+            // 지역 필터 여부
+            if(productArea.value.length === 0) {
+                findProduct.area_code = null;
+                // console.log('지역 필터 해제 시 초기화:', findHotel);
 
-
-// ----------------------------------------------------------------------------    
-// // 마운트된 후
-// onMounted(async() => {
-//     await loadHotels()
-//     // console.log(hotels)
-// });
-
-// // 호텔 불러오기
-// const hotels = ref([]);
-// let current_page = ref(1)
-
-// async function loadHotels() {
-//     try {
-//         const response = await axios.get(`/api/hotels?page=${current_page.value}`);
-//         // console.log(response.data.data);
-//         hotels.value = response.data.data
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
-
-// // 페이지네이션
-
-// // 페이지 버튼 계산
-// // function maxPage() {
-// //     loadHotels();
-// //     console.log(hotels.value.per_page);
-// //     return hotels.value.per_page;
-// // }
-
-
-// const pages = computed(() => {
-//     // maxPage()
-//     const totalPages = 46;
-//     const pageCount = 5;
-//     const startPage = Math.max(current_page.value - Math.floor(pageCount / 2), 1);
-//     // 만약 current_page.value가 5면? 5 빼기 5/2=2(나머지버림)  3이나오니까 max에서 3이반환됨됨
-//     const endPage = Math.min(startPage + pageCount - 1, totalPages);
-//     // 3이 반환되서 5랑 더하면 8이됨 8이 나오니까 8-1 해서 min에서 7이 반환됨
-//     const adjustedStartPage = Math.max(endPage - pageCount + 1, 1);
-//     // 7-3+1 해서 5이된다 
+                // 지역 필터가 적용되지 않았을 때 -> 중심좌표 : 현재 위치
+                findProduct.latitude = latitude.value;
+                findProduct.longitude = longitude.value;
+                // console.log(findHotel);
     
-//     return Array.from({ length: Math.min(pageCount, totalPages) }, (_, i) => adjustedStartPage + i)
-//     // Array에서 i를쓰면 0에서 부터 반복됨
-//     // 7-3에 +1 이니까 5가출력됨 5개의 공간을가진 배열이 만들어지고 5 i는 1씩상승하고 i가 증가할 때마다 startPage 값에 더해지는 구조
-//     // 3이니까 3+0 은 3 3+1은 4... 해서 배열에 3 4 5 6 7 결국 현제페이지인 5가 가운데 오도록 작동
-// });
+                // 현재 위치 전달
+                await store.dispatch('map/takeNearbyProducts', findProduct);
+    
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                }
+            } else {
+                // 지역 필터가 적용되었을 때 -> 중심좌표 : 해당 지역의 시청
+                findProduct.area_code = productArea.value; // 지역 필터 적용
+                // console.log('지역필터 적용:', findHotel);
 
-// // 페이지 변경
-// function changePage(page) {
-//     // maxPage()
-//     const totalPages = hotels.value.per_page;
-//     if (page < 1 || page > totalPages) {
-//         return 
-//         // page가 1이하거나 46이상이면 작동안하고 리턴시켜버려서 함수를 나가버리기기
-//     }
-//     current_page.value = page;
-//     loadHotels()
-// }
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    const location = await keywordLocation(findProduct.area_code);
+                    // console.log(location);
+
+                    // 가져온 값으로 위도, 경도 재설정
+                    findProduct.latitude = location.latitude;
+                    findProduct.longitude = location.longitude;
+                    
+                    await store.dispatch('map/takeNearbyProducts', findProduct);
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    const location = await keywordLocation(findProduct.area_code);
+                    // console.log('시청 주소 : ', location);
+
+                    // 가져온 값으로 위도, 경도 재설정
+                    findProduct.latitude = location.latitude;
+                    findProduct.longitude = location.longitude;
+                    
+                    await store.dispatch('map/takeNearbyProducts', findProduct);
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                }
+            }
+        },
+
+        // 위치 권한 설정을 허용하지 않았을 때(기본좌표는 서울특별시청)
+        async () => {
+            // alert('위치 권한을 허용하지 않았습니다. 기본 위치(서울특별시청)로 설정합니다.');
+            
+            // 기본 좌표: 서울특별시청
+            latitude.value = 37.5665;
+            longitude.value = 126.9780;
+            // hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+            // hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+
+            // 지역 필터 여부
+            if(productArea.value.length === 0) {
+                findProduct.area_code = null;
+
+                // 지역 필터가 적용되지 않았을 때 -> 중심좌표 : 서울특별시청
+                findProduct.latitude = latitude.value;
+                findProduct.longitude = longitude.value;
+    
+                // 현재 위치 전달
+                await store.dispatch('map/takeNearbyProducts', findProduct);
+    
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                }
+            } else {
+                // 지역 필터가 적용되었을 때 -> 중심좌표 : 해당 지역의 시청
+                findProduct.area_code = productArea.value; // 지역 필터 적용
+                // console.log('지역필터 적용:', findHotel);
+
+                if (window.kakao && window.kakao.maps) {
+                    // 스크립트가 이미 로드된 경우
+                    const location = await keywordLocation(findProduct.area_code);
+                    // console.log(location);
+
+                    // 가져온 값으로 위도, 경도 재설정
+                    findProduct.latitude = location.latitude;
+                    findProduct.longitude = location.longitude;
+                    
+                    await store.dispatch('map/takeNearbyProducts', findProduct);
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                } else {
+                    // 스크립트를 로드한 후 지도를 로드
+                    await loadKakaoMapScript();
+                    const location = await keywordLocation(findProduct.area_code);
+                    // console.log('시청 주소 : ', location);
+
+                    // 가져온 값으로 위도, 경도 재설정
+                    findProduct.latitude = location.latitude;
+                    findProduct.longitude = location.longitude;
+                    
+                    await store.dispatch('map/takeNearbyProducts', findProduct);
+                    await loadKakaoMap(findProduct.latitude, findProduct.longitude);
+                }
+            }
+        });
+    } else {
+        alert('Geolocation을 지원하지 않는 브라우저입니다.');
+    }
+}
+
+function closemodalMap() {
+    isVisibleMap.value = false;
+}
+
+// 지도
+var map = '';
+const markers = ref([]); // 마커 배열
+
+// Debounce 함수 정의
+const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+        if (timer) clearTimeout(timer); // 이전 타이머 취소
+        timer = setTimeout(() => {
+            func(...args); // 마지막 이벤트 실행
+        }, delay);
+    };
+};
+
+// 카카오맵 스크립트 다운로드
+const loadKakaoMapScript = () => {
+    return new Promise((resolve, reject) => {
+        const existingScript = document.querySelector('script[src*="kakao.com"]');
+        if (existingScript) {
+            // 이미 로드된 스크립트가 있으면 바로 resolve
+            resolve();
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`;
+        script.onload = () => {
+            window.kakao.maps.load(resolve); // 카카오맵 API 로드 후 resolve
+        };
+        script.onerror = () => {
+            reject(new Error('Kakao map script load failed.'));
+        };
+        document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+    });
+}
+
+// 키워드 검색을 통해 위도, 경도 값 반환
+const keywordLocation = async (areaCode) => {
+    const areaNum = areaCode[0];
+    // console.log('지역은? : ', areaNum);
+    var areaName = '';
+    switch(areaNum) {
+        case '1': areaName = '서울특별시청'; break;
+        case '2': areaName = '인천광역시청'; break;
+        case '3': areaName = '대전광역시청'; break;        
+        case '4': areaName = '대구광역시청'; break;
+        case '5': areaName = '광주광역시청'; break;
+        case '6': areaName = '부산광역시청'; break;
+        case '7': areaName = '울산광역시청'; break;
+        case '8': areaName = '세종특별자치시청'; break;
+        case '31': areaName = '경기도청'; break;
+        case '32': areaName = '강원특별자치도청'; break;
+        case '33': areaName = '충청북도청'; break;
+        case '34': areaName = '충청남도청'; break;
+        case '35': areaName = '경상북도청'; break;
+        case '36': areaName = '경상남도청'; break;
+        case '37': areaName = '전북특별자치도청'; break;
+        case '38': areaName = '전라남도청'; break;
+        case '39': areaName = '제주특별자치도청'; break;
+    }
+    return new Promise((resolve, reject) => {
+        var places = new window.kakao.maps.services.Places(); // 장소 검색 서비스 객체 생성
+        places.keywordSearch(areaName, (result, status) => {
+            if(status === window.kakao.maps.services.Status.OK) {
+                var townHall = {
+                    latitude: result[0].y,
+                    longitude: result[0].x,
+                };
+                // console.log('townHall : ', townHall);
+    
+                resolve(townHall);
+            } else {
+                reject(new Error("Failed to fetch location")); // 에러 처리
+            }
+        });
+    });
+};
+
+// 카카오맵 지도 - 현재위치 기준
+const loadKakaoMap = async (Lat, Lon) => {
+    // 키워드 검색 - 지역 선택시 해당 지역의 시청으로
+    const container = document.getElementById("map");
+    if (container && Lat && Lon) {
+        const options = {
+            center: new window.kakao.maps.LatLng(Lat, Lon),
+            level: 6,
+        };
+        map = new window.kakao.maps.Map(container, options);
+        console.log("Map loaded successfully.");
+
+        loadMarker(nearbyProductList.value);
+
+        // Debounce를 적용한 중심좌표 변경 이벤트 핸들러
+        const debouncedCenterChange = debounce(async () => {
+            // const level = map.value.getLevel(); // 지도 레벨
+            const center = map.getCenter(); // 지도 중심좌표
+
+            findProduct.latitude = center.getLat().toString(); // 중심좌표의 위도
+            findProduct.longitude = center.getLng().toString(); // 중심좌표의 경도
+
+            // 새로운 중심좌표 기준으로 서버에 데이터 요청
+            await store.dispatch('map/takeNearbyProducts', findProduct);
+            
+            // 새로운 마커 로드
+            loadMarker(nearbyProductList.value);
+        }, 1000); // 1초 간격으로 실행
+
+        // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록
+        window.kakao.maps.event.addListener(map, 'center_changed', debouncedCenterChange);
+    } else {
+        console.error("Map cannot be loaded. Container is null or Lat/Lng is null.");
+    }
+};
+
+// 카카오맵 마커
+const loadMarker = (placeList) => {
+    if(!placeList || placeList.length === 0) {
+        // console.log("No placeList to load.");
+        return;
+    }
+
+    // 기존 마커 제거 -> 중심좌표 이동하기 전에
+    clearMarkers();
+
+    if(placeList || placeList.length !== 0) {
+        // 새로운 마커 추가
+        placeList.forEach(place => {
+            const markerPosition = new window.kakao.maps.LatLng(place.mapy, place.mapx);
+        
+            const marker = new window.kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: markerPosition,
+            });
+            
+            // 인포윈도우 생성
+            const infowindow = new window.kakao.maps.InfoWindow({
+                content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
+            });
+
+            // 마커에 마우스 이벤트 등록
+            window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
+            window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
+
+            // 배열에 저장
+            markers.value.push(marker);
+        });
+    }
+}
+
+// 마커 마우스오버 이벤트
+const showInfoWindow = (map, marker, infowindow) => {
+    return function() {
+        infowindow.open(map, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        // console.log("Infowindow DOM element:", infowindow); // 확인용
+    };
+};
+
+// 마커에 마우스아웃 이벤트 등록
+const hideInfoWindow = (infowindow) => {
+    return function() {
+        infowindow.close(); // 인포윈도우 닫기
+        // console.log("Is infowindow open? ", infowindow); // 확인용
+    };
+};
+
+// 마커 제거
+const clearMarkers = () => {
+    // console.log('clearing....');
+    markers.value.forEach((marker) => {
+        marker.setMap(null); // 마커 지도에서 제거
+    });
+    markers.value = []; // 배열 초기화
+}
 </script>
     
 <style scoped>
@@ -520,6 +769,19 @@ function closemodal() {
         cursor: pointer;
     }
 
+    /* 지도 모달모달 */
+    .modal-content-map {
+        display: grid;
+        grid-template-rows: 40px 1fr;
+        width: 1100px;
+        height: 800px;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .modal_x_img_position {
+        justify-self: end;
+    }
     
     /* 미디어쿼리 */
     @media (max-width: 1000px) {

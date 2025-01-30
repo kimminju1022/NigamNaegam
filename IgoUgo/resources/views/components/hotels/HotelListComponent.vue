@@ -263,12 +263,12 @@ const longitude = ref(null);
 const hotelArea = ref([]);
 const hotelCategory = ref([]);
 const findHotel = reactive({});
-const nearbyPlaceList = computed(() => store.state.map.nearbyPlaceList);
+const nearbyHotelList = computed(() => store.state.map.nearbyHotelList);
 
 function openmodalMap() {
     isVisibleMap.value = true;
-    hotelArea.value = JSON.parse(localStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
-    hotelCategory.value = JSON.parse(localStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
+    hotelArea.value = JSON.parse(sessionStorage.getItem('hotelAreaCode')); // 지역 필터 localstorage에서 가져와서 배열에 저장
+    hotelCategory.value = JSON.parse(sessionStorage.getItem('hotelCategoryCode')); // 카테고리 필터 localstorage에서 가져와서 배열에 저장
     findHotel.hc_code = hotelCategory.value; // 카테고리 필터 적용
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -288,7 +288,7 @@ function openmodalMap() {
                 // console.log(findHotel);
     
                 // 현재 위치 전달
-                await store.dispatch('map/takeNearbyPlaces', findHotel);
+                await store.dispatch('map/takeNearbyHotels', findHotel);
     
                 if (window.kakao && window.kakao.maps) {
                     // 스크립트가 이미 로드된 경우
@@ -312,7 +312,7 @@ function openmodalMap() {
                     findHotel.latitude = location.latitude;
                     findHotel.longitude = location.longitude;
                     
-                    await store.dispatch('map/takeNearbyPlaces', findHotel);
+                    await store.dispatch('map/takeNearbyHotels', findHotel);
                     await loadKakaoMap(findHotel.latitude, findHotel.longitude);
                 } else {
                     // 스크립트를 로드한 후 지도를 로드
@@ -324,7 +324,7 @@ function openmodalMap() {
                     findHotel.latitude = location.latitude;
                     findHotel.longitude = location.longitude;
                     
-                    await store.dispatch('map/takeNearbyPlaces', findHotel);
+                    await store.dispatch('map/takeNearbyHotels', findHotel);
                     await loadKakaoMap(findHotel.latitude, findHotel.longitude);
                 }
             }
@@ -349,7 +349,7 @@ function openmodalMap() {
                 findHotel.longitude = longitude.value;
     
                 // 현재 위치 전달
-                await store.dispatch('map/takeNearbyPlaces', findHotel);
+                await store.dispatch('map/takeNearbyHotels', findHotel);
     
                 if (window.kakao && window.kakao.maps) {
                     // 스크립트가 이미 로드된 경우
@@ -373,7 +373,7 @@ function openmodalMap() {
                     findHotel.latitude = location.latitude;
                     findHotel.longitude = location.longitude;
                     
-                    await store.dispatch('map/takeNearbyPlaces', findHotel);
+                    await store.dispatch('map/takeNearbyHotels', findHotel);
                     await loadKakaoMap(findHotel.latitude, findHotel.longitude);
                 } else {
                     // 스크립트를 로드한 후 지도를 로드
@@ -385,7 +385,7 @@ function openmodalMap() {
                     findHotel.latitude = location.latitude;
                     findHotel.longitude = location.longitude;
                     
-                    await store.dispatch('map/takeNearbyPlaces', findHotel);
+                    await store.dispatch('map/takeNearbyHotels', findHotel);
                     await loadKakaoMap(findHotel.latitude, findHotel.longitude);
                 }
             }
@@ -438,7 +438,7 @@ const loadKakaoMapScript = () => {
 // 키워드 검색을 통해 위도, 경도 값 반환
 const keywordLocation = async (areaCode) => {
     const areaNum = areaCode[0];
-    console.log('지역은? : ', areaNum);
+    // console.log('지역은? : ', areaNum);
     var areaName = '';
     switch(areaNum) {
         case '1': areaName = '서울특별시청'; break;
@@ -467,7 +467,7 @@ const keywordLocation = async (areaCode) => {
                     latitude: result[0].y,
                     longitude: result[0].x,
                 };
-                console.log('townHall : ', townHall);
+                // console.log('townHall : ', townHall);
     
                 resolve(townHall);
             } else {
@@ -489,7 +489,7 @@ const loadKakaoMap = async (Lat, Lon) => {
         map = new window.kakao.maps.Map(container, options);
         console.log("Map loaded successfully.");
 
-        loadMarker(nearbyPlaceList.value);
+        loadMarker(nearbyHotelList.value);
 
         // Debounce를 적용한 중심좌표 변경 이벤트 핸들러
         const debouncedCenterChange = debounce(async () => {
@@ -500,10 +500,10 @@ const loadKakaoMap = async (Lat, Lon) => {
             findHotel.longitude = center.getLng().toString(); // 중심좌표의 경도
 
             // 새로운 중심좌표 기준으로 서버에 데이터 요청
-            await store.dispatch('map/takeNearbyPlaces', findHotel);
+            await store.dispatch('map/takeNearbyHotels', findHotel);
             
             // 새로운 마커 로드
-            loadMarker(nearbyPlaceList.value);
+            loadMarker(nearbyHotelList.value);
         }, 1000); // 1초 간격으로 실행
 
         // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록
@@ -572,30 +572,6 @@ const clearMarkers = () => {
     });
     markers.value = []; // 배열 초기화
 }
-
-
-
-
-// // 카카오맵 스크립트 다운로드
-// const loadKakaoMapScript = () => {
-//     const script = document.createElement('script');
-//     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.kakaoMapAppKey}&autoload=false&libraries=services`; // &autoload=false api를 로드한 후 맵을 그리는 함수가 실행되도록 구현
-//     script.onload = () => window.kakao.maps.load(loadKakaoMap); // 스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
-    
-//     document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
-// }
-
-// // 카카오맵 화면에 로드
-// const loadKakaoMap = () => {
-//     const container = document.getElementById("map"); 
-//     const options = {
-//         center: new window.kakao.maps.LatLng(35.879388797, 128.628366313), 
-//         level: 3
-//     };
-
-//     const map = new window.kakao.maps.Map(container, options);
-//     // console.log(map);
-// }
 </script>
     
 <style scoped>

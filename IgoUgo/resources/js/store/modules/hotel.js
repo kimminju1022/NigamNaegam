@@ -6,10 +6,10 @@ export default {
     state: () => ({
         hotelList: [],
         hotelArea: [],
-        hotelAreaCode: JSON.parse(sessionStorage.getItem('hotelAreaCode')) ? JSON.parse(localStorage.getItem('hotelAreaCode')) : [],
+        hotelAreaCode: JSON.parse(sessionStorage.getItem('hotelAreaCode')) ? JSON.parse(sessionStorage.getItem('hotelAreaCode')) : [],
         // hotelArea: JSON.parse(localStorage.getItem('hotelArea')) || [],
         hotelCategory: [],
-        hotelCategoryCode: JSON.parse(sessionStorage.getItem('hotelCategoryCode')) ? JSON.parse(localStorage.getItem('hotelCategoryCode')) : [],
+        hotelCategoryCode: JSON.parse(sessionStorage.getItem('hotelCategoryCode')) ? JSON.parse(sessionStorage.getItem('hotelCategoryCode')) : [],
         count: [],
         hotelDetail: [],
         hotelDetailImg: [],

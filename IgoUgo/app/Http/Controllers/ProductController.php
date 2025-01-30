@@ -132,13 +132,22 @@ class ProductController extends Controller
         $currentLat = $validated['latitude'];
         $currentLon = $validated['longitude'];
 
+        $areaCode = $request->area_code;
+        $contentTypeId = $request->content_type_id;
+
         $places = 
-            Product::selectRaw("*, (6371 * acos(
+            Product::where("contenttypeid", $contentTypeId) // 해당 contenttypeid에 맞는 데이터 조회회
+            ->when($areaCode, function($query, $areaCode) { 
+                return $query->whereIn('products.area_code', $areaCode);  // 동적으로 주어진 $areaCode 배열에 포함된 hotels.area_code 값을 가진 데이터만 필터링한다
+                // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
+            })
+            ->whereNotNull('products.firstimage') // 사진있는것만 가져오기
+            ->selectRaw("*, (6371 * acos(
                 cos(radians(?)) * cos(radians(mapy)) *
                 cos(radians(mapx) - radians(?)) +
                 sin(radians(?)) * sin(radians(mapy))
             )) AS distance", [$currentLat, $currentLon, $currentLat])
-            ->having('distance', '<=', 1) // km 기준
+            ->having('distance', '<=', 5) // km 기준
             ->orderBy('distance')
             ->get();
 
