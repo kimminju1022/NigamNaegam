@@ -56,7 +56,8 @@ export default {
             .catch(error => {
                 let errorMsgList = [];
                 const errorData = error.response.data;
-                if(error.response.status === 422 || error.response.status === 401) {
+                // if(error.response.status === 422 || error.response.status === 401) {
+                if(error.response.status === 422) {
                     // // 유효성 체크 에러
                     // if(errorData.data.user_email) {
                     //     // errorMsgList.push(errorData.data.email[0]);
@@ -68,9 +69,9 @@ export default {
                     // }
                     
                     errorMsgList.push('아이디 또는 비밀번호가 틀렸습니다.');
-                // } else if(error.response.status === 401) {
-                //     // 비밀번호 오류
-                //     errorMsgList.push(errorData.msg);
+                } else if(error.response.status === 401) {
+                    // 비밀번호 오류
+                    errorMsgList.push(errorData.msg);
                 } else {
                     errorMsgList.push('예기치 못한 오류 발생');
                     // errorMsgList.push('아이디 또는 비밀번호가 틀렸습니다.');

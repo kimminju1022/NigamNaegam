@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Verification;
 use App\Notifications\MyVerifyEmail;
-use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -53,7 +53,7 @@ class VerificationController extends Controller
             
             $insertData['user_email'] = $request->user_email;
             $insertData['hash_email'] = sha1($request->user_email);
-            $insertData['email_expires_at'] = Carbon::now()->addMinutes(30);
+            // $insertData['email_expires_at'] = Carbon::now()->addMinutes(30);
         
             Verification::create($insertData);
             $verified_user = Verification::where('user_email', $request->user_email)
@@ -89,13 +89,13 @@ class VerificationController extends Controller
     }
     
     public function verify($id, $hash) {
-    // public function verify(Request $request) {
-        // Log::debug('인증이메일', $request->all());
-        // $request->fulfill(); // 1. 이메일 검증 처리
-        
-        // $user = Verification::find($id);        
+        // Log::debug($id);
+        // Log::debug($hash);
+    
         $verification = Verification::where('verified_email_id', $id)
                         ->first();
+
+        Log::debug('verification : '.$verification);
 
         if (!$verification) {
             // return redirect('/')->with('error', '사용자를 찾을 수 없습니다.');
@@ -110,13 +110,14 @@ class VerificationController extends Controller
 
         $hashedEmail = sha1($verification->user_email);
 
-        if ($hashedEmail === $hash && $verification->email_expires_at > now()) {
-        // if ($hashedEmail === $hash) {
+        // if ($hashedEmail === $hash && $verification->email_expires_at > now()) {
+        if ($hashedEmail === $hash) {
             // email_verified_at = now(); 이거 넣어줘야하는뎁
             // Verification::where('verified_email_id', $id)
             //             ->update(['email_verified_at' => Carbon::now()]);
 
             $verification->email_verified_at = Carbon::now();
+            $verification->save();
 
             $responseData = [
                 'success' => true

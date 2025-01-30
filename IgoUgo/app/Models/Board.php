@@ -62,6 +62,10 @@ class Board extends Model
         return $this->hasOne(Question::class, 'board_id', 'board_id');
     }
 
+    public function question_category() {
+        return $this->hasOne(QuestionCategory::class, 'board_id', 'board_id');
+    }
+
     public function likes() {
         return $this->hasMany(Like::class, 'board_id', 'board_id')->where('like_flg', 1);
     }

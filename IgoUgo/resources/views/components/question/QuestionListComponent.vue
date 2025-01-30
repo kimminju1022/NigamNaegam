@@ -63,7 +63,8 @@
             <div class="board-content-box" v-if="questionList.length > 0">
                 <div v-for="item in questionList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
-                    <div v-if="item.question.que_status === '0'">
+                    <!-- <div v-if="item.question.que_status === '0'"> -->
+                    <div v-if="item.question && item.question.que_status === '0'">
                         <p class="reply-yet">대기</p>
                     </div>
                     <div v-else>

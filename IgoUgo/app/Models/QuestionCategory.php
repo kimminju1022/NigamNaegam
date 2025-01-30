@@ -22,4 +22,10 @@ class QuestionCategory extends Model
         'qc_code',
         'qc_name',
     ];
+
+    public $timestamps = false;
+
+    public function board() {
+        return $this->belongsTo(Board::class, 'board_id');
+    }
 }

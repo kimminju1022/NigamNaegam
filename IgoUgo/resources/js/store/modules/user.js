@@ -66,55 +66,6 @@ export default {
             });
         },
 
-        // // 토큰 만료 후 처리
-        // chkTokenAndContinueProcess(context, callbackProcess) {
-        //     // Payload 획득
-        //     const payload = localStorage.getItem('accessToken').split('.')[1];
-        //     const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-        //     const objPayload = JSON.parse(window.atob(base64));
-
-        //     // console.log(payload, base64, objPayload);
-            
-        //     const now = new Date();
-        //     if((objPayload.exp * 1000) > now.getTime()){
-        //         // 토큰 유효
-
-        //         // console.log('토큰 유효');
-        //         callbackProcess();
-        //     } else {
-        //         // 토큰 만료
-
-        //         // console.log('토큰 만료');
-        //         // 토큰 재발급 필요
-        //         context.dispatch('reissueAccessToken', callbackProcess);
-        //     }
-        // },
-
-        // // 토큰 재발급
-        // reissueAccessToken(context, callbackProcess) {
-        //     console.log('토큰 재발급 처리');
-        //     callbackProcess();
-
-        //     const url = '/api/reissue';
-        //     const config = {
-        //         headers: {
-        //             'Authorization': 'Bearer ' + localStorage.getItem('refreshToken')
-        //         }
-        //     };
-        //     axios.post(url, null, config)
-        //     .then(response => {
-        //         // 토큰 세팅
-        //         localStorage.setItem('auth/accessToken', response.data.accessToken);
-        //         localStorage.setItem('auth/refreshToken', response.data.refreshToken);
-
-        //         // 후속 처리 진행
-        //         callbackProcess();
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
-        // },
-
         // 유저 정보 업데이트
         updateUser(context, userData) {
             context.dispatch('auth/chkTokenAndContinueProcess'
@@ -328,6 +279,8 @@ export default {
             axios.post(url, data)
             .then(response => {
                 console.log(response.data);
+
+                sessionStorage.setItem('EmailChk', true);
                 alert('사용가능한 이메일입니다.');
             })
             .catch(error => {
@@ -342,39 +295,40 @@ export default {
                     errorMsgList.push('예기치 못한 오류 발생');
                 }
                 
+                sessionStorage.removeItem('EmailChk');
                 context.commit('setErrorMsgList', errorMsgList);
                 alert(errorMsgList.join('\n'));
             });
         },
 
         // 닉네임 중복체크
-        chkAvailableNickname(context, user_nickname) {
-            const url = '/api/available/nickname';
-            const data = JSON.stringify({ user_nickname: user_nickname });
+        // chkAvailableNickname(context, user_nickname) {
+        //     const url = '/api/available/nickname';
+        //     const data = JSON.stringify({ user_nickname: user_nickname });
 
-            // console.log(user_nickname,data);
+        //     // console.log(user_nickname,data);
 
-            axios.post(url, data)
-            .then(response => {
-                console.log(response.data);
-                alert('사용가능한 닉네임입니다.');
-            })
-            .catch(error => {
-                let errorMsgList = [];
-                console.log(error.response.data);
+        //     axios.post(url, data)
+        //     .then(response => {
+        //         console.log(response.data);
+        //         alert('사용가능한 닉네임입니다.');
+        //     })
+        //     .catch(error => {
+        //         let errorMsgList = [];
+        //         console.log(error.response.data);
                 
-                if(error.response.status === 422 || error.response.status === 401) {
-                errorMsgList.push(error.response.data.data.user_nickname[0]);
-                } else if(error.response.status === 409) {
-                    errorMsgList.push(error.response.data.data.user_nickname[0]);
-                } else {
-                    errorMsgList.push('예기치 못한 오류 발생');
-                }
+        //         if(error.response.status === 422 || error.response.status === 401) {
+        //         errorMsgList.push(error.response.data.data.user_nickname[0]);
+        //         } else if(error.response.status === 409) {
+        //             errorMsgList.push(error.response.data.data.user_nickname[0]);
+        //         } else {
+        //             errorMsgList.push('예기치 못한 오류 발생');
+        //         }
                 
-                context.commit('setErrorMsgList', errorMsgList);
-                alert(errorMsgList.join('\n'));
-            });
-        },
+        //         context.commit('setErrorMsgList', errorMsgList);
+        //         alert(errorMsgList.join('\n'));
+        //     });
+        // },
 
         // 전화번호 중복체크
         chkAvailablePhone(context, user_phone) {

@@ -23,7 +23,8 @@ export default {
                 // console.log(response.data);
                 // console.log('이메일 전송 성공');
 
-                alert('해당 이메일로 인증을 완료하세요.');
+                sessionStorage.removeItem('EmailChk');
+                alert('해당 이메일로 인증을 완료하세요.');      
                 // console.log('이메일 전송 성공');
                 // errMsg.value = "이메일 전송 성공"
 
@@ -34,7 +35,7 @@ export default {
             .catch((error) => {
                 console.error(error.response);
                 console.log('이메일 전송 실패');
-                alert('이메일 전송 실패');
+                // alert('이메일 전송 실패');
                 // errMsg.value = "이메일 전송 실패"
             })
         },
@@ -44,9 +45,9 @@ export default {
 
             axios.get(url)
             .then((response) => {
-                console.log(response.data);
-                console.log('이메일 인증 성공');
-                alert('이메일 인증 성공');
+                // console.log(response.data);
+                // console.log('이메일 인증 성공');          
+                // alert('이메일 인증 성공');
                 // errMsg.value = "이메일 전송 성공"
 
                 localStorage.setItem('verifiedEmail', response.data.user_email);
@@ -56,7 +57,7 @@ export default {
             .catch((error) => {
                 console.error(error.response.data);
                 console.log('이메일 인증 실패');
-                alert('이메일 인증 실패');
+                // alert('이메일 인증 실패');
                 // errMsg.value = "이메일 전송 실패"
             })
         },

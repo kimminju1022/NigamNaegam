@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -23,25 +23,19 @@ const userInfo = reactive({
     user_email: '',
 });
 
-const isEmailChecked = ref(false);
-
-const chkEmail = () => {
-    store.dispatch('user/chkAvailableEmail', userInfo.user_email)
-    .then(() => {
-        isEmailChecked.value = true;
-    })
-    .catch(() => {
-        isEmailChecked.value = false;
-    });
+const chkEmail = async () => {
+    store.dispatch('user/chkAvailableEmail', userInfo.user_email);
+    // 중복체크 성공하면 sessionStorage에 EmailChk = ture 저장함
 }
 
 const verifyEmail = (userInfo) => {
-    // console.log('이메일 값:', userInfo.user_email);  
-    if (!isEmailChecked.value) {
+    // console.log('이메일 값:', userInfo.user_email);
+    if (sessionStorage.getItem('EmailChk') !== 'true') {
         alert('이메일 중복확인 먼저 해주세요.');
         return; // 중복확인이 안 된 경우 함수 실행 중단
     }
     store.dispatch('verification/send', userInfo);
+    // 이메일 전송 성공하면 sessionStorage에 EmailChk 지움
 }
 </script>
 

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BoardRequest;
 use App\Models\Board;
+use App\Models\BoardImage;
 use MyToken;
 use App\Models\Question;
+use App\Models\QuestionCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -15,10 +17,10 @@ class QuestionController extends Controller
 {
     // 문의게시판 index 페이지
     public function index(){
-        $bcType = '2';
+        $bc_code = '2';
         $questionList = Board::with(['question', 'user', 'board_category'])
                                 // ->where('bc_type', $bcType)
-                                ->where('bc_code', $bcType)
+                                ->where('bc_code', $bc_code)
                                 ->orderBy('created_at','DESC')
                                 ->paginate(15);
 
@@ -80,21 +82,42 @@ class QuestionController extends Controller
         // $insertData['bc_type'] = 2;
         $insertData['bc_code'] = 2;
 
-        if ($request->hasFile('board_img1')) {
-            $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
-        } else {
-            $insertData['board_img1'] = '/default/board_default.png';
-        }
-
-        if ($request->hasFile('board_img2')) {
-            $insertData['board_img2'] = '/'.$request->file('board_img2')->store('img');
-        } else {
-            $insertData['board_img2'] = '/default/board_default.png';
-        }
-
         $board = Board::create($insertData);
+        
+        // 이미지 테이블 분리 전 작업
+        // if ($request->hasFile('board_img1')) {
+        //     $insertData['board_img1'] = '/'.$request->file('board_img1')->store('img');
+        // } else {
+        //     $insertData['board_img1'] = '/default/board_default.png';
+        // }
 
+        // if ($request->hasFile('board_img2')) {
+        //     $insertData['board_img2'] = '/'.$request->file('board_img2')->store('img');
+        // } else {
+        //     $insertData['board_img2'] = '/default/board_default.png';
+        // }
+
+        // 이미지 테이블 분리 후 작업
+        if($request->hasFile('board_img')) {
+            foreach ($request->board_img as $file) {
+                $path = '/'.$file->store('img');
+                BoardImage::create([
+                    'board_id' => $board->board_id,
+                    'board_img' => $path,
+                ]);
+            }
+        }
+
+        // 카테고리 선택
+        $insertCategory['board_id'] = $board->board_id;
+        $insertCategory['qc_code'] = $request->qc_code;
+        $insertCategory['qc_name'] = $request->qc_name;
+
+        $questionCategory = QuestionCategory::create($insertCategory);
+
+        // 관리자 답변 생성
         $insertQuestion['board_id'] = $board->board_id;
+        $insertQuestion['user_id'] = '1';
         $insertQuestion['que_content'] = null;
         $insertQuestion['que_status'] = 0;
 
@@ -104,7 +127,9 @@ class QuestionController extends Controller
             'success' => true
             ,'msg' => '게시글 작성 성공'
             ,'board' => $board->toArray()
-            ,'data' => $question->toArray()
+            ,'question' => $question->toArray()
+            // ,'data' => $question->toArray()
+            ,'category' => $questionCategory->toArray()
         ];
 
         return response()->json($responseData, 200);

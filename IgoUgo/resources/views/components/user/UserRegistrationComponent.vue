@@ -54,10 +54,10 @@
                     <!-- 유효성 검사 실패 시에만 메시지 표시 -->
                     <span v-if="nicknameError" >닉네임 형식에 맞지 않습니다.</span>
                 </div>
-                <div class="login-btn-flex">
+                <!-- <div class="login-btn-flex"> -->
                     <input v-model="userInfo.user_nickname" class="input-login" type="text" id="nickname" name="user_nickname" placeholder="닉네임을 입력해주세요">
-                    <button @click="chkNickname" class="btn bg-clear btn-chk">중복확인</button>
-                </div>
+                    <!-- <button @click="chkNickname" class="btn bg-clear btn-chk">중복확인</button> -->
+                <!-- </div> -->
             </div>
             <div class="login-input-box">                
                 <div class="login-label-flex">
@@ -66,7 +66,7 @@
                     <span v-if="phoneError" >전화번호 형식에 맞지 않습니다.</span>
                 </div>
                 <div class="login-btn-flex">
-                    <input v-model="userInfo.user_phone" class="input-login" type="text" id="phone" name="user_phone" minlength="11" maxlength="13" placeholder="'-'를 생략하고 숫자만 입력해주세요">
+                    <input v-model="userInfo.user_phone" class="input-login" type="tel" id="phone" name="user_phone" maxlength="11" placeholder="'-'를 생략하고 숫자만 입력해주세요">
                     <button @click="chkPhone" class="btn bg-clear btn-chk">중복확인</button>
                 </div>
             </div>
@@ -358,4 +358,10 @@ span {
     color: #fff;
     background-color: #01083a;
 }
+
+/* input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+} */
 </style>

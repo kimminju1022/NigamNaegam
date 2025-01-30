@@ -8,6 +8,7 @@ use App\Models\Verification;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use MyToken;
@@ -21,13 +22,16 @@ class UserController extends Controller
         $insertData['user_nickname'] = $request->user_nickname;
         $insertData['user_phone'] = $request->user_phone;
         $insertData['user_password'] = Hash::make($request->user_password);
+        $insertData['user_last_login'] = Carbon::now();
         
+        // 이메일, 인증시간은 인증테이블에서 가져옴
         $verified_email = Verification::where('user_email', $request->user_email)->first();
 
         $insertData['user_email'] = $verified_email->user_email;
         $insertData['email_verified_at'] = $verified_email->email_verified_at;
         
         User::create($insertData);
+        Log::debug('insertData : ', $insertData);
 
         $responseData = [
             'success' => true
@@ -106,7 +110,13 @@ class UserController extends Controller
         $user = User::find($id);
 
         // Log::debug('user id request : ', ['user' => $user]);
-        $user->delete();
+        // 기존 softDeletes
+        // $user->delete();
+
+        // user_flg를 1로 바꾸고 6개월 후 softDelete
+        $user->user_flg = '1';
+        $user->updated_at = now();
+        
         // refreshToken 갱신
         MyToken::updateRefreshToken($user, null);   
 
