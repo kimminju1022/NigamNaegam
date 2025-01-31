@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('verified_email_id');
             $table->string('user_email', 50);
             $table->string('hash_email', 100);
+            $table->timestamp('email_expires_at');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

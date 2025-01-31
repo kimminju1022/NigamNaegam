@@ -17,14 +17,6 @@ class VerificationFactory extends Factory
      */
     public function definition()
     {
-        // $date = $this->faker->dateTimeBetween('-1 year');
 
-        // return [
-        //     'user_email' => $this->faker->unique()->safeEmail()
-        //     ,'hash_email' => sha1('user_email')
-        //     ,'email_verified_at'=> $date
-        //     ,'created_at' => $date
-        //     ,'updated_at' => $date
-        // ];
     }
 }

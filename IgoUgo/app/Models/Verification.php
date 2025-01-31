@@ -20,6 +20,7 @@ class Verification extends Model
     protected $fillable = [
         'user_email',
         'hash_email',
+        'email_expires_at',
         'email_verifeid_at',
     ];
 }
