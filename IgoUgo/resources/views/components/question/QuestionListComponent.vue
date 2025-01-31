@@ -60,18 +60,21 @@
                     <p>428</p>
                 </div>
             </div>
-            <div class="board-content-box" v-if="questionList.length > 0">
+            <div class="board-content-box">
                 <div v-for="item in questionList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
-                    <!-- <div v-if="item.question.que_status === '0'"> -->
-                    <div v-if="item.question && item.question.que_status === '0'">
+                    <div v-if="item?.question?.que_status === '0'">
+                    <!-- <div v-if="item.question && item?.question?.que_status === '0'"> -->
                         <p class="reply-yet">대기</p>
                     </div>
                     <div v-else>
                         <p class="reply-done">완료</p>
                     </div>
                     <router-link :to="`/questions/${item.board_id}`" v-if="$store.state.auth.userInfo.user_id === item.user.user_id">{{ item.board_title }}</router-link>
-                    <p v-if="$store.state.auth.userInfo.user_id !== item.user.user_id"><img src="/images/lock.png">  비밀글입니다.</p>
+                    <!-- <p v-if="$store.state.auth.userInfo.user_id !== item.user.user_id" class="secret-content"><img src="/images/lock.png"> 비밀글입니다.</p> -->
+                    <div v-if="$store.state.auth.userInfo.user_id !== item.user.user_id">
+                        <p class="secret-content"><img src="/images/lock.png"> 비밀글입니다.</p>
+                    </div>
                     <p>{{ item.user.user_nickname }}</p>
                     <p>{{ item.created_at }}</p>
                     <p>{{ item.view_cnt }}</p>
@@ -138,7 +141,7 @@ onBeforeMount(() => {
     /* width: 100%; */
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;
-    max-width: 1250px;
+    /* max-width: 1250px; */
     min-width: 500px;
     margin: 40px auto;
     font-size: 18px;
@@ -146,7 +149,7 @@ onBeforeMount(() => {
 
 .board-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 9fr 1.5fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1.5fr 1fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -168,7 +171,7 @@ onBeforeMount(() => {
 
 .board-content{
     display: grid;
-    grid-template-columns: 1fr 1fr 9fr 1.5fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1.5fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;
@@ -177,8 +180,6 @@ onBeforeMount(() => {
 }
 
 .board-content > :nth-child(n + 3):nth-child(-n + 4){
-    /* text-align: left;
-    overflow: hidden; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -188,6 +189,13 @@ onBeforeMount(() => {
 
 .board-content-box > .board-content > :nth-child(3){
     text-align: left;
+    padding: 0 20px;
+}
+
+.secret-content {
+    color: #969696;
+    /* color: red; */
+    text-align: center;
 }
 
 .board-content img {

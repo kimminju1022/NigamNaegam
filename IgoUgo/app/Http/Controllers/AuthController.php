@@ -23,7 +23,7 @@ class AuthController extends Controller
         $userInfo = User::where('user_email', $request->user_email)->first();
 
         // 관리자인지 일반 유저인지 체크
-        if($request->manager_flg === '1') {
+        if($userInfo->manager_flg === '1') {
             throw new AuthenticationException('회원 정보 오류');
         }
 
@@ -190,31 +190,22 @@ class AuthController extends Controller
         
         $userInfo = User::where('user_email', $socialInfo->getEmail())->first();
 
-        Log::debug('userInfo : ', $userInfo->toArray());
+        // Log::debug('userInfo : ', $userInfo->toArray());
 
         // 유저 없을 경우
         if(!$userInfo) {
-            $insertData['user_email'] = $socialInfo->getEmail();
-            $insertData['user_name'] = $socialInfo->getName();
-            $insertData['user_nickname'] = $socialInfo->getNickname();
+            $userInfo = new User();
+            $userInfo->user_email = $socialInfo->getEmail();
+            $userInfo->user_name = $socialInfo->getName();
+            $userInfo->user_nickname = $socialInfo->getNickname();
+            
+            $userInfo->user_password = Hash::make($socialInfo->getEmail().env('TOKEN_SECRET_KEY'));
+            $userInfo->user_phone = null;
+            $userInfo->user_last_login = Carbon::now();
+            $userInfo->email_verified_at = Carbon::now();
 
-            // 이거 어떻게 하지..... -> 우선 nullable로 간다
-            $insertData['user_password'] = "";
-            $insertData['user_phone'] = null;
-            $insertData['user_last_login'] = Carbon::now();
-            $insertData['email_verified_at'] = Carbon::now();
-
-            User::create($insertData);
+            $userInfo->save();
         }
-        
-        // $user = User::updateOrCreate([
-        //     'github_id' => $githubUser->id,
-        // ], [
-        //     'name' => $githubUser->name,
-        //     'email' => $githubUser->email,
-        //     'github_token' => $githubUser->token,
-        //     'github_refresh_token' => $githubUser->refreshToken,
-        // ]);
         
         // 토큰 발행
         list($accessToken, $refreshToken) = MyToken::createTokens($userInfo);

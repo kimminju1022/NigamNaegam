@@ -31,7 +31,7 @@ class UserController extends Controller
         $insertData['email_verified_at'] = $verified_email->email_verified_at;
         
         User::create($insertData);
-        Log::debug('insertData : ', $insertData);
+        // Log::debug('insertData : ', $insertData);
 
         $responseData = [
             'success' => true

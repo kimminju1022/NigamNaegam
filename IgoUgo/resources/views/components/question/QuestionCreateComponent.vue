@@ -6,22 +6,35 @@
             <router-link :to="'/questions'"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
         </div>
         <div class="board-box">  
-            <div class="board-title-box">
-                <p>제목</p>
-                <input v-model="question.board_title" type="text" name="board_title">
+            <div class="board-box-flex">
+                <div class="board-title-box board-title">
+                    <p>제목</p>
+                    <input v-model="question.board_title" type="text" name="board_title">
+                </div>
+                <div class="board-title-box board-title-category">
+                    <p>카테고리 선택</p>
+                    <select v-model="question.qc_code" name="category" id="category" class="question_category">
+                        <option value="0">로그인</option>
+                        <option value="1">회원가입</option>
+                        <option value="2">게시판</option>
+                        <option value="3">호텔</option>
+                        <option value="4">관광지</option>
+                        <option value="5">문화시설</option>
+                        <option value="6">레포츠</option>
+                        <option value="7">쇼핑</option>
+                        <option value="8">음식점</option>
+                    </select>
+                </div>
             </div>
             <div class="board-img">
                 <p>파일 첨부</p>
                 <div class="board-img-content">
-                    <input @change="setFile1" type="file" name="board_img1" accept="image/*">
-                    <input @change="setFile2" type="file" name="board_img2" accept="image/*">
-                    <div class="img-preview">
-                        <img :src="preview1">
-                        <button @click="clearFile1" v-show="preview1" class="btn bg-clear">X</button>
-                    </div>
-                    <div class="img-preview">
-                        <img :src="preview2">
-                        <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
+                    <input @change="setFile" type="file" multiple name="board_img" accept="image/*">
+                    <div class="img-grid">
+                        <div class="img-preview" v-for="(preview, index) in previews" :key="index">
+                            <img :src="preview">
+                            <button @click="clearFile(index)" class="btn bg-clear">X</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -34,55 +47,86 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 const question = reactive({
     board_title: ''
     ,board_content: ''
-    ,board_img1: null
-    ,board_img2: null
+    ,board_img: []
+    ,qc_code: ''
+    ,qc_name: ''
 });
 
-const preview1 = ref('');
-const preview2 = ref('');
+// 카테고리 선택
+// const qc_name = computed(() => {
+//     const categories = {
+//         0: '로그인',
+//         1: '회원가입',
+//         2: '게시판',
+//         3: '호텔',
+//         4: '관광지',
+//         5: '문화시설',
+//         6: '레포츠',
+//         7: '쇼핑',
+//         8: '음식점'
+//     };
+//     quesztion.qc_name = categories[question.qc_code] || ''; 
+//     return question.qc_name;
+// });
 
-const setFile1 = (e) => {
-    question.board_img1 = e.target.files[0];
-    preview1.value = URL.createObjectURL(question.board_img1);
+watch(() => question.qc_code, (newQcCode) => {
+    const categories = {
+        0: '로그인', 
+        1: '회원가입',
+        2: '게시판',
+        3: '호텔',
+        4: '관광지',
+        5: '문화시설',
+        6: '레포츠',
+        7: '쇼핑',
+        8: '음식점'
+    };
+    question.qc_name = categories[newQcCode] || '';
+    // console.log(question.qc_name);
+});
+
+// const preview = ref('');
+
+const previews = ref([]);
+const maxFiles = 5;
+
+const setFile = (e) => {
+    // question.board_img = e.target.files[0];
+    // preview.value = URL.createObjectURL(question.board_img);
+
+    const arrayFiles = Array.from(e.target.files);
+    const emptyFilesSpace = maxFiles - question.board_img.length - arrayFiles.length;
+
+    // 5MB 이하 파일만 허용
+    if(!arrayFiles.every(file => file.size <= 5 * 1024 * 1024)) {
+        alert(`파일 크기가 5MB이하만 추가할 수 있습니다.`);
+    } else if (emptyFilesSpace < 0) {
+        alert(`최대 ${maxFiles}개까지만 추가할 수 있습니다.`);
+    } else {
+        // 기존 파일과 새로운 파일 병합
+        question.board_img = [...question.board_img, ...arrayFiles];
+    
+        // 미리보기 URL 생성
+        previews.value = question.board_img.map(file => URL.createObjectURL(file));
+    }
+
+    // <input> 초기화하여 동일한 파일 다시 선택 가능
+    e.target.value = '';
 }
 
-const setFile2 = (e) => {
-    question.board_img2 = e.target.files[0];
-    preview2.value = URL.createObjectURL(question.board_img2);
+const clearFile = (index) => {
+    // question.board_img = null;
+    // preview.value = null;
+
+    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
+    question.board_img.splice(index, 1); // 파일 제거
+    previews.value.splice(index, 1); // 미리보기 제거
 }
-
-const clearFile1 = () => {
-    question.board_img1 = null;
-    preview1.value = null;
-}
-
-const clearFile2 = () => {
-    question.board_img2 = null;
-    preview2.value = null;
-}
-
-
-// import router from '../../../js/router';
-
-
-// const cancelConfirm = () =>{
-//     const userResponse = confirm('작성 페이지에서 벗어납니다. 작성을 취소하시겠습니까?');
-//     if (userResponse) {
-//         router.push('/boards/question');
-//     }
-// }
-// const doneConfirm = () =>{
-//     const userResponse = confirm('작성을 완료하시겠습니까?');
-//     if (userResponse) {
-//         router.push('/boards/question/detail');
-//         // 이때, post로 정보 전달해줘야함...어떻게?
-//     }
-// }
 
 </script>
 
@@ -94,6 +138,10 @@ const clearFile2 = () => {
 .container > h1 {
     font-size: 3rem;
     margin: 50px 0;
+}
+
+select {
+    border: none;
 }
 
 .header-btn-box {
@@ -124,14 +172,31 @@ const clearFile2 = () => {
     margin-top: 50px;
 }
 
-.board-box > div {
+.board-box > div:not(:first-child) {
     display: grid;
     grid-template-columns: 1fr 5fr;
     border-bottom: 1px solid #01083a;
 }
 
-.board-box > div > :first-child{
+.board-box > div > :first-child, .board-title-box > p{
     border-right: 1px solid #01083a;
+}
+
+.board-box-flex {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.board-title {
+    display: grid;
+    grid-template-columns: 1fr 2.99fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-title-category {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #01083a;
 }
 
 .board-title-box > p:first-child
@@ -156,12 +221,24 @@ const clearFile2 = () => {
 .board-img-content {
     padding: 10px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 40px 1fr;
 }
 
 .board-img-content :nth-child(-n + 2) {
     margin-bottom: 10px;
 } 
+
+.question_category {
+    outline: none;
+    font-size: 16px;
+    margin: 0  auto;
+    width: 80%;
+}
+
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
 
 .board-img-content img {
     max-width: 150px;

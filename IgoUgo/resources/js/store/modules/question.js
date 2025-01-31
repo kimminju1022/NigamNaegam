@@ -89,16 +89,24 @@ export default {
             }
             const formData = new FormData();
             formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);            
-            if(data.board_img1) {
-                formData.append('board_img1', data.board_img1);
-            }
-            if(data.board_img2) {
-                formData.append('board_img2', data.board_img2);
+            formData.append('board_content', data.board_content);     
+            formData.append('qc_code', data.qc_code);     
+            formData.append('qc_name', data.qc_name);     
+            
+            // if(data.board_img) {
+            //     formData.append('board_img', data.board_img);
+            // }
+
+            // 이미지 배열 넘기기
+            if (data.board_img && data.board_img.length > 0) {
+                data.board_img.forEach((file) => {
+                    formData.append('board_img[]', file);
+                });
             }
 
             axios.post(url, formData, config)
             .then(response => {
+                // console.log(response);                
                 context.commit('setQuestionList', response.data.data);
                 
                 router.replace('/questions');

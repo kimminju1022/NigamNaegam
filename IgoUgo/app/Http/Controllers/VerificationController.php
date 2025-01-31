@@ -47,13 +47,19 @@ class VerificationController extends Controller
         // $content = '이메일 테스트하는 중 하하하하하';
         // // $to = 'example@mailtrap.io';  // 실제로 수신할 이메일 주소
         // $to = $user->user_email; // 이렇게 해도 왜 example@mailtrap.io여기로감?
+        $user = Verification::where('user_email', $request->user_email)
+                                ->get();
+        if($user) {
+            foreach ($user as $item) {
+                $item->delete();
+            };
+        }
 
         try {
             DB::beginTransaction();
-            
             $insertData['user_email'] = $request->user_email;
             $insertData['hash_email'] = sha1($request->user_email);
-            // $insertData['email_expires_at'] = Carbon::now()->addMinutes(30);
+            $insertData['email_expires_at'] = Carbon::now()->addMinutes(30);
         
             Verification::create($insertData);
             $verified_user = Verification::where('user_email', $request->user_email)
@@ -95,6 +101,7 @@ class VerificationController extends Controller
         $verification = Verification::where('verified_email_id', $id)
                         ->first();
 
+        // Log::debug('verification : '.$verification->toArray());
         Log::debug('verification : '.$verification);
 
         if (!$verification) {
@@ -110,12 +117,8 @@ class VerificationController extends Controller
 
         $hashedEmail = sha1($verification->user_email);
 
-        // if ($hashedEmail === $hash && $verification->email_expires_at > now()) {
-        if ($hashedEmail === $hash) {
-            // email_verified_at = now(); 이거 넣어줘야하는뎁
-            // Verification::where('verified_email_id', $id)
-            //             ->update(['email_verified_at' => Carbon::now()]);
-
+        if ($hashedEmail === $hash && $verification->email_expires_at > now()) {
+        // if ($hashedEmail === $hash) {
             $verification->email_verified_at = Carbon::now();
             $verification->save();
 

@@ -104,9 +104,9 @@ const setEmail = () => {
 // const chkEmail = () => {
 //     store.dispatch('user/chkAvailableEmail', userInfo.user_email);
 // }
-const chkNickname = () => {
-    store.dispatch('user/chkAvailableNickname', userInfo.user_nickname);
-}
+// const chkNickname = () => {
+//     store.dispatch('user/chkAvailableNickname', userInfo.user_nickname);
+// }
 const chkPhone = () => {
     store.dispatch('user/chkAvailablePhone', userInfo.user_phone);
 }

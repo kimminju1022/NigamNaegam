@@ -15,15 +15,15 @@
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">이름</p>
-                        <input v-model="userData.userInfo.user_name" class="input-update" name="user_name">
+                        <input v-model="userData.userInfo.user_name" type="text" class="input-update" name="user_name">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">닉네임</p>
-                        <input v-model="userData.userInfo.user_nickname" class="input-update" name="user_nickname">
+                        <input v-model="userData.userInfo.user_nickname" type="text" class="input-update" name="user_nickname">
                     </div>
                     <div class="profile-item">
                         <p class="bg-navy">전화번호</p>
-                        <input v-model="userData.userInfo.user_phone" class="input-update" name="user_phone">
+                        <input v-model="userData.userInfo.user_phone" type="tel" maxlength="11" class="input-update" name="user_phone">
                     </div>
                 </div>
             </div>

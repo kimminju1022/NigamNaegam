@@ -55,7 +55,7 @@ class UserControlSeeder extends Seeder
                 $user_control->user_id = $item->user_id;
                 $user_control->expires_at = $expires_at;
                 $user_control->save();
-                Log::debug($user_control);
+                // Log::debug($user_control);
             }
         }
     }
