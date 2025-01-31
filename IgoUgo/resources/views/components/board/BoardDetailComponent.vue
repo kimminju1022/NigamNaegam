@@ -3,7 +3,7 @@
         <!-- 경로표시 -->
         <div class="board-detail-category">
             <h1>{{ $store.state.board.bcName }}</h1>
-            <h3 v-if="$store.state.board.rcName">  > {{ $store.state.board.rcName }}</h3>
+            <h3 v-if="readableRcName"> > {{ readableRcName($store.state.board.rcName) }}</h3>
             <h3 v-if="$store.state.board.areaName">  > {{ $store.state.board.areaName }}</h3>
         </div>
         <!-- 버튼영역 -->
@@ -14,7 +14,7 @@
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             
             <button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
-            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
 
         </div>
@@ -28,7 +28,7 @@
         <p>{{ boardDetail.created_at }}</p>
         <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button>
         <!-- <p> {{ loveIt[0] }}</p> -->
-        <p>조회 : {{ absolve[1]++ }}</p>
+        <!-- <p>조회 : {{ absolve[]++ }}</p> -->
         <button @click="boardNotify">🚨 신고 </button>
     </div>
     
@@ -65,6 +65,9 @@
                 <p>{{ item.comment_content }}</p>
                 <p>{{ item.user_nickname }}</p>
                 <p>{{ item.created_at }}</p>
+                <p >🗑️</p>
+                <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
+
             </div>
         </div>
         <div class="pagination-btn">
@@ -86,6 +89,8 @@ const route = useRoute();
 const router = useRouter();
 // board출력값
 const boardDetail = computed(() => store.state.board.boardDetail);
+// contenttypeid명칭정의
+const readableRcName = computed(() => store.state.board.rcName);
 // const image = ;
 const commentsInfo =  reactive({
     comment_content: ''
@@ -131,6 +136,8 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
     board_id: route.params.id,
 });
+
+// 댓글
 
 // rate별점표기-----------------------start-----------------
 const boardRate = computed(() => boardDetail.value.rate);

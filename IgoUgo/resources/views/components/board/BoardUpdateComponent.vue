@@ -86,17 +86,24 @@
             </div>
             <div class="board-img">
                 <p>파일 첨부</p>
+                <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="uploadFile">
                 <div class="board-img-content">
-                    <input @change="setFile1" type="file" name="board_img1" accept="image/*">
-                    <input @change="setFile2" type="file" name="board_img2" accept="image/*">
-                    <div class="img-preview">
-                        <img :src="preview1 || boardInfo.boardDetail.board_img1">
-                        <button @click="clearFile1" v-show="preview1" class="btn bg-clear">X</button>
+                    <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
+                    <div class="img-preview":class="gridDetail" v-for="(previewImage, index) in previews" :key="index">
+                        <img :src="previewImage" alt="Uploaded Image"> 
+                        <button @click="clearFile(index)" class="btn bg-clear">X</button> 
                     </div>
+                <div class="board-img-content">
+                    <input @change="setFile" type="file" name="board_img1" accept="image/*">
+                    <!-- <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
                     <div class="img-preview">
+                        <img :src="preview|| boardInfo.boardDetail.board_img">
+                        <button @click="clearFile" v-show="preview" class="btn bg-clear">X</button>
+                    </div>
+                    <!-- <div class="img-preview">
                         <img :src="preview2 || boardInfo.boardDetail.board_img2">
                         <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="board-content">
@@ -105,6 +112,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script setup>
@@ -126,25 +134,31 @@ const boardInfo = reactive({
 const preview1 = ref('');
 const preview2 = ref('');
 
-const setFile1 = (e) => {
-    boardInfo.board_img1 = e.target.files[0];
-    preview1.value = URL.createObjectURL(boardInfo.board_img1);
+const setFile = (e) => {
+    boardInfo.board_img= e.target.files[0];
+    preview.value = URL.createObjectURL(boardInfo.board_im1);
 }
 
-const setFile2 = (e) => {
-    boardInfo.board_img2 = e.target.files[0];
-    preview2.value = URL.createObjectURL(boardInfo.board_img2);
-}
 
-const clearFile1 = () => {
-    boardInfo.board_img1 = null;
-    preview1.value = null;
-}
-
-const clearFile2 = () => {
-    boardInfo.board_img2 = null;
-    preview2.value = null;
-}
+const clearFile = (index) => {
+    // 삭제할 파일과 미리보기 URL 제거
+    URL.revokeObjectURL(previews.value[index]); // 메모리 해제
+    boardInfo.board_img.splice(index, 1); // 파일 제거
+    previews.value.splice(index, 1); // 미리보기 제거
+};
+// 2nd 사진업로드 수정
+// const setFile2 = (e) => {
+//     boardInfo.board_img2 = e.target.files[0];
+//     preview2.value = URL.createObjectURL(boardInfo.board_img2);
+// }
+// const clearFile = () => {
+//     boardInfo.board_img = null;
+//     preview.value = null;
+// }
+// const clearFile2 = () => {
+//     boardInfo.board_img2 = null;
+//     preview2.value = null;
+// }
 
 // const gridUpdate =  computed(() => {
 //     return store.state.board.bcType === '0' ? 'grid-3' : 'grid-2';

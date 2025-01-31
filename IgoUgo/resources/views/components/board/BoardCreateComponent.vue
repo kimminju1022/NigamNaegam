@@ -15,7 +15,7 @@
                 <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
                     <div class="board-category">
                         <p>유형</p>
-                        <select v-model="boardInfo.rc_code" name="rc_code">
+                        <select v-model="boardInfo.bc_code" name="bc_code">
                             <option disabled hidden selected>--유형선택--</option>
                             <option value="0">숙박</option>
                             <option value="1">맛집</option>
@@ -83,9 +83,9 @@
             <div class="board-img">
                 <p>파일 첨부</p>
                 <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="uploadFile">
-                <div class="board-img-content":class="gridDetail">
+                <div class="board-img-content">
                     <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
-                    <div class="img-preview" v-for="(previewImage, index) in previews" :key="index">
+                    <div class="img-preview":class="gridDetail" v-for="(previewImage, index) in previews" :key="index">
                         <img :src="previewImage" alt="Uploaded Image"> 
                         <button @click="clearFile(index)" class="btn bg-clear">X</button> 
                     </div>
@@ -122,7 +122,7 @@ const boardInfo = reactive({
     ,board_img: []
     ,bc_code: store.state.board.bcCode
     ,area_code: ''
-    ,rc_code: ''
+    ,bc_code: ''
     ,rate: ''
 });
 
@@ -247,7 +247,7 @@ select {
     font-size: 17px;
     padding: 10px;
 }
-select {
+.select-board-type > select {
     -webkit-appearance:none; /* 크롬 화살표 없애기 */
     -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
     appearance:none /* 화살표 없애기 */

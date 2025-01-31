@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Request;
 
 class Board extends Model
 {
@@ -16,7 +17,7 @@ class Board extends Model
     protected $fillable = [
         'user_id',
         'board_flg',
-        // 'bc_type',
+        // 'bc_type', 2nd
         'bc_code',
         'board_title',
         'board_content',
@@ -80,7 +81,7 @@ class Board extends Model
     
     public function review_category() {
         // return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_type', 'board_id', 'rc_type');
-        return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_code', 'board_id', 'rc_code');
+        return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'bc_code', 'board_id', 'bc_code');
     }
     
     public function route() {
@@ -94,4 +95,24 @@ class Board extends Model
     public function board_images(){
         return $this->hasMany(BoardImage::class, 'board_id', 'board_id');
     }
+
+    public function report(){
+        return $this->hasMany(BoardReport::class,'board_id', 'user_id', 'board_id', 'user_id'); 
+    }
+    
+    /*public function getBoardContentname(Request $request) {
+        $board = Board::find($request->id);
+        
+        // rcName 변환 로직
+        $rcNameMapping = [
+            '1' => '게시글 유형 A',
+            '2' => '게시글 유형 B',
+            '3' => '게시글 유형 C',
+            // ... 실제 매핑 데이터 추가
+        ];
+    
+        $board->rcName = $rcNameMapping[$board->rcName] ?? '알 수 없는 유형';
+    
+        return response()->json($board);
+    }*/
 }

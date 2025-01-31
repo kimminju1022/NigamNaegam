@@ -19,6 +19,7 @@ export default {
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
         setBoardDetail(state, data){
+            console.log('Board Detail State:', data); // 데이터 확인
             state.boardDetail = data;
         },
         setBoardComments(state, data) {
@@ -90,7 +91,7 @@ export default {
                 context.commit('setAreaName', response.data.areaName);
             })
             .catch(error => {
-                console.error(error.response.data);
+                // console.error(error.response.data);
             });
         },
 
@@ -113,8 +114,8 @@ export default {
             if(data.board_img) {
                 data.board_img.forEach(file => formData.append('board_img[]', file));
             }
-            if(data.rc_code) {
-                formData.append('rc_code', data.rc_code);
+            if(data.bc_code) {
+                formData.append('bc_code', data.bc_code);
             } 
             if(data.area_code) {
                 formData.append('area_code', data.area_code);
@@ -174,8 +175,8 @@ export default {
             //     formData.append('board_img', boardInfo.boardDetail.board_img);
             // }2nd
 
-            if(boardInfo.boardDetail.rc_code) {
-                formData.append('rc_code', boardInfo.boardDetail.rc_code);
+            if(boardInfo.boardDetail.bc_code) {
+                formData.append('bc_code', boardInfo.boardDetail.bc_code);
             } 
             if(boardInfo.boardDetail.area_code) {
                 formData.append('area_code', boardInfo.boardDetail.area_code);
@@ -288,8 +289,8 @@ export default {
             if(data.area_code) {
                 formData.append('area_code', data.area_code);
             }
-            if(data.rc_code) {
-                formData.append('rc_code', data.rc_code);
+            if(data.bc_code) {
+                formData.append('bc_code', data.bc_code);
             }
             if(data.rate) {
                 formData.append('rate', data.rate);
@@ -372,6 +373,5 @@ export default {
     },
         
     getters: {
-
-    },
+    }
 }
