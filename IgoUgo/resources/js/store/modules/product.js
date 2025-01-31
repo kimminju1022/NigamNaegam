@@ -10,6 +10,7 @@ export default {
         productAreaCode : JSON.parse(sessionStorage.getItem('productAreaCode')) ? JSON.parse(sessionStorage.getItem('productAreaCode')) : [],
         productCnt: '',
         productImg: [],
+        productImgCount: null,
         productDetail: {},
         productLat: null,
         productLng: null,
@@ -34,6 +35,9 @@ export default {
         },
         setProductImg(state, data) {
             state.productImg = data;
+        },
+        setProductImgCount(state, data) {
+            state.productImgCount = data;
         },
         setProductDetail(state, data) {
             state.productDetail = data;
@@ -116,18 +120,21 @@ export default {
                 axios.get(url, config)
                 .then(response => {
                     const productImgs = response.data.productImg.response.body.items.item;
-                    const imgs = productImgs.map((item) => item.originimgurl);
+                    // const imgs = productImgs.map((item) => item.originimgurl);
+                    const imgs = productImgs ? productImgs.map((item) => item.originimgurl) : [];
                     const productDetail = response.data.productDetail.response.body.items.item[0];
                     const productLat = productDetail.mapy;
                     const productLng = productDetail.mapx;
                     context.commit('setProductImg', imgs);
+                    context.commit('setProductImgCount', imgs.length);
                     context.commit('setProductDetail', productDetail);
                     context.commit('setProductLat', productLat);
                     context.commit('setProductLng', productLng);
                     return resolve();
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    // console.log(error.response);
+                    console.log(error);
                     return reject();
                 })
             })

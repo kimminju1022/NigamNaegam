@@ -126,7 +126,8 @@ export default {
                 axios.get(url, config)
                 .then(response => {
                     const hotelImgs = response.data.hotelsImg.response.body.items.item;
-                    const imgs = hotelImgs.map((item) => item.originimgurl);
+                    // const imgs = hotelImgs.map((item) => item.originimgurl);
+                    const imgs = hotelImgs ? hotelImgs.map((item) => item.originimgurl) : [];
                     context.commit('setHotelDetail', response.data.hotelsDetail.response.body.items.item[0]);
                     context.commit('setHotelDetailImg', imgs);
                     // console.log(response.data.hotelsDetail.response.body.items.item[0])
@@ -134,7 +135,8 @@ export default {
                     return resolve();
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    // console.log(error.response);
+                    console.log(error);
                     return reject();
                 });
             });

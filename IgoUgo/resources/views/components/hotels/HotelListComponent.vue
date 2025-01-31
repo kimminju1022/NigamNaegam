@@ -541,6 +541,7 @@ const loadMarker = (placeList) => {
             // 마커에 마우스 이벤트 등록
             window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
             window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
+            window.kakao.maps.event.addListener(marker, "click", () => window.open(`/hotels/${place.contentid}`));
 
             // 배열에 저장
             markers.value.push(marker);

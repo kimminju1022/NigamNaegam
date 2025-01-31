@@ -79,22 +79,42 @@ const loading = ref(true); // 로딩 상태
 
 /* 상품 메인(젤 처음 사진) */
 .product-main-img {
+    position: relative;
     border: 1px solid #e9e9e9;
     width: 220px;
     height: 320px;
     border-radius: 30px;
-    object-fit: cover;
-    background-position: center;
-    padding: 20px 0;
-    background-image: url('/img_product/pattern2.png');
-    background-size: cover;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden; /* 가상 요소가 넘치지 않도록 설정 */
 }
+
+.product-main-img::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img_product/car.gif');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* 배경 이미지의 투명도 조절 */
+    z-index: -1; /* 배경을 뒤로 보내기 */
+    border-radius: 30px; /* 부모와 동일한 border-radius 적용 */
+}
+
 .product-main-title {
     padding: 30px 20px;
-    background-color: rgba(170, 170, 170, 0.7);
-    font-size: 30px;
+    /* background-color: rgba(170, 170, 170); */
+    font-size: 40px;
     font-weight: 900;
-    margin-top: 140px;
+    /* margin-top: 100px; */
+    color: #000;
+    /* text-shadow: 3px 3px 3px #fff; */
+    text-align: center;
 }
 /* .back-spot {
     background-image: url('/img_product/spot.png');

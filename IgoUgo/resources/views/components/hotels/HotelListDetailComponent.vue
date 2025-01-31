@@ -15,7 +15,7 @@
             <div>
                 <div class="link-group">
                     <p class="detail-button-style">🚩{{ hotelDetail.addr1 + ' ' + hotelDetail.addr2 }}</p>
-                    <a v-if="hotelDetail.homepage" :href="hotelDetail.homepage" class="detail-button-style" target="_blank">-> 홈페이지로 이동</a>
+                    <a v-if="hotelDetail.homepage" :href="filterHomepage(hotelDetail.homepage)" class="detail-button-style" target="_blank">-> 홈페이지로 이동</a>
                      <!-- {{ hotelDetail.homepage }} -->
                 </div>
                 
@@ -168,6 +168,13 @@ const loadMaker = () => {
     } else {
         console.log("no marker");
     }
+}
+
+// 홈페이지 주소 필터
+const filterHomepage = (url) => {
+    // const totalUrl = url;
+    const words = url.split('"');
+    return words[1];
 }
 </script>
 

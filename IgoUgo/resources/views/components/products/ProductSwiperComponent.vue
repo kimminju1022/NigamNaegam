@@ -106,8 +106,9 @@ const getProductLinkDetail = (condition, id) => {
 }
 .slide-img {
     border-radius: 30px 30px 0 0;
-    width: 200px;
+    width: 202.5px;
     height: 200px;
+    margin-top: -1.2px;
 }
 .slide-title {
     background-color: #fff;
