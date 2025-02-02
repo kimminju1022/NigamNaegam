@@ -353,5 +353,41 @@ class BoardController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+
+    public function showMyReview($id){
+        $boardList = Board::with(['user', 'review', 'likes'])
+                                ->withCount('likes')
+                                ->where('user_id', $id)
+                                ->where('bc_code', '0')
+                                ->orderBy('created_at', 'DESC')
+                                ->paginate(5);
+        Log::debug($boardList);
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>' 유저의 리뷰게시글 획득 성공'
+            ,'board' => $boardList->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    public function showMyFree($id){
+        $boardList = Board::with(['user', 'likes'])
+                                ->withCount('likes')
+                                ->where('user_id', $id)
+                                ->where('bc_code', '1')
+                                ->orderBy('created_at', 'DESC')
+                                ->paginate(5);
+        Log::debug($boardList);
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>' 유저의 자유게시글 획득 성공'
+            ,'board' => $boardList->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
 }
 

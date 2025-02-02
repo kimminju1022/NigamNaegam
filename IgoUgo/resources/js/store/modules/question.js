@@ -7,6 +7,7 @@ export default {
         questionList: [],
         page: 0,
         questionDetail: null,
+        userQuestionList: [],
     }),
     mutations: {
         setQuestionList(state, questionList) {
@@ -17,6 +18,9 @@ export default {
         },
         setQuestionDetail(state, data) {
             state.questionDetail = data;
+        },
+        setUserQuestionList(state, userQuestionList) {
+            state.userQuestionList = userQuestionList;
         },
     },
     actions: {
@@ -51,7 +55,7 @@ export default {
             axios.get(url, config)
             .then(response => {
                 // console.log('getUserQuestionList',response.data);
-                context.commit('setQuestionList', response.data.data.data);
+                context.commit('setUserQuestionList', response.data.data.data);
                 context.commit('pagination/setPagination', response.data.data, {root: true});
             }) 
             .catch(error => {
@@ -126,24 +130,44 @@ export default {
                 },
                 // params: question,
             }
-            // console.log(question);
+            // console.log('question의 data : ',question);
             const formData = new FormData();
 
             formData.append('board_id', question.questionDetail.board_id);
             formData.append('board_title', question.questionDetail.board_title);
-            formData.append('board_content', question.questionDetail.board_content);
-            if(question.board_img1) {
-                formData.append('board_img1', question.board_img1);
-            }
-            if(question.board_img2) {
-                formData.append('board_img2', question.board_img2);
+            formData.append('board_content', question.questionDetail.board_content); 
+            formData.append('qc_code', question.questionDetail.question_category.qc_code);     
+            formData.append('qc_name', question.questionDetail.question_category.qc_name);   
+            // if(question.board_img1) {
+            //     formData.append('board_img1', question.board_img1);
+            // }
+            // if(question.board_img2) {
+            //     formData.append('board_img2', question.board_img2);
+            // }
+
+            // 이미지 배열 넘기기
+            if (question.questionDetail.board_images && question.questionDetail.board_images.length > 0) {
+                question.questionDetail.board_images.forEach((image) => {
+                    // formData.append('board_img[]', image.board_img);
+                    formData.append('board_img_path[]', image.board_img);
+                });
             }
 
-            // console.log('formData는', formData);
+            if (question.board_img && question.board_img.length > 0) {
+                question.board_img.forEach((file) => {
+                    // formData.append('board_img[]', file);
+                    formData.append('board_img_file[]', file);
+                });
+            }
+
+            // console.log('board_images', question.questionDetail.board_images);
+            // console.log('file', question.board_img);
 
             axios.post(url, formData, config)
             .then(response => {
                 context.commit('setQuestionList', response.data.data);
+                // console.log(response);
+                console.log(response.data);
 
                 alert('수정 성공');
                 router.replace(`/questions/${question.questionDetail.board_id}`);

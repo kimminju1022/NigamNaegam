@@ -15,6 +15,8 @@ export default {
         bcCode: localStorage.getItem('boardBcType') ? localStorage.getItem('boardBcType') : '0',
         boardReview: [],
         boardFree: [],
+        userReviewList: [],
+        userFreeList: [],
     }),
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
@@ -49,6 +51,12 @@ export default {
         },
         setAreaName(state, areaName) {
             state.areaName = areaName;
+        },
+        setUserReviewList(state, userReviewList) {
+            state.userReviewList = userReviewList;
+        },
+        setUserFreeList(state, userFreeList) {
+            state.userFreeList = userFreeList;
         },
     },
     actions: {
@@ -370,6 +378,49 @@ export default {
         //         });
         //     });
         // },
+
+        // 유저별 리뷰게시글 내역
+        userReviewList(context, searchData) {
+            const url = `/api/user/review/${searchData.user_id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                },
+                params: searchData,
+            }
+            
+            axios.get(url, config)
+            .then(response => {
+                // console.log('userReviewList',response.data);
+                context.commit('setUserReviewList', response.data.board.data);
+                context.commit('pagination/setPagination', response.data.board, {root: true});
+            }) 
+            .catch(error => {
+                console.error(error);
+            });
+
+        },
+        
+        // 유저별 자유게시글 내역
+        userFreeList(context, searchData) {
+            const url = `/api/user/free/${searchData.user_id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                },
+                params: searchData,
+            }
+            
+            axios.get(url, config)
+            .then(response => {
+                // console.log('userFreeList',response.data);
+                context.commit('setUserFreeList', response.data.board.data);
+                context.commit('pagination/setPagination', response.data.board, {root: true});
+            }) 
+            .catch(error => {
+                console.error(error);
+            });
+        },
     },
         
     getters: {

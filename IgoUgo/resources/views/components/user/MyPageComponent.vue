@@ -79,6 +79,54 @@
             </div>
         </div> -->
         <!-- <div v-else> -->
+
+        <div class="my-question">
+            <div class="question-box">
+                <h3>내가 쓴 게시글</h3>
+                <div class="sort">
+                    <p @click="showReview">리뷰</p>
+                    <p> | </p>
+                    <p @click="showFree">자유</p>
+                </div>
+                <div v-if="isReview" class="question-content-box">
+                    <div class="board-title">
+                        <p>번호</p>
+                        <p>카테고리</p>
+                        <p>제목</p>
+                        <p>작성일자</p>
+                        <p>좋아요</p>
+                    </div>
+                    <div v-for="item in userReview" :key="item" class="board-content">
+                        <p>{{ item.board_id }}</p>
+                        <p>{{ item.review.rc_code }}</p>
+                        <!-- 이거 이름으로 들고오는 방법 생각해보기 -->
+                        <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
+                        <p>{{ item.created_at }}</p>
+                        <p>{{ item.likes_count }}</p>
+                    </div>
+                </div>
+                <div v-if="isFree" class="question-content-box">
+                    <div class="board-title">
+                        <p>번호</p>
+                        <p></p>
+                        <p>제목</p>
+                        <p>작성일자</p>
+                        <p>좋아요</p>
+                    </div>
+                    <div v-for="item in userFree" :key="item" class="board-content">
+                        <p>{{ item.board_id }}</p>
+                        <p></p>
+                        <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
+                        <p>{{ item.created_at }}</p>
+                        <p>{{ item.likes_count }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <PaginationComponent :actionName1="actionName1" :searchData="searchData" />
+        </div>
+
         <div class="my-question">
             <div class="question-box">
                 <h3>나의 문의 내역</h3>
@@ -136,15 +184,42 @@ import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 const userInfo = computed(()=> store.state.auth.userInfo);
+// const actionName = ['question/userQuestionList', 'board/userReviewList', 'board/userFreeList'];
+const actionName1 = 'board/userReviewList';
+const actionName2 = 'board/userFreeList';
 const actionName = 'question/userQuestionList';
+
 
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
 onBeforeMount(() => {
+    store.dispatch(actionName1, searchData);
+    store.dispatch(actionName2, searchData);
     store.dispatch(actionName, searchData);
 });
 
-const userQuestion = computed(() => store.state.question.questionList);
+const userQuestion = computed(() => store.state.question.userQuestionList);
+const userReview = computed(() => store.state.board.userReviewList);
+const userFree = computed(() => store.state.board.userFreeList);
+
+const isReview = ref(true); // 기본적으로 리뷰를 보여줌
+const isFree = ref(false); // 기본적으로 자유는 숨김
+
+// 리뷰 클릭 시 호출
+const showReview = () => {
+    isReview.value = true;
+    isFree.value = false;
+    // 리뷰 데이터를 가져오기
+    store.dispatch(actionName1, searchData);
+};
+
+// 자유 클릭 시 호출
+const showFree = () => {
+    isFree.value = true;
+    isReview.value = false;
+    // 자유 데이터를 가져오기
+    store.dispatch(actionName2, searchData);
+};
 
 // 필터 관련
 const searchData = reactive({
@@ -301,6 +376,12 @@ const deletemodal = (userInfo) => {
     color: #01083a;
 }
 
+.sort {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
 .question-content-box {
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;
@@ -319,6 +400,16 @@ const deletemodal = (userInfo) => {
     border-bottom: 1px solid #01083a;
 }
 
+.board-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1fr;
+    text-align: center;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    border-bottom: 1px solid #01083a;
+}
+
 .question-content-box > hr{
     color: #4c4c4c;
 }
@@ -326,6 +417,13 @@ const deletemodal = (userInfo) => {
 .question-content {
     display: grid;
     grid-template-columns: 1fr 1fr 9fr 1.5fr;
+    text-align: center;
+    padding: 10px;
+}
+
+.board-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1fr;
     text-align: center;
     padding: 10px;
 }

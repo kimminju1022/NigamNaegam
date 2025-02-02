@@ -105,6 +105,12 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/password/{id}', [UserController::class, 'chkPW']);
     Route::put('/password/{id}', [UserController::class, 'updatePW'])->name('password.update');
 
+    // 유저별 게시판 내역
+    Route::get('/user/questions/{id}', [QuestionController::class, 'showMyQuestion']);
+    Route::get('/user/review/{id}', [BoardController::class, 'showMyReview']);
+    Route::get('/user/free/{id}', [BoardController::class, 'showMyFree']);
+
+
     // 게시판 관련
     Route::post('/boards',[BoardController::class, 'store']);
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
@@ -118,7 +124,6 @@ Route::middleware('my.auth')->group(function() {
     Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
 
     // 문의게시판 관련
-    Route::get('/user/questions/{id}', [QuestionController::class, 'showMyQuestion']);
     Route::post('/questions', [QuestionController::class, 'store']);
     Route::get('/questions/{id}/edit', [QuestionController::class, 'edit']);
     Route::post('/questions/{id}', [QuestionController::class, 'update'])->name('question.update');

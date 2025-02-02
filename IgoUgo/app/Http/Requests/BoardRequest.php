@@ -22,7 +22,7 @@ class BoardRequest extends FormRequest
             'board_img.*' => ['image'],
             'bc_code' => ['regex:/^[0-9]{1,2}$/u'],
             'area_code' => ['regex:/^[0-9]{1,2}$/u'],
-            'bc_code' => ['regex:/^[0-9]{1,2}$/u'],
+            // 'bc_code' => ['regex:/^[0-9]{1,2}$/u'], 중복이라 삭제합니당
             'rate' => ['regex:/^[0-5]{1}$/u'],
         ];
 

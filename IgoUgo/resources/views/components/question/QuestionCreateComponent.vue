@@ -104,7 +104,7 @@ const setFile = (e) => {
 
     // 5MB 이하 파일만 허용
     if(!arrayFiles.every(file => file.size <= 5 * 1024 * 1024)) {
-        alert(`파일 크기가 5MB이하만 추가할 수 있습니다.`);
+        alert(`파일 크기 5MB이하만 추가할 수 있습니다.`);
     } else if (emptyFilesSpace < 0) {
         alert(`최대 ${maxFiles}개까지만 추가할 수 있습니다.`);
     } else {
@@ -241,8 +241,8 @@ select {
 }
 
 .board-img-content img {
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .img-preview {

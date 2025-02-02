@@ -11,20 +11,33 @@
             <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
         </div>
         <div class="board-box">
-            <div class="board-title-box">
+            <!-- <div class="board-title-box">
                 <p>제목</p>
                 <div class="board-num">
                     <textarea readonly>{{ questionDetail.board_title }}</textarea>
                     <p>조회수</p>
                     <p>{{ questionDetail.view_cnt }}</p>
                 </div>  
+            </div> -->
+            <div class="board-box-flex">
+                <div class="board-title-box board-title">
+                    <p>제목</p>
+                    <textarea readonly>{{ questionDetail.board_title }}</textarea>
+                </div>
+                <div class="board-title-box board-title-category">
+                    <p>카테고리</p>
+                    <p>{{ questionDetail.question_category.qc_name }}</p>
+                </div>
             </div>
             <div class="board-content-box">
                 <p>내용</p>
                 <div class="board-content">
                     <div class="board-content-img">
-                        <img :src="questionDetail.board_img1">
-                        <img :src="questionDetail.board_img2">
+                        <!-- <img :src="questionDetail.board_img1">
+                        <img :src="questionDetail.board_img2"> -->
+                        <div class="img-grid">
+                            <img v-for="(image, index) in questionDetail.board_images" :key="index" :src="image.board_img">
+                        </div>
                     </div>
                     <textarea readonly>{{ questionDetail.board_content }}</textarea>
                     <div class="board-user">
@@ -52,13 +65,13 @@
 <script setup>
 import { computed, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
 const route = useRoute();
 
-// const questionList = computed(() => store.state.question.questionList);
 const questionDetail = computed(() => store.state.question.questionDetail);
+// console.log(questionDetail);
 
 const boardInfo = reactive({
     board_id: route.params.id,
@@ -67,15 +80,6 @@ const boardInfo = reactive({
 onBeforeMount(()=>{
     store.dispatch('question/questionDetail', boardInfo);
 });
-
-
-// ******************************* button *******************************
-// const updateConfirm = () => {
-//     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
-//         if (userResponse) {
-//         router.push('/boards/question/update');
-//     }
-// }
 
 const deleteQuestion = (id) => {
     const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
@@ -135,23 +139,50 @@ const deleteQuestion = (id) => {
     font-size: 17px;
 }
 
-.board-box > div {
+.board-box > div:not(:first-child){
     display: grid;
     grid-template-columns: 1fr 5fr;
 }
 
-.board-title-box {
+/* .board-title-box {
     display: grid;
     grid-template-columns: 1fr 5fr;
     border-bottom: 1px solid #01083a;
-}
+} */
 
 .board-title-box textarea {
     font-size: 17px;
     resize: none;
     margin: 5px;
 }
+.board-box > div > :first-child, .board-title-box > p:not(.board-title-category :last-child){
+    border-right: 1px solid #01083a;
+}
 
+.board-box-flex {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.board-title {
+    display: grid;
+    grid-template-columns: 1fr 2.99fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-title-category {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.board-title-category :last-child {
+    font-size: 17px;
+    margin: 0  auto;
+    /* width: 80%; */
+}
+
+/* 
 .board-num {
     display: grid;
     grid-template-columns: 6fr 1fr 1fr;
@@ -163,7 +194,7 @@ const deleteQuestion = (id) => {
     font-weight: 600;
     font-size: 18px;
     text-align: center;
-}
+} */
 
 /* 이렇게 써도되나? 밑에거가 맞는건가 */
 .board-box > div > :first-child:not(:last-child) {
@@ -171,7 +202,8 @@ const deleteQuestion = (id) => {
     border-right: 1px solid #01083a;
 }
 
-.board-content > *:first-child, .admin-content > *:not(:last-child) {
+/* .board-content > *:first-child, .admin-content > *:not(:last-child) { */
+.admin-content > *:not(:last-child) {
     border-bottom: 1px solid #01083a;
 }
 
@@ -193,13 +225,19 @@ const deleteQuestion = (id) => {
 }
 
 .board-content-img {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    place-items: center;
-    padding: 5px;
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr; */
+    /* place-items: center; */
+    padding: 10px;
 }
 
-.board-content-img > img {
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    place-items: center;
+}
+
+.img-grid > img {
     max-width: 300px;
     max-height: 300px;
 }
