@@ -78,7 +78,7 @@ const question = reactive({
 });
 
 // console.log('question : ',question);
-// console.log('questionDetail : ',question.questionDetail);
+console.log('questionDetail : ',question.questionDetail);
 
 watch(() => question.questionDetail.question_category.qc_code, (newQcCode) => {
     const categories = {

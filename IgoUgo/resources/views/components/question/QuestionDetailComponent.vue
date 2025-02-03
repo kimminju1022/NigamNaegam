@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="board-content-box">
-                <p>내용</p>
+                <!-- <p>내용</p> -->
                 <div class="board-content">
                     <div class="board-content-img">
                         <!-- <img :src="questionDetail.board_img1">
@@ -39,7 +39,9 @@
                             <img v-for="(image, index) in questionDetail.board_images" :key="index" :src="image.board_img">
                         </div>
                     </div>
-                    <textarea readonly>{{ questionDetail.board_content }}</textarea>
+                    <div class="content-textarea">
+                        <textarea readonly>{{ questionDetail.board_content }}</textarea>
+                    </div>
                     <div class="board-user">
                         <p>닉네임 : {{ questionDetail.user.user_nickname }}</p>
                         <p>{{ questionDetail.created_at }}</p>
@@ -134,15 +136,20 @@ const deleteQuestion = (id) => {
     font-weight: 600;
 }
 
-.board-box p, .board-content > textarea {
+.board-content :not(:last-child){
+    width: 90%;
+    margin: 20px auto;
+}
+
+.board-box p, .board-content textarea {
     /* padding: 10px; */
     font-size: 17px;
 }
 
-.board-box > div:not(:first-child){
+/* .board-box > div:not(:first-child){
     display: grid;
     grid-template-columns: 1fr 5fr;
-}
+} */
 
 /* .board-title-box {
     display: grid;
@@ -155,7 +162,8 @@ const deleteQuestion = (id) => {
     resize: none;
     margin: 5px;
 }
-.board-box > div > :first-child, .board-title-box > p:not(.board-title-category :last-child){
+/* .board-box > div > :first-child, .board-title-box > p:not(.board-title-category :last-child){ */
+.board-box >.board-box-flex > :first-child, .board-title-box > p:not(.board-title-category :last-child){
     border-right: 1px solid #01083a;
 }
 
@@ -217,29 +225,32 @@ const deleteQuestion = (id) => {
     gap: 20px;
 }
 
-.board-content > textarea {
+.board-content textarea {
     resize: none;
-    height: 300px;
-    width: 100%;
+    height: 250px;
+    width: 99%;
     margin: 10px;
+    /* background-color: #f7f7f7; */
 }
 
 .board-content-img {
     /* display: grid; */
     /* grid-template-columns: 1fr 1fr; */
     /* place-items: center; */
-    padding: 10px;
+    /* padding: 10px; */
+    margin: 20px auto;
 }
 
 .img-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     place-items: center;
+    /* margin: 0 auto; */
 }
 
 .img-grid > img {
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 185px;
+    max-height: 185px;
 }
 
 /* 관리자 */

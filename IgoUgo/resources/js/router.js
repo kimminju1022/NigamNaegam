@@ -41,9 +41,7 @@ import QuestionUpdateComponent from '../views/components/question/QuestionUpdate
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import LoadingComponent from '../views/components/LoadingComponent.vue';
-
-// 테스트
-import TestComponent from '../views/components/products/TestComponent.vue';
+import SearchComponent from '../views/components/SearchComponent.vue';
 
 // admin
 import AdminMainComponent from '../views/adminComponents/AppComponent.vue';
@@ -99,10 +97,6 @@ const routes = [
         path: '/social/login',
         component: SocialLoginComponent,
     },
-    // {
-    //     path: '/auth/login/google/callback',
-    //     // component: VerifiedEmailComponent,
-    // },
     // 이메일
     {
         path: '/email/verify',
@@ -172,13 +166,6 @@ const routes = [
         path: '/products/:contenttypeid/:contentid',
         component: ProductDetailComponent,
     },
-    // -------------------------------
-    // 테스트
-    {
-        path: '/testtest',
-        component: TestComponent,
-    },
-    // -------------------------------
     // 게시판
     {
         path: '/boards',
@@ -226,6 +213,10 @@ const routes = [
     {
         path: '/loading',
         component: LoadingComponent, 
+    },
+    {
+        path: '/search',
+        component: SearchComponent, 
     },
     {
         path: '/:catchAll(.*)',

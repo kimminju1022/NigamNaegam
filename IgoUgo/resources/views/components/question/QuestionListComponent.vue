@@ -3,8 +3,8 @@
         <h1>문의게시판</h1>
         <div class="board-head">
             <!-- <input v-model="search" type="text" placeholder="검색어를 입력해 주세요"> -->
-            <input type="text" placeholder="검색어를 입력해 주세요">
-            <button class="btn bg-navy board-search-btn">검색</button>
+            <!-- <input type="text" placeholder="검색어를 입력해 주세요"> -->
+            <!-- <button class="btn bg-navy board-search-btn">검색</button> -->
             <div class="board-create-btn">
                 <router-link to="/questions/create"><button class="btn bg-navy">작성</button></router-link>
             </div>

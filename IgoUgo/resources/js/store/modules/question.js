@@ -160,8 +160,8 @@ export default {
                 });
             }
 
-            // console.log('board_images', question.questionDetail.board_images);
-            // console.log('file', question.board_img);
+            console.log('board_images', question.questionDetail.board_images);
+            console.log('file', question.board_img);
 
             axios.post(url, formData, config)
             .then(response => {

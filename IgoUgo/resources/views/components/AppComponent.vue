@@ -7,16 +7,19 @@
                 <!-- <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link> -->
                 <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
                 <div class="header-search"> 
-                    <input class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                    <button class="btn bg-navy header-bg-btn">검색</button>
+                    <input v-model="search" class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
+                    <button @click="mainSearch(search)" class="btn bg-navy header-bg-btn">검색</button>
                 </div>
                 <div v-if="!$store.state.auth.authFlg" class="header-title-button">
+                    <!-- FAQ는 통계기능이 생기면 합시당 -->
+                    <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link>
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
                     <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
                     <router-link to="/before/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
                     <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                 </div>
                 <div v-else class="header-title-button">
+                    <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link>
                     <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의</button></router-link>
                     <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button> -->
                     <button @click="logout" class="btn bg-logout header-logout">로그아웃</button>
@@ -360,6 +363,7 @@ import { useRouter } from 'vue-router';
 const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
 const router = useRouter();
+const search = ref('');
 
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
@@ -388,6 +392,7 @@ const router = useRouter();
 // const toggleMenu = () => {
 //     isMenuOpen.value = !isMenuOpen.value;
 // };
+
 const flg = ref('0');
 
 const flgSetUp = () => {
@@ -418,6 +423,11 @@ const logout = () =>{
         store.dispatch('auth/logout');
     }
 }
+
+// 검색
+// const mainSearch = ((search) => {
+//     store.dispatch();
+// })
 
 // ---------- 게시판 이동 관련 start ----------
 const redirectBoards = async (bcCode) => {
@@ -512,6 +522,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 2;
+    box-shadow: 3px 0px 20px #e7e7e7;
 }
 
 .header-header {
@@ -522,30 +533,31 @@ header {
     top: 0;
     /* z-index: 1; */
     margin: 0 auto;
-    max-width: 1300px;
+    /* max-width: 1300px; */
+    max-width: 1920px;
     gap: 15px;
 }
 
 /* 헤더 1 -> 로고 , 로그인 버튼 */
 .header-title {
     display: grid;
-    grid-template-columns: 1fr 3.5fr 1fr;
+    grid-template-columns: 1fr 5fr 2fr;
     align-items: center;
-    /* justify-items: center; */
     margin-top: 25px;
     gap: 10px;
 }
 
 .header-title > :first-child {
-    justify-self: start;
-    /* margin-left: 50px; */
+    /* justify-self: center; */
+    margin-left: 10%;
 }
 
 .header-title-button {
     display: flex;
     gap: 25px;
     align-items: center;
-    /* justify-items: center; */
+    justify-content: flex-end;
+    margin-right: 15%;
 }
 
 .header-title-button img {
@@ -571,7 +583,7 @@ header {
 
 .header-title-img {
     /* width: 450px; */
-    width: 250px;
+    width: 220px;
 }
 
 /* 헤더 로그인 버튼 */
@@ -618,13 +630,14 @@ header {
     justify-content: center;
     /* margin: 0 8px; */
     gap: 20px;
+    margin-bottom: 20px;
 }
 
 /* 호텔, 상품, 게시판 hover */
 .header-list-flex {
     display: flex;
     flex-direction: row;
-    /* gap: 5px; */
+    gap: 15px;
 }
 
 .header-list-hover a, .header-list-hover p {
@@ -711,6 +724,7 @@ header {
     display: flex;
     justify-content: center;
     flex-direction: row;
+    gap: 15px;
 }
 
 .header-list-hover:hover .dropdown-content {
@@ -752,7 +766,7 @@ header {
 .main {
     /* padding: 30px 25px 25px 25px; */
     padding: 30px 0 25px 0;
-    margin: 0 auto;
+    margin: 50px auto 0 ;
     max-width: 1300px;
 }
 

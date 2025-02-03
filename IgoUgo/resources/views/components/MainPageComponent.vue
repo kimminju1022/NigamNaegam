@@ -171,12 +171,14 @@
             <div class="main-popular-review">
                 <h3>리뷰</h3>
                 <div class="main-popular-box">
-                    <div v-for="item in boardReview" :key="item" class="main-card">
-                        <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
+                    <div v-for="item in boardReview" :key="item" class="main-card review-card">
+                        <router-link :to="`/boards/${item.board_id}`" class="review-card-content">
                             <img :src="item.board_img1">
                             <p>{{ item.board_title }}</p>
                             <p>{{ item.board_content }}</p>
-                            <p>작성자 : {{ item.user.user_nickname }}</p>
+                            <div class="user">
+                                <img :src="item.user.user_profile" alt=""><p>by {{ item.user.user_nickname }}</p>
+                            </div>
                         </router-link>
                     </div>
                 </div>
@@ -185,12 +187,14 @@
             <div class="main-popular-free">
                 <h3>자유</h3>
                 <div class="main-popular-box">
-                    <div v-for="item in boardFree" :key="item" class="main-card">
-                        <router-link :to="`/boards/${item.board_id}`" class="main-card-content">
-                            <img :src="item.board_img1">
+                    <div v-for="item in boardFree" :key="item" class="main-card free-card">
+                        <router-link :to="`/boards/${item.board_id}`" class="free-card-content">
+                            <!-- <img :src="item.board_img1"> -->
                             <p>{{ item.board_title }}</p>
                             <p>{{ item.board_content }}</p>
-                            <p>작성자 : {{ item.user.user_nickname }}</p>
+                            <div class="user">
+                                <img :src="item.user.user_profile"><p>by {{ item.user.user_nickname }}</p>
+                            </div>
                         </router-link>
                     </div>
                 </div>
@@ -634,9 +638,15 @@ a, a:visited {
     box-shadow: 2px 2px 20px #ddd;
 }
 
-.main-card-content {
+.review-card-content {
     display: grid;
-    grid-template-rows: 200px 40px 70px 40px;
+    grid-template-rows: 200px 40px 70px 50px;
+    gap: 10px;
+}
+
+.free-card-content {
+    display: grid;
+    grid-template-rows: 40px 70px 50px;
     gap: 10px;
 }
 
@@ -649,7 +659,7 @@ a, a:visited {
     border-radius: 10px 10px 0px 0px;
 }
 
-.main-card p:not(:nth-child(3)) {
+.main-card p:not(:nth-of-type(3)), .user {
     width: 90%;
     margin: 0 auto;
     /* white-space: nowrap;
@@ -657,19 +667,20 @@ a, a:visited {
     text-overflow: ellipsis; */
 }
 
-.main-card p:nth-child(2) {
+.review-card p:nth-of-type(1):not(:last-child), .free-card p:nth-of-type(1):not(:last-child) {
     width: 90%;
-    margin: 0 auto;
+    margin: 10px auto;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     word-break: break-all;
-    height: 40px;
+    height: 20px;
+    font-weight: 600;
 }
 
-.main-card p:nth-child(3) {
+.review-card p:nth-of-type(2), .free-card p:nth-of-type(2) {
     width: 90%;
     margin: 0 auto;
     overflow: hidden;
@@ -680,6 +691,32 @@ a, a:visited {
     word-break: break-all;
     height: 60px;
 }
+
+.review-card-content > .user img, .free-card-content > .user img {
+    border-radius: 50px;
+    width: 35px;
+    height: 35px;
+    border: 2px solid #01083a18;
+}
+
+.user {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+/* .main-card p:nth-of-type(3) {
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    word-break: break-all;
+    height: 60px;
+} */
 
 /* 공지사항 부분 */
 .divisverysad {

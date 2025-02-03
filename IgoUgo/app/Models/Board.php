@@ -48,7 +48,7 @@ class Board extends Model
     }
 
     public function user() {
-        return $this->belongsTo(User::class, 'user_id', 'user_id')->select('user_id', 'user_nickname');
+        return $this->belongsTo(User::class, 'user_id', 'user_id')->select('user_id', 'user_nickname', 'user_profile');
     }
 
     public function board_category() {

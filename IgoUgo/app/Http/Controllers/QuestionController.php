@@ -161,8 +161,8 @@ class QuestionController extends Controller
     // 게시글 수정 처리
     public function update(Request $request) {
         try {
-            DB::transaction();
-            Log::debug('수정 시작');
+            DB::beginTransaction();
+            // Log::debug('수정 시작');
             
             $board = Board::find($request->board_id);
             // Log::debug($board);
@@ -191,8 +191,8 @@ class QuestionController extends Controller
             $boardImg = BoardImage::where('board_id', $request->board_id)->get();
             // Log::debug('boardImage : ',$boardImg->toArray());
 
-            Log::debug($request->board_img_path);
-            Log::debug($request->board_img_file);
+            // Log::debug($request->board_img_path);
+            // Log::debug($request->board_img_file);
 
             // 이미 있던 이미지 request
             if ($request->has('board_img_path')) {
@@ -228,22 +228,22 @@ class QuestionController extends Controller
             } 
     
             $questionCategory->save();
-            Log::debug('수정 끝');
+            // Log::debug('수정 끝');
     
+            DB::commit();
+
             $responseData = [
                 'success' => true
                 ,'msg' => '게시글 업데이트 성공'
                 ,'board' => $board->toArray()
                 ,'board_img' => $boardImg->toArray()
             ];
-    
-            DB::commit();
-            
-            return response()->json($responseData, 200);
         } catch(Throwable $th) {
             DB::rollBack();
-            $th->getMessage();
+            throw $th;
         }
+
+        return response()->json($responseData, 200);
     }
 
     // 게시글 삭제
