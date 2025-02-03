@@ -97,7 +97,8 @@ onBeforeMount(async () => {
     await store.dispatch('product/takeProductDetail', findData);
 });
 
-const map = ref(null); // 지도 객체를 저장
+// const map = ref(null); // 지도 객체를 저장
+var map = null;
 
 onMounted(() => {
     // DOM 렌더링 후에 Kakao 지도 로딩
@@ -122,7 +123,7 @@ const loadKakaoMap = async () => {
             center: new window.kakao.maps.LatLng(productLat.value, productLng.value),
             level: 5,
         };
-        map.value = new window.kakao.maps.Map(container, options);
+        map = new window.kakao.maps.Map(container, options);
         console.log("Map loaded successfully.");
         loadMaker();
     } else {
@@ -160,23 +161,70 @@ watch([productLat, productLng], ([newLat, newLng]) => {
 
 // 카카오맵 마커 생성
 const loadMaker = () => {
-    if(map.value) {
+    if(map) {
         const markerPosition = new window.kakao.maps.LatLng(productLat.value, productLng.value);
         const markerTitle = productDetail.value.title;
-        const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
+        // const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
+        var content = `
+            <div style="
+                position: relative;
+                background: white;
+                border: 1px solid black;
+                padding: 10px;
+                border-radius: 10px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                max-width: 200px;
+                text-align: center;
+                display: inline-block;
+            ">
+                <p style="font-size: 14px;">${markerTitle}</p>
+                <div style="
+                    content: '';
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 0;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    border-top: 10px solid black;"></div>
+                <div style="
+                    content: '';
+                    position: absolute;
+                    bottom: -9px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 0;
+                    border-left: 9px solid transparent;
+                    border-right: 9px solid transparent;
+                    border-top: 9px solid white;"></div>
+            </div>
+        `;
 
         const marker = new window.kakao.maps.Marker({
             position: markerPosition
         });
 
-        marker.setMap(map.value);
+        marker.setMap(map);
 
-        const infowindow = new window.kakao.maps.InfoWindow({
+        // const infowindow = new window.kakao.maps.InfoWindow({
+        //     position: markerPosition,
+        //     content: content
+        // });
+
+        // infowindow.open(map.value, marker);
+
+        var mapCustomOverlay = new window.kakao.maps.CustomOverlay ({
             position: markerPosition,
-            content: content
+            content: content,
+            xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+            yAnchor: 2.3 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
         });
 
-        infowindow.open(map.value, marker);
+        // 커스텀 오버레이를 지도에 표시
+        mapCustomOverlay.setMap(map);
     } else {
         console.log("no marker");
     }

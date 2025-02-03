@@ -83,14 +83,12 @@
                 
                 <div class="detail-content">
                     <div class="hotel-category-area">
-                        필터 영역1
-                    </div>
-                    <div class="hotel-category-area2">
-                        <div class="category-box">필터1</div>
-                        <div class="category-box">필터2</div>
-                        <div class="category-box">필터3</div>
-                        <div class="category-box">필터4</div>
-                        <div class="category-box">필터5</div>
+                        <div class="category-box"><img class="filter-icon" src="/img_product/swimmingpool.png">수영장</div>
+                        <div class="category-box"><img class="filter-icon" src="/img_product/barbecue.png">바베큐장</div>
+                        <div class="category-box"><img class="filter-icon" src="/img_product/campfire.png">캠프파이어</div>
+                        <div class="category-box"><img class="filter-icon" src="/img_product/beauty.png">뷰티시설</div>
+                        <div class="category-box"><img class="filter-icon" src="/img_product/fitness.png">피트니스센터</div>
+                        <div class="category-box"><img class="filter-icon" src="/img_product/pickup.png">픽업서비스</div>
                     </div>
                     <p class="detail-content-content">{{ hotelDetail.overview }}</p>
                 </div>
@@ -127,7 +125,8 @@ onBeforeMount(async () => {
 });
 
 
-const map = ref(null); // 지도 객체를 저장
+// const map = ref(null); // 지도 객체를 저장
+var map = null;
 
 onMounted(() => {
     // DOM 렌더링 후에 Kakao 지도 로딩
@@ -154,7 +153,8 @@ const loadKakaoMap = async () => {
             center: new window.kakao.maps.LatLng(productLat.value, productLng.value),
             level: 5,
         };
-        map.value = new window.kakao.maps.Map(container, options);
+        // map.value = new window.kakao.maps.Map(container, options);
+        map = new window.kakao.maps.Map(container, options);
         console.log("Map loaded successfully.");
         loadMaker();
     } else {
@@ -196,23 +196,72 @@ watch([productLat, productLng], ([newLat, newLng]) => {
 const loadMaker = () => {
     // 주소-좌표 변환 객체를 생성합니다
 
-    if(map.value) {
+    if(map) {
         const markerPosition = new window.kakao.maps.LatLng(productLat.value, productLng.value);
         const markerTitle = hotelDetail.value.title;
-        const content = '<div style="width: 150px"><p style="text-align: center">' + markerTitle + '</p></div>';
+        // var content = '<div style="background-color: white; padding: 5px;"><p>' + markerTitle + '</p></div>';
+        var content = `
+            <div style="
+                position: relative;
+                background: white;
+                border: 1px solid black;
+                padding: 10px;
+                border-radius: 10px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                max-width: 200px;
+                text-align: center;
+                display: inline-block;
+            ">
+                <p style="font-size: 14px;">${markerTitle}</p>
+                <div style="
+                    content: '';
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 0;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    border-top: 10px solid black;">
+                </div>
+                <div style="
+                    content: '';
+                    position: absolute;
+                    bottom: -9px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 0;
+                    border-left: 9px solid transparent;
+                    border-right: 9px solid transparent;
+                    border-top: 9px solid white;">
+                </div>
+            </div>
+        `;
 
         const marker = new window.kakao.maps.Marker({
             position: markerPosition
         });
 
-        marker.setMap(map.value);
+        marker.setMap(map);
 
-        const infowindow = new window.kakao.maps.InfoWindow({
+        // const infowindow = new window.kakao.maps.InfoWindow({
+        //     position: markerPosition,
+        //     content: content
+        // });
+
+        // infowindow.open(map.value, marker);
+
+        var mapCustomOverlay = new window.kakao.maps.CustomOverlay ({
             position: markerPosition,
-            content: content
+            content: content,
+            xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+            yAnchor: 2.3 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
         });
 
-        infowindow.open(map.value, marker);
+        // 커스텀 오버레이를 지도에 표시
+        mapCustomOverlay.setMap(map);
     } else {
         console.log("no marker");
     }
@@ -339,6 +388,15 @@ const filterHomepage = (url) => {
     height: 440px;
 }
 
+/* infowinow 디자인 */
+.info {
+    background-color: black;
+}
+.info > .info-style {
+    display: block;
+    background-color: black;
+}
+
 /* 디테일 옵션 영역 */
 .detail-option {
     margin-top: 20px;
@@ -355,21 +413,23 @@ const filterHomepage = (url) => {
     font-size: 18px;
 }
 .hotel-category-area {
-    margin-bottom: 50px;
-    height: 100px;
-    border-top: 3px dotted #01083a;
-    border-bottom: 3px dotted #01083a;
-}
-.hotel-category-area2 {
-    margin: 50px;
-    height: 100px;
-    display: flex;
-    justify-content: space-around;
+    margin: 50px 0;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(6, 1fr);
 }
 .category-box {
-    border: 2px solid #01083a;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
     width: 200px;
     height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.filter-icon {
+    width: 35px;
 }
 .detail-content-content {
     line-height: 30px;

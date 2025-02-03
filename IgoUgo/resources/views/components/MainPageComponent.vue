@@ -10,8 +10,7 @@
                     el: '.swiper-scrollbar',
                 }"
                 :autoplay="{
-                    // delay: 3600,
-                    delay: 360000,
+                    delay: 3600,
                     disableOnInteraction: false,
                 }"
                 :centeredSlides="true"
@@ -33,7 +32,7 @@
                             <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img1.png">
                         </router-link>
                         <div class="banner-content-right">
-                            <router-link to="/products/12/127131">
+                            <router-link to="/products/12/129168">
                                 <div class="banner-content-title title1">
                                     <img src="/img_main/title1.png" class="banner-text-img">
                                 </div>
@@ -50,7 +49,7 @@
                             <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img2.png">
                         </router-link>
                         <div class="banner-content-right">
-                            <router-link to="/products/12/127131">
+                            <router-link to="/products/12/2650745">
                                 <div class="banner-content-title title2">
                                     <img src="/img_main/title2.png" class="banner-text-img">
                                 </div>
@@ -63,7 +62,7 @@
                     <div class="banner-slide banner-slide3"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <router-link to="/products/12/127131">
+                        <router-link to="/products/12/126238">
                             <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img3.png">
                         </router-link>
                         <div class="banner-content-right">
@@ -84,7 +83,7 @@
                             <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img4.jpg">
                         </router-link>
                         <div class="banner-content-right">
-                            <router-link to="/products/12/127131">
+                            <router-link to="/products/12/126848">
                                 <div class="banner-content-title title4">
                                     <img src="/img_main/title4.png" class="banner-text-img-small">
                                 </div>
@@ -101,7 +100,7 @@
                             <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img5.png">
                         </router-link>
                         <div class="banner-content-right">
-                            <router-link to="/products/12/127131">
+                            <router-link to="/hotels/142962">
                                 <div class="banner-content-title title5">
                                     <img src="/img_main/title5.png" class="banner-text-img">
                                 </div>
