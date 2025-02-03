@@ -13,6 +13,7 @@ export default {
         count: [],
         hotelDetail: [],
         hotelDetailImg: [],
+        hotelDetailImgCount: null,
         hotelRank: [],
     }),
     mutations: {
@@ -41,6 +42,9 @@ export default {
         },
         setHotelDetailImg(state, list) {
             state.hotelDetailImg = list;
+        },
+        setHotelDetailImgCount(state, data) {
+            state.hotelDetailImgCount = data;
         },
         setHotelsRank(state, list) {
             state.hotelRank = list
@@ -130,6 +134,7 @@ export default {
                     const imgs = hotelImgs ? hotelImgs.map((item) => item.originimgurl) : [];
                     context.commit('setHotelDetail', response.data.hotelsDetail.response.body.items.item[0]);
                     context.commit('setHotelDetailImg', imgs);
+                    context.commit('setHotelDetailImgCount', imgs.length);
                     // console.log(response.data.hotelsDetail.response.body.items.item[0])
                     // console.log(imgs)
                     return resolve();

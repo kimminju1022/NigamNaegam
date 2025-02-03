@@ -19,15 +19,15 @@
                 </div>
                 
                 <div class="detail-img-map">
-                    <div v-if="productImgCnt >= 5">
+                    <div v-if="productImgCnt >= 4">
                         <div class="div-hell">
                             <div class="detail-img">
                                 <img class="img-big" :src="productDetail.firstimage" alt="">
                                 <div class="detail_img-right">
                                     <!-- <img class="img-middle" :src="productImg[0] === undefined ? '/default/board_default.png' : productImg[0]" :class="{'img-contain':productImg[0] === undefined}" alt="">
                                     <img class="img-middle" :src="productImg[1] === undefined ? '/default/board_default.png' : productImg[1]" :class="{'img-contain':productImg[1] === undefined}" alt=""> -->
-                                    <img class="img-middle" :src="productImg[0] === undefined ? '/default/board_default.png' : productImg[0]" alt="">
-                                    <img class="img-middle" :src="productImg[1] === undefined ? '/default/board_default.png' : productImg[1]" alt="">
+                                    <img class="img-middle" :src="productImg[0]" alt="">
+                                    <img class="img-middle" :src="productImg[1]" alt="">
                                 </div>
                             </div>
                             <div class="detail-five">
@@ -35,36 +35,28 @@
                                 <img class="img-small" :src="productImg[3] === undefined ? '/default/board_default.png' : productImg[3]" :class="{'img-contain':productImg[3] === undefined}" alt="">
                                 <img class="img-small" :src="productImg[4] === undefined ? '/default/board_default.png' : productImg[4]" :class="{'img-contain':productImg[4] === undefined}" alt="">
                                 <img class="img-small" :src="productImg[5] === undefined ? '/default/board_default.png' : productImg[5]" :class="{'img-contain':productImg[5] === undefined}" alt=""> -->
-                                <img class="img-small" :src="productImg[2] === undefined ? '/default/board_default.png' : productImg[2]" alt="">
-                                <img class="img-small" :src="productImg[3] === undefined ? '/default/board_default.png' : productImg[3]" alt="">
-                                <img class="img-small" :src="productImg[4] === undefined ? '/default/board_default.png' : productImg[4]" alt="">
-                                <img class="img-small" :src="productImg[5] === undefined ? '/default/board_default.png' : productImg[5]" alt="">
+                                <img class="img-small" :src="productImg[2]" alt="">
+                                <img class="img-small" :src="productImg[3]" alt="">
                             </div>
                         </div>
                     </div>
-                    <div v-else-if="productImgCnt >= 3">
+                    <div v-else-if="productImgCnt >= 2">
                         <div class="div-hell">
                             <div class="detail-img">
-                                <img class="img-big" :src="productDetail.firstimage" alt="">
-                                <div class="detail_img-right">
-                                    <img class="img-middle" :src="productImg[0] === undefined ? '/default/board_default.png' : productImg[0]" alt="">
-                                    <img class="img-middle" :src="productImg[1] === undefined ? '/default/board_default.png' : productImg[1]" alt="">
+                                <img class="img-big img-three" :src="productDetail.firstimage" alt="">
+                                <div class="detail_img-right img-three-right">
+                                    <img class="img-middle" :src="productImg[0]" alt="">
+                                    <img class="img-middle" :src="productImg[1]" alt="">
                                 </div>
-                            </div>
-                            <div class="detail-five">
-                                <img class="img-small" :src="productImg[2] === undefined ? '/default/board_default.png' : productImg[2]" alt="">
-                                <img class="img-small" :src="productImg[3] === undefined ? '/default/board_default.png' : productImg[3]" alt="">
-                                <img class="img-small" :src="productImg[4] === undefined ? '/default/board_default.png' : productImg[4]" alt="">
-                                <img class="img-small" :src="productImg[5] === undefined ? '/default/board_default.png' : productImg[5]" alt="">
                             </div>
                         </div>
                     </div>
                     <div v-else>
-                        <div class="div-hell">
-                            <div class="detail-img">
-                                <img class="img-big" :src="productDetail.firstimage" alt="">
-                            </div>
-                        </div>
+                        <!-- <div class="div-hell">
+                            <div class="detail-img"> -->
+                                <img class="img-one" :src="productDetail.firstimage" alt="">
+                            <!-- </div> -->
+                        <!-- </div> -->
                     </div>
                     <div>
                         <div id="map"></div>
@@ -201,8 +193,11 @@ const filterHomepage = (url) => {
 <style scoped>
 /* 데이터가 없을 때 나오는 버튼 */
 .btn-go-back {
-    height: 30px;
-    padding: 0 10px;
+    /* height: 30px;
+    padding: 0 10px; */
+    padding: 10px;
+    border-radius: 20px;
+    margin: 50px 0;
 }
 
 /* 타이틀 */
@@ -221,7 +216,8 @@ const filterHomepage = (url) => {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
+    margin-bottom: 50px;
 }
 
 /* 이미지&지도 영역 */
@@ -244,23 +240,27 @@ const filterHomepage = (url) => {
     grid-template-columns: 550px 250px;
     gap: 20px;
 }
+/* 이미지 5개 */
 /* 큰 이미지 */
 .img-big {
     width: 550px;
-    height: 320px;
+    /* height: 320px; */
+    height: 290px;
     background-repeat: no-repeat;
     object-fit: cover;
 }
 /* 중간 이미지 영역 */
 .detail_img-right {
     display: grid;
-    grid-template-rows: 150px 150px;
+    /* grid-template-rows: 150px 150px; */
+    grid-template-rows: 135px 135px;
     gap: 20px;
 }
 /* 중간 이미지 */
 .img-middle {
     width: 250px;
-    height: 150px;
+    /* height: 150px; */
+    height: 135px;
     background-repeat: no-repeat;
     object-fit: cover;
 }
@@ -271,14 +271,32 @@ const filterHomepage = (url) => {
 }
 /* 작은 이미지 */
 .img-small {
-    width: 190px;
-    height: 100px;
+    /* width: 190px; */
+    /* height: 100px; */
+    width: 400px;
+    height: 130px;
     background-repeat: no-repeat;
     object-fit: cover;
 }
-/* 기본 이미지 설정 */
-.img-contain {
+/* 기본 이미지 설정
+/* 이제 no image는 없음 */
+/* .img-contain {
     object-fit: contain;
+} */
+/* 이미지 3개 */
+.img-three {
+    height: 440px;
+}
+.img-three-right {
+    grid-template-rows: 210px 210px;
+}
+.img-three-right > .img-middle {
+    height: 210px;
+}
+/* 이미지 한 개 */
+.img-one {
+    width: 820px;
+    height: 440px;
 }
 
 /* 지도지도 */
@@ -299,7 +317,7 @@ const filterHomepage = (url) => {
 }
 /* 컨텐츠 영역 */
 .detail-content {
-    margin-top: 20px;
+    margin-top: 50px;
     font-size: 18px;
 }
 .detail-content-content {

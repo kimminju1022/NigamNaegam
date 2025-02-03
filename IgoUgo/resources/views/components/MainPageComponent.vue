@@ -10,7 +10,8 @@
                     el: '.swiper-scrollbar',
                 }"
                 :autoplay="{
-                    delay: 3600,
+                    // delay: 3600,
+                    delay: 360000,
                     disableOnInteraction: false,
                 }"
                 :centeredSlides="true"
@@ -28,13 +29,15 @@
                     <div class="banner-slide banner-slide1"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img1.png">
+                        <router-link to="/products/12/129168">
+                            <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img1.png">
+                        </router-link>
                         <div class="banner-content-right">
-                            <div class="banner-content-title title1">
-                                <!-- <p>푸른 뱀의 해가</p>
-                                <p>밝았습니다!</p> -->
-                                <img src="/img_main/title1.png" class="banner-text-img">
-                            </div>
+                            <router-link to="/products/12/127131">
+                                <div class="banner-content-title title1">
+                                    <img src="/img_main/title1.png" class="banner-text-img">
+                                </div>
+                            </router-link>
                             <div class="banner-content-text">호미곶</div>
                         </div>
                     </div>
@@ -43,13 +46,15 @@
                     <div class="banner-slide banner-slide2"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img2.png">
+                        <router-link to="/products/12/2650745">
+                            <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img2.png">
+                        </router-link>
                         <div class="banner-content-right">
-                            <div class="banner-content-title title2">
-                                <!-- <p>GRAND</p>
-                                <p>SANTA EXPRESS</p> -->
-                                <img src="/img_main/title2.png" class="banner-text-img">
-                            </div>
+                            <router-link to="/products/12/127131">
+                                <div class="banner-content-title title2">
+                                    <img src="/img_main/title2.png" class="banner-text-img">
+                                </div>
+                            </router-link>
                             <div class="banner-content-text">파라다이스 시티 호텔</div>
                         </div>
                     </div>
@@ -58,13 +63,15 @@
                     <div class="banner-slide banner-slide3"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img3.png">
+                        <router-link to="/products/12/127131">
+                            <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img3.png">
+                        </router-link>
                         <div class="banner-content-right">
-                            <div class="banner-content-title title3">
-                                <!-- <p>한국의</p>
-                                <p>대표 설산</p> -->
-                                <img src="/img_main/title3.png" class="banner-text-img-small">
-                            </div>
+                            <router-link to="/products/12/126238">
+                                <div class="banner-content-title title3">
+                                    <img src="/img_main/title3.png" class="banner-text-img-small">
+                                </div>
+                            </router-link>
                             <div class="banner-content-text">덕유산</div>
                         </div>
                     </div>
@@ -73,13 +80,15 @@
                     <div class="banner-slide banner-slide4"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img4.jpg">
+                        <router-link to="/products/12/126848">
+                            <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img4.jpg">
+                        </router-link>
                         <div class="banner-content-right">
-                            <div class="banner-content-title title4">
-                                <!-- <p>숨겨진</p>
-                                <p>일출 맛집</p> -->
-                                <img src="/img_main/title4.png" class="banner-text-img-small">
-                            </div>
+                            <router-link to="/products/12/127131">
+                                <div class="banner-content-title title4">
+                                    <img src="/img_main/title4.png" class="banner-text-img-small">
+                                </div>
+                            </router-link>
                             <div class="banner-content-text title4-text">해동용궁사</div>
                         </div>
                     </div>
@@ -88,13 +97,15 @@
                     <div class="banner-slide banner-slide5"></div>
                     <div class="banner-bottom-white"></div>
                     <div :class="flg ? 'banner-content' : 'banner-content-flex'">
-                        <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img5.png">
+                        <router-link to="/hotels/142962">
+                            <img class="banner-content-img" :class="{'ch-size':flg}" src="/img_main/slide_img5.png">
+                        </router-link>
                         <div class="banner-content-right">
-                            <div class="banner-content-title title5">
-                                <!-- <p>겨울에 야외 스파</p>
-                                <p>어때요?</p> -->
-                                <img src="/img_main/title5.png" class="banner-text-img">
-                            </div>
+                            <router-link to="/products/12/127131">
+                                <div class="banner-content-title title5">
+                                    <img src="/img_main/title5.png" class="banner-text-img">
+                                </div>
+                            </router-link>
                             <div class="banner-content-text title5-text">덕구온천</div>
                         </div>
                     </div>
@@ -416,7 +427,10 @@ a, a:visited {
     font-size: 65px;
     color: #6170e2;
 } */
-.title4 + .title4-text {
+/* .title4 + .title4-text {
+    color: #6170e2;
+} */
+.title4-text {
     color: #6170e2;
 }
 /* .title5 > p {
@@ -424,7 +438,10 @@ a, a:visited {
     font-size: 65px;
     color: #4c4c4c;
 } */
-.title5 + .title5-text {
+/* .title5 + .title5-text {
+    color: #4c4c4c;
+} */
+.title5-text {
     color: #4c4c4c;
 }
 /* 텍스트 이미지 */
@@ -497,7 +514,7 @@ a, a:visited {
 .swiper-pagination {
     color: #01083a;
     margin-bottom: 65px;
-    margin-left: 1090px;
+    margin-left: 1093px;
     width: 105px;
 }
 /* 스크롤 */

@@ -20,7 +20,7 @@
                 </div>
                 
                 <div class="detail-img-map">
-                    <div class="div-hell">
+                    <!-- <div class="div-hell">
                         <div class="detail-img">
                             <img class="img-big" :src="hotelDetail.firstimage" alt="">
                             <div class="detail_img-right">
@@ -34,13 +34,64 @@
                             <img class="img-small" :src="hotelImg[4] === undefined ? '/default/board_default.png' : hotelImg[4]" :class="{'img-contain':hotelImg[4] === undefined}" alt="">
                             <img class="img-small" :src="hotelImg[5] === undefined ? '/default/board_default.png' : hotelImg[5]" :class="{'img-contain':hotelImg[5] === undefined}" alt="">
                         </div>
+                    </div> -->
+
+                    <div v-if="hotelImgCnt >= 4">
+                        <div class="div-hell">
+                            <div class="detail-img">
+                                <img class="img-big" :src="hotelDetail.firstimage" alt="">
+                                <div class="detail_img-right">
+                                    <!-- <img class="img-middle" :src="hotelImg[0] === undefined ? '/default/board_default.png' : hotelImg[0]" :class="{'img-contain':hotelImg[0] === undefined}" alt="">
+                                    <img class="img-middle" :src="hotelImg[1] === undefined ? '/default/board_default.png' : hotelImg[1]" :class="{'img-contain':hotelImg[1] === undefined}" alt=""> -->
+                                    <img class="img-middle" :src="hotelImg[0]" alt="">
+                                    <img class="img-middle" :src="hotelImg[1]" alt="">
+                                </div>
+                            </div>
+                            <div class="detail-five">
+                                <!-- <img class="img-small" :src="hotelImg[2] === undefined ? '/default/board_default.png' : hotelImg[2]" :class="{'img-contain':hotelImg[2] === undefined}" alt="">
+                                <img class="img-small" :src="hotelImg[3] === undefined ? '/default/board_default.png' : hotelImg[3]" :class="{'img-contain':hotelImg[3] === undefined}" alt="">
+                                <img class="img-small" :src="hotelImg[4] === undefined ? '/default/board_default.png' : hotelImg[4]" :class="{'img-contain':hotelImg[4] === undefined}" alt="">
+                                <img class="img-small" :src="hotelImg[5] === undefined ? '/default/board_default.png' : hotelImg[5]" :class="{'img-contain':hotelImg[5] === undefined}" alt=""> -->
+                                <img class="img-small" :src="hotelImg[2]" alt="">
+                                <img class="img-small" :src="hotelImg[3]" alt="">
+                            </div>
+                        </div>
                     </div>
+                    <div v-else-if="hotelImgCnt >= 2">
+                        <div class="div-hell">
+                            <div class="detail-img">
+                                <img class="img-big img-three" :src="hotelDetail.firstimage" alt="">
+                                <div class="detail_img-right img-three-right">
+                                    <img class="img-middle" :src="hotelImg[0]" alt="">
+                                    <img class="img-middle" :src="hotelImg[1]" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <!-- <div class="div-hell">
+                            <div class="detail-img"> -->
+                                <img class="img-one" :src="hotelDetail.firstimage" alt="">
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    </div>
+
                     <div>
                         <div id="map"></div>
                     </div>
                 </div>
                 
                 <div class="detail-content">
+                    <div class="hotel-category-area">
+                        필터 영역1
+                    </div>
+                    <div class="hotel-category-area2">
+                        <div class="category-box">필터1</div>
+                        <div class="category-box">필터2</div>
+                        <div class="category-box">필터3</div>
+                        <div class="category-box">필터4</div>
+                        <div class="category-box">필터5</div>
+                    </div>
                     <p class="detail-content-content">{{ hotelDetail.overview }}</p>
                 </div>
             </div>
@@ -60,6 +111,7 @@ const route = useRoute();
 // 호텔 상세및 이미지
 const hotelDetail = computed(() => store.state.hotel.hotelDetail);
 const hotelImg = computed(() => store.state.hotel.hotelDetailImg);
+const hotelImgCnt = computed(() => store.state.hotel.hotelDetailImgCount);
 
 // 상품 위도, 경도
 const productLat = computed(() => store.state.hotel.hotelDetail.mapy)
@@ -75,9 +127,7 @@ onBeforeMount(async () => {
 });
 
 
-// let map = reactive(null);
 const map = ref(null); // 지도 객체를 저장
-// let map = null;
 
 onMounted(() => {
     // DOM 렌더링 후에 Kakao 지도 로딩
@@ -145,7 +195,6 @@ watch([productLat, productLng], ([newLat, newLng]) => {
 // 카카오맵 마커 생성
 const loadMaker = () => {
     // 주소-좌표 변환 객체를 생성합니다
-    // var geocoder = new window.kakao.maps.services.Geocoder();
 
     if(map.value) {
         const markerPosition = new window.kakao.maps.LatLng(productLat.value, productLng.value);
@@ -161,7 +210,6 @@ const loadMaker = () => {
         const infowindow = new window.kakao.maps.InfoWindow({
             position: markerPosition,
             content: content
-            // content: markerTitle
         });
 
         infowindow.open(map.value, marker);
@@ -202,7 +250,8 @@ const filterHomepage = (url) => {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
+    margin-bottom: 50px;
 }
 
 /* 이미지&지도 영역 */
@@ -225,23 +274,27 @@ const filterHomepage = (url) => {
     grid-template-columns: 550px 250px;
     gap: 20px;
 }
+/* 이미지 5개개 */
 /* 큰 이미지 */
 .img-big {
     width: 550px;
-    height: 320px;
+    /* height: 320px; */
+    height: 290px;
     background-repeat: no-repeat;
     object-fit: cover;
 }
 /* 중간 이미지 영역 */
 .detail_img-right {
     display: grid;
-    grid-template-rows: 150px 150px;
+    /* grid-template-rows: 150px 150px; */
+    grid-template-rows: 135px 135px;
     gap: 20px;
 }
 /* 중간 이미지 */
 .img-middle {
     width: 250px;
-    height: 150px;
+    /* height: 150px; */
+    height: 135px;
     background-repeat: no-repeat;
     object-fit: cover;
 }
@@ -252,14 +305,32 @@ const filterHomepage = (url) => {
 }
 /* 작은 이미지 */
 .img-small {
-    width: 190px;
-    height: 100px;
+    /* width: 190px;
+    height: 100px; */
+    width: 400px;
+    height: 130px;
     background-repeat: no-repeat;
     object-fit: cover;
 }
 /* 기본 이미지 설정 */
-.img-contain {
+/* 이제 no image는 없음음 */
+/* .img-contain {
     object-fit: contain;
+} */
+/* 이미지 3개 */
+.img-three {
+    height: 440px;
+}
+.img-three-right {
+    grid-template-rows: 210px 210px;
+}
+.img-three-right > .img-middle {
+    height: 210px;
+}
+/* 이미지 한 개 */
+.img-one {
+    width: 820px;
+    height: 440px;
 }
 
 /* 지도지도 */
@@ -280,8 +351,25 @@ const filterHomepage = (url) => {
 }
 /* 컨텐츠 영역 */
 .detail-content {
-    margin-top: 20px;
+    margin-top: 50px;
     font-size: 18px;
+}
+.hotel-category-area {
+    margin-bottom: 50px;
+    height: 100px;
+    border-top: 3px dotted #01083a;
+    border-bottom: 3px dotted #01083a;
+}
+.hotel-category-area2 {
+    margin: 50px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+}
+.category-box {
+    border: 2px solid #01083a;
+    width: 200px;
+    height: 50px;
 }
 .detail-content-content {
     line-height: 30px;
