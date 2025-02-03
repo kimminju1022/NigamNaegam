@@ -31,6 +31,7 @@ Route::get('/categories', [HotelController::class, 'categories']);
 Route::get('/hotels/{contentid}', [HotelController::class, 'hotelsDetail']);
 Route::post('/hotels', [HotelController::class, 'getNearbyPlaces']);
 Route::get('/hotels/align/rank', [HotelController::class, 'ranking']);
+// Route::post('/get-hotel-nearby', [HotelController::class, 'getHotelNearBy']);
 
 
 // ----- 상품 관련 -----

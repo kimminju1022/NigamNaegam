@@ -14,7 +14,7 @@ export default {
         hotelDetail: [],
         hotelDetailImg: [],
         hotelDetailImgCount: null,
-        hotelRank: [],
+        // hotelRank: [],
     }),
     mutations: {
         setHotelList(state, list) {
@@ -46,9 +46,9 @@ export default {
         setHotelDetailImgCount(state, data) {
             state.hotelDetailImgCount = data;
         },
-        setHotelsRank(state, list) {
-            state.hotelRank = list
-        },
+        // setHotelsRank(state, list) {
+        //     state.hotelRank = list
+        // },
     },
     actions: {
         getHotelsPagination(context, data) {
@@ -147,12 +147,20 @@ export default {
             });
         },
 
-        getHotelsRank(context) {
+        getHotelsRank(context, data) {
             return new Promise((resolve, reject) => {
-                const url = 'api/hotels/rank'
-                axios.get(url)
+                const url = 'api/hotels/align/rank'
+                const config = {
+                    params: data
+                }
+                axios.get(url, config)
                 .then(response => {
-                    context.commit('setHotelsRank', response.data);
+                    context.commit('setHotelList', response.data.data);
+
+                    context.commit('setCount', response.data.total);
+                    // console.log(response.data.total);
+                    context.commit('pagination/setPagination', response.data, {root: true});
+                    // console.log(response.data);
                     return resolve;
                 })
                 .catch(error => {

@@ -29,13 +29,13 @@
                         <img src="img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div @click="sortData('modifiedtime')" class="order-list-item">
+                    <div @click="sortData()" class="order-list-item">
                         <p :class="{ 'active-font-bold': isActiveSort }">최신순</p>
                         <span class="order-list-item-update font-bold">NEW</span>
                     </div>
                     <p>|</p>
                     <div @click="highRanking()"class="order-list-item">
-                        <p>별점순</p>
+                        <p :class="{ 'active-font-bold': isActiveRanking}">별점순</p>
                         <img src="img_product/img_thumb.png" class="img-order">
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-            <p class="modal-region-text2 font-bold">카테고리</p>
+            <p class="modal-region-text2 font-bold">편의시설</p>
             <div class="modal-region">
                 <div v-for="item in $store.state.hotel.hotelCategory" :key="item">
                     <input
@@ -142,8 +142,8 @@ const loading = computed(() => store.state.loading.loading);
 const actionName = 'hotel/getHotelsPagination';
 
 // 필터 관련
-let isActiveSort = false;
-// let isActiveRanking = false;
+let isActiveSort = ref(false);
+let isActiveRanking = ref(false);
 
 const searchData = reactive({
     page: store.state.pagination.currentPage,
@@ -153,20 +153,55 @@ const searchData = reactive({
     category_code: [],
 });
 
-function sortData(data) {
-    if(searchData.sort === data) {
-        searchData.sort = 'createdtime';
-        isActiveSort = false
+function sortData() {
+    isActiveSort.value = !isActiveSort.value;
+    isActiveRanking.value = false;
+
+    if(isActiveSort.value) {
+        searchData.sort = 'modifiedtime';
     } else {
-        searchData.sort = data;
-        isActiveSort = true
+        searchData.sort = 'createdtime';
     }
     store.dispatch('hotel/getHotelsPagination', searchData);
 }
 
 function highRanking() {
-    
+    isActiveRanking.value = !isActiveRanking.value
+    if (isActiveRanking.value === true) {
+        isActiveSort.value = false
+        store.dispatch('hotel/getHotelsRank', searchData);
+    } else {
+        store.dispatch('hotel/getHotelsPagination', searchData);
+    }
 }
+
+const userLocation = ref({ lat: null, lon: null });
+
+const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+        (position) => {
+            // 위치 정보가 성공적으로 가져오면
+            userLocation.value = {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            };
+            console.log(position.coords.latitude);
+            console.log(position.coords.longitude);
+        },
+        (error) => {
+            // 위치 정보 가져오기 실패 시
+            console.log('위치 정보를 가져오는 데 실패');
+            console.error(error);
+        }
+        );
+    } else {
+        console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
+    }
+};
+
+// 컴포넌트가 마운트될 때 위치 가져오기
+getCurrentLocation();
 
 // 반응형
 const flg = ref(false);
@@ -199,7 +234,12 @@ function updateFilters(e) {
         searchData.area_code = [e.target.value];
     }
     searchData.page = 1;
-    store.dispatch('hotel/getHotelsPagination', searchData);
+    
+    if (isActiveRanking.value === true) {
+        store.dispatch('hotel/getHotelsRank', searchData);
+    } else {
+        store.dispatch('hotel/getHotelsPagination', searchData);
+    }
     store.dispatch('hotel/getHotelsArea', searchData);
     store.dispatch('hotel/getHotelAreaCode', searchData);
     store.dispatch('hotel/getHotelCategoryCode', searchData);
@@ -213,7 +253,12 @@ function closeFilter(value) {
     searchData.hc_code = searchData.hc_code.filter(
         (item) => item !== value
     )
-    store.dispatch('hotel/getHotelsPagination', searchData);
+
+    if (isActiveRanking.value === true) {
+        store.dispatch('hotel/getHotelsRank', searchData);
+    } else {
+        store.dispatch('hotel/getHotelsPagination', searchData);
+    }
     store.dispatch('hotel/getHotelAreaCode', searchData)
     store.dispatch('hotel/getHotelCategoryCode', searchData);
 }
