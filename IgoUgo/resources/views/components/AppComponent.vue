@@ -7,8 +7,8 @@
                 <!-- <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link> -->
                 <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
                 <div class="header-search"> 
-                    <input v-model="search" class="header-search-bar" type="text" required placeholder="Q 어디로 놀러가세요?" >
-                    <button @click="mainSearch(search)" class="btn bg-navy header-bg-btn">검색</button>
+                    <input v-model="search" class="header-search-bar" type="text" placeholder="Q 어디로 놀러가세요?">
+                    <button @click="mainSearch" class="btn bg-navy header-bg-btn">검색</button>
                 </div>
                 <div v-if="!$store.state.auth.authFlg" class="header-title-button">
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
@@ -363,7 +363,6 @@ import { useRouter } from 'vue-router';
 const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
 const router = useRouter();
-const search = ref('');
 
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
@@ -425,9 +424,12 @@ const logout = () =>{
 }
 
 // 검색
-// const mainSearch = ((search) => {
-//     store.dispatch();
-// })
+const search = ref('');
+const mainSearch = (() => {
+    console.log('search :',search.value);
+    store.dispatch('search/search', search.value);
+    store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
+})
 
 // ---------- 게시판 이동 관련 start ----------
 const redirectBoards = async (bcCode) => {

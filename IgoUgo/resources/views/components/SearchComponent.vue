@@ -12,11 +12,18 @@
                     <p>제목</p>
                     <p></p>
                 </div>
+                <!-- <div v-for="item in searchList" :key="item" class="search-content">
+                    <p>{{ item.hotel.data.title }}</p>
+                    <p>{{ item.hotel.data.area_code }}</p>
+                    <p>{{ item.hotel.data.title }}</p>
+                    <p>{{ item.hotel.data.title }}</p>
+                    <p></p>
+                </div> -->
                 <div class="search-content">
                     <p>번호</p>
                     <p>지역</p>
                     <p>몰라</p>
-                    <p>제목 </p>
+                    <p>제목</p>
                     <p></p>
                 </div>
             </div>
@@ -104,18 +111,28 @@
     </div>
 </template>
 <script setup>
-// import { onBeforeMount, reactive } from 'vue';
-// import PaginationComponent from '../PaginationComponent.vue';
-// import { useStore } from 'vuex';
-// const store = useStore();
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import PaginationComponent from './PaginationComponent.vue';
 
-// const actionName = 'question/userQuestionList';
-// const searchData = reactive({
-//     page: store.state.pagination.currentPage,
-// });
-// onBeforeMount(() => {
-//     store.dispatch(actionName, searchData);
-// });
+const store = useStore();
+const route = useRoute();
+
+const actionName = 'search/search';
+
+const searchList = computed(()=> store.state.search.searchList);
+
+const searchData = reactive({
+    search: route.params.search,
+    page: store.state.pagination.currentPage,
+});
+
+console.log('searchData :', searchData);
+
+onBeforeMount(() => {
+    store.dispatch(actionName, searchData);
+});
 </script>
 <style scoped>
 .title {

@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     state: () => ({
         questionList: [],
-        page: 0,
+        // page: 0,
         questionDetail: null,
         userQuestionList: [],
     }),
@@ -13,9 +13,9 @@ export default {
         setQuestionList(state, questionList) {
             state.questionList = questionList;
         },
-        setPage(state, page) {
-            state.page = page;
-        },
+        // setPage(state, page) {
+        //     state.page = page;
+        // },
         setQuestionDetail(state, data) {
             state.questionDetail = data;
         },

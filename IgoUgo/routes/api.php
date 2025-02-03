@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
@@ -92,6 +93,9 @@ Route::get('/comments', [CommentController::class, 'index'])->name('comment.inde
 Route::get('/questions', [QuestionController::class, 'index']);
 Route::get('/questions/{id}',[QuestionController::class, 'show']);
 
+// 검색 라우터
+Route::get('/search', [SearchController::class, 'search']);
+
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
     // 로그아웃
@@ -131,6 +135,3 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/questions/{id}', [QuestionController::class, 'update'])->name('question.update');
     Route::delete('/questions/{id}', [QuestionController::class, 'destroy']);
 });
-
-
-Route::get('/test-email', [TestController::class, 'sendTestEmail']);

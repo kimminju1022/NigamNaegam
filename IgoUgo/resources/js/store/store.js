@@ -9,6 +9,7 @@ import product from './modules/product';
 import verification from './modules/verification';
 import map from './modules/map';
 import loading from './modules/loading';
+import search from './modules/search';
 
 export default createStore({
     modules: {
@@ -22,5 +23,6 @@ export default createStore({
         verification,
         map,
         loading,
+        search,
     }
 })
