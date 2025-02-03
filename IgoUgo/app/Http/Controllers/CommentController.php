@@ -29,6 +29,7 @@ class CommentController extends Controller
         ];
 
         return response()->json($responseData, 200);
+        
     }
 
     // 댓글 작성
@@ -73,11 +74,11 @@ class CommentController extends Controller
     // 댓글 신고
     public function commentReport(Request $request)
     {
-    // 1. 클라이언트로부터 받는 데이터 (예: comment_id, 신고 사유, 유저 ID 등)
+    // 클라이언트로부터 받는 데이터 (예: comment_id, 유저 ID 등)
         $commentRId = $request->comment_id; // 신고할 댓글 ID
         $userId = auth()->id();           // 로그인된 사용자 ID
 
-        // 2. 중복 신고 방지 체크
+        // 중복 신고 방지 체크
         $existingReport = CommentReport::where('comment_report_id', $commentRId)
                                 ->where('user_id', $userId)
                                 ->first();
@@ -88,7 +89,7 @@ class CommentController extends Controller
             ], 400);
         }
 
-        // 3. 댓글 존재 여부 확인
+        // 댓글 존재 여부 확인
         $comment = Comment::find($commentRId);
         if (!$comment) {
             return response()->json([
@@ -97,13 +98,13 @@ class CommentController extends Controller
             ], 404);
         }
 
-        // 4. 신고 정보 저장
+        // 신고 정보 저장
         $report = new CommentReport();
         $report->comment_id = $commentRId;
         $report->user_id = $userId;
         $report->save();
 
-        // 5. 성공 응답
+        // 성공 응답
         return response()->json([
             'success' => true,
             'msg' => '신고가 접수되었습니다.'

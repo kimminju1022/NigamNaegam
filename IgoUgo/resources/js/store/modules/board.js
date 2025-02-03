@@ -6,7 +6,8 @@ export default {
     state: () => ({
         boardDetail: {},
         boardComments: [],
-        commentsTotal: 0,
+        commentsTotal:'',
+        // commentsTotal: 0,
         bcName:'',
         rcName:'',
         areaName:'',
@@ -131,7 +132,7 @@ export default {
             if(data.rate) {
                 formData.append('rate', data.rate);
             }
-            // console.log(data);
+            console.log(data);
 
             axios.post(url,formData, config)
             .then(response => {
@@ -197,7 +198,7 @@ export default {
 
             axios.post(url, formData, config)
             .then(response => {
-
+                // context.commit('setBcCode', response.data.bcCode);
                 context.commit('setBoardDetail', response.data.board);
                 context.commit('setBcName', response.data.bcName);
                 context.commit('setRcName', response.data.rcName);

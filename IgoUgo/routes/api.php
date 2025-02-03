@@ -82,6 +82,7 @@ Route::get('/boards', [BoardController::class, 'index'])->name('board.index');
 Route::get('/boards/review', [BoardController::class, 'showReview']);
 Route::get('/boards/free', [BoardController::class, 'showFree']);
 Route::get('/boards/{id}', [BoardController::class, 'show'])->name('board.show');
+Route::get('/boards/search/{keyword}', [BoardController::class, 'search'])->name('board.search');
 
 // 코멘트 관련
 Route::get('/comments', [CommentController::class, 'index'])->name('comment.index');
@@ -115,12 +116,12 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/boards',[BoardController::class, 'store']);
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
     Route::post('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
-    Route::post('/boards/{id}/report',[BoardController::class, 'report'])->name('board.report'); //가능한지 물어보기
+    Route::post('/boards/{id}/report',[BoardController::class, 'report'])->name('board.report'); 
     Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
     
     // 댓글  관련
     Route::post('/comments', [CommentController::class, 'store']);
-    Route::post('/comments/{id}/report',[CommentController::class, 'report'])->name('comment.report'); //가능한지 물어보기
+    Route::post('/comments/{id}/report',[CommentController::class, 'report'])->name('comment.report');
     Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
 
     // 문의게시판 관련

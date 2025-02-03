@@ -3,7 +3,7 @@
         <!-- 경로표시 -->
         <div class="board-detail-category">
             <h1>{{ $store.state.board.bcName }}</h1>
-            <h3 v-if="readableRcName"> > {{ readableRcName($store.state.board.rcName) }}</h3>
+            <h3 v-if="readableRcName"> > {{ $store.state.board.rcName }}</h3>
             <h3 v-if="$store.state.board.areaName">  > {{ $store.state.board.areaName }}</h3>
         </div>
         <!-- 버튼영역 -->
@@ -65,9 +65,7 @@
                 <p>{{ item.comment_content }}</p>
                 <p>{{ item.user_nickname }}</p>
                 <p>{{ item.created_at }}</p>
-                <p >🗑️</p>
-                <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
-
+                <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-navy header-btn" @click="deleteComments(item.board_id)">🗑️</button>
             </div>
         </div>
         <div class="pagination-btn">
@@ -107,21 +105,36 @@ const commentsInfo =  reactive({
 // 좋아요 on off기능--------------------end-----------------
 
 // alert 안내문구---------------------start-----------------
+    // 게시물수정
 const detailConfirm = () => {
     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
     if (userResponse) {
         router.push(`/boards/${route.params.id}/update`);
     }
 }
-
+    // 게시물삭제
 const deleteConfirm = () => {
-    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n 삭제 시 게시글을 되돌릴 수 없습니다');    
+    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    
+    if (userResponse) {
+        store.dispatch('board/boardDelete', route.params.id)
+            .then(() => {
+                alert('게시글 삭제 성공');
+                router.push('/boards/');
+            })
+            .catch(error => {
+                alert('삭제 중 오류 발생');
+                console.error(error);
+            });
+    }
+};
+    /*2차
     if (userResponse) {
         store.dispatch('board/boardDelete', route.params.id);
         router.push('/boards/');
-    }
-}
+    }  */
 
+    // 신고
 const boardNotify= () => {
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
     if (userResponse) {
@@ -130,14 +143,30 @@ const boardNotify= () => {
     } else {
     }
 }
+
+   // 댓글
+    const deleteComments = (id) => {
+    const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    if(check) {
+        store.dispatch('board/destroyComments', id)
+        //3차 수정
+            .then(() => {
+                alert('댓글 삭제 성공');
+                router.push('/boards/{id}');
+            })
+            .catch(error => {
+                alert('삭제 중 오류 발생');
+                console.error(error);
+            });
+    }
+};
+
 // alert 안내문구---------------------end-----------------
 const actionName = 'board/boardCommentPagination';
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     board_id: route.params.id,
 });
-
-// 댓글
 
 // rate별점표기-----------------------start-----------------
 const boardRate = computed(() => boardDetail.value.rate);

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 
 class Board extends Model
 {
@@ -89,7 +90,8 @@ class Board extends Model
     }
 
     public function route_spots() {
-        return $this->hasManyThrough(RouteSpot::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
+        return $this->hasManyThrough(Route::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
+        // return $this->hasManyThrough(RouteSpot::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
     }
     
     public function board_images(){

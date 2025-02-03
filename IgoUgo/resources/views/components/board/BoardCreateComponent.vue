@@ -5,100 +5,111 @@
             <div class="board-select-container">
                 <div class="select-board-type">
                     <p>게시판</p>
-                    <select v-model="boardInfo.bc_code" name="bc_code" class="board-categories" readonly>
+                    <select v-model="boardInfo.bc_code" name="bc_code" class="board-categories" disabled>
+                        <!-- <p>{{ bcCode }}</p> -->
                         <!-- 초기 옵션값 3차에서 타입값 자동 출력 예정 -->
-                        <!-- <option disabled hidden selected>--게시판선택--</option> -->
-                        <option value="0">리뷰게시판</option>
-                        <option value="1">자유게시판</option>
+                        <option disabled hidden :value="boardInfo.bc_code">{{ boardInfo.bc_code === '0' ? '리뷰게시판' : '자유게시판' }}</option>
+                        <!-- <option v-if="bcCode === '1'">자유게시판</option> -->
                     </select>
                 </div>
-                <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
-                    <div class="board-category">
-                        <p>유형</p>
-                        <select v-model="boardInfo.bc_code" name="bc_code">
-                            <option disabled hidden selected>--유형선택--</option>
-                            <option value="0">숙박</option>
-                            <option value="1">맛집</option>
-                            <option value="2">관광</option>
-                            <option value="3">문화</option>
-                            <option value="4">레포츠</option>
-                            <option value="5">쇼핑</option>
-                        </select>
+            </div>
+            <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
+                <p>리뷰</p>
+                <div v-for="searchItem in searchKeyword" class="board-category">
+                <div class="board-search-tb">
+                    <div class="search-box">
+                        <input type="search" @input="inputText = $event.target.value">
                     </div>
-                    <div class="board-category">
-                        <p>지역</p>
-                        <select v-model="boardInfo.area_code" name="area_code">
-                            <option disabled hidden selected>--지역선택--</option>
-                            <option value="1">서울</option>
-                            <option value="2">인천</option>
-                            <option value="3">대전</option>
-                            <option value="4">대구</option>
-                            <option value="5">광주</option>
-                            <option value="6">부산</option>
-                            <option value="7">울산</option>
-                            <option value="8">세종</option>
-                            <option value="31">경기</option>
-                            <option value="32">강원</option>
-                            <option value="33">충북</option>
-                            <option value="34">충남</option>
-                            <option value="35">경북</option>
-                            <option value="36">경남</option>
-                            <option value="37">전북</option>
-                            <option value="38">전남</option>
-                            <option value="39">제주</option>
-                        </select>
-                    </div>
-                    <!--  v-for="searchItem in searchKeyword"  -->
-                    <!-- <div id="board-search-tb">
-                        <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
-                        <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button>
-                    </div> -->
-                    <!-- 별점 -->
-                    <div class="board-starGrade board-category">
-                        <p>별점</p>
-                        <div class="star-grade">
-                            <input type="radio" name="rate" id="star-1" class="star" value="5" v-model="boardInfo.rate">
-                            <label for="star-1" class="star-label"></label>
-            
-                            <input type="radio" name="rate" id="star-2" class="star" value="4" v-model="boardInfo.rate">
-                            <label for="star-2" class="star-label"></label>
-            
-                            <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
-                            <label for="star-3" class="star-label"></label>
-            
-                            <input type="radio" name="rate" id="star-4" class="star" value="2" v-model="boardInfo.rate">
-                            <label for="star-4" class="star-label"></label>
-            
-                            <input type="radio" name="rate" id="star-5" class="star" value="1" v-model="boardInfo.rate">
-                            <label for="star-5" class="star-label"></label>
-                        </div>
+                    <!-- <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요"> -->
+                    <!-- <input class="board-search" action="" type="text" placeholder="검색어를 입력해 주세요"> -->
+                    <!-- <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button> -->
+                </div>
+
+                <!-- 20250131 2차코드수정 -->
+                <!-- <div class="board-category">
+                    <p>리뷰</p>
+                    <select v-model="boardInfo.rc_code" name="rc_code">
+                        <option disabled hidden selected>--유형선택--</option>                            
+                        <option value="1">숙박</option>
+                        <option value="0">맛집</option>
+                        <option value="2">관광</option>
+                        <option value="3">문화</option>
+                        <option value="4">레포츠</option>
+                        <option value="5">쇼핑</option>
+                    </select>
+                </div>
+                <div class="board-category">
+                    <p>지역</p>
+                    <select v-model="boardInfo.area_code" name="area_code">
+                        <option disabled hidden selected>--지역선택--</option>
+                        <option value="0">서울</option>
+                        <option value="2">인천</option>
+                        <option value="3">대전</option>
+                        <option value="4">대구</option>
+                        <option value="5">광주</option>
+                        <option value="6">부산</option>
+                        <option value="7">울산</option>
+                        <option value="8">세종</option>
+                        <option value="31">경기</option>
+                        <option value="32">강원</option>
+                        <option value="33">충북</option>
+                        <option value="34">충남</option>
+                        <option value="35">경북</option>
+                        <option value="36">경남</option>
+                        <option value="37">전북</option>
+                        <option value="38">전남</option>
+                        <option value="39">제주</option>
+                    </select>
+                </div> -->
+                
+                <!-- 별점 -->
+                <div class="board-starGrade board-category">
+                    <p>별점</p>
+                    <div class="star-grade">
+                        <input type="radio" name="rate" id="star-1" class="star" value="5" v-model="boardInfo.rate">
+                        <label for="star-1" class="star-label"></label>
+        
+                        <input type="radio" name="rate" id="star-2" class="star" value="4" v-model="boardInfo.rate">
+                        <label for="star-2" class="star-label"></label>
+        
+                        <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
+                        <label for="star-3" class="star-label"></label>
+        
+                        <input type="radio" name="rate" id="star-4" class="star" value="2" v-model="boardInfo.rate">
+                        <label for="star-4" class="star-label"></label>
+        
+                        <input type="radio" name="rate" id="star-5" class="star" value="1" v-model="boardInfo.rate">
+                        <label for="star-5" class="star-label"></label>
                     </div>
                 </div>
             </div>
-
+        </div>
             <div class="board-title-box">
                 <p>제목</p>
                 <input v-model="boardInfo.board_title" type="text" name="board_title">
             </div>
             <div class="board-img">
                 <p>파일 첨부</p>
-                <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="uploadFile">
                 <div class="board-img-content">
-                    <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
-                    <div class="img-preview":class="gridDetail" v-for="(previewImage, index) in previews" :key="index">
-                        <img :src="previewImage" alt="Uploaded Image"> 
-                        <button @click="clearFile(index)" class="btn bg-clear">X</button> 
-                    </div>
-                    <!-- <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
-                    <!-- <div class="img-preview">
-                        <img :src="preview2">
-                        <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
-                    </div> -->
+                    <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="uploadFile">
+                        <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
+                    <div :class="gridDetail"> 
+                        <div class="img-preview" v-for="(previewImage, index) in previews" :key="index">
+                            <!-- <p>{{ gridDetail }}</p> -->
+                            <img :src="previewImage" alt="Uploaded Image"> 
+                            <button @click="clearFile(index)" class="btn bg-clear">X</button> 
+                        </div>
+                        <!-- <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
+                        <!-- <div class="img-preview">
+                            <img :src="preview2">
+                            <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
+                        </div> -->
+                    </div>  
                 </div>
             </div>
             <div class="board-content">
                 <p>내용</p>
-                <textarea v-model="boardInfo.board_content" name="board_content" placeholder="당신의 이야기를 남겨주세요\n ο"></textarea>
+                <textarea v-model="boardInfo.board_content" name="board_content" placeholder="당신의 이야기를 남겨주세요 &#10;&#10;어떤 일들이 당신을 즐겁게 했는지 공유해 주시면 더 많은 트래블러에게 도움이 된답니다(´▽`ʃ♡ƪ)"></textarea>
             </div>
         </div>
         <div class="success-btn-box"> 
@@ -113,6 +124,14 @@
 <script setup>
 import { reactive, ref, computed} from 'vue';
 import { useStore } from 'vuex';
+// export default {
+//     name: "boardSearchComponent",
+//     data() {
+//         return {
+//             inputText: '',
+//         }
+//     }
+// }
 
 const store = useStore();
 
@@ -122,9 +141,12 @@ const boardInfo = reactive({
     ,board_img: []
     ,bc_code: store.state.board.bcCode
     ,area_code: ''
-    ,bc_code: ''
+    ,rc_code: ''
     ,rate: ''
 });
+
+// 게시판 타입 값 가져오기
+const bcCode = computed(() => store.bc_code); 
 
 // img관련 ----------------------start *****
 const previews = ref([]);
@@ -200,6 +222,12 @@ const clearFile = (index) => {
     border: 2px solid #01083a;
 }
 
+.board-search{
+    border-bottom: 2px solid #01083a;
+    text-align: center;
+    justify-content: center;
+    color: #01083a;
+}
 .board-box {
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;
@@ -212,7 +240,7 @@ const clearFile = (index) => {
     border-bottom: 1px solid #01083a;
 }
 
-.board-box > div:not(:first-child) > :first-child, .select-board-type > p:first-child, .board-category :first-child{
+.board-box > div:not(:first-child) > :first-child, .select-board-type > p:first-child, .board-review-box > p {
     border-right: 1px solid #01083a;
 }
 
@@ -220,7 +248,8 @@ const clearFile = (index) => {
 ,.board-title-box > p:first-child
 ,.board-img > p:first-child
 ,.board-content> p:first-child
-,.board-category > p:first-child {
+,.board-category > p:first-child
+,.board-review-box > p:first-child {
     font-size: 20px;
     text-align: center;
     font-weight: 600;
@@ -235,7 +264,14 @@ const clearFile = (index) => {
     display: grid; */
     /* grid-template-rows: 1fr 1fr; */
 /* } */
+.board-categories{
+    text-align: left;
+    padding-left: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
 
+}
 .select-board-type {
     display: grid;
     grid-template-columns: 1fr 5fr;
@@ -260,7 +296,6 @@ select {
 .board-review-box {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
     border-bottom: 1px solid #01083a;
 }
 
@@ -288,17 +323,17 @@ select {
     margin-bottom: 10px;
 }  */
 .file-btn{
-    margin: 5px;
+    margin: 10px 20px;
     color: #01083a;
     font-weight: 500;
 }
+
 .board-img-content img {
     max-width: 150px;
     max-height: 150px;
 }
 
 .img-preview {
-    background-color: #01083a52;
     margin: 10px;
     padding: 20px;
     border-radius: 20px auto 20px auto;
@@ -306,6 +341,7 @@ select {
     justify-content: center;
     align-items: center;
     height: 200px;
+    width: 200px;
 }
 
 .img-preview > button {
@@ -315,7 +351,7 @@ select {
 }
 .grid-3{
     display: grid;
-    align-items: stretch;
+    place-items: center;
     grid-template-columns: repeat(3,1fr);
     gap: 10px 20px;
     text-align: center;
@@ -324,7 +360,7 @@ select {
 
 .grid-4{
     display: grid;
-    align-items: stretch;
+    place-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);;
     gap: 10px 20px;
@@ -334,7 +370,7 @@ select {
 
 .grid-5{
     display: grid;
-    align-items: stretch;
+    place-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);;
     gap: 10px 20px;

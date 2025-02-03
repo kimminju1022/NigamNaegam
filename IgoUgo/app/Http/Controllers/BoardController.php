@@ -82,9 +82,10 @@ class BoardController extends Controller
                     ->join('users', 'users.user_id', '=', 'boards.user_id')
                     ->when($bc_code === '0', function($query) {
                         $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
+                            ->join('review_categories','reviews.rc_code', '=', 'review_categories.rc_code')
                             ->join('products', 'products.product_id', '=', 'reviews.product_id')
                             ->join('areas', 'areas.area_code', '=', 'products.area_code')
-                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'reviews.rc_name','reviews.rate', 'products.contenttypeid');     //3rd
+                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.contenttypeid');     //3rd
                             /**2nd code
                              * ->join('review_categories', 'review_categories.bc_code', '=', 'reviews.bc_code')
                              * ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.bc_code', 'reviews.area_code');
