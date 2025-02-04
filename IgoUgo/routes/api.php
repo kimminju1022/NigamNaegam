@@ -86,6 +86,10 @@ Route::get('/boards/free', [BoardController::class, 'showFree']);
 Route::get('/boards/{id}', [BoardController::class, 'show'])->name('board.show');
 Route::get('/boards/search/{keyword}', [BoardController::class, 'search'])->name('board.search');
 
+// 검색관련
+Route::get('search', [BoardController::class, 'index'])->name('search.index'); //보드로 해도 되나?
+
+
 // 코멘트 관련
 Route::get('/comments', [CommentController::class, 'index'])->name('comment.index');
 
@@ -128,7 +132,7 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/comments', [CommentController::class, 'store']);
     Route::post('/comments/{id}/report',[CommentController::class, 'report'])->name('comment.report');
     Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
-
+    
     // 문의게시판 관련
     Route::post('/questions', [QuestionController::class, 'store']);
     Route::get('/questions/{id}/edit', [QuestionController::class, 'edit']);

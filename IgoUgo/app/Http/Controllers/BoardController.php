@@ -82,10 +82,10 @@ class BoardController extends Controller
                     ->join('users', 'users.user_id', '=', 'boards.user_id')
                     ->when($bc_code === '0', function($query) {
                         $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
-                            ->join('review_categories','reviews.rc_code', '=', 'review_categories.rc_code')
                             ->join('products', 'products.product_id', '=', 'reviews.product_id')
+                            ->join('review_categories','products.contenttypeid', '=', 'review_categories.rc_code')
                             ->join('areas', 'areas.area_code', '=', 'products.area_code')
-                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.contenttypeid');     //3rd
+                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.title');     //3rd
                             /**2nd code
                              * ->join('review_categories', 'review_categories.bc_code', '=', 'reviews.bc_code')
                              * ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.bc_code', 'reviews.area_code');
@@ -101,13 +101,13 @@ class BoardController extends Controller
             'success' => true
             ,'msg' =>'게시글획득성공'
             ,'bcName' => $board->bc_name
-            ,'rcName' => $bc_code === '0' ? $board->contenttypeid : ''
+            ,'rcName' => $bc_code === '0' ? $board->rc_name : ''
             ,'areaName' => $bc_code === '0' ? $board->area_name : ''
+            ,'productId' => $bc_code === '0' ? $board->productId : ''
             ,'board' => $board->toArray()
         ];
         return response()->json($responseData, 200);
     }
-
 
     // 게시글 작성
     public function store(BoardRequest $request) {

@@ -10,6 +10,7 @@ export default {
         // commentsTotal: 0,
         bcName:'',
         rcName:'',
+        productTitle:'',
         areaName:'',
         mapNames: {},
         boardList: [],
@@ -19,10 +20,20 @@ export default {
         userReviewList: [],
         userFreeList: [],
     }),
+    // 검색 API 호출 함수
+    // export const fetchSearchResults = async (keyword) => {
+    //     try {
+    //         const response = await axios.get(`${API_URL}?search=${encodeURIComponent(keyword)}`);
+    //     return response.data; // 검색 결과 반환
+    //     } catch (error) {
+    //     console.error("검색 요청 실패:", error);
+    //     return [];
+    //     }
+    // },
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
         setBoardDetail(state, data){
-            console.log('Board Detail State:', data); // 데이터 확인
+            // console.log('Board Detail State:', data); // 데이터 확인
             state.boardDetail = data;
         },
         setBoardComments(state, data) {
@@ -46,6 +57,9 @@ export default {
         },
         setBcName(state, bcName) {
             state.bcName = bcName;
+        },
+        setProductTitle(state, productTitle){
+            state.productTitle = productTitle;
         },
         setRcName(state, rcName) {
             state.rcName = rcName;
@@ -78,6 +92,7 @@ export default {
                     context.commit('setBcName', response.data.bcName);
                     context.commit('setBoardList', response.data.boardList.data);
                     context.commit('pagination/setPagination', response.data.boardList, {root: true});
+                    // context.commit('setProductTitle',response.data.productTitle);
                     // context.commit('setboardCategories', response.data.boardCategoryBctype.data);
                     // context.commit('setboardCategoryArea', response.data.boardCategoryArea.data);
 
@@ -94,15 +109,22 @@ export default {
             
             axios.get(url)
             .then(response => {
+                console.log(response.data); 
                 context.commit('setBoardDetail', response.data.board);
                 context.commit('setBcName', response.data.bcName);
                 context.commit('setRcName', response.data.rcName);
                 context.commit('setAreaName', response.data.areaName);
+                context.commit('setProductTitle',response.data.productTitle);
             })
             .catch(error => {
                 // console.error(error.response.data);
             });
         },
+        /** 상품검색
+         *  작성/수정 시 사용함
+         */
+
+
 
         /** 게시글 작성
          * 
@@ -132,7 +154,7 @@ export default {
             if(data.rate) {
                 formData.append('rate', data.rate);
             }
-            console.log(data);
+            // console.log(data);
 
             axios.post(url,formData, config)
             .then(response => {
@@ -237,7 +259,7 @@ export default {
 
         /**게시글 신고 */
         boardNotify(context) {
-            const url = `/api/board/${id}`;
+            const url = `/api/board/${id}/report`;
             const config = {
                 header:{
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -245,6 +267,8 @@ export default {
             }
             axios.get(url)
             .then()
+            alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다')
+
             .catch(error => {
                 alert('신고가 불가합니다\n관리자에게 직접 문의 바랍니다')
             });
@@ -280,7 +304,7 @@ export default {
         // 댓글 ------------------------------------start
         // 댓글 작성
         storeComment(context, data){
-            const url = '/api/boards';
+            const url = '/api/comments';
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -350,6 +374,28 @@ export default {
             })
             .catch(error => {
                 console.error(error);
+            });
+        },
+        /**
+         * 댓글 삭제
+         */
+        commentsDelete(context, id) {
+            const url = `/api/comments/${id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+
+            axios.delete(url, config)
+            .then(response => {
+                console.log($store.state.auth.userInfo)
+
+                alert('삭제 성공');
+            })
+            .catch(error => {
+                // console.error(error);
+                alert('삭제 실패');
             });
         },
         /** 게시글획득

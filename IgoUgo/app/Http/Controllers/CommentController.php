@@ -62,7 +62,7 @@ class CommentController extends Controller
     // 댓글 삭제
     public function destroy($id) {
         $comment = Comment::destroy($id);
-
+        
         $responseData = [
             'success' => true
             ,'msg' => '게시글 삭제 성공'
@@ -74,9 +74,9 @@ class CommentController extends Controller
     // 댓글 신고
     public function commentReport(Request $request)
     {
-    // 클라이언트로부터 받는 데이터 (예: comment_id, 유저 ID 등)
+    // 신고받는 정보보
         $commentRId = $request->comment_id; // 신고할 댓글 ID
-        $userId = auth()->id();           // 로그인된 사용자 ID
+        $userId = auth()->id();           // 신고하는는 사용자 ID
 
         // 중복 신고 방지 체크
         $existingReport = CommentReport::where('comment_report_id', $commentRId)
@@ -85,11 +85,11 @@ class CommentController extends Controller
         if ($existingReport) {
             return response()->json([
                 'success' => false,
-                'msg' => '이미 신고한 댓글입니다.'
+                'msg' => '이미 신고한 댓글입니다. <br/>\n '
             ], 400);
         }
 
-        // 댓글 존재 여부 확인
+        // DB 내 댓글 존재 여부 확인
         $comment = Comment::find($commentRId);
         if (!$comment) {
             return response()->json([

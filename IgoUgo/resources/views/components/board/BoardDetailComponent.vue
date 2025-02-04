@@ -3,8 +3,8 @@
         <!-- 경로표시 -->
         <div class="board-detail-category">
             <h1>{{ $store.state.board.bcName }}</h1>
-            <h3 v-if="readableRcName"> > {{ $store.state.board.rcName }}</h3>
-            <h3 v-if="$store.state.board.areaName">  > {{ $store.state.board.areaName }}</h3>
+            <h3> {{ $store.state.board.rcName }}</h3>
+            <h3> {{ $store.state.board.areaName }}</h3>
         </div>
         <!-- 버튼영역 -->
         
@@ -13,8 +13,8 @@
             <!--<button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             
-            <button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
-            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
 
         </div>
@@ -24,18 +24,29 @@
     <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head" :class="gridDetail">
         <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
+        <p v-if="boardDetail.bc_code === '0'">{{ $store.state.board.productTitle }}</p>
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
-        <button @click="boardLikeEvent"><img style="height: 15px;" src="../../../../../ex/img/heart.png">   : </button>
+        <button class="loveIt_btn" @click="boardLikeEvent"><img style="height: 20px;" src="/images/bbungheart.png">   : </button>
         <!-- <p> {{ loveIt[0] }}</p> -->
         <!-- <p>조회 : {{ absolve[]++ }}</p> -->
-        <button @click="boardNotify">🚨 신고 </button>
+        <button class="boardNotify_btn" @click="boardNotify">🚨 신고 </button>
     </div>
     
-    <!-- 등록이미지 불러오기 -->
+    <!-- 등록이미지 -->
     <div class="board-detail-img">
         <div v-for="(image, index) in boardDetail.board_images" :key="index">
-            <img :src="image.board_img" class="detailImg_slot" alt="등록 이미지" />
+            <img :src="image.board_img" @click="modalOpen(image)" class="detailImg_slot" alt="등록 이미지" />
+        </div>
+
+        <!-- img 확대 모달창 -->
+        <div class="modal-img" v-show="modalCheck">
+            <img :src="selectedImage" class="modalImg"/>
+            <div class="modal-container">
+                <div class="btn bg-navy board-detail-btn">
+                    <button @click="modalClose">닫기</button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- <div class="board-detail-img">
@@ -64,8 +75,8 @@
             <div v-for="item in $store.state.board.boardComments" :key="item" class="comments">
                 <p>{{ item.comment_content }}</p>
                 <p>{{ item.user_nickname }}</p>
-                <p>{{ item.created_at }}</p>
-                <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-navy header-btn" @click="deleteComments(item.board_id)">🗑️</button>
+                <p>{{ item.created_at }} <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-navy board-detail-btn" @click="deleteComments(item.board_id)">   🗑️</button></p>
+                <!-- <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-navy header-btn" @click="deleteComments(item.board_id)">🗑️</button> -->
             </div>
         </div>
         <div class="pagination-btn">
@@ -86,9 +97,9 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 // board출력값
-const boardDetail = computed(() => store.state.board.boardDetail);
+const boardDetail = computed(() => store.state.board.boardDetail); 
 // contenttypeid명칭정의
-const readableRcName = computed(() => store.state.board.rcName);
+// const readableRcName = computed(() => store.state.board.rcName);
 // const image = ;
 const commentsInfo =  reactive({
     comment_content: ''
@@ -138,8 +149,9 @@ const deleteConfirm = () => {
 const boardNotify= () => {
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
     if (userResponse) {
-        // 신고적용할 조건필요요
-        router.push('/boards/');
+        // 신고적용할 조건필요
+        // router.push('/boards/');
+        store.dispatch('board/boardNotify', id); 
     } else {
     }
 }
@@ -176,7 +188,7 @@ const boardInfo = reactive({
 });
 
 const gridDetail = computed(() => {
-    return store.state.board.bcCode === '0' ? 'grid-3' : 'grid-2';
+    return store.state.board.bcCode === '0' ? 'grid-6' : 'grid-4';
 });
 // // boardRate = computed(() => {
 // //     return boardDetail.value?.rate ? 6 - boardDetail.value.rate
@@ -219,12 +231,12 @@ hr{
 .board-detail-category {
     display: flex;
     align-items: flex-end;
-    column-gap: 10px;
+    column-gap: 20px;
 }
 .board-detailItem-btn{
     display: flex;
     align-items: flex-end;
-    justify-content: center;
+    justify-content: right;
     width: 100%;
     column-gap: 10px;
     float: right;
@@ -245,23 +257,35 @@ hr{
     margin: 20px auto;
     border-bottom: double #01083a 5px;
     font-size: 1.2rem;
-    text-align: center;
+    text-align: right;
 }
-.grid-2{
+.boardNotify_btn{
+    cursor: pointer;
+}
+.loveIt_btn{
+    /* cursor: url(/IgoUgo/public/images/Lcussor.png),auto; */
+    cursor: url('/images/Lcussor.png');
+}
+.loveIt_btn:active{
+    background-image:url('/images/heart.png') 10 10;
+}
+.grid-4{
     display: grid;
-    grid-template-columns: 9fr 2fr;
+    grid-template-columns: 9fr 3fr 3fr 3fr;
     grid-auto-rows: 50px;
     align-items:end;
     line-height: 1.5;
     text-align: right;
+    gap: 10px;
 }
-.grid-3{
+.grid-6{
     display: grid;
-    grid-template-columns: 9fr 4fr 3fr;
+    grid-template-columns: 5fr 6fr 4fr 3fr 3fr 1.5fr;
     grid-auto-rows: 50px;
     justify-content: space-between;
     align-items:end;
     line-height: 1.5;
+    gap: 10px;
 }
 
     /* grid-template-columns: 7fr 4fr 3fr 2fr 2fr 2fr; */
@@ -305,26 +329,30 @@ hr{
 
 
 .board-detail-img{
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(5, 1fr);
     margin: 20px;
     padding: 10px;
     justify-content: center;
-    align-items: center;
-    width: 90%;
+    place-items: center;
     max-height: 300px;
 }
-.board-detail-img>img{
+/* .board-detail-img>img{
     display: block;
     margin: 0 auto;
     max-width: 450px;
     max-height: 270px;
-}
+} */
 .detailImg_slot{
-    width: 250px;
-    height: 250px;
+    /* justify-content: center;
+    align-items: center; */
+    /* text-align: center; */
+    height: 230px;
+    width: 230px;
     gap: 10px;
     margin: 10px;
+    object-fit: contain;
+    background-color: transparent;
 }
 .board-detail-content{
     padding: 20px 30px;
@@ -409,6 +437,36 @@ hr{
     color: #fff;
     background: #01083a;
 }
+/** 모달------------------start */
+.modal-img{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+.modal-container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.modalImg{
+    width: 60%;
+    height: 60%;
+    justify-content: center;
+    object-fit: contain;
+    background-color: transparent;
+}
+/** 모달------------------end */
+
+
 /* @media(max-width: 800px){
     .board-detail-head{
         flex-wrap: wrap;
