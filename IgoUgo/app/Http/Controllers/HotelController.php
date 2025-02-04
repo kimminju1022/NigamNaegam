@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 // use App\Models\Hotel;
 use App\Models\HotelCategory;
+use App\Models\HotelInfo;
 use App\Models\Product;
 // use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
@@ -212,5 +213,18 @@ class HotelController extends Controller
             ->get();
 
         return response()->json($places);
+    }
+
+    public function getHotelCategories(Request $request) {
+        $contentId = $request->contentid;
+        $hotelCategory =
+            HotelInfo::whereHas('product', function ($query) use ($contentId) {
+                $query->where('contentid', $contentId);
+                })
+                ->orderBy('hc_code')
+                ->select('hc_code')
+                ->get();
+
+        return response()->json($hotelCategory);
     }
 }

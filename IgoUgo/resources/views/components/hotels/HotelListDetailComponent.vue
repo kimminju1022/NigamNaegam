@@ -83,12 +83,26 @@
                 
                 <div class="detail-content">
                     <div class="hotel-category-area">
-                        <div class="category-box"><img class="filter-icon" src="/img_product/swimmingpool.png">수영장</div>
-                        <div class="category-box"><img class="filter-icon" src="/img_product/barbecue.png">바베큐장</div>
-                        <div class="category-box"><img class="filter-icon" src="/img_product/campfire.png">캠프파이어</div>
-                        <div class="category-box"><img class="filter-icon" src="/img_product/beauty.png">뷰티시설</div>
-                        <div class="category-box"><img class="filter-icon" src="/img_product/fitness.png">피트니스센터</div>
-                        <div class="category-box"><img class="filter-icon" src="/img_product/pickup.png">픽업서비스</div>
+                        <div v-for="item in hotelCategoryIncluded">
+                            <div v-if="item.hc_code === '0'">
+                                <div class="category-box"><img class="filter-icon" src="/img_product/swimmingpool.png">수영장</div>
+                            </div>
+                            <div v-else-if="item.hc_code === '1'">
+                                <div class="category-box"><img class="filter-icon" src="/img_product/barbecue.png">바베큐장</div>
+                            </div>
+                            <div v-else-if="item.hc_code === '2'">
+                                <div class="category-box"><img class="filter-icon" src="/img_product/campfire.png">캠프파이어</div>
+                            </div>
+                            <div v-else-if="item.hc_code === '3'">
+                                <div class="category-box"><img class="filter-icon" src="/img_product/beauty.png">뷰티시설</div>
+                            </div>
+                            <div v-else-if="item.hc_code === '4'">
+                                <div class="category-box"><img class="filter-icon" src="/img_product/fitness.png">피트니스센터</div>
+                            </div>
+                            <div v-else-if="item.hc_code === '5'">
+                                <div class="category-box"><img class="filter-icon" src="/img_product/pickup.png">픽업서비스</div>
+                            </div>
+                        </div>
                     </div>
                     <p class="detail-content-content">{{ hotelDetail.overview }}</p>
                 </div>
@@ -110,6 +124,7 @@ const route = useRoute();
 const hotelDetail = computed(() => store.state.hotel.hotelDetail);
 const hotelImg = computed(() => store.state.hotel.hotelDetailImg);
 const hotelImgCnt = computed(() => store.state.hotel.hotelDetailImgCount);
+const hotelCategoryIncluded = computed(() => store.state.hotel.hotelCategoryIncluded);
 
 // 상품 위도, 경도
 const productLat = computed(() => store.state.hotel.hotelDetail.mapy)
@@ -122,6 +137,7 @@ const findData = reactive({
 
 onBeforeMount(async () => {
     await store.dispatch('hotel/getHotelsDetail', findData);
+    await store.dispatch('hotel/getHotelCategoryIncluded', findData);
 });
 
 

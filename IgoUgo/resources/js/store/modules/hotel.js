@@ -14,6 +14,7 @@ export default {
         hotelDetail: [],
         hotelDetailImg: [],
         hotelDetailImgCount: null,
+        hotelCategoryIncluded: [],
         // hotelRank: [],
     }),
     mutations: {
@@ -45,6 +46,9 @@ export default {
         },
         setHotelDetailImgCount(state, data) {
             state.hotelDetailImgCount = data;
+        },
+        setHotelCategoryIncluded(state, list) {
+            state.hotelCategoryIncluded = list;
         },
         // setHotelsRank(state, list) {
         //     state.hotelRank = list
@@ -168,7 +172,26 @@ export default {
                     return reject;
                 })
             })
-        }
+        },
+
+        getHotelCategoryIncluded(context, data) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/hotels/get/categories';
+                const config = {
+                    params: data
+                }
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setHotelCategoryIncluded', response.data);
+                    console.log(response.data);
+                    return resolve;
+                })
+                .catch(error => {
+                    console.log(error);
+                    return reject;
+                });                
+            })
+        },
     },
     getters: {
 

@@ -30,6 +30,7 @@ Route::get('/hotels', [HotelController::class, 'hotels']);
 Route::get('/areas', [HotelController::class, 'areas']);
 Route::get('/categories', [HotelController::class, 'categories']);
 Route::get('/hotels/{contentid}', [HotelController::class, 'hotelsDetail']);
+Route::get('/hotels/get/categories', [HotelController::class, 'getHotelCategories']);
 Route::post('/hotels', [HotelController::class, 'getNearbyPlaces']);
 Route::get('/hotels/align/rank', [HotelController::class, 'ranking']);
 // Route::post('/get-hotel-nearby', [HotelController::class, 'getHotelNearBy']);
