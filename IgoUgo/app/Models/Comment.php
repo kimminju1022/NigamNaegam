@@ -45,6 +45,10 @@ class Comment extends Model
     public function board() {
         return $this->belongsTo(board::class, 'board_id', 'board_id');
     }
+    public function report(){
+        return $this->hasMany(CommentReport::class,'comment_id', 'user_id', 'comment_id', 'user_id'); 
+    }
+    
 
     // 댓글 좋아요 최후에 시간남으면 하기
     // public function likes() {

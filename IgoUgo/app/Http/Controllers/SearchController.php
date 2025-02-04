@@ -98,4 +98,26 @@ class SearchController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+    // 게시판 작성용 검색
+    public function searchBoardProduct(Request $request) {
+        // Log::debug($request);
+        $key = $request->input('search');
+
+        $commodity = Product::where(function($query) use ($key) {
+                            $query->where('title', 'LIKE', '%' . $key . '%')
+                                ->orWhere('addr1', 'LIKE', '%' . $key . '%')
+                                ->orWhere('addr2', 'LIKE', '%' . $key . '%');
+                        })->orderBy('created_at', 'DESC')
+                        ->paginate(5);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '검색결과 획득 성공'
+            ,'commodity' => $commodity->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+    // 게시판 리스트용 검색
 }

@@ -16,14 +16,16 @@
             <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
                 <p>리뷰</p>
                 <div v-for="searchItem in searchKeyword" class="board-category">
-                <div class="board-search-tb">
-                    <div class="search-box">
-                        <input type="search" @input="inputText = $event.target.value">
+                    <div class="board-search-tb">
+                        <div class="search-box">
+                            <input type="search" @input="inputText = $event.target.value">
+                            <button>검색</button>
+                            <p></p>
+                        </div>
+                        <!-- <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요"> -->
+                        <!-- <input class="board-search" action="" type="text" placeholder="검색어를 입력해 주세요"> -->
+                        <!-- <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button> -->
                     </div>
-                    <!-- <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요"> -->
-                    <!-- <input class="board-search" action="" type="text" placeholder="검색어를 입력해 주세요"> -->
-                    <!-- <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button> -->
-                </div>
 
                 <!-- 20250131 2차코드수정 -->
                 <!-- <div class="board-category">

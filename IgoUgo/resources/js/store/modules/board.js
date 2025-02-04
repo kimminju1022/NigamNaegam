@@ -36,6 +36,9 @@ export default {
             // console.log('Board Detail State:', data); // 데이터 확인
             state.boardDetail = data;
         },
+        setBoardDelete(state, id) {
+            state.boardDetail = state.boardDetail.filter(item => item.board_id !== id);
+        },
         setBoardComments(state, data) {
             state.boardComments = data;
         },
@@ -72,6 +75,12 @@ export default {
         },
         setUserFreeList(state, userFreeList) {
             state.userFreeList = userFreeList;
+        },
+        setRemoveBoardComment(state, id) {
+            state.boardComments = state.boardComments.filter(item => item.comment_id !== id);
+        },
+        setPushBoardComment(state, data) {
+            state.boardComments.push(data);
         },
     },
     actions: {
@@ -248,8 +257,9 @@ export default {
 
             axios.delete(url, config)
             .then(response => {
-
+                commit('setBoardDelete',data.board_id)
                 alert('삭제 성공');
+// 삭제후 돌아갈 페이지작업 필요
             })
             .catch(error => {
                 // console.error(error);
@@ -258,7 +268,7 @@ export default {
         },
 
         /**게시글 신고 */
-        boardNotify(context) {
+        boardReport(context) {
             const url = `/api/board/${id}/report`;
             const config = {
                 header:{
@@ -303,50 +313,36 @@ export default {
 
         // 댓글 ------------------------------------start
         // 댓글 작성
-        storeComment(context, data){
+        storeComment({state, rootGetters, commit}, data){
             const url = '/api/comments';
             const config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
 
-            const formData = new FormData();
-            formData.append('bc_code', data.bc_code);
-            formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);
-            if(data.board_img) {
-                formData.append('board_img', data.board_img);
-            }
-            if(data.area_code) {
-                formData.append('area_code', data.area_code);
-            }
-            if(data.bc_code) {
-                formData.append('bc_code', data.bc_code);
-            }
-            if(data.rate) {
-                formData.append('rate', data.rate);
-            }
-
             // console.log(data);
 
-            axios.post(url,formData, config)
+            axios.post(url, JSON.stringify(data), config)
             .then(response => {
+                // commit('setCommentsTotal', state.commentsTotal + 1);
                 // console.log(response.data);
                 // console.log(response.data.board);
                 // console.log(response.data.review);
                 
-                context.commit('setBoardList', response.data.data);
-                
-                router.replace('/boards');
+                if(state.boardComments.length < 10) {
+                    commit('setPushBoardComment', response.data.comment);
+                } else {
+                    commit('pagination/setPaginationRegulation', rootGetters['pagination/getPlusOneLastPage'], {root: true});
+                }
             })
             .catch(error => {
-                console.error(error.response.data);
+                console.error(error);
             });
         },
         postCommentCreate(context){
-            const url = '/api/boards/create';
+            // const url = '/api/boards/create';
+            const url = '/api/comments';
             const config = {
                 header: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -369,7 +365,7 @@ export default {
             axios.get(url, config)
             .then(response =>{
                 context.commit('setBoardComments', response.data.comments.data);
-                context.commit('setCommentsTotal', response.data.comments.total);
+                context.commit('', response.data.comments.total);
                 context.commit('pagination/setPagination', response.data.comments, {root: true});
             })
             .catch(error => {
@@ -379,8 +375,8 @@ export default {
         /**
          * 댓글 삭제
          */
-        commentsDelete(context, id) {
-            const url = `/api/comments/${id}`;
+        commentsDelete({state, commit, dispatch}, data) {
+            const url = `/api/comments/${data.comment_id}`;
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -389,15 +385,37 @@ export default {
 
             axios.delete(url, config)
             .then(response => {
-                console.log($store.state.auth.userInfo)
-
+                commit('setRemoveBoardComment', data.comment_id);
+                const prevCurrentPage = data.page - 1;
+                
+                if(prevCurrentPage > 0 && state.boardComments.length < 1) {
+                    dispatch('boardCommentPagination', {board_id: data.board_id, page: prevCurrentPage});
+                }
                 alert('삭제 성공');
+                // commit('setCommentsTotal', state.commentsTotal - 1);
             })
             .catch(error => {
-                // console.error(error);
+                console.error(error);
                 alert('삭제 실패');
             });
         },
+
+        commentReport(context) {
+            const url = `/api/comments/${id}/report`;
+            const config = {
+                header:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+            axios.get(url)
+            .then()
+            alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다')
+
+            .catch(error => {
+                alert('신고가 불가합니다\n관리자에게 직접 문의 바랍니다')
+            });
+        },
+
         /** 게시글획득
          *  @param{*} context
          * @param{int} id

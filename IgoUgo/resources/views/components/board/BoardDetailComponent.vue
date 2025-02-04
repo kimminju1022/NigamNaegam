@@ -30,7 +30,7 @@
         <button class="loveIt_btn" @click="boardLikeEvent"><img style="height: 20px;" src="/images/bbungheart.png">   : </button>
         <!-- <p> {{ loveIt[0] }}</p> -->
         <!-- <p>조회 : {{ absolve[]++ }}</p> -->
-        <button class="boardNotify_btn" @click="boardNotify">🚨 신고 </button>
+        <button class="boardReport_btn" @click="boardReport">🚨 신고 </button>
     </div>
     
     <!-- 등록이미지 -->
@@ -40,14 +40,14 @@
         </div>
 
         <!-- img 확대 모달창 -->
-        <div class="modal-img" v-show="modalCheck">
+        <!-- <div class="modal-img" v-show="modalCheck">
             <img :src="selectedImage" class="modalImg"/>
             <div class="modal-container">
                 <div class="btn bg-navy board-detail-btn">
                     <button @click="modalClose">닫기</button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <!-- <div class="board-detail-img">
         <img :src="boardDetail.board_img">
@@ -61,22 +61,25 @@
         <hr>
         <div class="board-detail-reply ">
             <p>댓글</p>
-            <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요">
-            <button @click="$store.dispatch('comment/storeComment',commentsInfo)" class="btn bg-navy board-detail-btn">작성</button>
+            <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요" v-model="commentsInfo.comment_content">
+            <button @click="$store.dispatch('board/storeComment',commentsInfo)" class="btn bg-navy board-detail-btn">작성</button>
             <p style="text-align: end; padding-right: 40px;">총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
         <hr>
         <div class="board-detail-comments">
             <div class="comments-head">
                 <p>내용</p>
-                <p>닉네임</p>
+                <p style="margin-left: 10px;">닉네임</p>
                 <p>작성일시</p>
             </div>
             <div v-for="item in $store.state.board.boardComments" :key="item" class="comments">
                 <p>{{ item.comment_content }}</p>
-                <p>{{ item.user_nickname }}</p>
-                <p>{{ item.created_at }} <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-navy board-detail-btn" @click="deleteComments(item.board_id)">   🗑️</button></p>
-                <!-- <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-navy header-btn" @click="deleteComments(item.board_id)">🗑️</button> -->
+                <p>                    
+                    <button class="boardReport_btn" @click="commentReport">🚨</button>
+                    {{ item.user_nickname }}
+                </p>
+                <p>{{ item.created_at }}</p>
+                <button v-if="$store.state.auth.userInfo.user_id == item.user_id" class="btn bg-navy header-btn" @click="deleteComments(item.comment_id)">🗑️</button>
             </div>
         </div>
         <div class="pagination-btn">
@@ -103,7 +106,7 @@ const boardDetail = computed(() => store.state.board.boardDetail);
 // const image = ;
 const commentsInfo =  reactive({
     comment_content: ''
-    ,user_email: []
+    ,board_id: route.params.id
 });
 
 
@@ -146,33 +149,38 @@ const deleteConfirm = () => {
     }  */
 
     // 신고
-const boardNotify= () => {
+const boardReport= () => {
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
     if (userResponse) {
         // 신고적용할 조건필요
         // router.push('/boards/');
-        store.dispatch('board/boardNotify', id); 
+        store.dispatch('board/boardReport', id); 
     } else {
     }
 }
 
-   // 댓글
-    const deleteComments = (id) => {
+   // 댓글 삭제
+const deleteComments = (id) => {
     const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
-    if(check) {
-        store.dispatch('board/destroyComments', id)
-        //3차 수정
-            .then(() => {
-                alert('댓글 삭제 성공');
-                router.push('/boards/{id}');
-            })
-            .catch(error => {
-                alert('삭제 중 오류 발생');
-                console.error(error);
-            });
+    const data = {
+        page: searchData.page,
+        board_id: searchData.board_id,
+        comment_id: id
+    };
+        if(check) {
+            store.dispatch('board/commentsDelete', data);
+        }
+    };
+    // 댓글 신고
+const commentReport= () => {
+    const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
+    if (userResponse) {
+        // 신고적용할 조건필요
+        // router.push('/boards/');
+        store.dispatch('board/commentReport', id); 
+    } else {
     }
-};
-
+}
 // alert 안내문구---------------------end-----------------
 const actionName = 'board/boardCommentPagination';
 const searchData = reactive({
@@ -259,8 +267,11 @@ hr{
     font-size: 1.2rem;
     text-align: right;
 }
-.boardNotify_btn{
+.boardReport_btn{
     cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin-right: 10px;
 }
 .loveIt_btn{
     /* cursor: url(/IgoUgo/public/images/Lcussor.png),auto; */
@@ -370,7 +381,7 @@ hr{
 }
 .comments-head, .comments{
     display: grid;
-    grid-template-columns: 7fr 1fr 2fr;
+    grid-template-columns: 7fr 1fr 2fr 0.5fr;
     align-items: center;
 }
 

@@ -20,7 +20,7 @@ class CommentReport extends Model
      */
     protected $fillable = [
         'user_id',
-        'comment_id',
+        'comment_report_id',
     ];
 
     /**
