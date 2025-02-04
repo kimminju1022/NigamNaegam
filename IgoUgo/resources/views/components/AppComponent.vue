@@ -422,11 +422,12 @@ const logout = () =>{
         store.dispatch('auth/logout');
     }
 }
+
 // 검색
 const search = ref('');
 const mainSearch = (() => {
     store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
-    console.log('search :',search.value);
+    // console.log('search :',search.value);
     store.dispatch('search/searchHotel', {search: search.value, page: 1});
 })
 

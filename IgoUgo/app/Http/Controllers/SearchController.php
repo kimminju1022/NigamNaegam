@@ -56,7 +56,8 @@ class SearchController extends Controller
         // Log::debug($request);
         $key = $request->input('search');
 
-        $boards = Board::where(function($query) use ($key) {
+        $boards = Board::with('board_category')
+                        ->where(function($query) use ($key) {
                             $query->where('board_title', 'LIKE', '%' . $key . '%')
                                 ->orWhere('board_content', 'LIKE', '%' . $key . '%');
                         })
@@ -80,16 +81,18 @@ class SearchController extends Controller
         // Log::debug($request);
         $key = $request->input('search');
 
-        $board_testers = Board::where(function($query) use ($key) {
-                            $query->where('board_title', 'LIKE', '%' . $key . '%')
-                                ->orWhere('board_content', 'LIKE', '%' . $key . '%');
-                        })
-                        ->where(function($query) {
-                            $query->where('bc_code', '3');
-                        })
-                        ->orderBy('created_at', 'DESC')
-                        ->paginate(5);
-                        // board_flg 0인 것만 들고와야함
+        $board_testers = Board::with('board_category')
+                                ->where(function($query) use ($key) {
+                                    $query->where('board_title', 'LIKE', '%' . $key . '%')
+                                        ->orWhere('board_content', 'LIKE', '%' . $key . '%');
+                                })
+                                ->where(function($query) {
+                                    $query->where('bc_code', '3');
+                                })
+                                ->orderBy('created_at', 'DESC')
+                                ->paginate(5);
+                                // board_flg 0인 것만 들고와야함
+                                
         $responseData = [
             'success' => true
             ,'msg' => '검색결과 획득 성공'
