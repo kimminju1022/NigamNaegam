@@ -21,4 +21,8 @@ class Area extends Model
     // public function review() {
     //     return $this->hasOne(Review::class, 'area_code', 'area_code');
     // }
+
+    public function products() {
+        return $this->hasMany(Product::class, 'area_code', 'area_code');
+    }
 }

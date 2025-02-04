@@ -24,7 +24,7 @@ export default {
                 // console.log('이메일 전송 성공');
 
                 sessionStorage.removeItem('EmailChk');
-                alert('해당 이메일로 인증을 완료하세요.');      
+                alert('해당 이메일로 인증을 완료하세요. \n 브라우저 창이 꺼질 수 있습니다.');      
                 // console.log('이메일 전송 성공');
                 // errMsg.value = "이메일 전송 성공"
 

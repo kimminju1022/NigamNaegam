@@ -99,7 +99,10 @@ Route::get('/questions', [QuestionController::class, 'index']);
 Route::get('/questions/{id}',[QuestionController::class, 'show']);
 
 // 검색 라우터
-Route::get('/search', [SearchController::class, 'search']);
+Route::get('/search/hotel', [SearchController::class, 'searchHotel']);
+Route::get('/search/product', [SearchController::class, 'searchProduct']);
+Route::get('/search/board', [SearchController::class, 'searchBoard']);
+Route::get('/search/board/tester', [SearchController::class, 'searchTester']);
 
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {

@@ -4,26 +4,28 @@
     <button
         v-for="page in $store.state.pagination.viewPageNumber" :key="page"
         @click="changePage(page)" 
-        :class="{ 'active-page': page == $store.state.pagination.currentPage, 'btn bg-clear': true }"
+        :class="{ 'active-page': page == currentPage, 'btn bg-clear': true }"
         >{{ page }}
     </button>
     <button class="btn bg-clear" @click="nextPage">></button>
 </div>
+<h1>{{ currentPage }}</h1>
 </template>
 
 <script setup>
-import { computed, defineProps, reactive } from 'vue';
+import { computed, defineProps, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
-
-const currentPage = computed(() => store.state.pagination.currentPage);
-const lastPage = computed(() => store.state.pagination.lastPage);
-
-const store = useStore();
 
 const props = defineProps({
     'actionName': String,
     'searchData': Object,
+    'currentPage': Number,
 });
+const currentPage = computed(() => props.currentPage);
+const lastPage = computed(() => store.state.pagination.lastPage);
+
+const store = useStore();
+
 
 function prevPage() { 
     if (currentPage.value > 1) {

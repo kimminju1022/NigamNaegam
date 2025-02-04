@@ -3,27 +3,23 @@
     <div class="search">
         <div class="search-box">
             <h1>호텔</h1>
-            <p><span>20</span>개의 결과</p>
+            <p><span>{{ $store.state.search.searchHotelList.length }}</span>개의 결과</p>
             <div class="search-content-box">
                 <div class="search-title">
                     <p>번호</p>
+                    <!-- <p></p> -->
                     <p>지역</p>
-                    <p>몰라</p>
+                    <p></p>
                     <p>제목</p>
                     <p></p>
                 </div>
-                <!-- <div v-for="item in searchList" :key="item" class="search-content">
-                    <p>{{ item.hotel.data.title }}</p>
-                    <p>{{ item.hotel.data.area_code }}</p>
-                    <p>{{ item.hotel.data.title }}</p>
-                    <p>{{ item.hotel.data.title }}</p>
+                <div v-for="(item, index) in $store.state.search.searchHotelList" :key="item" class="search-content">
+                    <p>{{ index+1 }}</p>
+                    <p v-if="item.area !== null">{{ item.area.area_name }}</p>
+                    <p v-else></p>
+                    <!-- <p></p> -->
                     <p></p>
-                </div> -->
-                <div class="search-content">
-                    <p>번호</p>
-                    <p>지역</p>
-                    <p>몰라</p>
-                    <p>제목</p>
+                    <router-link :to="`/hotels/${item.contentid}`">{{ item.title }}</router-link>
                     <p></p>
                 </div>
             </div>
@@ -119,9 +115,9 @@ import PaginationComponent from './PaginationComponent.vue';
 const store = useStore();
 const route = useRoute();
 
-const actionName = 'search/search';
+const actionName = 'search/searchHotel';
 
-const searchList = computed(()=> store.state.search.searchList);
+// const searchList = computed(()=> store.state.search.searchHotel);
 
 const searchData = reactive({
     search: route.params.search,
@@ -176,7 +172,7 @@ onBeforeMount(() => {
 
 .search-title {
     display: grid;
-    grid-template-columns: 0.5fr 0.7fr 1fr 8fr 1fr;
+    grid-template-columns: 0.5fr 1fr 2fr 8fr 1fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -186,7 +182,7 @@ onBeforeMount(() => {
 
 .search-content {
     display: grid;
-    grid-template-columns: 0.5fr 0.7fr 1fr 8fr 1fr;
+    grid-template-columns: 0.5fr 1fr 2fr 8fr 1fr;
     text-align: center;
     padding: 10px;
 }
@@ -196,5 +192,14 @@ onBeforeMount(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     color: #000;
+}
+
+.text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    word-break: break-all;
 }
 </style>

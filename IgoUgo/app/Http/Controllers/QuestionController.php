@@ -64,7 +64,7 @@ class QuestionController extends Controller
                                 // ->where('bc_type', $bcType)
                                 ->where('bc_code', '2')
                                 ->orderBy('created_at', 'DESC')
-                                ->paginate(5);
+                                ->paginate(1);
         // Log::debug($questionList);
 
         $responseData = [

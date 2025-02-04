@@ -57,4 +57,8 @@ class Product extends Model
     public function reviews() {
         return $this->hasMany(Review::class, 'product_id', 'product_id');
     }
+    
+    public function area() {
+        return $this->belongsTo(Area::class, 'area_code', 'area_code');
+    }
 }

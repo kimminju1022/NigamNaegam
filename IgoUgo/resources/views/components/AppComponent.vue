@@ -358,7 +358,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
@@ -422,13 +422,12 @@ const logout = () =>{
         store.dispatch('auth/logout');
     }
 }
-
 // 검색
 const search = ref('');
 const mainSearch = (() => {
-    console.log('search :',search.value);
-    store.dispatch('search/search', search.value);
     store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
+    console.log('search :',search.value);
+    store.dispatch('search/searchHotel', {search: search.value, page: 1});
 })
 
 // ---------- 게시판 이동 관련 start ----------

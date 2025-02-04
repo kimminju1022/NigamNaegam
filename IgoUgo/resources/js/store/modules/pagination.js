@@ -1,10 +1,10 @@
 export default {
     namespaced: true,
     state: () => ({
+        viewPageCnt: 5,
+        path: localStorage.getItem('paginationPath') ? localStorage.getItem('paginationPath'): '',
         currentPage: localStorage.getItem('currentPage') ? localStorage.getItem('currentPage'): 1, // 현재 페이지
         lastPage: localStorage.getItem('lastPage') ? localStorage.getItem('lastPage'): 1, // 마지막 페이지
-        path: localStorage.getItem('paginationPath') ? localStorage.getItem('paginationPath'): '',
-        viewPageCnt: 5,
         viewPageNumber: localStorage.getItem('viewPageNumber') ? JSON.parse(localStorage.getItem('viewPageNumber')) : [],
     }),
     mutations: {
