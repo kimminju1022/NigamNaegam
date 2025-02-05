@@ -515,10 +515,53 @@ const loadMarker = (placeList) => {
             });
             
             // 인포윈도우 생성
-            const infowindow = new window.kakao.maps.InfoWindow({
-                content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
+            // const infowindow = new window.kakao.maps.InfoWindow({
+            //     content: `<div style="width: 150px"><p style="text-align: center">${place.title}</p></div>`,
+            // });
+            var content = `
+                <div style="
+                    position: relative;
+                    background: white;
+                    border: 1px solid black;
+                    padding: 10px;
+                    border-radius: 10px;
+                    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                    text-align: center;
+                    display: inline-block;
+                ">
+                    <div style="font-size: 14px;">${place.title}</div>
+                    <div style="
+                        content: '';
+                        position: absolute;
+                        bottom: -10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 0;
+                        height: 0;
+                        border-left: 10px solid transparent;
+                        border-right: 10px solid transparent;
+                        border-top: 10px solid black;">
+                    </div>
+                    <div style="
+                        content: '';
+                        position: absolute;
+                        bottom: -9px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 0;
+                        height: 0;
+                        border-left: 9px solid transparent;
+                        border-right: 9px solid transparent;
+                        border-top: 9px solid white;">
+                    </div>
+                </div>
+            `;
+            var infowindow = new window.kakao.maps.CustomOverlay ({
+                position: markerPosition,
+                content: content,
+                xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 2.3 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
             });
-
             // 마커에 마우스 이벤트 등록
             window.kakao.maps.event.addListener(marker, "mouseover", showInfoWindow(map, marker, infowindow));
             window.kakao.maps.event.addListener(marker, "mouseout", hideInfoWindow(infowindow));
@@ -533,16 +576,19 @@ const loadMarker = (placeList) => {
 // 마커 마우스오버 이벤트
 const showInfoWindow = (map, marker, infowindow) => {
     return function() {
-        infowindow.open(map, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
+        // infowindow.open(map, marker); // 인포윈도우를 현재 지도와 마커에 연결하여 열기
         // console.log("Infowindow DOM element:", infowindow); // 확인용
+        infowindow.setMap(map); // 지도에 등록
+        infowindow.setVisible(true); // 지도에서 보이게
     };
 };
 
 // 마커에 마우스아웃 이벤트 등록
 const hideInfoWindow = (infowindow) => {
     return function() {
-        infowindow.close(); // 인포윈도우 닫기
+        // infowindow.close(); // 인포윈도우 닫기
         // console.log("Is infowindow open? ", infowindow); // 확인용
+        infowindow.setVisible(false); // 지도에서 숨기기
     };
 };
 

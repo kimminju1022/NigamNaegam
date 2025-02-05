@@ -224,7 +224,6 @@ const loadMaker = () => {
                 padding: 10px;
                 border-radius: 10px;
                 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-                max-width: 200px;
                 text-align: center;
                 display: inline-block;
             ">
