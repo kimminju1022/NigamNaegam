@@ -1,5 +1,5 @@
 <template>
-<div>메인 페이지</div>
+<div>이달의 추천</div>
 </template>
 
 <script setup>

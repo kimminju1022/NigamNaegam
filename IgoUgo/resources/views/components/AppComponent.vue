@@ -292,7 +292,7 @@
                 <div class="footer-line"></div>
                 <div class="footer-text-box">
                     <div class="footer-logo">
-                        <img src="/logo_gam.png" alt="">
+                        <img src="/logo_footer_gam.png" alt="">
                     </div>
                     <div>
                         <div class="footer-text">
@@ -543,7 +543,7 @@ header {
 /* 헤더 1 -> 로고 , 로그인 버튼 */
 .header-title {
     display: grid;
-    grid-template-columns: 1fr 5fr 2fr;
+    grid-template-columns: 1.5fr 5fr 2fr;
     align-items: center;
     margin-top: 25px;
     gap: 10px;
@@ -551,7 +551,7 @@ header {
 
 .header-title > :first-child {
     /* justify-self: center; */
-    margin-left: 10%;
+    margin-left: 15%;
 }
 
 .header-title-button {
@@ -585,7 +585,7 @@ header {
 
 .header-title-img {
     /* width: 450px; */
-    width: 220px;
+    width: 250px;
 }
 
 /* 헤더 로그인 버튼 */
@@ -820,8 +820,8 @@ footer {
 }
 
 .footer-logo img {
-    height: 140px;
-    width: 140px;
+    height: 130px;
+    width: 150px;
 }
 
 .footer-text {

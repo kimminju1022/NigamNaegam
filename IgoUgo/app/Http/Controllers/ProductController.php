@@ -12,11 +12,11 @@ class ProductController extends Controller
 {
     public function getFilteredProducts() {
         $products = [
-            'spot' => Product::where('contenttypeid', '12')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
-            'culture' => Product::where('contenttypeid', '14')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
-            'sports' => Product::where('contenttypeid', '28')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
-            'shopping' => Product::where('contenttypeid', '38')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get(),
-            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->inRandomOrder()->limit(5)->get()
+            'spot' => Product::where('contenttypeid', '12')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->limit(5)->get(),
+            'culture' => Product::where('contenttypeid', '14')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->limit(5)->get(),
+            'sports' => Product::where('contenttypeid', '28')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->limit(5)->get(),
+            'shopping' => Product::where('contenttypeid', '38')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->limit(5)->get(),
+            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->limit(5)->get()
         ];
 
         $responseData = [
@@ -38,6 +38,7 @@ class ProductController extends Controller
                                     return $query->whereIn('products.area_code', $areaCode);
                                 })
                                 ->whereNotNull('firstimage')
+                                ->whereNotNull('area_code') // area_code 있는것만 가져오기
                                 ->select('contentid', 'title', 'firstimage')
                                 ->orderBy($sort, 'desc')
                                 ->paginate(32);
@@ -105,11 +106,11 @@ class ProductController extends Controller
 
     public function getProductRandom() {
         $products = [
-            'spot' => Product::where('contenttypeid', '12')->whereNotNull('firstimage')->inRandomOrder()->first(),
-            'culture' => Product::where('contenttypeid', '14')->whereNotNull('firstimage')->inRandomOrder()->first(),
-            'sports' => Product::where('contenttypeid', '28')->whereNotNull('firstimage')->inRandomOrder()->first(),
-            'shopping' => Product::where('contenttypeid', '38')->whereNotNull('firstimage')->inRandomOrder()->first(),
-            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->inRandomOrder()->first()
+            'spot' => Product::where('contenttypeid', '12')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->first(),
+            'culture' => Product::where('contenttypeid', '14')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->first(),
+            'sports' => Product::where('contenttypeid', '28')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->first(),
+            'shopping' => Product::where('contenttypeid', '38')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->first(),
+            'restaurant' => Product::where('contenttypeid', '39')->whereNotNull('firstimage')->whereNotNull('area_code')->inRandomOrder()->first()
         ];
 
         $responseData = [
@@ -142,6 +143,7 @@ class ProductController extends Controller
                 // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
             })
             ->whereNotNull('products.firstimage') // 사진있는것만 가져오기
+            ->whereNotNull('products.area_code') // area_code 있는것만 가져오기
             ->selectRaw("*, (6371 * acos(
                 cos(radians(?)) * cos(radians(mapy)) *
                 cos(radians(mapx) - radians(?)) +

@@ -37,6 +37,7 @@ class HotelController extends Controller
                 });                                        
             })
             ->whereNotNull('products.firstimage') // 사진있는것만 가져오기
+            ->whereNotNull('products.area_code') // area_code 있는것만 가져오기
             ->select('product_id', 'title', 'firstimage', 'contentid') // 호텔아이디, 호텔이름, 사진만 가져오기
             ->orderBy($sort, 'desc')    // 파일 업로드한날로 최신순으로 정렬
             ->paginate(32); // 페이지네이션
@@ -129,6 +130,7 @@ class HotelController extends Controller
             });                                        
         })
         ->whereNotNull('products.firstimage')
+        ->whereNotNull('products.area_code') // area_code 있는것만 가져오기
         ->groupBy('products.product_id', 'products.title', 'products.firstimage', 'products.contentid')
         ->orderByDesc('avg_rate')
         ->paginate(32);
@@ -160,6 +162,7 @@ class HotelController extends Controller
                 });                                        
             })
             ->whereNotNull('products.firstimage') // 사진있는것만 가져오기
+            ->whereNotNull('products.area_code') // area_code 있는것만 가져오기
             ->select('product_id', 'title', 'firstimage', 'contentid') // 호텔아이디, 호텔이름, 사진만 가져오기
             ->selectRaw("( 6371 * acos( cos( radians(?) ) * cos( radians(mapy) ) * cos( radians(mapx) - radians(?) ) + sin( radians(?) ) * sin( radians(mapy) ) ) ) AS distance",
                 [$mapy, $mapx, $mapy]  // 위도는 두 번, 경도는 한 번 사용
@@ -200,6 +203,7 @@ class HotelController extends Controller
                 });                                        
             })
             ->whereNotNull('products.firstimage') // 사진있는것만 가져오기
+            ->whereNotNull('products.area_code') // area_code 있는것만 가져오기
             ->selectRaw("*, (6371 * acos(
                 cos(radians(?)) * cos(radians(mapy)) *
                 cos(radians(mapx) - radians(?)) +

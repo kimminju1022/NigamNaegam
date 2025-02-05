@@ -1,5 +1,5 @@
 <template>
-<div>메인 페이지</div>
+<div>체험단</div>
 </template>
 
 <script setup>

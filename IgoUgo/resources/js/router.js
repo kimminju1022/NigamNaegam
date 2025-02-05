@@ -43,8 +43,30 @@ import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import LoadingComponent from '../views/components/LoadingComponent.vue';
 import SearchComponent from '../views/components/SearchComponent.vue';
 
-// admin
-import AdminMainComponent from '../views/adminComponents/AppComponent.vue';
+// -----------------------------------------------
+// admin(관리자)
+// 로그인
+import AdminLoginComponent from '../views/adminComponents/AdminLoginComponent.vue';
+// 메인
+import AdminMainComponent from '../views/adminComponents/main/MainComponent.vue';
+
+// 유저 관리
+import AdminUserManageComponent from '../views/adminComponents/user/UserManageComponent.vue';
+
+// 게시판 관리
+import AdminBoardManageComponent from '../views/adminComponents/board/BoardManageComponent.vue';
+
+// 체험단
+import AdminTesterComponent from '../views/adminComponents/tester/TesterComponent.vue';
+
+// 이달의 추천
+import AdminMonthlyRecommendComponent from '../views/adminComponents/recommend/MonthlyRecommendComponent.vue';
+
+// 공지사항
+import AdminNotificationComponent from '../views/adminComponents/notification/NotificationComponent.vue';
+
+// 문의 관리
+import AdminQuestionManageComponent from '../views/adminComponents/question/QuestionManageComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -64,9 +86,45 @@ const chkAuth = (to, from, next) => {
 
 const routes = [
     // admin
+    // 관리자 페이지_로그인
     {
         path: '/admin',
+        component: AdminLoginComponent,
+    },
+    // 관리자 페이지_메인
+    {
+        path: '/admin/main',
         component: AdminMainComponent,
+    },
+    // 관리자 페이지_유저 관리
+    {
+        path: '/admin/user',
+        component: AdminUserManageComponent,
+    },
+    // 관리자 페이지_게시판 관리
+    {
+        path: '/admin/board',
+        component: AdminBoardManageComponent,
+    },
+    // 관리자 페이지_체험단
+    {
+        path: '/admin/tester',
+        component: AdminTesterComponent,
+    },
+    // 관리자 페이지_이달의 추천
+    {
+        path: '/admin/recommend',
+        component: AdminMonthlyRecommendComponent,
+    },
+    // 관리자 페이지_공지사항
+    {
+        path: '/admin/notification',
+        component: AdminNotificationComponent,
+    },
+    // 관리자 페이지_문의 관리
+    {
+        path: '/admin/question',
+        component: AdminQuestionManageComponent,
     },
     // -------------------
 

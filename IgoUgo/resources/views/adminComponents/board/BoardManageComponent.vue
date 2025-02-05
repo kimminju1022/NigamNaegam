@@ -1,5 +1,5 @@
 <template>
-<div>메인 페이지</div>
+<div>게시판 관리</div>
 </template>
 
 <script setup>

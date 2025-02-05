@@ -1,25 +1,27 @@
 <template>
+<!-- 로그인 유무 체크 필요 -->
 <div class="admin">
     <div class="admin-header-left">
         <div>
-            <img class="admin-header-image" src="/logo_IgoUgo.png" alt="">
-            <hr>
+            <img class="admin-header-image" src="/img_admin/admin_logo.png" alt="">
+            <!-- <hr> -->
             <div class="admin-header-dropdown">
-                <p>유저관리</p>
+                <router-link to="/admin/user"><p>유저관리</p></router-link>
 
                 <div @mouseenter="showDropdown" @mouseleave="hideDropdown">
-                    <p>게시판관리</p>
+                    <router-link to="/admin/board"><p>게시판관리</p></router-link>
                     <div v-if="dropdownVisible" class="admin-dropdown-menu">
-                        <p>호텔게시판</p>
-                        <p>상세게시판</p>
-                        <p>추천루트게시판</p>
-                        <p>리뷰게시판</p>
-                        <p>자유게시판</p>
+                        <a href=""><p>API통합 관리</p></a>
+                        <a href=""><p>리뷰게시판</p></a>
+                        <a href=""><p>자유게시판</p></a>
                     </div>
                 </div>
-
-                <p>문의 관리</p>
-                <p>통계</p>
+                
+                <router-link to="/admin/tester"><p>체험단</p></router-link>
+                <router-link to="/admin/recommend"><p>이달의 추천</p></router-link>
+                <router-link to="/admin/notification"><p>공지사항</p></router-link>
+                <router-link to="/admin/question"><p>문의 관리</p></router-link>
+                <!-- <p>통계</p> -->
             </div>
         </div>
         <div>
@@ -36,7 +38,7 @@
 
                 <div class="admin-user-box">
                     <div class="admin-user-option">
-                        <p>운영진 설정</p>
+                        <p>운영진</p>
                         <div class="admin-user-image-view">
                             <img class="admin-user-image-small" src="\logo_gam.png" alt="">
                             <img class="admin-user-image-small" src="\logo_gam.png" alt="">
@@ -50,9 +52,14 @@
             <button class="admin-logout-btn">로그아웃</button>
         </div>
     </div>
-    <div>
-
+    <div class="admin-header-right">
+        <router-view></router-view>
     </div>
+</div>
+
+<!-- 로그인 안 했을 때 로그인 페이지만 뜸 -->
+<div v-if="false" class="login-container">
+    <router-view></router-view>
 </div>
 </template>
 
@@ -74,28 +81,31 @@ const hideDropdown = () => {
 /* 왼쪽 오른쪽 나눈거 */
 .admin {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 300px 1fr;
 }
 
 
 /* 왼쪽 헤더 */
 .admin-header-left {
     display: grid;
-    grid-template-rows: 1fr 1fr 50px;
+    grid-template-rows: 1.2fr 1fr 60px;
     background-color: #01083a;
     height: 100vh;
 }
 .admin-header-image {
-    width: 250px;
-    padding: 10px 0;
+    width: 300px;
+    padding: 10px 20px;
 }
 .admin-header-dropdown {
     display: flex;
     flex-direction: column;
-    color: #fff;
+    /* color: #fff; */
     font-size: 20px;
-    padding: 20px 0px 20px 10px;
+    padding: 20px 0px 20px 30px;
     gap: 15px;
+}
+.admin-header-dropdown a {
+    color: #fff;
 }
 .admin-header-dropdown p {
     width: fit-content;
@@ -105,18 +115,22 @@ const hideDropdown = () => {
     flex-direction: column;
     gap: 10px;
 }
-.admin-dropdown-menu > p {
+.admin-dropdown-menu > a {
     /* padding: 3px 0px 0px 30px; */                                                                                                                                                                               
-    margin: 3px 0px 0px 30px;
+    /* margin: 3px 0px 0px 30px; */
+    margin-left: 30px;
     font-size: 18px;
+}
+.admin-dropdown-menu > :nth-child(1) {
+    margin-top: 10px;
 }
 
 /* 유저 회색 박스쪽 */
 .admin-user {
-    background-color: #dadada;
+    background-color: #bcbcbc;
     width: 230px;
     display: grid;
-    grid-template-rows: 200px 60px 120px;
+    grid-template-rows: 180px 60px 120px;
     border-radius: 10px;
     gap: 20px;
     justify-self: center;
@@ -131,12 +145,13 @@ const hideDropdown = () => {
 .admin-user-name {
     justify-self: center;
     font-size: 25px;
-    color: #fff;
+    color: #000;
 }
 .admin-user-info {
     display: grid;
     grid-template-rows: 30px 30px;
     justify-content: center;
+    color: #000;
 }
 
 /* 회색박스 안에 작은 흰색? 박스 */
@@ -146,12 +161,13 @@ const hideDropdown = () => {
 .admin-user-option {
     display: grid;
     grid-template-rows: 30px 60px;
-    background-color: #f7f7f7;
+    background-color: #4c4c4c;
     width: 200px;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
     text-align: center;
+    color: #bcbcbc;
 }
 .admin-user-image-view {
     display: grid;
@@ -168,6 +184,7 @@ const hideDropdown = () => {
     display: flex;
     justify-content: end;
     margin-right: 10px;
+    padding: 10px 0;
 }
 
 .admin-logout-btn {
@@ -198,5 +215,17 @@ const hideDropdown = () => {
 
 .admin-header-dropdown p:hover::after {
   width: 100%; /* 호버 시 밑줄이 텍스트 길이에 맞게 확장 */
+}
+
+
+/* 오른쪽 */
+.admin-header-right {
+    background-color: #eeeeee;
+}
+
+/* 로그인 페이지일 때 */
+.login-container {
+    background-color: #eeeeee;
+    height: 100vh;
 }
 </style>
