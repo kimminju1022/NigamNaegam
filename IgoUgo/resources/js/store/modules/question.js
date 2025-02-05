@@ -56,7 +56,7 @@ export default {
             .then(response => {
                 // console.log('getUserQuestionList',response.data);
                 context.commit('setUserQuestionList', response.data.data.data);
-                context.commit('pagination/setPagination', response.data.data, {root: true});
+                context.commit('pagination/setMyPageQuestionPagination', response.data.data, {root: true});
             }) 
             .catch(error => {
                 console.error(error);

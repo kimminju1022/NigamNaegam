@@ -124,7 +124,14 @@
             </div>
 
             <!-- 페이지네이션 -->
-            <PaginationComponent :actionName1="actionName1" :searchData="searchData" />
+            <!-- <PaginationComponent :actionName1="actionName1" :searchData="searchData" /> -->
+            <PaginationComponent
+                :actionName="actionName1"
+                :searchData="searchData1"
+                :currentPage="$store.state.pagination.userBoardCurrentPage"
+                :lastPage="$store.state.pagination.userBoardLastPage"
+                :viewPageNumber="$store.state.pagination.userBoardViewPageNumber"
+            />
         </div>
 
         <div class="my-question">
@@ -153,7 +160,14 @@
             </div>
 
             <!-- 페이지네이션 -->
-            <PaginationComponent :actionName="actionName" :searchData="searchData" />
+            <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
+            <PaginationComponent
+                :actionName="actionName3"
+                :searchData="searchData3"
+                :currentPage="$store.state.pagination.userQuestionCurrentPage"
+                :lastPage="$store.state.pagination.userQuestionLastPage"
+                :viewPageNumber="$store.state.pagination.userQuestionViewPageNumber"
+            />
         </div>
         
         <div class="user-delete-button">
@@ -187,15 +201,28 @@ const userInfo = computed(()=> store.state.auth.userInfo);
 // const actionName = ['question/userQuestionList', 'board/userReviewList', 'board/userFreeList'];
 const actionName1 = 'board/userReviewList';
 const actionName2 = 'board/userFreeList';
-const actionName = 'question/userQuestionList';
+const actionName3 = 'question/userQuestionList';
 
-
+const searchData1 = reactive({
+    user_id: store.state.auth.userInfo.user_id,
+    page: store.state.pagination.userBoard_currentPage,
+});
+const searchData2 = reactive({
+    user_id: store.state.auth.userInfo.user_id,
+    page: store.state.pagination.userBoard_currentPage,
+});
+const searchData3 = reactive({
+    user_id: store.state.auth.userInfo.user_id,
+    page: store.state.pagination.user_questionCurrentPage,
+});
+console.log(searchData1);
+console.log(searchData3);
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
 onBeforeMount(() => {
-    store.dispatch(actionName1, searchData);
-    store.dispatch(actionName2, searchData);
-    store.dispatch(actionName, searchData);
+    store.dispatch(actionName1, searchData1);
+    store.dispatch(actionName2, searchData2);
+    store.dispatch(actionName3, searchData3);
 });
 
 const userQuestion = computed(() => store.state.question.userQuestionList);
@@ -209,23 +236,22 @@ const isFree = ref(false); // 기본적으로 자유는 숨김
 const showReview = () => {
     isReview.value = true;
     isFree.value = false;
+    
+    store.commit('pagination/setPaginationInitialize');
     // 리뷰 데이터를 가져오기
-    store.dispatch(actionName1, searchData);
+    store.dispatch(actionName1, searchData1);
 };
 
 // 자유 클릭 시 호출
 const showFree = () => {
     isFree.value = true;
     isReview.value = false;
+    
+    store.commit('pagination/setPaginationInitialize');
     // 자유 데이터를 가져오기
-    store.dispatch(actionName2, searchData);
+    store.dispatch(actionName2, searchData2);
 };
 
-// 필터 관련
-const searchData = reactive({
-    user_id: store.state.auth.userInfo.user_id,
-    page: store.state.pagination.currentPage,
-});
 
 // console.log(userQuestion);
 

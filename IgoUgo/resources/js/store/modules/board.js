@@ -456,9 +456,9 @@ export default {
             
             axios.get(url, config)
             .then(response => {
-                // console.log('userReviewList',response.data);
+                console.log('userReviewList',response.data);
                 context.commit('setUserReviewList', response.data.board.data);
-                context.commit('pagination/setPagination', response.data.board, {root: true});
+                context.commit('pagination/setMyPageBoardPagination', response.data.board, {root: true});
             }) 
             .catch(error => {
                 console.error(error);
@@ -480,7 +480,7 @@ export default {
             .then(response => {
                 // console.log('userFreeList',response.data);
                 context.commit('setUserFreeList', response.data.board.data);
-                context.commit('pagination/setPagination', response.data.board, {root: true});
+                context.commit('pagination/setMyPageBoardPagination', response.data.board, {root: true});
             }) 
             .catch(error => {
                 console.error(error);

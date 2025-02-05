@@ -14,11 +14,13 @@ class SearchController extends Controller
         $key = $request->input('search');
 
         $hotels = Product::with('area')
+                        ->where('contenttypeid', '32')
                         ->where(function($query) use ($key) {
                             $query->where('title', 'LIKE', '%' . $key . '%')
                                 ->orWhere('addr1', 'LIKE', '%' . $key . '%')
                                 ->orWhere('addr2', 'LIKE', '%' . $key . '%');
                         })
+                        ->whereNotNull('area_code')
                         ->orderBy('createdtime', 'DESC')
                         ->paginate(5);
 
@@ -35,13 +37,22 @@ class SearchController extends Controller
         // Log::debug($request);
         $key = $request->input('search');
 
-        $products = Product::where(function($query) use ($key) {
-                            $query->where('title', 'LIKE', '%' . $key . '%')
-                                ->orWhere('addr1', 'LIKE', '%' . $key . '%')
-                                ->orWhere('addr2', 'LIKE', '%' . $key . '%');
-                        })
-                        ->orderBy('created_at', 'DESC')
-                        ->paginate(5);
+        $products = Product::with('area')
+                            ->where(function($query) {
+                                $query->where('contenttypeid', '12')
+                                    ->orWhere('contenttypeid', '14')
+                                    ->orWhere('contenttypeid', '28')
+                                    ->orWhere('contenttypeid', '38')
+                                    ->orWhere('contenttypeid', '39');
+                            })
+                            ->where(function($query) use ($key) {
+                                $query->where('title', 'LIKE', '%' . $key . '%')
+                                    ->orWhere('addr1', 'LIKE', '%' . $key . '%')
+                                    ->orWhere('addr2', 'LIKE', '%' . $key . '%');
+                            })
+                            ->whereNotNull('area_code')
+                            ->orderBy('created_at', 'DESC')
+                            ->paginate(5);
 
         $responseData = [
             'success' => true
@@ -57,6 +68,7 @@ class SearchController extends Controller
         $key = $request->input('search');
 
         $boards = Board::with('board_category')
+                        ->where('board_flg', '0')
                         ->where(function($query) use ($key) {
                             $query->where('board_title', 'LIKE', '%' . $key . '%')
                                 ->orWhere('board_content', 'LIKE', '%' . $key . '%');
@@ -82,6 +94,7 @@ class SearchController extends Controller
         $key = $request->input('search');
 
         $board_testers = Board::with('board_category')
+                                ->where('board_flg', '0')
                                 ->where(function($query) use ($key) {
                                     $query->where('board_title', 'LIKE', '%' . $key . '%')
                                         ->orWhere('board_content', 'LIKE', '%' . $key . '%');

@@ -72,7 +72,8 @@
             <PaginationComponent
                 :actionName="actionName"
                 :searchData="searchData"
-                :currentPage="Number($store.state.pagination.currentPage)"
+                :currentPage="$store.state.pagination.currentPage"
+                :lastPage="$store.state.pagination.lastPage"
             />
             </div>
         </div>
@@ -96,8 +97,8 @@
                         type="checkbox" 
                         :id="'input-' + item.area_code"
                     >
-                        <!-- :checked="selectedArea === item.area_code" -->
-                        <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
+                    <!-- :checked="selectedArea === item.area_code" -->
+                    <label :for="'input-' + item.area_code">{{ item.area_name }}</label>
                 </div>
             </div>
 

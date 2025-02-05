@@ -4,6 +4,7 @@ import router from '../../router';
 export default {
     namespaced: true,
     state: () => ({
+        searchKeyword: '',
         searchData: '',
         searchHotelList: [],
         searchProductList: [],
@@ -11,6 +12,9 @@ export default {
         searchTesterList: [],
     }),
     mutations: {
+        setSearchKeyword(state, keyword) {
+            state.searchKeyword = keyword;
+        },
         setSearchData(state, searchData) {
             state.searchData = searchData;
         },
@@ -38,16 +42,16 @@ export default {
             //     },
             // }
 
-            console.log('searchHotel :',data);
-            console.log('url.js :',url);
+            // console.log('searchHotel :',data);
+            // console.log('url.js :',url);
             
             axios.get(url)
             .then(response => {
                 // console.log('setSearchHotelList',response.data);
                 context.commit('setSearchHotelList', response.data.hotel.data);
-                // context.commit('pagination/setPagination', response.data.data, {root: true});
+                context.commit('pagination/setHotelPagination', response.data.hotel, {root: true});
 
-                router.push('/search');
+                // router.push('/search');
             }) 
             .catch(error => {
                 console.error(error);
@@ -57,14 +61,14 @@ export default {
         searchProduct(context, data) {
             const url = `/api/search/product?search=${data.search}&page=${data.page}`;
 
-            console.log('searchProduct :',data);
-            console.log('url.js :',url);
+            // console.log('searchProduct :',data);
+            // console.log('url.js :',url);
 
             axios.get(url)
             .then(response => {
                 // console.log('setSearchProductList',response.data);
                 context.commit('setSearchProductList', response.data.product.data);
-                // context.commit('pagination/setPagination', response.data.data, {root: true});
+                context.commit('pagination/setProductPagination', response.data.product, {root: true});
 
                 // router.push('/search');
             }) 
@@ -76,14 +80,14 @@ export default {
         searchBoard(context, data) {
             const url = `/api/search/board?search=${data.search}&page=${data.page}`;
             
-            console.log('searchBoard :',data);
-            console.log('url.js :',url);
+            // console.log('searchBoard :',data);
+            // console.log('url.js :',url);
 
             axios.get(url)
             .then(response => {
                 // console.log('setSearchBoardList',response.data);
                 context.commit('setSearchBoardList', response.data.board.data);
-                // context.commit('pagination/setPagination', response.data.data, {root: true});
+                context.commit('pagination/setBoardPagination', response.data.board, {root: true});
 
                 // router.push('/search');
             }) 
@@ -95,14 +99,14 @@ export default {
         searchTester(context, data) {
             const url = `/api/search/board/tester?search=${data.search}&page=${data.page}`;
             
-            console.log('searchTester :',data);
-            console.log('url.js :',url);
+            // console.log('searchTester :',data);
+            // console.log('url.js :',url);
 
             axios.get(url)
             .then(response => {
                 // console.log('setSearchTesterList',response.data);
                 context.commit('setSearchTesterList', response.data.tester.data);
-                // context.commit('pagination/setPagination', response.data.data, {root: true});
+                context.commit('pagination/setTesterPagination', response.data.tester, {root: true});
 
                 router.push('/search');
             }) 

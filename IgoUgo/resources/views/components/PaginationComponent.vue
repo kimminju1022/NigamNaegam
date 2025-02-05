@@ -2,14 +2,15 @@
 <div class="pagination">
     <button class="btn bg-clear" @click="prevPage"><</button>
     <button
-        v-for="page in $store.state.pagination.viewPageNumber" :key="page"
+        v-for="page in viewPageNumber" :key="page"
         @click="changePage(page)" 
         :class="{ 'active-page': page == currentPage, 'btn bg-clear': true }"
         >{{ page }}
     </button>
     <button class="btn bg-clear" @click="nextPage">></button>
 </div>
-<h1>{{ currentPage }}</h1>
+<!-- <h1>{{ currentPage }}</h1>
+<h1>{{ lastPage }}</h1> -->
 </template>
 
 <script setup>
@@ -20,9 +21,13 @@ const props = defineProps({
     'actionName': String,
     'searchData': Object,
     'currentPage': Number,
+    'lastPage': Number,
+    'viewPageNumber': Array,
 });
 const currentPage = computed(() => props.currentPage);
-const lastPage = computed(() => store.state.pagination.lastPage);
+// const lastPage = computed(() => store.state.pagination.lastPage);
+const lastPage = computed(() => props.lastPage);
+const viewPageNumber = computed(() => props.viewPageNumber);
 
 const store = useStore();
 

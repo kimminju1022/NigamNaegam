@@ -428,7 +428,8 @@ const search = ref('');
 const mainSearch = (() => {
     store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
     // console.log('search :',search.value);
-    store.dispatch('search/searchHotel', {search: search.value, page: 1});
+    store.commit('search/setSearchKeyword', search.value); // 검색 키워드 저장
+    router.push('/search');
 })
 
 // ---------- 게시판 이동 관련 start ----------

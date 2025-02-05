@@ -1,10 +1,10 @@
 <template>
     <h1 class="title">검색 결과</h1>
     <div class="search-sort-btn">
-        <button class="btn"><a href="#hotel">호텔</a></button>
-        <button class="btn"><a href="#product">즐길거리</a></button>
-        <button class="btn"><a href="#board">게시판</a></button>
-        <button class="btn"><a href="#tester">체험단 신청</a></button>
+        <a href="#hotel">호텔</a>
+        <a href="#product">즐길거리</a>
+        <a href="#board">게시판</a>
+        <a href="#tester">체험단 신청</a>
     </div>
     <div class="search">
         <div class="search-box">
@@ -21,19 +21,25 @@
                 </div>
                 <div v-for="(item, index) in $store.state.search.searchHotelList" :key="item" class="search-content">
                     <p>{{ index+1 }}</p>
-                    <p v-if="item.area !== null">{{ item.area.area_name }}</p>
-                    <p v-else></p>
-                    <!-- <p></p> -->
+                    <!-- <p v-if="item.area !== null">{{ item.area.area_name }}</p> -->
+                    <p>{{ item.area.area_name }}</p>
                     <p></p>
-                    <router-link :to="`/hotels/${item.contentid}`">{{ item.title }}</router-link>
+                    <router-link :to="`/hotels/${item.contentid}`" class="title">{{ item.title }}</router-link>
                     <p></p>
                 </div>
             </div>
         </div>
 
         <!-- 페이지네이션 -->
-        <PaginationComponent :actionName="actionName" :searchData="searchData" />
+        <PaginationComponent
+                :actionName="actionName1"
+                :searchData="searchData1"
+                :currentPage="$store.state.pagination.hotelCurrentPage"
+                :lastPage="$store.state.pagination.hotelLastPage"
+                :viewPageNumber="$store.state.pagination.hotelViewPageNumber"
+        />
     </div>
+
     <div class="search">
         <div class="search-box">
             <h1 id="product">즐길거리</h1>
@@ -48,17 +54,26 @@
                 </div>
                 <div v-for="(item, index) in $store.state.search.searchProductList" :key="item" class="search-content">
                     <p>{{ index+1 }}</p>
-                    <p v-if="item.area !== null">{{ item.area.area_name }}</p>
-                    <p v-else></p>
                     <p>{{ item.area.area_name }}</p>
-                    <router-link :to="`/products/${item.contenttypeid}/${item.contentid}`">{{ item.title }}</router-link>
+                    <p v-if="item.contenttypeid === '12'">관광지</p>
+                    <p v-else-if="item.contenttypeid === '14'">문화시설</p>
+                    <p v-else-if="item.contenttypeid === '28'">레포츠</p>
+                    <p v-else-if="item.contenttypeid === '38'">쇼핑</p>
+                    <p v-else="item.contenttypeid === '39'">음식점</p>
+                    <router-link :to="`/products/${item.contenttypeid}/${item.contentid}`" class="title">{{ item.title }}</router-link>
                     <p></p>
                 </div>
             </div>
         </div>
 
         <!-- 페이지네이션 -->
-        <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
+        <PaginationComponent
+                :actionName="actionName2"
+                :searchData="searchData2"
+                :currentPage="$store.state.pagination.productCurrentPage"
+                :lastPage="$store.state.pagination.productLastPage"
+                :viewPageNumber="$store.state.pagination.productViewPageNumber"
+        />
     </div>
 
     <div class="search">
@@ -77,14 +92,20 @@
                     <p>{{ index+1 }}</p>
                     <p>{{ item.board_category.bc_name }}</p>
                     <p>호텔</p>
-                    <p>{{ item.board_title }}</p>
+                    <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
                     <p>{{ item.created_at }}</p>
                 </div>
             </div>
         </div>
 
         <!-- 페이지네이션 -->
-        <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
+        <PaginationComponent
+                :actionName="actionName3"
+                :searchData="searchData3"
+                :currentPage="$store.state.pagination.boardCurrentPage"
+                :lastPage="$store.state.pagination.boardLastPage"
+                :viewPageNumber="$store.state.pagination.boardViewPageNumber"
+        />
     </div>
 
     <div class="search">
@@ -99,49 +120,65 @@
                     <p>제목 </p>
                     <p>마감일자</p>
                 </div>
-                <div v-for="(item, index) in $store.state.search.searchBoardList" :key="item" class="search-content">
+                <div v-for="(item, index) in $store.state.search.searchTesterList" :key="item" class="search-content">
                     <p>{{ index+1 }}</p>
                     <p>몰라</p>
                     <p>{{ item.board_category.bc_name }}</p>
-                    <p>{{ item.board_title }}</p>
+                    <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
                     <p>{{ item.created_at }}</p>
                 </div>
             </div>
         </div>
 
         <!-- 페이지네이션 -->
-        <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
+        <PaginationComponent
+                :actionName="actionName4"
+                :searchData="searchData4"
+                :currentPage="$store.state.pagination.testerCurrentPage"
+                :lastPage="$store.state.pagination.testerLastPage"
+                :viewPageNumber="$store.state.pagination.testerViewPageNumber"
+        />    
     </div>
 </template>
 <script setup>
 import { computed, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 import PaginationComponent from './PaginationComponent.vue';
 
 const store = useStore();
-const route = useRoute();
+// const route = useRoute();
 
-const actionName = 'search/searchHotel';
+const actionName1 = 'search/searchHotel';
 const actionName2 = 'search/searchProduct';
 const actionName3 = 'search/searchBoard';
 const actionName4 = 'search/searchTester';
 
-// const searchList = computed(()=> store.state.search.searchHotel);
-
-const searchData = reactive({
-    search: route.params.search,
-    page: store.state.pagination.currentPage,
+const searchData1 = reactive({
+    search: store.state.search.searchKeyword,
+    page: store.state.pagination.hotelCurrentPage,
+});
+const searchData2 = reactive({
+    search: store.state.search.searchKeyword,
+    page: store.state.pagination.productCurrentPage,
+});
+const searchData3 = reactive({
+    search: store.state.search.searchKeyword,
+    page: store.state.pagination.boardCurrentPage,
+});
+const searchData4 = reactive({
+    search: store.state.search.searchKeyword,
+    page: store.state.pagination.testerCurrentPage,
 });
 
 // console.log('searchData :', searchData);
 
-// onBeforeMount( () => {
-//     store.dispatch(actionName1, searchData);
-//     store.dispatch(actionName2, searchData);
-//     store.dispatch(actionName3, searchData);
-//     store.dispatch(actionName4, searchData);
-// });
+onBeforeMount( () => {
+    store.dispatch(actionName1, searchData1);
+    store.dispatch(actionName2, searchData2);
+    store.dispatch(actionName3, searchData3);
+    store.dispatch(actionName4, searchData4);
+});
 
 // onBeforeMount(async () => {
 //     await store.dispatch(actionName1, searchData);
@@ -157,16 +194,26 @@ const searchData = reactive({
 
 .search-sort-btn {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(4, 130px);
     justify-content: center;
-    gap: 10px;
-    margin: 30px 0;
+    gap: 30px;
+    margin: 20px 0;
 }
 
-.search-sort-btn button {
-    width: 100px;
+.search-sort-btn a {
+    width: 130px;
     height: 50px;
-    border-radius: 25px;
+    border-radius: 15px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 50px;
+    color: #01083a;
+    background-color: #ebebeb;
+}
+
+.search-sort-btn a:hover {
+    transform: translateY(-3px);
+    box-shadow: 2px 2px 10px #b3b3b3;
 }
 
 /* .search {
@@ -211,7 +258,7 @@ const searchData = reactive({
 .search-title {
     display: grid;
     /* grid-template-columns: 0.5fr 1fr 2fr 8fr 1fr; */
-    grid-template-columns: 0.5fr 0.7fr 1fr 8fr 1fr;
+    grid-template-columns: 0.5fr 1.1fr 1fr 7fr 1.1fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -222,9 +269,13 @@ const searchData = reactive({
 .search-content {
     display: grid;
     /* grid-template-columns: 0.5fr 1fr 2fr 8fr 1fr; */
-    grid-template-columns: 0.5fr 0.7fr 1fr 8fr 1fr;
+    grid-template-columns: 0.5fr 1.1fr 1fr 7fr 1.1fr;
     text-align: center;
     padding: 10px;
+}
+
+.search-content a {
+    font-size: 17px;
 }
 
 .question-content :nth-child(3) {
@@ -234,12 +285,13 @@ const searchData = reactive({
     color: #000;
 }
 
-.text {
+.title {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     word-break: break-all;
+    padding: 0 10px;
 }
 </style>
