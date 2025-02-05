@@ -24,8 +24,8 @@
                         <span class="font-bold">정렬 순서</span>
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
-                        <p>가까운순</p>
+                    <div @click="nearBy()" class="order-list-item">
+                        <p :class="{ 'active-font-bold' : isActiveNearBy }">가까운순</p>
                         <img src="img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
@@ -72,7 +72,7 @@
             <PaginationComponent
                 :actionName="actionName"
                 :searchData="searchData"
-                :currentPage="$store.state.pagination.currentPage"
+                :currentPage="Number($store.state.pagination.currentPage)"
             />
             </div>
         </div>
@@ -128,7 +128,7 @@
 </template>
     
 <script setup>
-import { computed, onBeforeMount, reactive, ref} from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
@@ -148,23 +148,30 @@ const actionName = 'hotel/getHotelsPagination';
 // 필터 관련
 let isActiveSort = ref(false);
 let isActiveRanking = ref(false);
+let isActiveNearBy = ref(false);
 
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     area_code: store.state.hotel.hotelAreaCode,
     hc_code: store.state.hotel.hotelCategoryCode,
-    sort: 'createdtime',
+    sort: store.state.hotel.hotelSort,
     category_code: [],
+    latitude: null, // 위도
+    longitude: null, // 경도 서울시청 으로 잡아두기
 });
 
 function sortData() {
     isActiveSort.value = !isActiveSort.value;
-    isActiveRanking.value = false;
-
+    if (isActiveSort.value === true) {
+        isActiveRanking.value = false;
+        isActiveNearBy.value = false;
+    }
     if(isActiveSort.value) {
         searchData.sort = 'modifiedtime';
+        store.commit('hotel/setHotelSort', 'modifiedtime');
     } else {
         searchData.sort = 'createdtime';
+        store.commit('hotel/setHotelSort', 'createdtime');
     }
     store.dispatch('hotel/getHotelsPagination', searchData);
 }
@@ -173,39 +180,55 @@ function highRanking() {
     isActiveRanking.value = !isActiveRanking.value
     if (isActiveRanking.value === true) {
         isActiveSort.value = false
+        isActiveNearBy.value = false
+        store.commit('hotel/setHotelSort', 'rank');
         store.dispatch('hotel/getHotelsRank', searchData);
     } else {
+        searchData.sort = 'createdtime';
+        store.commit('hotel/setHotelSort', 'createdtime');
         store.dispatch('hotel/getHotelsPagination', searchData);
     }
 }
 
-const userLocation = ref({ lat: null, lon: null });
-
-const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-        (position) => {
-            // 위치 정보가 성공적으로 가져오면
-            userLocation.value = {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-            };
-            console.log(position.coords.latitude);
-            console.log(position.coords.longitude);
-        },
-        (error) => {
-            // 위치 정보 가져오기 실패 시
-            console.log('위치 정보를 가져오는 데 실패');
-            console.error(error);
-        }
-        );
+function nearBy() {
+    isActiveNearBy.value = !isActiveNearBy.value;
+    if (isActiveNearBy.value === true) {
+        isActiveSort.value = false
+        isActiveRanking.value = false
+        store.commit('hotel/setHotelSort', 'nearby');
+        store.dispatch('hotel/getHotelsNearBy', searchData);
     } else {
-        console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
+        searchData.sort = 'createdtime';
+        store.commit('hotel/setHotelSort', 'createdtime');
+        store.dispatch('hotel/getHotelsPagination', searchData);
     }
-};
+}
 
-// 컴포넌트가 마운트될 때 위치 가져오기
-getCurrentLocation();
+function getCurrentLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // 위치 정보가 성공적으로 가져오면
+                searchData.latitude = position.coords.latitude;
+                searchData.longitude = position.coords.longitude;
+                // console.log(searchData.latitude);
+                // console.log(searchData.longitude);
+                resolve();
+            },
+            (error) => {
+                // 위치 정보 가져오기 실패 시
+                console.log('위치 정보를 가져오는 데 실패');
+                console.error(error);
+                reject();
+            }
+            );
+        } else {
+            console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
+            reject();
+        }
+    }); 
+};
 
 // 반응형
 const flg = ref(false);
@@ -213,12 +236,24 @@ const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
 onBeforeMount(async () => {
+    await getCurrentLocation();
     store.commit('loading/setLoading', true);
     flgSetup(); // 리사이즈 이벤트
-
     // const saveAreaCode = store.state.hotel.hotelAreaCode;
-    
-    await store.dispatch(actionName, searchData);
+    if(searchData.sort === 'createdtime' || searchData.sort === 'modifiedtime') {
+        isActiveNearBy.value = false;
+        isActiveRanking.value = false;
+        store.dispatch(actionName, searchData);
+    } else if(searchData.sort === 'rank') {
+        isActiveNearBy.value = false;
+        isActiveSort.value = false;
+        store.dispatch('hotel/getHotelsRank', searchData);
+    } else if(searchData.sort === 'nearby') {
+        isActiveSort.value = false;
+        isActiveRanking.value = false;
+        store.dispatch('hotel/getHotelsNearBy', searchData);
+    }
+
     await store.dispatch('hotel/getHotelsArea', searchData);
     await store.dispatch('hotel/getHotelsCategory', searchData);
     await store.dispatch('hotel/getHotelAreaCode', searchData);

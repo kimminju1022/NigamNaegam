@@ -16,6 +16,7 @@ export default {
         hotelDetailImgCount: null,
         hotelCategoryIncluded: [],
         // hotelRank: [],
+        hotelSort: sessionStorage.getItem('hotelSort') ? sessionStorage.getItem('hotelSort') : 'createdtime',
     }),
     mutations: {
         setHotelList(state, list) {
@@ -53,6 +54,10 @@ export default {
         // setHotelsRank(state, list) {
         //     state.hotelRank = list
         // },
+        setHotelSort(state, sort) {
+            state.hotelSort = sort;
+            sessionStorage.setItem('hotelSort', sort);
+        },
     },
     actions: {
         getHotelsPagination(context, data) {
@@ -61,7 +66,9 @@ export default {
                 const config = {
                     params: data
                 };
-    
+
+                // sessionStorage.setItem('selectedSort', 'default');
+
                 axios.get(url, config)
                 .then(response => {
                     context.commit('setHotelList', response.data.data);
@@ -153,10 +160,13 @@ export default {
 
         getHotelsRank(context, data) {
             return new Promise((resolve, reject) => {
-                const url = 'api/hotels/align/rank'
+                const url = 'api/hotels/align/rank';
                 const config = {
                     params: data
                 }
+
+                // sessionStorage.setItem('selectedSort', 'rank');
+
                 axios.get(url, config)
                 .then(response => {
                     context.commit('setHotelList', response.data.data);
@@ -171,6 +181,34 @@ export default {
                     console.log(error.response);
                     return reject;
                 })
+            })
+        },
+
+        getHotelsNearBy(context, data) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/hotels/fillter/nearby';
+                const config = {
+                    params: data
+                }
+                // console.log(data);
+
+                // sessionStorage.setItem('selectedSort', 'nearby');
+
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setHotelList', response.data.data);
+
+                    context.commit('setCount', response.data.total);
+                    // console.log(response.data.total);
+                    context.commit('pagination/setPagination', response.data, {root: true});
+                    // console.log(response.data);
+                    return resolve;
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    return reject;
+                })
+
             })
         },
 
