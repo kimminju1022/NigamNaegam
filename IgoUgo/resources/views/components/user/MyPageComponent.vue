@@ -93,16 +93,22 @@
                         <p>번호</p>
                         <p>카테고리</p>
                         <p>제목</p>
-                        <p>작성일자</p>
                         <p>좋아요</p>
+                        <p>작성일자</p>
                     </div>
                     <div v-for="item in userReview" :key="item" class="board-content">
                         <p>{{ item.board_id }}</p>
-                        <p>{{ item.review.rc_code }}</p>
+                        <!-- <p>{{ item.review.rc_code }}</p> -->
                         <!-- 이거 이름으로 들고오는 방법 생각해보기 -->
+                        <p v-if="item.product.contenttypeid === '12'">관광지</p>
+                        <p v-else-if="item.product.contenttypeid === '14'">문화시설</p>
+                        <p v-else-if="item.product.contenttypeid === '28'">레포츠</p>
+                        <p v-else-if="item.product.contenttypeid === '32'">호텔</p>
+                        <p v-else-if="item.product.contenttypeid === '38'">쇼핑</p>
+                        <p v-else="item.product.contenttypeid === '39'">음식점</p>
                         <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
-                        <p>{{ item.created_at }}</p>
                         <p>{{ item.likes_count }}</p>
+                        <p>{{ item.created_at }}</p>
                     </div>
                 </div>
                 <div v-if="isFree" class="question-content-box">
@@ -110,15 +116,15 @@
                         <p>번호</p>
                         <p></p>
                         <p>제목</p>
-                        <p>작성일자</p>
                         <p>좋아요</p>
+                        <p>작성일자</p>
                     </div>
                     <div v-for="item in userFree" :key="item" class="board-content">
                         <p>{{ item.board_id }}</p>
                         <p></p>
                         <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
-                        <p>{{ item.created_at }}</p>
                         <p>{{ item.likes_count }}</p>
+                        <p>{{ item.created_at }}</p>
                     </div>
                 </div>
             </div>
@@ -215,8 +221,7 @@ const searchData3 = reactive({
     user_id: store.state.auth.userInfo.user_id,
     page: store.state.pagination.user_questionCurrentPage,
 });
-console.log(searchData1);
-console.log(searchData3);
+
 // ***************** 문의 내역 *****************
 // 비포 마운트 처리
 onBeforeMount(() => {
@@ -428,7 +433,7 @@ const deletemodal = (userInfo) => {
 
 .board-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 7fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr 7fr 1fr 1.5fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -449,7 +454,7 @@ const deletemodal = (userInfo) => {
 
 .board-content {
     display: grid;
-    grid-template-columns: 1fr 1fr 7fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr 7fr 1fr 1.5fr;
     text-align: center;
     padding: 10px;
 }

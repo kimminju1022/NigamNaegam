@@ -90,7 +90,14 @@
     <!-- 하단 기능버튼 -->
     <div class="pagination-btn">
         <!-- 페이지네이션 -->
-        <PaginationComponent :actionName="actionName" :searchData="searchData" />
+        <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
+        <PaginationComponent
+            :actionName="actionName"
+            :searchData="searchData"
+            :currentPage="$store.state.pagination.currentPage"
+            :lastPage="$store.state.pagination.lastPage"
+            :viewPageNumber="$store.state.pagination.viewPageNumber"
+        />
         <router-link to="/boards/create"><button class="btn bg-navy header-bg-btn board-create-btn">작성</button></router-link>
     </div>
 </template>

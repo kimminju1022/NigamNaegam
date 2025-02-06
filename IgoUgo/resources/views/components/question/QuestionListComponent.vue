@@ -83,7 +83,14 @@
         </div>
     </div>
     <!-- 페이지네이션 -->
-    <PaginationComponent :actionName="actionName" :searchData="searchData" />
+    <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
+    <PaginationComponent
+        :actionName="actionName"
+        :searchData="searchData"
+        :currentPage="$store.state.pagination.currentPage"
+        :lastPage="$store.state.pagination.lastPage"
+        :viewPageNumber="$store.state.pagination.viewPageNumber"
+    />
 </template>
 <script setup>
 

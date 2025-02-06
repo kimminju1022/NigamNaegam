@@ -4,8 +4,12 @@ import router from '../../router';
 export default {
     namespaced: true,
     state: () => ({
-        searchKeyword: '',
+        searchKeyword: sessionStorage.getItem('searchKeyword') ? sessionStorage.getItem('searchKeyword') : '',
         searchData: '',
+        searchHotelCnt: '',
+        searchProductCnt: '',
+        searchBoardCnt: '',
+        searchTesterCnt: '',
         searchHotelList: [],
         searchProductList: [],
         searchBoardList: [],
@@ -14,12 +18,25 @@ export default {
     mutations: {
         setSearchKeyword(state, keyword) {
             state.searchKeyword = keyword;
+            sessionStorage.setItem('searchKeyword', keyword);
         },
         setSearchData(state, searchData) {
             state.searchData = searchData;
         },
-        setSearchHotelList(state, data) {
-            state.searchHotelList = data;
+        setSearchHotelCnt(state, searchHotelCnt) {
+            state.searchHotelCnt = searchHotelCnt;
+        },
+        setSearchProductCnt(state, searchProductCnt) {
+            state.searchProductCnt = searchProductCnt;
+        },
+        setSearchBoardCnt(state, searchBoardCnt) {
+            state.searchBoardCnt = searchBoardCnt;
+        },
+        setSearchTesterCnt(state, searchTesterCnt) {
+            state.searchTesterCnt = searchTesterCnt;
+        },
+        setSearchHotelList(state, searchHotelList) {
+            state.searchHotelList = searchHotelList;
         },
         setSearchProductList(state, searchProductList) {
             state.searchProductList = searchProductList;
@@ -48,10 +65,9 @@ export default {
             axios.get(url)
             .then(response => {
                 // console.log('setSearchHotelList',response.data);
+                context.commit('setSearchHotelCnt', response.data.hotel.total); // 리스트 총 개수 카운트
                 context.commit('setSearchHotelList', response.data.hotel.data);
                 context.commit('pagination/setHotelPagination', response.data.hotel, {root: true});
-
-                // router.push('/search');
             }) 
             .catch(error => {
                 console.error(error);
@@ -67,10 +83,9 @@ export default {
             axios.get(url)
             .then(response => {
                 // console.log('setSearchProductList',response.data);
+                context.commit('setSearchProductCnt', response.data.product.total);
                 context.commit('setSearchProductList', response.data.product.data);
                 context.commit('pagination/setProductPagination', response.data.product, {root: true});
-
-                // router.push('/search');
             }) 
             .catch(error => {
                 console.error(error);
@@ -86,10 +101,9 @@ export default {
             axios.get(url)
             .then(response => {
                 // console.log('setSearchBoardList',response.data);
+                context.commit('setSearchBoardCnt', response.data.board.total);
                 context.commit('setSearchBoardList', response.data.board.data);
                 context.commit('pagination/setBoardPagination', response.data.board, {root: true});
-
-                // router.push('/search');
             }) 
             .catch(error => {
                 console.error(error);
@@ -105,10 +119,9 @@ export default {
             axios.get(url)
             .then(response => {
                 // console.log('setSearchTesterList',response.data);
+                context.commit('setSearchTesterCnt', response.data.tester.total);
                 context.commit('setSearchTesterList', response.data.tester.data);
                 context.commit('pagination/setTesterPagination', response.data.tester, {root: true});
-
-                router.push('/search');
             }) 
             .catch(error => {
                 console.error(error);

@@ -67,7 +67,7 @@ class SearchController extends Controller
         // Log::debug($request);
         $key = $request->input('search');
 
-        $boards = Board::with('board_category')
+        $boards = Board::with('board_category', 'product')
                         ->where('board_flg', '0')
                         ->where(function($query) use ($key) {
                             $query->where('board_title', 'LIKE', '%' . $key . '%')

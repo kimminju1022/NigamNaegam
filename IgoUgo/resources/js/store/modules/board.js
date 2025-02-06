@@ -456,7 +456,7 @@ export default {
             
             axios.get(url, config)
             .then(response => {
-                console.log('userReviewList',response.data);
+                // console.log('userReviewList',response.data);
                 context.commit('setUserReviewList', response.data.board.data);
                 context.commit('pagination/setMyPageBoardPagination', response.data.board, {root: true});
             }) 

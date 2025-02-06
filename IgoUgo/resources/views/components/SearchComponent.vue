@@ -9,59 +9,78 @@
     <div class="search">
         <div class="search-box">
             <h1 id="hotel">호텔</h1>
-            <p><span>{{ $store.state.search.searchHotelList.length }}</span>개의 결과</p>
+            <p><span>{{ $store.state.search.searchHotelCnt }}</span>개의 결과</p>
             <div class="search-content-box">
                 <div class="search-title">
                     <p>번호</p>
-                    <!-- <p></p> -->
                     <p>지역</p>
                     <p></p>
                     <p>제목</p>
                     <p></p>
+                    <p></p>
                 </div>
-                <div v-for="(item, index) in $store.state.search.searchHotelList" :key="item" class="search-content">
+                <div v-if="$store.state.search.searchHotelCnt === 0" class="no-data">
+                    <p class="no-data">검색 결과 없음</p>
+                </div>
+                <div v-else>
+                    <div v-for="(item, index) in $store.state.search.searchHotelList" :key="item" class="search-content">
+                        <p>{{ index+1 }}</p>
+                        <p class="area_name">{{ item.area.area_name }}</p>
+                        <p></p>
+                        <router-link :to="`/hotels/${item.contentid}`" class="title">{{ item.title }}</router-link>
+                        <p></p>
+                        <p></p>
+                    </div>
+                </div>
+                <!-- <div v-for="(item, index) in $store.state.search.searchHotelList" :key="item" class="search-content">
                     <p>{{ index+1 }}</p>
-                    <!-- <p v-if="item.area !== null">{{ item.area.area_name }}</p> -->
                     <p>{{ item.area.area_name }}</p>
                     <p></p>
                     <router-link :to="`/hotels/${item.contentid}`" class="title">{{ item.title }}</router-link>
                     <p></p>
-                </div>
+                </div> -->
             </div>
         </div>
 
         <!-- 페이지네이션 -->
         <PaginationComponent
-                :actionName="actionName1"
-                :searchData="searchData1"
-                :currentPage="$store.state.pagination.hotelCurrentPage"
-                :lastPage="$store.state.pagination.hotelLastPage"
-                :viewPageNumber="$store.state.pagination.hotelViewPageNumber"
+            :actionName="actionName1"
+            :searchData="searchData1"
+            :currentPage="$store.state.pagination.hotelCurrentPage"
+            :lastPage="$store.state.pagination.hotelLastPage"
+            :viewPageNumber="$store.state.pagination.hotelViewPageNumber"
         />
     </div>
 
     <div class="search">
         <div class="search-box">
             <h1 id="product">즐길거리</h1>
-            <p><span>{{ $store.state.search.searchProductList.length }}</span>개의 결과</p>
+            <p><span>{{ $store.state.search.searchProductCnt }}</span>개의 결과</p>
             <div class="search-content-box">
                 <div class="search-title">
                     <p>번호</p>
                     <p>지역</p>
                     <p>카테고리</p>
-                    <p>제목 </p>
+                    <p>제목</p>
+                    <p></p>
                     <p></p>
                 </div>
-                <div v-for="(item, index) in $store.state.search.searchProductList" :key="item" class="search-content">
-                    <p>{{ index+1 }}</p>
-                    <p>{{ item.area.area_name }}</p>
-                    <p v-if="item.contenttypeid === '12'">관광지</p>
-                    <p v-else-if="item.contenttypeid === '14'">문화시설</p>
-                    <p v-else-if="item.contenttypeid === '28'">레포츠</p>
-                    <p v-else-if="item.contenttypeid === '38'">쇼핑</p>
-                    <p v-else="item.contenttypeid === '39'">음식점</p>
-                    <router-link :to="`/products/${item.contenttypeid}/${item.contentid}`" class="title">{{ item.title }}</router-link>
-                    <p></p>
+                <div v-if="$store.state.search.searchProductCnt === 0" class="no-data">
+                    <p class="no-data">검색 결과 없음</p>
+                </div>
+                <div v-else>
+                    <div v-for="(item, index) in $store.state.search.searchProductList" :key="item" class="search-content">
+                        <p>{{ index+1 }}</p>
+                        <p class="area_name">{{ item.area.area_name }}</p>
+                        <p v-if="item.contenttypeid === '12'">관광지</p>
+                        <p v-else-if="item.contenttypeid === '14'">문화시설</p>
+                        <p v-else-if="item.contenttypeid === '28'">레포츠</p>
+                        <p v-else-if="item.contenttypeid === '38'">쇼핑</p>
+                        <p v-else="item.contenttypeid === '39'">음식점</p>
+                        <router-link :to="`/products/${item.contenttypeid}/${item.contentid}`" class="title">{{ item.title }}</router-link>
+                        <p></p>
+                        <p></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,21 +98,34 @@
     <div class="search">
         <div class="search-box">
             <h1 id="board">게시판</h1>
-            <p><span>{{ $store.state.search.searchBoardList.length }}</span>개의 결과</p>
+            <p><span>{{ $store.state.search.searchBoardCnt }}</span>개의 결과</p>
             <div class="search-content-box">
                 <div class="search-title">
                     <p>번호</p>
                     <p>분류</p>
                     <p>카테고리</p>
-                    <p>제목 </p>
+                    <p>제목</p>
+                    <p></p>
                     <p>작성일자</p>
                 </div>
-                <div v-for="(item, index) in $store.state.search.searchBoardList" :key="item" class="search-content">
-                    <p>{{ index+1 }}</p>
-                    <p>{{ item.board_category.bc_name }}</p>
-                    <p>호텔</p>
-                    <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
-                    <p>{{ item.created_at }}</p>
+                <div v-if="$store.state.search.searchBoardCnt === 0" class="no-data">
+                    <p class="no-data">검색 결과 없음</p>
+                </div>
+                <div v-else>
+                    <div v-for="(item, index) in $store.state.search.searchBoardList" :key="item" class="search-content">
+                        <p>{{ index+1 }}</p>
+                        <p class="area_name">{{ item.board_category.bc_name }}</p>
+                        <!-- <p></p> -->
+                        <p v-if="item.product.contenttypeid === '12'">관광지</p>
+                        <p v-else-if="item.product.contenttypeid === '14'">문화시설</p>
+                        <p v-else-if="item.product.contenttypeid === '28'">레포츠</p>
+                        <p v-else-if="item.product.contenttypeid === '32'">호텔</p>
+                        <p v-else-if="item.product.contenttypeid === '38'">쇼핑</p>
+                        <p v-else="item.product.contenttypeid === '39'">음식점</p>
+                        <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
+                        <p></p>
+                        <p>{{ item.created_at }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,21 +143,28 @@
     <div class="search">
         <div class="search-box">
             <h1 id="tester">체험단 신청</h1>
-            <p><span>{{ $store.state.search.searchTesterList.length }}</span>개의 결과</p>
+            <p><span>{{ $store.state.search.searchTesterCnt }}</span>개의 결과</p>
             <div class="search-content-box">
                 <div class="search-title">
                     <p>번호</p>
                     <p>몰라</p>
                     <p>카테고리</p>
-                    <p>제목 </p>
+                    <p>제목</p>
+                    <p></p>
                     <p>마감일자</p>
                 </div>
-                <div v-for="(item, index) in $store.state.search.searchTesterList" :key="item" class="search-content">
-                    <p>{{ index+1 }}</p>
-                    <p>몰라</p>
-                    <p>{{ item.board_category.bc_name }}</p>
-                    <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
-                    <p>{{ item.created_at }}</p>
+                <div v-if="$store.state.search.searchTesterCnt === 0" class="no-data">
+                    <p class="no-data">검색 결과 없음</p>
+                </div>
+                <div v-else>
+                    <div v-for="(item, index) in $store.state.search.searchTesterList" :key="item" class="search-content">
+                        <p>{{ index+1 }}</p>
+                        <p class="area_name">몰라</p>
+                        <p>{{ item.board_category.bc_name }}</p>
+                        <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
+                        <p></p>
+                        <p>{{ item.created_at }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -141,7 +180,7 @@
     </div>
 </template>
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { onBeforeMount, reactive, watch } from 'vue';
 import { useStore } from 'vuex';
 // import { useRoute } from 'vue-router';
 import PaginationComponent from './PaginationComponent.vue';
@@ -173,19 +212,23 @@ const searchData4 = reactive({
 
 // console.log('searchData :', searchData);
 
-onBeforeMount( () => {
+onBeforeMount(() => {
     store.dispatch(actionName1, searchData1);
     store.dispatch(actionName2, searchData2);
     store.dispatch(actionName3, searchData3);
     store.dispatch(actionName4, searchData4);
 });
 
-// onBeforeMount(async () => {
-//     await store.dispatch(actionName1, searchData);
-//     await store.dispatch(actionName2, searchData);
-//     await store.dispatch(actionName3, searchData);
-//     await store.dispatch(actionName4, searchData);
-// });
+watch(() => store.state.search.searchKeyword, newKeyword => {
+    searchData1.search = newKeyword;
+    searchData2.search = newKeyword;
+    searchData3.search = newKeyword;
+    searchData4.search = newKeyword;
+    store.dispatch(actionName1, searchData1);
+    store.dispatch(actionName2, searchData2);
+    store.dispatch(actionName3, searchData3);
+    store.dispatch(actionName4, searchData4);
+});
 </script>
 <style scoped>
 .title {
@@ -248,9 +291,11 @@ onBeforeMount( () => {
 }
 
 .search-content-box {
-    border-top: 2px solid #01083a;
-    border-bottom: 2px solid #01083a;
-    max-width: 1250px;
+    /* border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a; */
+    border-top: 2px solid #c2c2c2;
+    border-bottom: 2px solid #c2c2c2;
+    max-width: 1300px;
     min-width: 500px;
     margin-bottom: 30px;
 }
@@ -258,18 +303,19 @@ onBeforeMount( () => {
 .search-title {
     display: grid;
     /* grid-template-columns: 0.5fr 1fr 2fr 8fr 1fr; */
-    grid-template-columns: 0.5fr 1.1fr 1fr 7fr 1.1fr;
+    /* grid-template-columns: 0.5fr 1.1fr 1fr 7fr 1.1fr; */
+    grid-template-columns: 1fr 1fr 2fr 15fr 1.5fr 2.5fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
     font-size: 18px;
-    border-bottom: 1px solid #01083a;
+    border-bottom: 1px solid #c2c2c2;
 }
 
 .search-content {
     display: grid;
     /* grid-template-columns: 0.5fr 1fr 2fr 8fr 1fr; */
-    grid-template-columns: 0.5fr 1.1fr 1fr 7fr 1.1fr;
+    grid-template-columns: 1fr 1fr 2fr 15fr 1.5fr 2.5fr;
     text-align: center;
     padding: 10px;
 }
@@ -278,12 +324,19 @@ onBeforeMount( () => {
     font-size: 17px;
 }
 
+.no-data {
+    margin: 10px auto;
+    font-size: 18px;
+    width: 110px;
+}
+
+/* 
 .question-content :nth-child(3) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #000;
-}
+} */
 
 .title {
     overflow: hidden;
@@ -293,5 +346,12 @@ onBeforeMount( () => {
     -webkit-line-clamp: 1;
     word-break: break-all;
     padding: 0 10px;
+}
+
+.area_name {
+    width: 40px;
+    height: 19px;
+    overflow: hidden;
+    margin: 0 auto;
 }
 </style>

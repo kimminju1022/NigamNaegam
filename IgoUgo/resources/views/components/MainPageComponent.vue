@@ -579,8 +579,8 @@ a, a:visited {
 /* 광고 관련 */
 .main-ppl-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    place-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    justify-items: center;
 }
 
 .main-ppl-container img {
@@ -595,7 +595,8 @@ a, a:visited {
 }
 
 .main-ppl-container img{
-    height: 400px;
+    max-height: 300px;
+    /* max-width: 300px; */
 }
 
 /* 인기글 관련 */

@@ -355,14 +355,15 @@ class BoardController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // 내가 쓴 리뷰게시글
     public function showMyReview($id){
-        $boardList = Board::with(['user', 'review', 'likes'])
+        $boardList = Board::with(['user', 'review', 'likes', 'product'])
                                 ->withCount('likes')
                                 ->where('user_id', $id)
                                 ->where('bc_code', '0')
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
-        Log::debug($boardList);
+        // Log::debug($boardList);
 
         $responseData = [
             'success' => true
@@ -373,14 +374,15 @@ class BoardController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // 내가 쓴 자유게시글
     public function showMyFree($id){
-        $boardList = Board::with(['user', 'likes'])
+        $boardList = Board::with(['user', 'likes', 'product'])
                                 ->withCount('likes')
                                 ->where('user_id', $id)
                                 ->where('bc_code', '1')
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
-        Log::debug($boardList);
+        // Log::debug($boardList);
 
         $responseData = [
             'success' => true

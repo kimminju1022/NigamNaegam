@@ -16,7 +16,7 @@ export default {
                 user_email: userInfo.user_email,
             };
 
-            console.log(data);
+            // console.log(data);
 
             axios.post(url, data)
             .then((response) => {

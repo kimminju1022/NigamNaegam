@@ -274,7 +274,7 @@ const routes = [
     },
     {
         path: '/search',
-        component: SearchComponent, 
+        component: SearchComponent,
     },
     {
         path: '/:catchAll(.*)',

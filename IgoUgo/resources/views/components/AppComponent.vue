@@ -7,7 +7,7 @@
                 <!-- <router-link to="/"><img class="header-logo-img" src="/train.png" alt=""></router-link> -->
                 <router-link to="/"><img class="header-title-img" src="/logo_IgoUgo.png" alt=""></router-link>
                 <div class="header-search"> 
-                    <input v-model="search" class="header-search-bar" type="text" placeholder="Q 어디로 놀러가세요?">
+                    <input v-model="search" @keyup.enter="mainSearch" class="header-search-bar" type="text" placeholder="Q 어디로 놀러가세요?">
                     <button @click="mainSearch" class="btn bg-navy header-bg-btn">검색</button>
                 </div>
                 <div v-if="!$store.state.auth.authFlg" class="header-title-button">
@@ -363,6 +363,7 @@ import { useRoute, useRouter } from 'vue-router';
 const store = useStore();
 const user = computed(()=> store.state.auth.userInfo);
 const router = useRouter();
+const route = useRoute();
 
 // import { ref, onMounted, onBeforeUnmount } from 'vue';
 
@@ -425,12 +426,19 @@ const logout = () =>{
 
 // 검색
 const search = ref('');
-const mainSearch = (() => {
-    store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
-    // console.log('search :',search.value);
-    store.commit('search/setSearchKeyword', search.value); // 검색 키워드 저장
-    router.push('/search');
-})
+
+const mainSearch = () => {
+    // console.log(search.value);
+    if(search.value == '') {
+        alert('검색어를 입력해주세요.');
+    } else {
+        store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
+        // console.log('search :',search.value);
+        store.commit('search/setSearchKeyword', search.value); // 검색 키워드 저장
+
+        router.replace('/search');
+    }
+}
 
 // ---------- 게시판 이동 관련 start ----------
 const redirectBoards = async (bcCode) => {
@@ -443,7 +451,7 @@ const redirectBoards = async (bcCode) => {
 </script>
 
 <style>
-/* 기본 폰트와 마진패팅 설정 */
+/* 기본 폰트와 마진,패딩 설정 */
 *{ 
     margin: 0;
     padding: 0;
@@ -469,18 +477,8 @@ a {
 }
 
 a:visited {
-      /* // a태그 이제 안사용 하는듯? // */
     color : #01083A;
 }
-
-/*  p태그로 바꾸니까 css꺠지는거 고치려다 만거
-    .header-list-dropbtn {
-    text-decoration: none;
-    color: #01083A;
-    font-size: 23px;
-    font-weight: 500;
-    padding: 5px 10px;
-} */
 
 li {
     list-style-type: none;
@@ -507,16 +505,6 @@ input, textarea {
     background-color: transparent;
     color: #01083A;
 }
-
-/* 네비게이션 메뉴 -> 현재 생략 */
-/* .navi {
-    position: relative;
-    width: 200px;
-    height: 400px;
-    background-color: #01083A;
-} */
-
-/* ************************************ */
 
 /* 헤더헤더 */
 

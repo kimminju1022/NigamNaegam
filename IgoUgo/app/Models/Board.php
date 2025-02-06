@@ -79,6 +79,10 @@ class Board extends Model
     public function area() {
         return $this->hasOneThrough(Area::class, Review::class, 'board_id', 'area_code', 'board_id', 'area_code');
     }
+
+    public function product() {
+        return $this->hasOneThrough(Product::class, Review::class, 'board_id', 'product_id', 'board_id', 'product_id');
+    }
     
     public function review_category() {
         // return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'rc_type', 'board_id', 'rc_type');

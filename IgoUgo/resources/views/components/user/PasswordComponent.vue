@@ -7,10 +7,10 @@
         </div>
         <div class="password-item">
             <p class="bg-navy">현재 비밀번호</p>
-            <input v-model="userInfo.user_password" type="password" name="user_password" placeholder="비밀번호 입력">
+            <input v-model="userInfo.user_password" @keyup.enter="chkPW" type="password" name="user_password" placeholder="비밀번호 입력">
         </div>
         <div class="my-profile-chk-btn">
-            <button @click="$store.dispatch('user/chkPW', userInfo)" class="btn bg-navy btn-chk">확인</button>
+            <button @click="chkPW" class="btn bg-navy btn-chk">확인</button>
         </div>
     </div>
 </template>
@@ -24,6 +24,9 @@ const errorMsgList = ref('');
 const store = useStore();
 const userInfo = computed(()=> store.state.auth.userInfo);
 
+const chkPW = () => {
+    store.dispatch('user/chkPW', userInfo.value);
+};
 </script>
 
 <style scoped>
