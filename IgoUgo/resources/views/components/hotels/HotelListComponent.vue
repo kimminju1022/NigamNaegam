@@ -74,6 +74,7 @@
                 :searchData="searchData"
                 :currentPage="$store.state.pagination.currentPage"
                 :lastPage="$store.state.pagination.lastPage"
+                :viewPageNumber="$store.state.pagination.viewPageNumber"
             />
             </div>
         </div>
