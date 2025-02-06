@@ -3,8 +3,8 @@ export default {
     state: () => ({
         viewPageCnt: 5,
         path: localStorage.getItem('paginationPath') ? localStorage.getItem('paginationPath'): '',
-        currentPage: localStorage.getItem('currentPage') ? localStorage.getItem('currentPage'): 1, // 현재 페이지
-        lastPage: localStorage.getItem('lastPage') ? localStorage.getItem('lastPage'): 1, // 마지막 페이지
+        currentPage: localStorage.getItem('currentPage') ? Number(localStorage.getItem('currentPage')): 1, // 현재 페이지
+        lastPage: localStorage.getItem('lastPage') ? Number(localStorage.getItem('lastPage')): 1, // 마지막 페이지
         viewPageNumber: localStorage.getItem('viewPageNumber') ? JSON.parse(localStorage.getItem('viewPageNumber')) : [],
 
         // 여러 개의 페이지네이션
