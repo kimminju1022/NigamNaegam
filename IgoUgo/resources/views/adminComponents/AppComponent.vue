@@ -3,17 +3,17 @@
 <div class="admin">
     <div class="admin-header-left">
         <div>
-            <img class="admin-header-image" src="/img_admin/admin_logo.png" alt="">
+            <router-link to="/admin/main"><img class="admin-header-image" src="/img_admin/admin_logo.png" alt=""></router-link>
             <!-- <hr> -->
             <div class="admin-header-dropdown">
                 <router-link to="/admin/user"><p>유저관리</p></router-link>
 
                 <div @mouseenter="showDropdown" @mouseleave="hideDropdown">
-                    <router-link to="/admin/board"><p>게시판관리</p></router-link>
+                    <p>게시판관리</p>
                     <div v-if="dropdownVisible" class="admin-dropdown-menu">
-                        <a href=""><p>API통합 관리</p></a>
-                        <a href=""><p>리뷰게시판</p></a>
-                        <a href=""><p>자유게시판</p></a>
+                        <router-link to="/admin/board/api"><p>API통합 관리</p></router-link>
+                        <router-link to="/admin/board/review"><p>리뷰게시판</p></router-link>
+                        <router-link to="/admin/board/free"><p>자유게시판</p></router-link>
                     </div>
                 </div>
                 
@@ -108,6 +108,7 @@ const hideDropdown = () => {
     color: #fff;
 }
 .admin-header-dropdown p {
+    color: #fff;
     width: fit-content;
 }
 .admin-dropdown-menu {
@@ -161,13 +162,15 @@ const hideDropdown = () => {
 .admin-user-option {
     display: grid;
     grid-template-rows: 30px 60px;
-    background-color: #4c4c4c;
+    /* background-color: #4c4c4c; */
+    background-color: #888888;
     width: 200px;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
     text-align: center;
-    color: #bcbcbc;
+    /* color: #bcbcbc; */
+    color: #000;
 }
 .admin-user-image-view {
     display: grid;
@@ -221,6 +224,7 @@ const hideDropdown = () => {
 /* 오른쪽 */
 .admin-header-right {
     background-color: #eeeeee;
+    padding: 20px 50px;
 }
 
 /* 로그인 페이지일 때 */

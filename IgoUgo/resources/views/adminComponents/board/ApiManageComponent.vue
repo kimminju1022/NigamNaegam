@@ -1,7 +1,7 @@
 <template>
-    <div class="noti-container">
+    <div class="api-container">
         <div>
-            <p class="noti-title">공지사항</p>
+            <p class="api-title">API통합 관리</p>
             <hr class="hr-style">
         </div>
         <div></div>
@@ -13,16 +13,16 @@
 </script>
 
 <style scoped>
-/* 공지사항 큰 틀 */
-.noti-container {
+/* 게시판 관리 큰 틀 */
+.api-container {
     height: 100%;
     display: grid;
     grid-template-rows: 50px 1fr;
     gap: 30px;
 }
 
-/* 공지사항 타이틀 */
-.noti-title {
+/* 게시판 관리 타이틀 */
+.api-title {
     font-weight: 600;
     font-size: 30px;
     margin-left: 10px;

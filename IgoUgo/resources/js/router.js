@@ -54,7 +54,9 @@ import AdminMainComponent from '../views/adminComponents/main/MainComponent.vue'
 import AdminUserManageComponent from '../views/adminComponents/user/UserManageComponent.vue';
 
 // 게시판 관리
-import AdminBoardManageComponent from '../views/adminComponents/board/BoardManageComponent.vue';
+import AdminApiManageComponent from '../views/adminComponents/board/ApiManageComponent.vue';
+import AdminReviewManageComponent from '../views/adminComponents/board/ReviewManageComponent.vue';
+import AdminFreeManageComponent from '../views/adminComponents/board/FreeManageComponent.vue';
 
 // 체험단
 import AdminTesterComponent from '../views/adminComponents/tester/TesterComponent.vue';
@@ -101,10 +103,20 @@ const routes = [
         path: '/admin/user',
         component: AdminUserManageComponent,
     },
-    // 관리자 페이지_게시판 관리
+    // 관리자 페이지_게시판_API통합 관리
     {
-        path: '/admin/board',
-        component: AdminBoardManageComponent,
+        path: '/admin/board/api',
+        component: AdminApiManageComponent,
+    },
+    // 관리자 페이지_게시판_리뷰게시판 관리
+    {
+        path: '/admin/board/review',
+        component: AdminReviewManageComponent,
+    },
+    // 관리자 페이지_게시판_자유게시판 관리
+    {
+        path: '/admin/board/free',
+        component: AdminFreeManageComponent,
     },
     // 관리자 페이지_체험단
     {
