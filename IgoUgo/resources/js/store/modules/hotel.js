@@ -175,11 +175,11 @@ export default {
                     // console.log(response.data.total);
                     context.commit('pagination/setPagination', response.data, {root: true});
                     // console.log(response.data);
-                    return resolve;
+                    return resolve();
                 })
                 .catch(error => {
                     console.log(error.response);
-                    return reject;
+                    return reject();
                 })
             })
         },
@@ -202,11 +202,11 @@ export default {
                     // console.log(response.data.total);
                     context.commit('pagination/setPagination', response.data, {root: true});
                     // console.log(response.data);
-                    return resolve;
+                    return resolve();
                 })
                 .catch(error => {
                     console.log(error.response);
-                    return reject;
+                    return reject();
                 })
 
             })
@@ -222,11 +222,11 @@ export default {
                 .then(response => {
                     context.commit('setHotelCategoryIncluded', response.data);
                     console.log(response.data);
-                    return resolve;
+                    return resolve();
                 })
                 .catch(error => {
                     console.log(error);
-                    return reject;
+                    return reject();
                 });                
             })
         },

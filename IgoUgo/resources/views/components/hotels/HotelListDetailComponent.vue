@@ -6,13 +6,16 @@
             </div>
             <button @click="$router.go(-1)" class="btn bg-navy btn-go-back"><- 리스트 페이지로 돌아가기</button>
         </div>
-        <div v-else>
+        <div v-else class="container-loading">
             <div class="detail-title">
                 <p>{{ hotelDetail.title }}</p>
                 <button @click="$router.go(-1)" class="btn bg-clear btn-go-back"><- 리스트 페이지로 돌아가기</button>
                 <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
             </div>
-            <div>
+            <!-- 로딩창 컴포넌트 넣을곳 -->
+            <LoadingComponent v-if="loading"/>
+
+            <div v-else> 
                 <div class="link-group">
                     <p class="detail-button-style">🚩{{ hotelDetail.addr1 + ' ' + hotelDetail.addr2 }}</p>
                     <a v-if="hotelDetail.homepage" :href="filterHomepage(hotelDetail.homepage)" class="detail-button-style" target="_blank">-> 홈페이지로 이동</a>
@@ -116,6 +119,11 @@ import { computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch } fr
 import env from '../../../js/env';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
+import LoadingComponent from '../LoadingComponent.vue';
+
+// 로딩창
+const loading = computed(() => store.state.loading.loading);
+
 
 const store = useStore();
 const route = useRoute();
@@ -136,8 +144,10 @@ const findData = reactive({
 });
 
 onBeforeMount(async () => {
+    store.commit('loading/setLoading', true);
     await store.dispatch('hotel/getHotelsDetail', findData);
     await store.dispatch('hotel/getHotelCategoryIncluded', findData);
+    store.commit('loading/setLoading', false);
 });
 
 
@@ -146,24 +156,27 @@ var map = null;
 
 onMounted(() => {
     // DOM 렌더링 후에 Kakao 지도 로딩
-    nextTick(() => {
-        if (window.kakao && window.kakao.maps) {
-            console.log("Kakao Maps is available.");
-            if (productLat.value && productLng.value) {
-                loadKakaoMap();
-            } else {
-                console.log("Lat or Lng is null during onMounted.");
-            }
-        } else {
-            // console.log("Kakao Maps is not yet available. Loading script...");
-            loadKakaoMapScript();
+    watch(loading, (newLoading) => {
+        if (!newLoading) {
+            // 로딩이 끝났을 때 지도를 초기화
+            nextTick(() => {
+                if (window.kakao && window.kakao.maps) {
+                    if (productLat.value && productLng.value) {
+                        loadKakaoMap();
+                    } else {
+                        console.log("Lat or Lng is null.");
+                    }
+                } else {
+                    loadKakaoMapScript();
+                }
+            });
         }
     });
 });
 
 const loadKakaoMap = async () => {
     const container = document.getElementById("map");
-    console.log("Container:", container); // 확인용 로그
+    // console.log("Container:", container); // 확인용 로그
     if (container && productLat.value && productLng.value) {
         const options = {
             center: new window.kakao.maps.LatLng(productLat.value, productLng.value),
