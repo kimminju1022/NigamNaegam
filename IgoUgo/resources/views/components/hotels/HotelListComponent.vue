@@ -24,7 +24,7 @@
                         <span class="font-bold">정렬 순서</span>
                     </div>
                     <p>|</p>
-                    <div @click="nearBy()" class="order-list-item">
+                    <div @click="nearBy()" class="order-list-item" :class="{ 'near-by-btn-disabled' : !isLocationAvailable}">
                         <p :class="{ 'active-font-bold' : isActiveNearBy }">가까운순</p>
                         <img src="img_product/img_star.png" class="img-order">
                     </div>
@@ -136,6 +136,7 @@ import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
 import LoadingComponent from '../LoadingComponent.vue';
 import env from '../../../js/env';
+import hotel from '../../../js/store/modules/hotel';
 
 const store = useStore();
 const route = useRoute();
@@ -168,7 +169,7 @@ function sortData() {
         isActiveRanking.value = false;
         isActiveNearBy.value = false;
     }
-    if(isActiveSort.value) {
+    if (isActiveSort.value) {
         searchData.sort = 'modifiedtime';
         store.commit('hotel/setHotelSort', 'modifiedtime');
     } else {
@@ -181,8 +182,8 @@ function sortData() {
 function highRanking() {
     isActiveRanking.value = !isActiveRanking.value
     if (isActiveRanking.value === true) {
-        isActiveSort.value = false
-        isActiveNearBy.value = false
+        isActiveSort.value = false;
+        isActiveNearBy.value = false;
         store.commit('hotel/setHotelSort', 'rank');
         store.dispatch('hotel/getHotelsRank', searchData);
     } else {
@@ -193,10 +194,12 @@ function highRanking() {
 }
 
 function nearBy() {
+    if (!isLocationAvailable.value) return
+
     isActiveNearBy.value = !isActiveNearBy.value;
     if (isActiveNearBy.value === true) {
-        isActiveSort.value = false
-        isActiveRanking.value = false
+        isActiveSort.value = false;
+        isActiveRanking.value = false;
         store.commit('hotel/setHotelSort', 'nearby');
         store.dispatch('hotel/getHotelsNearBy', searchData);
     } else {
@@ -205,6 +208,8 @@ function nearBy() {
         store.dispatch('hotel/getHotelsPagination', searchData);
     }
 }
+
+const isLocationAvailable = ref(true);
 
 function getCurrentLocation() {
     return new Promise((resolve, reject) => {
@@ -216,13 +221,28 @@ function getCurrentLocation() {
                 searchData.longitude = position.coords.longitude;
                 // console.log(searchData.latitude);
                 // console.log(searchData.longitude);
+                isLocationAvailable.value = true; // 위치 정보 사용 가능
+
+                if (sessionStorage.getItem('hotelSort') === 'nearby') {
+                    searchData.sort = 'createdtime';
+                    store.commit('hotel/setHotelSort', 'createdtime');
+                }
+
                 resolve();
             },
             (error) => {
                 // 위치 정보 가져오기 실패 시
                 console.log('위치 정보를 가져오는 데 실패');
+
+                searchData.sort = 'createdtime';
+                store.commit('hotel/setHotelSort', 'createdtime');
+                store.dispatch('hotel/getHotelsPagination', searchData);
+
                 console.error(error);
+                
+                isLocationAvailable.value = false; // 위치 정보 사용 불가
                 reject();
+                
             }
             );
         } else {
@@ -242,15 +262,27 @@ onBeforeMount(async () => {
     store.commit('loading/setLoading', true);
     flgSetup(); // 리사이즈 이벤트
     // const saveAreaCode = store.state.hotel.hotelAreaCode;
-    if(searchData.sort === 'createdtime' || searchData.sort === 'modifiedtime') {
+    if(searchData.sort === 'createdtime') {
+        isActiveSort.value = false;
+
+        isActiveNearBy.value = false;
+        isActiveRanking.value = false;
+        store.dispatch(actionName, searchData);
+    } else if (searchData.sort === 'modifiedtime') {
+        isActiveSort.value = true;
+
         isActiveNearBy.value = false;
         isActiveRanking.value = false;
         store.dispatch(actionName, searchData);
     } else if(searchData.sort === 'rank') {
+        isActiveRanking.value = true;
+
         isActiveNearBy.value = false;
         isActiveSort.value = false;
         store.dispatch('hotel/getHotelsRank', searchData);
     } else if(searchData.sort === 'nearby') {
+        isActiveNearBy.value = true;
+
         isActiveSort.value = false;
         isActiveRanking.value = false;
         store.dispatch('hotel/getHotelsNearBy', searchData);
@@ -736,6 +768,9 @@ const clearMarkers = () => {
     }
     .active-font-bold {
         font-weight: 900;
+    }
+    .near-by-btn-disabled {
+        opacity: 0.5;
     }
     
     /* 정렬 순서 관련 */

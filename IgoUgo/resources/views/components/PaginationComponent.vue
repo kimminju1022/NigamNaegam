@@ -1,13 +1,13 @@
 <template>      
 <div class="pagination">
-    <button class="btn bg-clear" @click="prevPage"><</button>
+    <button class="btn bg-clear" @click="() => { prevPage(); scrollReset(); }"><</button>
     <button
         v-for="page in viewPageNumber" :key="page"
-        @click="changePage(page)" 
+        @click="() => { changePage(page); scrollReset(); }"
         :class="{ 'active-page': page == currentPage, 'btn bg-clear': true }"
         >{{ page }}
     </button>
-    <button class="btn bg-clear" @click="nextPage">></button>
+    <button class="btn bg-clear" @click="() => { nextPage(); scrollReset(); }">></button>
 </div>
 <!-- <h1>{{ currentPage }}</h1>
 <h1>{{ lastPage }}</h1> -->
@@ -51,6 +51,13 @@ const requestParam = reactive(props.searchData);
 const changePage = (page) => {
     requestParam.page = page;
     store.dispatch(props.actionName, requestParam);
+}
+
+// 스크롤스크롤
+function scrollReset() {
+    if (window.location.pathname === '/hotels' || window.location.pathname.startsWith('/products')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 }
 
 </script>

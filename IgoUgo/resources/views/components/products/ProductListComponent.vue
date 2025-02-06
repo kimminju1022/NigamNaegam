@@ -65,7 +65,13 @@
                 <!-- <div v-else>상품 데이터를 불러오는 중...</div> -->
 
                 <!-- 페이지네이션 -->
-                <PaginationComponent :actionName="actionName" :searchData="searchData" />
+                <PaginationComponent
+                :actionName="actionName"
+                :searchData="searchData"
+                :currentPage="$store.state.pagination.currentPage"
+                :lastPage="$store.state.pagination.lastPage"
+                :viewPageNumber="$store.state.pagination.viewPageNumber"
+                />
             </div>
         </div>
     </div> 
