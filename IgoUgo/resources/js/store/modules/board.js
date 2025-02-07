@@ -19,6 +19,7 @@ export default {
         boardFree: [],
         userReviewList: [],
         userFreeList: [],
+        likesCount:'',
     }),
     // 검색 API 호출 함수
     // export const fetchSearchResults = async (keyword) => {
@@ -61,8 +62,8 @@ export default {
         setBcName(state, bcName) {
             state.bcName = bcName;
         },
-        setProductTitle(state, productTitle){
-            state.productTitle = productTitle;
+        setProductTitle(state, title){
+            state.productTitle = title;
         },
         setRcName(state, rcName) {
             state.rcName = rcName;
@@ -82,6 +83,10 @@ export default {
         setPushBoardComment(state, data) {
             state.boardComments.push(data);
         },
+        // setLikesCount(state,likeFlg){
+        //     state.likeFlg = state.boardDetail.
+        // },
+
     },
     actions: {
         /** 게시글획득
@@ -124,17 +129,13 @@ export default {
                 context.commit('setRcName', response.data.rcName);
                 context.commit('setAreaName', response.data.areaName);
                 context.commit('setProductTitle',response.data.productTitle);
+                console.log(response.data.board);
             })
             .catch(error => {
                 // console.error(error.response.data);
             });
         },
-        /** 상품검색
-         *  작성/수정 시 사용함
-         */
-
-
-
+        
         /** 게시글 작성
          * 
          */
@@ -259,10 +260,9 @@ export default {
             .then(response => {
                 commit('setBoardDelete',data.board_id)
                 alert('삭제 성공');
-// 삭제후 돌아갈 페이지작업 필요
             })
             .catch(error => {
-                // console.error(error);
+                console.error(error);
                 alert('삭제 실패');
             });
         },
@@ -401,13 +401,14 @@ export default {
         },
 
         commentReport(context) {
-            const url = `/api/comments/${id}/report`;
+            const url = `/api/comments/${id}/report`; //해당 댓글id
             const config = {
                 header:{
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
-            }
-            axios.get(url)
+            } //신고자 id수집 및 권한 확인
+            const payload = { comment_id: id }; //전달할 댓글 정보값
+            axios.post(url, payload, config)
             .then()
             alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다')
 

@@ -12,21 +12,50 @@
                         <!-- <option v-if="bcCode === '1'">자유게시판</option> -->
                     </select>
                 </div>
-            </div>
-            <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
-                <p>리뷰</p>
-                <div v-for="searchItem in searchKeyword" class="board-category">
-                    <div class="board-search-tb">
+                <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
+                    <p>리뷰</p>
+                    <!-- <div v-for="searchItem in searchKeyword" class="board-category"> -->
+                    <div class="board_category">
                         <div class="search-box">
-                            <input type="search" @input="inputText = $event.target.value">
-                            <button>검색</button>
-                            <p></p>
+                            <!-- <input type="search" @input="inputText = $event.target.value"> -->
+                            <input class="search-bar" type="text" placeholder="검색 버튼으로 리뷰할 곳을 검색해 주세요">
+                            <button @click="modalOpen = true" class="btn bg-navy header-bg-btn">검색</button>
+                            <!-- ⭐ 검색 모달 -->
+                            <div class="modal_search" v-show="modalSearch">
+                                <div class="modal_container">
+                                    <div class="modal_searchBar">
+                                        <input v-model="search" class="search-bar" type="text" placeholder="어디를 다녀 오셨나요?">
+                                        <button @click="searchProducts" class="btn bg-clear search_btn">검색</button>
+                                    </div>
+                                    <div class="product_resultContent">
+                                        <!-- <h3>검색 결과 {{ $store.state.search.searchProducts.length }}개</h3> -->
+                                        <div class="searchResult_head">
+                                            <p>지역</p>
+                                            <p>상품명</p>
+                                            <p>주소</p>
+                                        </div>
+                                        <div class="searchResult_content" v-for="item in searchReseults" :key="item">
+                                            <p v-if="item.area !== null">{{ item.areas.area_name }}</p>
+                                            <p v-if="item.area !== null">{{ item.products.title }}</p>
+                                            <p v-if="item.area !== null">{{ item.products.addr1 }}</p>
+                                        </div>
+                                        <div class="pagination-btn">
+                                            <!-- 페이지네이션 -->
+                                            <PaginationComponent :actionName="actionName" :searchData="searchData" />
+                                        </div>
+                                    </div>
+                                    <div class="modal_searchBtn">
+                                        <button @click="modalClose">❌취소</button>
+                                        <button>✔️선택</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요"> -->
-                        <!-- <input class="board-search" action="" type="text" placeholder="검색어를 입력해 주세요"> -->
-                        <!-- <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button> -->
-                    </div>
-
+                                
+                                <!-- <button @click="createSearch" class="btn bg-navy header-bg-btn">검색</button> -->
+                            <!-- <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요"> -->
+                            <!-- <input class="board-search" action="" type="text" placeholder="검색어를 입력해 주세요"> -->
+                            <!-- <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button> -->
                 <!-- 20250131 2차코드수정 -->
                 <!-- <div class="board-category">
                     <p>리뷰</p>
@@ -65,27 +94,28 @@
                 </div> -->
                 
                 <!-- 별점 -->
-                <div class="board-starGrade board-category">
-                    <p>별점</p>
-                    <div class="star-grade">
-                        <input type="radio" name="rate" id="star-1" class="star" value="5" v-model="boardInfo.rate">
-                        <label for="star-1" class="star-label"></label>
-        
-                        <input type="radio" name="rate" id="star-2" class="star" value="4" v-model="boardInfo.rate">
-                        <label for="star-2" class="star-label"></label>
-        
-                        <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
-                        <label for="star-3" class="star-label"></label>
-        
-                        <input type="radio" name="rate" id="star-4" class="star" value="2" v-model="boardInfo.rate">
-                        <label for="star-4" class="star-label"></label>
-        
-                        <input type="radio" name="rate" id="star-5" class="star" value="1" v-model="boardInfo.rate">
-                        <label for="star-5" class="star-label"></label>
+                        <div class="board-starGrade board-category">
+                            <p>별점</p>
+                            <div class="star-grade">
+                                <input type="radio" name="rate" id="star-1" class="star" value="5" v-model="boardInfo.rate">
+                                <label for="star-1" class="star-label"></label>
+
+                                <input type="radio" name="rate" id="star-2" class="star" value="4" v-model="boardInfo.rate">
+                                <label for="star-2" class="star-label"></label>
+
+                                <input type="radio" name="rate" id="star-3" class="star" value="3" v-model="boardInfo.rate">
+                                <label for="star-3" class="star-label"></label>
+
+                                <input type="radio" name="rate" id="star-4" class="star" value="2" v-model="boardInfo.rate">
+                                <label for="star-4" class="star-label"></label>
+
+                                <input type="radio" name="rate" id="star-5" class="star" value="1" v-model="boardInfo.rate">
+                                <label for="star-5" class="star-label"></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
             <div class="board-title-box">
                 <p>제목</p>
                 <input v-model="boardInfo.board_title" type="text" name="board_title">
@@ -121,6 +151,7 @@
     </div>
 
 
+
 </template>
 
 <script setup>
@@ -149,6 +180,31 @@ const boardInfo = reactive({
 
 // 게시판 타입 값 가져오기
 const bcCode = computed(() => store.bc_code); 
+const searchResults = computed(() => {
+    return this.$store.state.searchProduct;
+})
+
+//검색관련[상품->호텔,즐길거리]----start**
+const search = ref('');
+const modalSearch = ref(false);
+const modalOpen = () => {
+    modalSearch.value = true;
+};
+// const modalOpen = () => {
+//     modalSearch.value = true;
+// }
+const modalClose = () => {
+    modalSearch.value = false;
+}
+
+const searchReseults = (()=> {
+    store.commit('pagination/setPaginationInitialize');
+    console.log('search :',search.value);
+    store.dispatch('search/searchProduct', {search: search.value, page: 1});
+})
+
+// 검색관련 -----------------------end**
+
 
 // img관련 ----------------------start *****
 const previews = ref([]);
@@ -192,14 +248,8 @@ const clearFile = (index) => {
 </script>
 
 <style scoped>
-.container{
-    align-items: center;
-}
+/* btn 모음집 */
 
-.container > h1 {
-    font-size: 3rem;
-    margin: 50px 0;
-}
 
 .success-btn-box {
     display: flex;
@@ -223,6 +273,22 @@ const clearFile = (index) => {
     background-color: #fff;
     border: 2px solid #01083a;
 }
+
+.search_btn:hover{
+    font-weight: 700;
+    color: #fff;
+    background-color: #01083a;
+}
+/* -------------btn end */
+.container{
+    align-items: center;
+}
+
+.container > h1 {
+    font-size: 3rem;
+    margin: 50px 0;
+}
+
 
 .board-search{
     border-bottom: 2px solid #01083a;
@@ -262,6 +328,10 @@ const clearFile = (index) => {
     font-size: 17px;
 }
 
+.board-title-box > input{
+    margin-left: 10px;
+}
+
 /* .board-select-container {
     display: grid; */
     /* grid-template-rows: 1fr 1fr; */
@@ -297,7 +367,7 @@ select {
 
 .board-review-box {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 5fr;
     border-bottom: 1px solid #01083a;
 }
 
@@ -383,12 +453,20 @@ select {
 
 /* -------------------img */
 
+.board_category, .search-box{
+    display: grid;
+    margin: 0 10px;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+    align-items: center;
+}
 /* 별점 */
 
 .star-grade {
     display: flex;
     flex-direction: row-reverse;    /* 별을 오른쪽에서 왼쪽으로 정렬 */
     justify-content: center;
+    align-items: center;
     gap: 2px;
 }
 .star {
@@ -421,7 +499,7 @@ select {
 
 /* 모달 - 검색 */
 /* 모달 시 메인 배경 */
-.board-create-modal{
+.modal_search{
     width: 100%;
     height: 100%;
     background-color: rgba(197, 198, 198, 0.374);
@@ -429,7 +507,7 @@ select {
     padding: 20px;
 }
 /* 모달 디자인 */
-.board-create-modal-content{
+.modal_container{
     width: 50%;
     background-color: azure;
     border-radius: 10px;
@@ -447,7 +525,14 @@ select {
 select[readonly] {
     pointer-events: none;
 }
-
+.product_resultContent{
+    grid: flex;
+    grid-template-columns: 7fr 2fr;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
 /* -------------------modal */
 
 @media screen and (max-width: 1000px) {

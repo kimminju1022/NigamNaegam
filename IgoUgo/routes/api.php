@@ -72,7 +72,7 @@ Route::get('/boards', [BoardController::class, 'index'])->name('board.index');
 Route::get('/boards/review', [BoardController::class, 'showReview']);
 Route::get('/boards/free', [BoardController::class, 'showFree']);
 Route::get('/boards/{id}', [BoardController::class, 'show'])->name('board.show');
-Route::get('/boards/search/{keyword}', [BoardController::class, 'search'])->name('board.search');
+// Route::get('/boards/search/{keyword}', [BoardController::class, 'search'])->name('board.search');
 
 // 검색관련
 Route::get('search', [BoardController::class, 'index'])->name('search.index'); //보드로 해도 되나?
@@ -89,6 +89,8 @@ Route::get('/search/hotel', [SearchController::class, 'searchHotel']);
 Route::get('/search/product', [SearchController::class, 'searchProduct']);
 Route::get('/search/board', [SearchController::class, 'searchBoard']);
 Route::get('/search/board/tester', [SearchController::class, 'searchTester']);
+Route::get('/search/board/content', [SearchController::class, 'searchBoardContent']);
+
 
 // 관리자 로그인
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('auth.admin.login');

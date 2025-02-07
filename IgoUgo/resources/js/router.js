@@ -364,10 +364,10 @@ const routes = [
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
     },
-    { //이렇게 라우터 정의?
+    {
         path: '/board/:id/report',
         component: BoardDetailComponent,
-    }
+    },
 ];
 
 

@@ -6,6 +6,10 @@ use App\Models\Board;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
+
+
 
 class SearchController extends Controller
 {
@@ -91,6 +95,58 @@ class SearchController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // search in boardlist _____민주
+    public function searchBoardContent(Request $request) {
+        // Log::debug($request);
+        $key = $request->input('search');
+
+        $bc_code = Board::select('boards.bc_code');
+
+        $boards = Board::with('board_category', 'product')
+                            ->where('boards.bc_code', '=', $request->bc_code)
+                            ->where(function($query) use ($key) {
+                                $query->where('board_title', 'LIKE', '%' . $key . '%')
+                                    ->orWhere('board_content', 'LIKE', '%' . $key . '%');
+                            })
+                            ->join('users', 'users.user_id', '=', 'boards.user_id')
+                            ->when($request->bc_code === '0', function(Builder $query) {
+                                $query->join('reviews', function ($join) {
+                                        $join->on('reviews.board_id', '=', 'boards.board_id');
+                                    })
+                                    ->join('products', 'products.product_id', '=', 'reviews.product_id')
+                                    ->join('areas', 'products.area_code', '=', 'areas.area_code')
+                                    ->join('review_categories', 'review_categories.rc_code', '=', 'products.contenttypeid')
+                                    ->leftJoinSub(
+                                        DB::table('likes')
+                                            ->select('likes.board_id', DB::raw('COUNT(likes.like_id) as like_cnt'))
+                                            ->where('like_flg', '=', '1')
+                                            ->groupBy('likes.board_id'),
+                                        'like_tmp',
+                                        'boards.board_id',
+                                        '=',
+                                        'like_tmp.board_id'
+                                    )
+                                    ->select('boards.*', 'users.user_nickname', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
+                            })
+                            
+                            ->orderBy('created_at', 'DESC')
+                        ->paginate(10);
+                            
+        $responseData = [
+            'success' => true
+            ,'msg' => '검색결과 획득 성공'
+            ,'board' => $boards->toArray()
+            ,'bcName' => $boards->bc_name
+            ,'rcName' => $bc_code === '0' ? $boards->rc_name : ''
+            ,'areaName' => $bc_code === '0' ? $boards->area_name : ''
+            ,'productId' => $bc_code === '0' ? $boards->productId : ''
+            // ,'likeCount' => $board->likes_count
+            ,'board' => $boards->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
     public function searchTester(Request $request) {
         // Log::debug($request);
         $key = $request->input('search');
@@ -116,26 +172,4 @@ class SearchController extends Controller
 
         return response()->json($responseData, 200);
     }
-
-    // 게시판 작성용 검색
-    public function searchBoardProduct(Request $request) {
-        // Log::debug($request);
-        $key = $request->input('search');
-
-        $commodity = Product::where(function($query) use ($key) {
-                            $query->where('title', 'LIKE', '%' . $key . '%')
-                                ->orWhere('addr1', 'LIKE', '%' . $key . '%')
-                                ->orWhere('addr2', 'LIKE', '%' . $key . '%');
-                        })->orderBy('created_at', 'DESC')
-                        ->paginate(5);
-
-        $responseData = [
-            'success' => true
-            ,'msg' => '검색결과 획득 성공'
-            ,'commodity' => $commodity->toArray()
-        ];
-
-        return response()->json($responseData, 200);
-    }
-    // 게시판 리스트용 검색
 }

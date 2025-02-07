@@ -3,8 +3,8 @@
         <!-- 경로표시 -->
         <div class="board-detail-category">
             <h1>{{ $store.state.board.bcName }}</h1>
-            <h3> {{ $store.state.board.rcName }}</h3>
-            <h3> {{ $store.state.board.areaName }}</h3>
+            <h3>≫ {{ $store.state.board.rcName }}</h3>
+            <h3>≫ {{ $store.state.board.areaName }}</h3>
         </div>
         <!-- 버튼영역 -->
         
@@ -13,9 +13,9 @@
             <!--<button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-clear board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
 
         </div>
     </div>
@@ -24,7 +24,8 @@
     <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head" :class="gridDetail">
         <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
-        <p v-if="boardDetail.bc_code === '0'">{{ $store.state.board.productTitle }}</p>
+        <b v-if="boardDetail.bc_code === '0'" style="text-align: left; font-size: 1.3rem;">상품명   :   {{ boardDetail.title }}</b>
+        <!-- <p v-if="boardDetail.bc_code === '0'">{{ $store.state.board.productTitle }}</p> -->
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
         <button class="loveIt_btn" @click="boardLikeEvent"><img style="height: 20px;" src="/images/bbungheart.png">   : </button>
@@ -79,7 +80,7 @@
                     {{ item.user_nickname }}
                 </p>
                 <p>{{ item.created_at }}</p>
-                <button v-if="$store.state.auth.userInfo.user_id == item.user_id" class="btn bg-navy header-btn" @click="deleteComments(item.comment_id)">🗑️</button>
+                <button v-if="$store.state.auth.userInfo.user_id == item.user_id" class="clear_btn" @click="deleteComments(item.comment_id)">🗑️</button>
             </div>
         </div>
         <div class="pagination-btn">
@@ -291,7 +292,7 @@ hr{
 }
 .grid-6{
     display: grid;
-    grid-template-columns: 5fr 6fr 4fr 3fr 3fr 1.5fr;
+    grid-template-columns: 3fr 6fr 3fr 2fr 2fr 1.5fr;
     grid-auto-rows: 50px;
     justify-content: space-between;
     align-items:end;
@@ -311,7 +312,7 @@ hr{
     font-size: 1.2rem;
 }
 .star-label {
-    font-size: 30px;
+    font-size: 1.6rem;
     color: rgba(255, 217, 1, 0.932);
     text-align: left;
     margin-left: 10px;
@@ -477,6 +478,15 @@ hr{
 }
 /** 모달------------------end */
 
+.clear_btn{
+    border: none;
+    background-color: transparent;
+}
+
+.clear_btn:hover{
+    border: #01083a;
+    border-radius: 20px;
+}
 
 /* @media(max-width: 800px){
     .board-detail-head{

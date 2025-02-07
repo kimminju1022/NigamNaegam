@@ -104,6 +104,7 @@ class BoardController extends Controller
             ,'rcName' => $bc_code === '0' ? $board->rc_name : ''
             ,'areaName' => $bc_code === '0' ? $board->area_name : ''
             ,'productId' => $bc_code === '0' ? $board->productId : ''
+            // ,'likeCount' => $board->likes_count
             ,'board' => $board->toArray()
         ];
         return response()->json($responseData, 200);
@@ -302,6 +303,22 @@ class BoardController extends Controller
 
         return response()->json($responseData, 200);
     }
+    // 게시글 좋아요
+    // public function likeFlg($userId,$likes){
+    //     $like = Board::where('user_id', $userId)
+    //                 ->where('board_id', $Id)
+    //                 ->fist();
+    //     // like취소
+    //     if($like){
+    //         $like->like_flg = $like->like_flg ? 0:1;
+    //         $like->save();
+    //     } else {
+    //         self::create([
+
+    //         ])
+    //     }
+    
+    // }
 
 // 게시글-------------------------------------update end---------------------
 

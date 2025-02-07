@@ -10,10 +10,13 @@ export default {
         searchProductCnt: '',
         searchBoardCnt: '',
         searchTesterCnt: '',
+        searchBoardContentCnt:'',
         searchHotelList: [],
         searchProductList: [],
         searchBoardList: [],
         searchTesterList: [],
+        searchBoardContentList: [],
+        
     }),
     mutations: {
         setSearchKeyword(state, keyword) {
@@ -35,6 +38,9 @@ export default {
         setSearchTesterCnt(state, searchTesterCnt) {
             state.searchTesterCnt = searchTesterCnt;
         },
+        setSearchBoardContentCnt(state, searchBoardContentCnt){
+            state.searchBoardContentCnt = searchBoardContentCnt;
+        },
         setSearchHotelList(state, searchHotelList) {
             state.searchHotelList = searchHotelList;
         },
@@ -47,6 +53,10 @@ export default {
         setSearchTesterList(state, searchTesterList) {
             state.searchTesterList = searchTesterList;
         },
+        setSearchBoardContentList(state, searchBoardContentList){
+            state.searchBoardContentList =searchBoardContentList;
+            console.log('검색결과 : ',state.searchBoardContentList);
+        }
     },
     actions: {
         searchHotel(context, data) {
@@ -103,6 +113,27 @@ export default {
                 // console.log('setSearchBoardList',response.data);
                 context.commit('setSearchBoardCnt', response.data.board.total);
                 context.commit('setSearchBoardList', response.data.board.data);
+                console.log(response.data.board.data);
+                context.commit('pagination/setBoardPagination', response.data.board, {root: true});
+            }) 
+            .catch(error => {
+                console.error(error);
+            });
+        },
+        // 상품검색 - 민주250205
+        searchBoardContent(context, data){
+            const url = `/api/search/board/content/?search=${data.search}&page=${data.page}`;
+            axios.get(url)
+            // .then(response => {
+            //     context.commit('setSearchBoardContent', response.data.product.data)
+            //     console.log(response.data.product.data);
+
+            // })
+            .then(response => {
+                context.commit('setSearchBoardContentCnt', response.data.board.total);
+                console.log('상품정보 :',  response.data.board.total);
+                context.commit('setSearchBoardContentList', response.data.board.data);
+                console.log('상품정보 :', response.data);
                 context.commit('pagination/setBoardPagination', response.data.board, {root: true});
             }) 
             .catch(error => {
@@ -127,7 +158,6 @@ export default {
                 console.error(error);
             });
         },
-
     },
     getters: {
     },
