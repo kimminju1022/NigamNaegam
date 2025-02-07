@@ -20,6 +20,7 @@ class SearchController extends Controller
                                 ->orWhere('addr1', 'LIKE', '%' . $key . '%')
                                 ->orWhere('addr2', 'LIKE', '%' . $key . '%');
                         })
+                        ->whereNotNull('firstimage')
                         ->whereNotNull('area_code')
                         ->orderBy('createdtime', 'DESC')
                         ->paginate(5);
@@ -50,6 +51,7 @@ class SearchController extends Controller
                                     ->orWhere('addr1', 'LIKE', '%' . $key . '%')
                                     ->orWhere('addr2', 'LIKE', '%' . $key . '%');
                             })
+                            ->whereNotNull('firstimage')
                             ->whereNotNull('area_code')
                             ->orderBy('created_at', 'DESC')
                             ->paginate(5);

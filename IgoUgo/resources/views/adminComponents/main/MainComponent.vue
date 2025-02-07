@@ -7,7 +7,7 @@
         <div class="main-content-container">
             <div>
                 <p class="main-stat-title">가입 현황</p>
-                <div class="main-stat-box"></div>
+                <!-- <canvas id="myChart"></canvas> -->
             </div>
             <div>
                 <p class="main-stat-title">탈퇴 현황</p>
@@ -31,10 +31,77 @@
             </div>
         </div>
     </div>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" defer></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script> -->
 </template>
 
 <script setup>
+const chartLoad = () => {
+    console.log('chartLoad 함수 실행');
+    if(!document.getElementById('myChart')) {
+        const script = document.createElement('script');
+        script.id = 'chart';
+        script.src = `/https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js`;
+        script.onload = () => {
+            console.log("chart 로드 성공");
+            // window.kakao.maps.load(() => {
+            //     myChart(); // 스크립트가 로드된 후 `loadKakaoMap` 실행
+            // });
+        };
+        document.head.appendChild(script);
 
+        myChart();
+    }
+};
+
+const myChart = async() => {
+    const ctx = document.getElementById('myChart');
+
+    // Chart.js로 차트 생성
+    new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+        y: {
+            beginAtZero: true
+        }
+        }
+    }
+    });
+};
+
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     const ctx = document.getElementById('myChart');
+
+//     // Chart.js로 차트 생성
+//     new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+//         datasets: [{
+//         label: '# of Votes',
+//         data: [12, 19, 3, 5, 2, 3],
+//         borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//         y: {
+//             beginAtZero: true
+//         }
+//         }
+//     }
+//     });
+// });
 </script>
 
 <style scoped>

@@ -11,6 +11,7 @@
                     <button @click="mainSearch" class="btn bg-navy header-bg-btn">검색</button>
                 </div>
                 <div v-if="!$store.state.auth.authFlg" class="header-title-button">
+                <!-- <div v-if="$store.state.auth.managerAuthFlg" class="header-title-button"> -->
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
                     <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link>
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
@@ -48,8 +49,8 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <router-link to="">공지사항</router-link>
-                                        <router-link to="/questions">문의사항</router-link>
+                                        <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
+                                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
                                         <p></p>
@@ -83,8 +84,8 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <router-link to="">공지사항</router-link>
-                                        <router-link to="/questions">문의사항</router-link>
+                                        <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
+                                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
                                         <p></p>
@@ -118,8 +119,8 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <router-link to="">공지사항</router-link>
-                                        <router-link to="/questions">문의사항</router-link>
+                                        <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
+                                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
                                         <p></p>
@@ -153,8 +154,8 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <router-link to="">공지사항</router-link>
-                                        <router-link to="/questions">문의사항</router-link>
+                                        <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
+                                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
                                         <p></p>
@@ -188,8 +189,8 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <router-link to="">공지사항</router-link>
-                                        <router-link to="/questions">문의사항</router-link>
+                                        <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
+                                        <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
                                         <p></p>

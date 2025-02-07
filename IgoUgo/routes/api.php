@@ -7,7 +7,6 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
@@ -24,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// 유저 사이트 ---------------------------------------------------------------------------------------
 
 // 호텔리스트 라우터
 Route::get('/hotels', [HotelController::class, 'hotels']);
@@ -52,28 +53,14 @@ Route::post('/available/email', [UserController::class, 'chkEmail'])->name('user
 Route::post('/available/nickname', [UserController::class, 'chkNickname'])->name('user.nickname');
 Route::post('/available/phone', [UserController::class, 'chkPhone'])->name('user.phone');
 
-// 카카오 소셜로그인
-// Route::get('/auth/redirect', function () {
-//     return Socialite::driver('github')->redirect();
-// });
-
-// Route::get('/auth/callback', function () {
-//     $user = Socialite::driver('github')->user();
-
-//     // $user->token
-// });
-
+// 소셜로그인
 Route::get('/auth/login/{provider}', [AuthController::class, 'redirectToProvider']);
 Route::get('/auth/login/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 Route::post('/auth/social', [AuthController::class, 'socialLogin']);
 
 // 이메일 인증
-// Route::get('/email/verify/{id}', [VerificationController::class, 'notice'])->middleware('my.auth')->name('verification.notice');
 Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationLink'])->name('verification.send');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-// Route::get('/profile', function () {
-//     // Only verified users may access this route...
-// })->middleware(['auth', 'verified']); // 1. 이메일 검증된 사용자만 접근 가능
 
 // 비밀번호 찾기
 Route::post('/find/pw/send-email', [AuthController::class, 'sendEmail'])->name('auth.send');
@@ -90,7 +77,6 @@ Route::get('/boards/search/{keyword}', [BoardController::class, 'search'])->name
 // 검색관련
 Route::get('search', [BoardController::class, 'index'])->name('search.index'); //보드로 해도 되나?
 
-
 // 코멘트 관련
 Route::get('/comments', [CommentController::class, 'index'])->name('comment.index');
 
@@ -104,10 +90,17 @@ Route::get('/search/product', [SearchController::class, 'searchProduct']);
 Route::get('/search/board', [SearchController::class, 'searchBoard']);
 Route::get('/search/board/tester', [SearchController::class, 'searchTester']);
 
+// 관리자 로그인
+Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('auth.admin.login');
+
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
     // 로그아웃
     Route::post('/logout', [AuthController::class, 'logout']);
+    // 관리자 로그아웃
+    Route::post('/admin/logout', [AuthController::class, 'adminLogout']);
+
+
     // 토큰 재발급
     Route::post('/reissue', [AuthController::class, 'reissue']);
     

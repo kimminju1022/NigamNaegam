@@ -243,4 +243,63 @@ class AuthController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+
+    // 관리자 ---------------------------------------------------------------------------
+
+
+    // 관리자 로그인
+    public function adminLogin(UserRequest $request) {
+        $userInfo = User::where('user_email', $request->user_email)->first();
+
+        // 관리자인지 일반 유저인지 체크
+        if($userInfo->manager_flg === '0') {
+            throw new AuthenticationException('회원 정보 오류');
+        }
+
+        // 비밀번호 체크
+        if(!(Hash::check($request->user_password, $userInfo->user_password))) {
+            throw new AuthenticationException('비밀번호 체크 오류');
+        }
+
+        // 토큰 발행
+        list($accessToken, $refreshToken) = MyToken::createTokens($userInfo);
+
+        // refreshToken 저장
+        MyToken::updateRefreshToken($userInfo, $refreshToken);
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '로그인 성공'
+            ,'accessToken' => $accessToken
+            ,'refreshToken' => $refreshToken
+            ,'data' => $userInfo->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 관리자 로그아웃
+    public function adminLogout(Request $request) {
+        // Payload에서 유저id 획득
+        $id = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+    
+        DB::beginTransaction();
+
+        // 유저 정보 획득
+        $userInfo = User::find($id);
+    
+        // refreshToken 갱신
+        MyToken::updateRefreshToken($userInfo, null);   
+
+        DB::commit();
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '로그아웃 성공'
+        ];
+    
+        return response()->json($responseData, 200);
+    }
+
 }

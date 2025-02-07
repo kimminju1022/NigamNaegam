@@ -160,14 +160,14 @@ export default {
                 });
             }
 
-            console.log('board_images', question.questionDetail.board_images);
-            console.log('file', question.board_img);
+            // console.log('board_images', question.questionDetail.board_images);
+            // console.log('file', question.board_img);
 
             axios.post(url, formData, config)
             .then(response => {
                 context.commit('setQuestionList', response.data.data);
                 // console.log(response);
-                console.log(response.data);
+                // console.log(response.data);
 
                 alert('수정 성공');
                 router.replace(`/questions/${question.questionDetail.board_id}`);

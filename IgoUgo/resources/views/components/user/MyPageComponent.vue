@@ -92,6 +92,7 @@
                     <div class="board-title">
                         <p>번호</p>
                         <p>카테고리</p>
+                        <p></p>
                         <p>제목</p>
                         <p>좋아요</p>
                         <p>작성일자</p>
@@ -106,6 +107,7 @@
                         <p v-else-if="item.product.contenttypeid === '32'">호텔</p>
                         <p v-else-if="item.product.contenttypeid === '38'">쇼핑</p>
                         <p v-else="item.product.contenttypeid === '39'">음식점</p>
+                        <p></p>
                         <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
                         <p>{{ item.likes_count }}</p>
                         <p>{{ item.created_at }}</p>
@@ -115,12 +117,14 @@
                     <div class="board-title">
                         <p>번호</p>
                         <p></p>
+                        <p></p>
                         <p>제목</p>
                         <p>좋아요</p>
                         <p>작성일자</p>
                     </div>
                     <div v-for="item in userFree" :key="item" class="board-content">
                         <p>{{ item.board_id }}</p>
+                        <p></p>
                         <p></p>
                         <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
                         <p>{{ item.likes_count }}</p>
@@ -433,7 +437,7 @@ const deletemodal = (userInfo) => {
 
 .board-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 7fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 0.8fr 8fr 0.8fr 1.5fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -454,7 +458,7 @@ const deletemodal = (userInfo) => {
 
 .board-content {
     display: grid;
-    grid-template-columns: 1fr 1fr 7fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 0.8fr 8fr 0.8fr 1.5fr;
     text-align: center;
     padding: 10px;
 }

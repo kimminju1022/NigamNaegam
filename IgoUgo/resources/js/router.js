@@ -73,18 +73,80 @@ import AdminQuestionManageComponent from '../views/adminComponents/question/Ques
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg;
+    const managerAuthFlg = store.state.auth.managerAuthFlg;
     const noAuthPassFlg = (to.path === '/login' || to.path === '/registration' || to.path === '/before/registration' || to.path === '/email/verify');
+    const adminRegex = /admin/;
     
-    if(authFlg && noAuthPassFlg) {
-        next('/');
+    // if(authFlg && noAuthPassFlg && !managerAuthFlg) {
+    //     next('/');
+    // } else if(!authFlg && !noAuthPassFlg) {
+    //     alert('로그인 후 이용가능');
+    //     window.location = '/login';
+    // } else {
+    //     next();
+    // }
+
+    if(!authFlg) {
+        if(!managerAuthFlg) {
+            if(!adminRegex.test(to.path)) {
+                if(!noAuthPassFlg) {
+                    alert('로그인 후 이용가능');
+                    window.location = '/login';
+                } else if(noAuthPassFlg) {
+                    next();
+                }
+            } else if(adminRegex.test(to.path)) {
+                window.location = '/';
+            }
+        } else if(managerAuthFlg) {
+            if(!adminRegex.test(to.path)) {
+                alert('관리자는 이용불가능');
+                window.location = '/admin/main';
+            } else if(adminRegex.test(to.path)) {
+                next();
+            }
+        }
+    } else if(authFlg) {
+        if(to.path === '/') {
+            next();
+        }else if(!adminRegex.test(to.path)) {
+            if(!noAuthPassFlg) {
+                next();
+            } else if(noAuthPassFlg) {
+                next('/');
+            }
+        }else if(adminRegex.test(to.path)) {
+            window.location = '/';
+        }
+    }
+
+    // else if(!managerAuthFlg && adminRegex.test(to.path)) {
+    //     // alert('관리자는 이용불가능');
+    //     // next('/admin/main');
+    //     window.location = '/';
+    // } else if(managerAuthFlg && !adminRegex.test(to.path)) {
+    //     alert('관리자는 이용불가능');
+    //     // next('/admin/main');
+    //     window.location = '/admin/main';
+    // } else if(managerAuthFlg) {
+    //     next();
+    // } 
+}
+
+const chkManagerAuth = (to, from, next) => {
+    const store = useStore();
+    const managerAuthFlg = store.state.auth.managerAuthFlg;
+    const noAuthPassFlg = (to.path === '/admin');
+    
+    if(managerAuthFlg && noAuthPassFlg) {
+        next('/admin');
     } else if(!authFlg && !noAuthPassFlg) {
-        alert('로그인 후 이용가능');
-        next('/login');
+        alert('관리자 로그인 후 이용가능');
+        next('/admin');
     } else {
         next();
     }
 }
-
 
 const routes = [
     // admin
@@ -97,46 +159,55 @@ const routes = [
     {
         path: '/admin/main',
         component: AdminMainComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_유저 관리
     {
         path: '/admin/user',
         component: AdminUserManageComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_게시판_API통합 관리
     {
         path: '/admin/board/api',
         component: AdminApiManageComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_게시판_리뷰게시판 관리
     {
         path: '/admin/board/review',
         component: AdminReviewManageComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_게시판_자유게시판 관리
     {
         path: '/admin/board/free',
         component: AdminFreeManageComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_체험단
     {
         path: '/admin/tester',
         component: AdminTesterComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_이달의 추천
     {
         path: '/admin/recommend',
         component: AdminMonthlyRecommendComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_공지사항
     {
         path: '/admin/notification',
         component: AdminNotificationComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_문의 관리
     {
         path: '/admin/question',
         component: AdminQuestionManageComponent,
+        beforeEnter: chkAuth,
     },
     // -------------------
 
@@ -144,6 +215,7 @@ const routes = [
     {
         path: '/',
         component: MainPageComponent,
+        beforeEnter: chkAuth,
     },
     // 로그인
     {

@@ -1,6 +1,6 @@
 <template>
 <!-- 로그인 유무 체크 필요 -->
-<div class="admin">
+<div v-if="$store.state.auth.managerAuthFlg" class="admin">
     <div class="admin-header-left">
         <div>
             <router-link to="/admin/main"><img class="admin-header-image" src="/img_admin/admin_logo.png" alt=""></router-link>
@@ -27,13 +27,13 @@
         <div>
             <div class="admin-user">
                 <div class="admin-user-image-info">
-                    <img class="admin-user-image" src="\logo_gam.png" alt="">
-                    <p class="admin-user-name">믿어핑</p>
+                    <img class="admin-user-image" :src="user.user_profile">
+                    <p class="admin-user-name">{{ user.user_nickname }}</p>
                 </div>
 
                 <div class="admin-user-info">
-                    <p>아이디 admin@admin.com</p>
-                    <p>유형 직책/닉네임</p>
+                    <p>아이디 {{ user.user_email }}</p>
+                    <p>닉네임 {{ user.user_nickname }}</p>
                 </div>
 
                 <div class="admin-user-box">
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="admin-user-btn">
-            <button class="admin-logout-btn">로그아웃</button>
+            <button @click="logout" class="admin-logout-btn">로그아웃</button>
         </div>
     </div>
     <div class="admin-header-right">
@@ -58,14 +58,16 @@
 </div>
 
 <!-- 로그인 안 했을 때 로그인 페이지만 뜸 -->
-<div v-if="false" class="login-container">
+<div v-if="!$store.state.auth.authFlg" class="login-container">
     <router-view></router-view>
 </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const dropdownVisible = ref(false);
 
 const showDropdown = () => {
@@ -75,6 +77,15 @@ const showDropdown = () => {
 const hideDropdown = () => {
     dropdownVisible.value = false;
 };
+
+const user = computed(()=> store.state.auth.managerInfo);
+
+const logout = () =>{
+    const check = confirm('로그아웃 하시겠습니까?');
+    if(check) {
+        store.dispatch('auth/adminLogout');
+    }
+}
 </script>
 
 <style>
@@ -131,17 +142,20 @@ const hideDropdown = () => {
     background-color: #bcbcbc;
     width: 230px;
     display: grid;
-    grid-template-rows: 180px 60px 120px;
+    /* grid-template-rows: 180px 60px 120px; */
+    grid-template-rows: 3fr 1fr 1.5fr;
     border-radius: 10px;
-    gap: 20px;
+    gap: 10px;
     justify-self: center;
 }
 .admin-user-image {
     width: 150px;
     height: 150px;
+    border-radius: 50%;
 }
 .admin-user-image-info {
     justify-self: center;
+    margin-top: 10px;
 }
 .admin-user-name {
     justify-self: center;
@@ -150,18 +164,21 @@ const hideDropdown = () => {
 }
 .admin-user-info {
     display: grid;
-    grid-template-rows: 30px 30px;
+    grid-template-rows: 1fr 1fr;
     justify-content: center;
+    align-content: center;
     color: #000;
 }
 
 /* 회색박스 안에 작은 흰색? 박스 */
 .admin-user-box {
     justify-self: center;
+    align-items: center;
 }
 .admin-user-option {
     display: grid;
-    grid-template-rows: 30px 60px;
+    /* grid-template-rows: 30px 60px; */
+    grid-template-rows: 1fr 2fr;
     /* background-color: #4c4c4c; */
     background-color: #888888;
     width: 200px;
@@ -202,18 +219,18 @@ const hideDropdown = () => {
 
 /* 버튼 밑줄 생기는 css */
 .admin-header-dropdown p {
-  position: relative;
+    position: relative;
 }
 
 .admin-header-dropdown p::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0; /* 처음에는 밑줄이 보이지 않음 */
-  height: 2px;
-  background-color: white;
-  transition: width 0.3s ease; /* 밑줄 길이가 늘어나는 애니메이션 */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0; /* 처음에는 밑줄이 보이지 않음 */
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s ease; /* 밑줄 길이가 늘어나는 애니메이션 */
 }
 
 .admin-header-dropdown p:hover::after {

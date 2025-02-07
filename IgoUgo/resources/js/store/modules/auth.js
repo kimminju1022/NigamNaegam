@@ -5,16 +5,24 @@ export default {
     namespaced: true,
     state: () => ({
         accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
-        authFlg: localStorage.getItem('accessToken') ? true : false,
+        authFlg: (localStorage.getItem('accessToken') && !localStorage.getItem('managerInfo')) ? true : false,
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
+        managerInfo: localStorage.getItem('managerInfo') ? JSON.parse(localStorage.getItem('managerInfo')) : {},
+        managerAuthFlg: localStorage.getItem('managerInfo') ? true : false,
         errorMsgList: [],
     }),
     mutations: {
         setAuthFlg(state, flg) {
             state.authFlg = flg;
         },
+        setManagerAuthFlg(state, flg) {
+            state.managerAuthFlg = flg;
+        },
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
+        },
+        setManagerInfo(state, managerInfo) {
+            state.managerInfo = managerInfo;
         },
         setAccessToken(state, accessToken) {
             state.accessToken = accessToken;
@@ -50,8 +58,12 @@ export default {
 
                 alert('어서와 처음이지');
 
-                // router.replace('/');
-                router.go(-1); // 이전 히스토리로 이동
+                router.replace('/');
+                // router.go(-1); // 이전 히스토리로 이동
+
+                // if (window.history.length <= 1) {
+                //     router.push('/');
+                // } // 이전 히스토리 없을 경우 메인으로 이동
             })
             .catch(error => {
                 let errorMsgList = [];
@@ -112,7 +124,6 @@ export default {
                 // cookie.remove('refreshToken');
                 // removeCookie('refreshToken');
                 
-    
                 router.replace('/');
             });
         },
@@ -236,7 +247,82 @@ export default {
             .catch(error => {
                 console.log(error);
             });
-        }
+        },
+
+
+        // 관리자 ---------------------------------------------------------------------------
+
+
+        // 관리자 로그인
+        adminLogin(context, userInfo) {
+            const url = '/api/admin/login';
+            const data = JSON.stringify(userInfo);
+
+            // console.log(userInfo,data);
+            context.commit('setErrorMsgList', []);
+            
+            axios.post(url, data)
+            .then(response => {
+
+                // 토큰 저장
+                localStorage.setItem('accessToken', response.data.accessToken);
+                localStorage.setItem('refreshToken', response.data.refreshToken);
+                localStorage.setItem('managerInfo', JSON.stringify(response.data.data));
+                context.commit('setManagerAuthFlg', true);
+                // context.commit('setAuthFlg', false);
+                context.commit('setManagerInfo', response.data.data);
+
+                alert('어서와 처음이지');
+
+                router.replace('/admin/main');
+            })
+            .catch(error => {
+                let errorMsgList = [];
+                const errorData = error.response.data;
+
+                if(error.response.status === 422) {
+                    errorMsgList.push('아이디 또는 비밀번호가 틀렸습니다.');
+                } else if(error.response.status === 401) {
+                    // 비밀번호 오류
+                    errorMsgList.push(errorData.msg);
+                } else {
+                    errorMsgList.push('예기치 못한 오류 발생');
+                }
+
+                context.commit('setErrorMsgList', errorMsgList);
+            });
+        },
+        
+        // 관리자 로그아웃
+        adminLogout(context, userInfo) {
+            const url = '/api/admin/logout';
+            const config = {
+                headers: {
+                    // content-type은 axios 불러와서 생략
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                } // bearer token 세팅
+            }
+
+            axios.post(url, null, config)
+            .then(response => {
+                alert('로그아웃 완료');
+            })
+            .catch(error => {
+                alert('문제가 발생하여 로그아웃 처리');
+            })
+            .finally(() => {
+                localStorage.clear();
+    
+                // state 초기화
+                context.commit('setManagerAuthFlg', false);
+                context.commit('setManagerInfo', {});
+
+                // cookie.remove('refreshToken');
+                // removeCookie('refreshToken');
+
+                router.replace('/admin');
+            });
+        },
     },
     getters: {
 

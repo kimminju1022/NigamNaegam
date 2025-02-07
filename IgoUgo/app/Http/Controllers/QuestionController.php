@@ -79,7 +79,7 @@ class QuestionController extends Controller
     // 게시글 작성
     public function store(BoardRequest $request) {
         try {
-            DB::transaction();
+            DB::beginTransaction();
             $insertData = $request->only('board_title','board_content');
             $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
             $insertData['view_cnt'] = 0;
@@ -251,7 +251,8 @@ class QuestionController extends Controller
         $board = Board::with('question')
                         ->find($id);
 
-        $board->delete();
+        // $board->delete();
+        $board->board_flg = '1';
 
         $board_img = BoardImage::with('board')
                                 ->where('board_id', $id)
@@ -263,7 +264,7 @@ class QuestionController extends Controller
                             ->where('board_id', $id)
                             ->first();
 
-        $question->delete();
+        $question->que_flg = '1';
 
         $responseData = [
             'success' => true

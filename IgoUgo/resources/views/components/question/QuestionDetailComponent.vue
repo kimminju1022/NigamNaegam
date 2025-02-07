@@ -43,7 +43,10 @@
                         <textarea readonly>{{ questionDetail.board_content }}</textarea>
                     </div>
                     <div class="board-user">
-                        <p>닉네임 : {{ questionDetail.user.user_nickname }}</p>
+                        <div class="border-user-profile">
+                            <img :src="questionDetail.user.user_profile">
+                            <p>by  {{ questionDetail.user.user_nickname }}</p>
+                        </div>
                         <p>{{ questionDetail.created_at }}</p>
                     </div>
                 </div>
@@ -136,7 +139,7 @@ const deleteQuestion = (id) => {
     font-weight: 600;
 }
 
-.board-content :not(:last-child){
+.board-content > div:not(:last-child){
     width: 90%;
     margin: 20px auto;
 }
@@ -223,6 +226,19 @@ const deleteQuestion = (id) => {
     display: flex;
     justify-content: flex-end;
     gap: 20px;
+}
+
+.border-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.board-user img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    border: 2px solid #01083a18;
 }
 
 .board-content textarea {
