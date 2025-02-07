@@ -4,25 +4,25 @@
             <p class="review-title">리뷰게시판</p>
             <hr class="hr-style">
         </div>
-        <div class="user-content-box">
-            <div class="user-list-title">
-                <p>🚨</p>
+        <div class="review-content-box">
+            <div class="review-list-title">
+                <p>신고</p>
                 <p>번호</p>
                 <p>제목</p>
                 <p>닉네임</p>
                 <p>이름</p>
                 <p>작성일자</p>
             </div>
-            <div class="user-list-box" >
-                <div class="user-item">
-                    <p></p>
+            <div class="review-list-box" >
+                <div class="review-item">
+                    <p>🚨</p>
                     <p>3</p>
                     <p>아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주</p>
                     <p>내가</p>
                     <p>누구게</p>
                     <p>2025-02-06 00:00:00</p>
                 </div>
-                <div class="user-item">
+                <div class="review-item">
                     <p></p>
                     <p>2</p>
                     <p>짧은 제목</p>
@@ -30,8 +30,8 @@
                     <p>뭐하게</p>
                     <p>2025-02-06 00:00:00</p>
                 </div>
-                <div class="user-item">
-                    <p></p>
+                <div class="review-item">
+                    <p>🚨</p>
                     <p>1</p>
                     <p>기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이임</p>
                     <p>후후후</p>
@@ -49,7 +49,7 @@
 </script>
 
 <style scoped>
-/* 게시판 관리 큰 틀 */
+/* 리뷰 게시판 큰 틀 */
 .review-container {
     height: 100%;
     display: grid;
@@ -57,7 +57,7 @@
     gap: 30px;
 }
 
-/* 게시판 관리 타이틀 */
+/* 리뷰 게시판 타이틀 */
 .review-title {
     font-weight: 600;
     font-size: 30px;
@@ -71,12 +71,12 @@
 }
 
 /* 게시판 리스트 */
-.user-content-box {
+.review-content-box {
     padding: 20px 10px;
     min-height: 100px;
     background-color: #fff;
 }
-.user-list-title {
+.review-list-title {
     display: grid;
     grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
     text-align: center;
@@ -84,15 +84,21 @@
     font-size: 18px;
     border-bottom: 1px solid #01083a;
 }
-.user-list-box {
+.review-list-box {
     padding: 5px;
 }
-.user-item{
+.review-item{
     display: grid;
     grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
     text-align: center;
     width: 100%;
     height: 30px;
     margin-top: 10px;
+}
+.review-item > p:nth-child(3) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
 }
 </style>
