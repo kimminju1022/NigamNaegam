@@ -7,7 +7,7 @@
         <div class="main-content-container">
             <div>
                 <p class="main-stat-title">가입 현황</p>
-                <!-- <canvas id="myChart"></canvas> -->
+                <div style="width: 300px; height: 300px;"><canvas id="myChart"></canvas></div>
             </div>
             <div>
                 <p class="main-stat-title">탈퇴 현황</p>
@@ -36,29 +36,39 @@
 </template>
 
 <script setup>
-const chartLoad = () => {
-    console.log('chartLoad 함수 실행');
-    if(!document.getElementById('myChart')) {
-        const script = document.createElement('script');
-        script.id = 'chart';
-        script.src = `/https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js`;
-        script.onload = () => {
-            console.log("chart 로드 성공");
-            // window.kakao.maps.load(() => {
-            //     myChart(); // 스크립트가 로드된 후 `loadKakaoMap` 실행
-            // });
-        };
-        document.head.appendChild(script);
+// const chartLoad = () => {
+//     console.log('chartLoad 함수 실행');
+//     if(!document.getElementById('myChart')) {
+//         const script = document.createElement('script');
+//         script.id = 'chart';
+//         script.src = `/https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js`;
+//         script.onload = () => {
+//             console.log("chart 로드 성공");
+//             // window.kakao.maps.load(() => {
+//             //     myChart(); // 스크립트가 로드된 후 `loadKakaoMap` 실행
+//             // });
+//         };
+//         document.head.appendChild(script);
 
-        myChart();
-    }
-};
+//         myChart();
+//     }
+// };
 
-const myChart = async() => {
+async() => {
     const ctx = document.getElementById('myChart');
+    const data = [
+        { year: 2010, count: 10 },
+        { year: 2011, count: 20 },
+        { year: 2012, count: 15 },
+        { year: 2013, count: 25 },
+        { year: 2014, count: 22 },
+        { year: 2015, count: 30 },
+        { year: 2016, count: 28 },
+    ];
+
 
     // Chart.js로 차트 생성
-    new Chart(ctx, {
+    new Chart(document.getElementById('myChart'), {
     type: 'bar',
     data: {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],

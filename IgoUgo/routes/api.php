@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
@@ -94,6 +95,15 @@ Route::get('/search/board/content', [SearchController::class, 'searchBoardConten
 
 // 관리자 로그인
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('auth.admin.login');
+
+// 차트
+Route::get('today/user/signup', [ChartController::class, 'showTodaySignUp']);
+Route::get('monthly/user/signup', [ChartController::class, 'showMonthlySignUp']);
+Route::get('today/user/delete', [ChartController::class, 'showTodayDeletedAccount']);
+Route::get('today/review', [ChartController::class, 'showTodayReview']);
+Route::get('today/free', [ChartController::class, 'showTodayFree']);
+Route::get('today/question/yet', [ChartController::class, 'showTodayQuestionYet']);
+Route::get('today/question/done', [ChartController::class, 'showTodayQuestionDone']);
 
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
