@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -32,22 +33,35 @@ class ProductController extends Controller
         $contentTypeId = $request->contenttypeid;
         $areaCode = $request->area_code;
         $sort = $request->sort;
-        Log::debug($sort);
-        $productList = Product::where('contenttypeid', $contentTypeId)
-                                ->when($areaCode, function($query, $areaCode) {
-                                    return $query->whereIn('products.area_code', $areaCode);
-                                })
-                                ->whereNotNull('firstimage')
-                                ->whereNotNull('area_code') // area_code 있는것만 가져오기
-                                ->select('contentid', 'title', 'firstimage')
-                                ->orderBy($sort, 'desc')
-                                ->paginate(32);
-        $responseData = [
-            'success' => true,
-            'msg' => '데이터 획득 성공',
-            'products' => $productList
-        ];
-        return response()->json($responseData);
+        $mapy = $request->latitude; // 위도 y축
+        $mapx = $request->longitude; // 경도 x축
+        $isActiveRank = $request->isActiveProductRanking;
+        // Log::debug($sort);
+
+        $ranking = Product::select('products.product_id', 'products.contentid', 'products.title', 'products.firstimage')
+                        ->where('contenttypeid', $contentTypeId)
+                        ->when($areaCode, function($query, $areaCode) { // 지역필터
+                            return $query->whereIn('products.area_code', $areaCode);  // 동적으로 주어진 $areaCode 배열에 포함된 hotels.area_code 값을 가진 데이터만 필터링한다
+                            // wherein 첫번째 인수 = 테이블.칼럼명, 두번째인수 = 비교할 배열
+                        })
+                        ->when($mapy && $mapx, function ($query) use ($mapy, $mapx) { // 가까운순
+                            return $query->selectRaw(
+                                "( 6371 * acos( cos( radians(?) ) * cos( radians(mapy) ) * cos( radians(mapx) - radians(?) ) + sin( radians(?) ) * sin( radians(mapy) ) ) ) AS distance",
+                                [$mapy, $mapx, $mapy]
+                            )->orderBy('distance', 'asc');
+                        })
+                        ->when($isActiveRank, function($query) {
+                            return $query->addSelect(DB::raw('IFNULL(AVG(reviews.rate), 0) as avg_rate'))
+                            ->leftJoin('reviews', 'products.product_id', '=', 'reviews.product_id')
+                            ->groupBy('products.product_id', 'products.title', 'products.firstimage', 'products.contentid')
+                            ->orderByDesc('avg_rate');
+                        })
+                        ->when($sort === 'createdtime', function ($query, $sort) {
+                            return $query->orderBy($sort, 'desc');
+                        })
+                        ->paginate(32);
+
+                        return response()->json($ranking->toArray());
     }
 
     public function areas(Request $request) {

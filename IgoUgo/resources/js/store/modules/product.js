@@ -15,6 +15,8 @@ export default {
         productLat: null,
         productLng: null,
         productRandom: null,
+        productSort: sessionStorage.getItem('productSort') ? sessionStorage.getItem('productSort') : 'createdtime',
+        productranking: false,
     }),
     mutations: {
         setProductTypeList(state, data) {
@@ -50,7 +52,15 @@ export default {
         },
         setProductRandom(state, data) {
             state.productRandom = data;
+        },
+        setProductSort(state, sort) {
+            state.productSort = sort;
+            sessionStorage.setItem('productSort', sort);
+        },
+        setProductRanking(state, data) {
+            state.productranking = data;
         }
+
     },
     actions: {
         takeProducts(context) {
@@ -70,6 +80,8 @@ export default {
 
         getProductsPagination(context, searchData) {
             return new Promise((resolve, reject) => {
+                // console.log('searchData', JSON.parse(JSON.stringify(searchData)));
+
                 const url = '/api/products/'+ searchData.contentTypeId;
                 const config = {
                     params: searchData

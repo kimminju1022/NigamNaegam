@@ -20,18 +20,18 @@
                         <span class="font-bold">정렬 순서</span>
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
-                        <p>에디터 추천</p>
+                    <div @click="nearBy()" class="order-list-item" :class="{ 'near-by-btn-disabled' : !isLocationAvailable}">
+                        <p :class="{ 'active-font-bold': isActiveNearBy }">에디터 추천</p>
                         <img src="/img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div @click="sortData('modifiedtime')" class="order-list-item">
-                        <p :class="{ 'active-font-bold': isActive }">최신순</p>
+                    <div @click="sortData()" class="order-list-item">
+                        <p :class="{ 'active-font-bold': isActiveSort }">최신순</p>
                         <span class="order-list-item-update font-bold">NEW</span>
                     </div>
                     <p>|</p>
-                    <div class="order-list-item">
-                        <p>별점순</p>
+                    <div  @click="highRanking()" class="order-list-item">
+                        <p :class="{ 'active-font-bold': isActiveRanking }">별점순</p>
                         <img src="/img_product/img_thumb.png" class="img-order">
                     </div>
                 </div>
@@ -136,30 +136,107 @@ const productTitle = ref('');
 // 상품 리스트 관련
 const products = computed(() => store.state.product.productList);
 const productsCnt = computed(() => store.state.product.productCnt);
-const actionName = 'product/getProductsPagination';
 const loading = computed(() => store.state.loading.loading);
+const actionName = 'product/getProductsPagination';
 
 // 필터 관련
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     contentTypeId: route.params.contenttypeid,
     area_code: store.state.product.productAreaCode,
-    sort: 'createdtime',
+    sort: store.state.product.productSort,
+    latitude: null,
+    longitude: null,
+    isActiveProductRanking: false
 });
 
-let isActive = false;
+let isActiveSort = ref(false);
+let isActiveRanking = ref(false);
+let isActiveNearBy = ref(false);
 
-function sortData(data) {
-    if(searchData.sort === data) {
-        searchData.sort = 'createdtime';
-        isActive = false
-    } else {
-        searchData.sort = data;
-        isActive = true
+function sortData() {
+    isActiveSort = !isActiveSort;
+    if (isActiveSort.value === true) {
+        isActiveRanking.value = false;
+        isActiveNearBy.value = false;
     }
-    // store.dispatch('product/getProductsPagination', searchData);
+    if (isActiveSort.value) {
+        searchData.sort = 'modifiedtime';
+        store.commit('product/setProductSort', 'modifiedtime');
+    } else {
+        searchData.sort = 'createdtime';
+        store.commit('product/setProductSort', 'createdtime');
+    }
     store.dispatch(actionName, searchData);
 }
+
+function highRanking() {
+    isActiveRanking.value = !isActiveRanking.value;
+    if (isActiveRanking.value) {
+        isActiveNearBy.value = false;
+        isActiveSort.value = false;
+        searchData.isActiveProductRanking = true;
+        store.commit('product/setProductRanking', true);
+    } else {
+        searchData.sort = 'createdtime';
+        store.commit('product/setProductSort', 'createdtime');
+    }
+    store.dispatch(actionName, searchData);
+}
+
+function nearBy() {
+    isActiveNearBy.value = !isActiveNearBy.value;
+    if (isActiveNearBy.value) {
+        isActiveSort.value = false;
+        isActiveRanking.value = false;
+    } else {
+        searchData.sort = 'createdtime';
+        store.commit('product/setProductSort', 'createdtime');
+    }
+    store.dispatch(actionName, searchData);
+}
+
+const isLocationAvailable = ref(true);
+
+function getCurrentLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // 위치 정보가 성공적으로 가져오면
+                searchData.latitude = position.coords.latitude;
+                searchData.longitude = position.coords.longitude;
+                // console.log(searchData.latitude);
+                // console.log(searchData.longitude);
+                isLocationAvailable.value = true; // 위치 정보 사용 가능
+
+                if (sessionStorage.getItem('productSort') === 'nearby') {
+                    searchData.sort = 'createdtime';
+                    store.commit('product/setProductSort', 'createdtime');
+                }
+
+                resolve();
+            },
+            (error) => {
+                // 위치 정보 가져오기 실패 시
+                console.log('위치 정보를 가져오는 데 실패');
+
+                searchData.sort = 'createdtime';
+                store.commit('product/setProductSort', 'createdtime');
+                store.dispatch(actionName, searchData);
+
+                console.error(error);
+                
+                isLocationAvailable.value = false; // 위치 정보 사용 불가
+                reject();
+            }
+            );
+        } else {
+            console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
+            reject();
+        }
+    }); 
+};
 
 watch(
     () => route.params.contenttypeid,
@@ -184,6 +261,7 @@ const flgSetup = () => {
     flg.value = window.innerWidth >= 1000 ? false : true;
 }
 onBeforeMount(async () => {
+    await getCurrentLocation();
     store.commit('loading/setLoading', true);
     // 타이틀
     productTitle.value = productIdList[route.params.contenttypeid];
@@ -720,6 +798,9 @@ const clearMarkers = () => {
     }
     .active-font-bold {
         font-weight: 900;
+    }
+    .near-by-btn-disabled {
+        opacity: 0.5;
     }
     /* 기타 등등 */
     .img-x { 
