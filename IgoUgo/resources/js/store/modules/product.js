@@ -89,13 +89,14 @@ export default {
 
                 axios.get(url, config)
                 .then(response => {
+                    // console.log(response);
                     context.commit('setProductList', response.data.products.data);
                     context.commit('setProductCnt', response.data.products.total);
                     context.commit('pagination/setPagination', response.data.products, {root: true});
                     return resolve();
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    console.log(error);
                     return reject();
                 })
             })

@@ -20,18 +20,18 @@
                         <span class="font-bold">정렬 순서</span>
                     </div>
                     <p>|</p>
-                    <div @click="nearBy()" class="order-list-item" :class="{ 'near-by-btn-disabled' : !isLocationAvailable}">
-                        <p :class="{ 'active-font-bold': isActiveNearBy }">에디터 추천</p>
+                    <div @click="sortData('nearby')" class="order-list-item" :class="{ 'near-by-btn-disabled' : !isLocationAvailable}">
+                        <p :class="{ 'active-font-bold': searchData.sort === 'nearby' }">가까운순</p>
                         <img src="/img_product/img_star.png" class="img-order">
                     </div>
                     <p>|</p>
-                    <div @click="sortData()" class="order-list-item">
-                        <p :class="{ 'active-font-bold': isActiveSort }">최신순</p>
+                    <div @click="sortData('modifiedtime')" class="order-list-item">
+                        <p :class="{ 'active-font-bold': searchData.sort === 'modifiedtime' }">최신순</p>
                         <span class="order-list-item-update font-bold">NEW</span>
                     </div>
                     <p>|</p>
-                    <div  @click="highRanking()" class="order-list-item">
-                        <p :class="{ 'active-font-bold': isActiveRanking }">별점순</p>
+                    <div  @click="sortData('rank')" class="order-list-item">
+                        <p :class="{ 'active-font-bold': searchData.sort === 'rank' }">별점순</p>
                         <img src="/img_product/img_thumb.png" class="img-order">
                     </div>
                 </div>
@@ -150,49 +150,15 @@ const searchData = reactive({
     isActiveProductRanking: false
 });
 
-let isActiveSort = ref(false);
-let isActiveRanking = ref(false);
-let isActiveNearBy = ref(false);
-
-function sortData() {
-    isActiveSort = !isActiveSort;
-    if (isActiveSort.value === true) {
-        isActiveRanking.value = false;
-        isActiveNearBy.value = false;
-    }
-    if (isActiveSort.value) {
-        searchData.sort = 'modifiedtime';
-        store.commit('product/setProductSort', 'modifiedtime');
-    } else {
+function sortData(sortType) {
+    if(sortType === searchData.sort) {
         searchData.sort = 'createdtime';
         store.commit('product/setProductSort', 'createdtime');
-    }
-    store.dispatch(actionName, searchData);
-}
-
-function highRanking() {
-    isActiveRanking.value = !isActiveRanking.value;
-    if (isActiveRanking.value) {
-        isActiveNearBy.value = false;
-        isActiveSort.value = false;
-        searchData.isActiveProductRanking = true;
-        store.commit('product/setProductRanking', true);
     } else {
-        searchData.sort = 'createdtime';
-        store.commit('product/setProductSort', 'createdtime');
+        searchData.sort = sortType;
+        store.commit('product/setProductSort', sortType);
     }
-    store.dispatch(actionName, searchData);
-}
 
-function nearBy() {
-    isActiveNearBy.value = !isActiveNearBy.value;
-    if (isActiveNearBy.value) {
-        isActiveSort.value = false;
-        isActiveRanking.value = false;
-    } else {
-        searchData.sort = 'createdtime';
-        store.commit('product/setProductSort', 'createdtime');
-    }
     store.dispatch(actionName, searchData);
 }
 
@@ -210,12 +176,7 @@ function getCurrentLocation() {
                 // console.log(searchData.longitude);
                 isLocationAvailable.value = true; // 위치 정보 사용 가능
 
-                if (sessionStorage.getItem('productSort') === 'nearby') {
-                    searchData.sort = 'createdtime';
-                    store.commit('product/setProductSort', 'createdtime');
-                }
-
-                resolve();
+                return resolve();
             },
             (error) => {
                 // 위치 정보 가져오기 실패 시
@@ -228,12 +189,12 @@ function getCurrentLocation() {
                 console.error(error);
                 
                 isLocationAvailable.value = false; // 위치 정보 사용 불가
-                reject();
+                return reject();
             }
             );
         } else {
             console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
-            reject();
+            return reject();
         }
     }); 
 };
@@ -265,7 +226,6 @@ onBeforeMount(async () => {
     store.commit('loading/setLoading', true);
     // 타이틀
     productTitle.value = productIdList[route.params.contenttypeid];
-    // searchData.sort = 'createdtime';
     flgSetup(); // 리사이즈 이벤트
     
     await store.dispatch(actionName, searchData);

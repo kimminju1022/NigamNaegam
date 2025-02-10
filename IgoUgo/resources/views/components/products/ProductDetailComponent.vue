@@ -12,7 +12,9 @@
                 <button @click="$router.replace('/products/' + productDetail.contenttypeid)" class="btn bg-clear btn-go-back">-> 리스트 페이지로 돌아가기</button>
                 <!-- <p>3D 프린터 테라리움 원데이 클래스 (DIY 키트 배송 가능)</p> -->
             </div>
-            <div>
+            <LoadingComponent v-if="loading"/>
+
+            <div v-else>
                 <div class="link-group">
                     <p class="detail-button-style">🚩{{ productDetail.addr1 + ' ' + productDetail.addr2 }}</p>
                     <a v-if="productDetail.homepage" :href="filterHomepage(productDetail.homepage)" class="detail-button-style" target="_blank">-> 홈페이지로 이동</a>
@@ -76,9 +78,11 @@ import { computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch } fr
 import env from '../../../js/env';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
+import LoadingComponent from '../LoadingComponent.vue';
 
 const store = useStore();
 const route = useRoute();
+const loading = computed(() => store.state.loading.loading);
 
 // 상품 상세
 const productImg = computed(() => store.state.product.productImg);
@@ -94,7 +98,9 @@ const findData = reactive({
 });
 
 onBeforeMount(async () => {
+    store.commit('loading/setLoading', true);
     await store.dispatch('product/takeProductDetail', findData);
+    store.commit('loading/setLoading', false);
 });
 
 // const map = ref(null); // 지도 객체를 저장
@@ -102,16 +108,20 @@ var map = null;
 
 onMounted(() => {
     // DOM 렌더링 후에 Kakao 지도 로딩
-    nextTick(() => {
-        if (window.kakao && window.kakao.maps) {
-            console.log("Kakao Maps is available.");
-            if (productLat.value && productLng.value) {
-                loadKakaoMap();
-            } else {
-                console.log("Lat or Lng is null during onMounted.");
-            }
-        } else {
-            loadKakaoMapScript();
+    watch(loading, (newLoading) => {
+        if (!newLoading) {
+            // 로딩이 끝났을 때 지도를 초기화
+            nextTick(() => {
+                if (window.kakao && window.kakao.maps) {
+                    if (productLat.value && productLng.value) {
+                        loadKakaoMap();
+                    } else {
+                        console.log("Lat or Lng is null.");
+                    }
+                } else {
+                    loadKakaoMapScript();
+                }
+            });
         }
     });
 });
