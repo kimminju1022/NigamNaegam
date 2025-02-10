@@ -365,7 +365,7 @@ export default {
             axios.get(url, config)
             .then(response =>{
                 context.commit('setBoardComments', response.data.comments.data);
-                context.commit('', response.data.comments.total);
+                // context.commit('', response.data.comments.total);
                 context.commit('pagination/setPagination', response.data.comments, {root: true});
             })
             .catch(error => {

@@ -102,7 +102,7 @@ class SearchController extends Controller
 
         $bc_code = Board::select('boards.bc_code');
 
-        $boards = Board::with('board_category', 'product')
+        $boards = Board::with(['board_category', 'product'])
                             ->where('boards.bc_code', '=', $request->bc_code)
                             ->where(function($query) use ($key) {
                                 $query->where('board_title', 'LIKE', '%' . $key . '%')
@@ -136,7 +136,7 @@ class SearchController extends Controller
             'success' => true
             ,'msg' => '검색결과 획득 성공'
             ,'board' => $boards->toArray()
-            ,'bcName' => $boards->bc_name
+            // ,'bcName' => $boards->board_category['bc_name']
             ,'rcName' => $bc_code === '0' ? $boards->rc_name : ''
             ,'areaName' => $bc_code === '0' ? $boards->area_name : ''
             ,'productId' => $bc_code === '0' ? $boards->productId : ''

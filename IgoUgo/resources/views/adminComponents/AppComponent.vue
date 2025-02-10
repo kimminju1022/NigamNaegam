@@ -58,7 +58,7 @@
 </div>
 
 <!-- 로그인 안 했을 때 로그인 페이지만 뜸 -->
-<div v-if="!$store.state.auth.authFlg" class="login-container">
+<div v-if="!$store.state.auth.managerAuthFlg" class="login-container">
     <router-view></router-view>
 </div>
 </template>

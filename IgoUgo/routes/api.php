@@ -100,13 +100,13 @@ Route::get('/search/board/content', [SearchController::class, 'searchBoardConten
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('auth.admin.login');
 
 // 차트
-Route::get('today/user/signup', [ChartController::class, 'showTodaySignUp']);
-Route::get('monthly/user/signup', [ChartController::class, 'showMonthlySignUp']);
-Route::get('today/user/delete', [ChartController::class, 'showTodayDeletedAccount']);
-Route::get('today/review', [ChartController::class, 'showTodayReview']);
-Route::get('today/free', [ChartController::class, 'showTodayFree']);
-Route::get('today/question/yet', [ChartController::class, 'showTodayQuestionYet']);
-Route::get('today/question/done', [ChartController::class, 'showTodayQuestionDone']);
+Route::get('/admin/today/user/signup', [ChartController::class, 'showTodaySignUp']);
+Route::get('/admin/monthly/user/signup', [ChartController::class, 'showMonthlySignUp']);
+Route::get('/admin/today/user/delete', [ChartController::class, 'showTodayDeletedAccount']);
+Route::get('/admin/today/review', [ChartController::class, 'showTodayReview']);
+Route::get('/admin/today/free', [ChartController::class, 'showTodayFree']);
+Route::get('/admin/today/question/yet', [ChartController::class, 'showTodayQuestionYet']);
+Route::get('/admin/today/question/done', [ChartController::class, 'showTodayQuestionDone']);
 
 // 유저 관리
 Route::get('/admin/user', [UserManageController::class, 'getUserList']);

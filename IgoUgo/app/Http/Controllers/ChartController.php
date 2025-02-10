@@ -27,7 +27,7 @@ class ChartController extends Controller
 
     // 한 달 가입회원 수
     public function showMonthlySignUp() {
-        Log::debug('함수실행');
+        Log::debug('함수 실행');
         $date_start = Carbon::today()->startOfMonth()->toDateString();
         $date_end = Carbon::today()->endOfMonth()->toDateString();
 
@@ -43,22 +43,7 @@ class ChartController extends Controller
         ];
         return response()->json($responseData, 200);
     }
-
-    // 오늘 가입회원 수
-    public function showTodaySignUp() {
-        $date = Carbon::today()->toDateString();
-
-        $today_user = User::whereDate('created_at', $date)
-                            ->count();
-
-        $responseData = [
-            'success' => true
-            ,'msg' =>'오늘 가입회원 수 획득 성공'
-            ,'data' => $today_user
-        ];
-        return response()->json($responseData, 200);
-    }
-
+    
     // 오늘 탈퇴회원 수
     public function showTodayDeletedAccount() {
         $date = Carbon::today()->toDateString();
@@ -73,7 +58,7 @@ class ChartController extends Controller
             ,'data' => $today_user
         ];
         return response()->json($responseData, 200);
-    }x
+    }
 
     // 오늘 리뷰게시판 게시글 수
     public function showTodayReview() {

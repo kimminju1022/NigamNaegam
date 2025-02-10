@@ -3,7 +3,7 @@
         {{ bcName }} 
     </h2>
     <div class="board-search-tb">
-        <input v-moedl="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+        <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
         <!-- <button @click="$store.dispatch('/search/board')" class="btn bg-navy board-search-btn">검색</button> -->
         <button @click="searchBoardContent" class="btn bg-navy board-search-btn">검색</button>
     </div>
