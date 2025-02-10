@@ -71,12 +71,40 @@ import AdminNotificationComponent from '../views/adminComponents/notification/No
 import AdminQuestionManageComponent from '../views/adminComponents/question/QuestionManageComponent.vue';
 
 const chkAuth = (to, from, next) => {
+
+    // 유저가 로그인없이 이용가능한 페이지
+    const userSitePathRegexList = [
+        /^\/$/
+        ,/^\/login$/
+        ,/^\/registration$/
+        ,/^\/before\/registration$/
+        ,/^\/email\/verify$/
+        ,/^\/social\/login$/
+        ,/^\/email\/verify\/[0-9]+\/[a-z0-9]+$/
+        ,/^\/find\/pw\/send-email$/
+        ,/^\/find\/pw\/[0-9]+\/[a-z0-9]+$/
+        ,/^\/verify\/pw\/[0-9]+$/
+        ,/^\/hotels$/
+        ,/^\/hotels\/map$/
+        ,/^\/hotels\/[0-9]+$/
+        ,/^\/products$/
+        ,/^\/products\/[0-9]+$/
+        ,/^\/products\/[0-9]+\/[0-9]+$/
+        ,/^\/boards$/
+        ,/^\/boards\/[0-9]+$/
+        ,/^\/questions$/
+        ,/^\/search$/
+    ];
+
     const store = useStore();
     const authFlg = store.state.auth.authFlg;
     const managerAuthFlg = store.state.auth.managerAuthFlg;
-    const noAuthPassFlg = (to.path === '/login' || to.path === '/registration' || to.path === '/before/registration' || to.path === '/email/verify');
+    // const noAuthPassFlg = (to.path === '/' ||to.path === '/login' || to.path === '/registration' || to.path === '/before/registration' || to.path === '/email/verify');
+    const noAuthPassFlg = userSitePathRegexList.some(item => item.test(to.path));
+    const managerNoAuthPassFlg = (to.path === '/admin');
     const adminRegex = /admin/;
-    
+    // console.log(to.path, noAuthPassFlg);
+
     // if(authFlg && noAuthPassFlg && !managerAuthFlg) {
     //     next('/');
     // } else if(!authFlg && !noAuthPassFlg) {
@@ -86,39 +114,52 @@ const chkAuth = (to, from, next) => {
     //     next();
     // }
 
-    if(!authFlg) {
-        if(!managerAuthFlg) {
-            if(!adminRegex.test(to.path)) {
+    if(!authFlg) { // 로그인 X
+        if(!managerAuthFlg) { // 매니저 X
+            if(!adminRegex.test(to.path)) { // path에 'admin 포함 X'
                 if(!noAuthPassFlg) {
                     alert('로그인 후 이용가능');
                     window.location = '/login';
                 } else if(noAuthPassFlg) {
                     next();
                 }
-            } else if(adminRegex.test(to.path)) {
-                window.location = '/';
+            } else if(adminRegex.test(to.path)) { // path에 'admin 포함 O'
+                if(!managerNoAuthPassFlg) {
+                    window.location = '/';
+                } else {
+                    next();
+                }
             }
-        } else if(managerAuthFlg) {
-            if(!adminRegex.test(to.path)) {
+        } else if(managerAuthFlg) { // 매니저 O
+            if(!adminRegex.test(to.path)) { // path에 'admin 포함 X'
                 alert('관리자는 이용불가능');
                 window.location = '/admin/main';
-            } else if(adminRegex.test(to.path)) {
-                next();
+            } else if(adminRegex.test(to.path)) { // path에 'admin 포함 O'
+                if(managerNoAuthPassFlg) {
+                    next('/admin/main');
+                } else if (!managerNoAuthPassFlg) {
+                    next();
+                }
             }
         }
-    } else if(authFlg) {
+    } else if(authFlg) { // 로그인 O -> 일반유저
         if(to.path === '/') {
             next();
-        }else if(!adminRegex.test(to.path)) {
+        }else if(!adminRegex.test(to.path)) { // path에 'admin 포함 X'
             if(!noAuthPassFlg) {
                 next();
             } else if(noAuthPassFlg) {
-                next('/');
-            }
-        }else if(adminRegex.test(to.path)) {
+                next();
+            } // 여기를 굳이 체크해야하는가 그냥 next()하면 안되나?
+        }else if(adminRegex.test(to.path)) { // path에 'admin 포함 O'
             window.location = '/';
         }
     }
+
+    // 비로그인 -> '/' 로그인 후 이용가능 alert
+    // 일반유저 로그인 후 -> /admin하면 흰 화면, 그외 '/'이동가능
+    // 관리자 '/admin' 막아야함
+
 
     // else if(!managerAuthFlg && adminRegex.test(to.path)) {
     //     // alert('관리자는 이용불가능');
@@ -133,27 +174,13 @@ const chkAuth = (to, from, next) => {
     // } 
 }
 
-const chkManagerAuth = (to, from, next) => {
-    const store = useStore();
-    const managerAuthFlg = store.state.auth.managerAuthFlg;
-    const noAuthPassFlg = (to.path === '/admin');
-    
-    if(managerAuthFlg && noAuthPassFlg) {
-        next('/admin');
-    } else if(!authFlg && !noAuthPassFlg) {
-        alert('관리자 로그인 후 이용가능');
-        next('/admin');
-    } else {
-        next();
-    }
-}
-
 const routes = [
     // admin
     // 관리자 페이지_로그인
     {
         path: '/admin',
         component: AdminLoginComponent,
+        beforeEnter: chkAuth,
     },
     // 관리자 페이지_메인
     {
@@ -243,23 +270,28 @@ const routes = [
     {
         path: '/email/verify',
         component: VerifiedEmailComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/email/verify/:id/:hash',
         component: VerifiedLoadingComponent,
+        beforeEnter: chkAuth,
     },
     // 비밀번호 찾기
     {
         path: '/find/pw/send-email',
         component: FindPasswordComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/find/pw/:id/:hash',
         component: FindPasswordLoadingComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/verify/pw/:id',
         component: VerifiedPasswordUpdateComponent,
+        beforeEnter: chkAuth,
     },
     // 유저
     {
@@ -285,37 +317,45 @@ const routes = [
     // 호텔
     {
         path: '/hotels',
-        component: HotelListComponent
+        component: HotelListComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/hotels/map',
         component: HotelMapComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/hotels/:contentid',
         component: HotelListDetailComponent,
+        beforeEnter: chkAuth,
     },
     // 상품
     {
         path: '/products',
         component: ProductMainComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/products/:contenttypeid',
         component: ProductListComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/products/:contenttypeid/:contentid',
         component: ProductDetailComponent,
+        beforeEnter: chkAuth,
     },
     // 게시판
     {
         path: '/boards',
         component: BoardListComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/boards/:id',
         component: BoardDetailComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/boards/create',
@@ -336,6 +376,7 @@ const routes = [
     {
         path: '/questions',
         component: QuestionListComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/questions/create',
@@ -345,6 +386,7 @@ const routes = [
     {
         path: '/questions/:id',
         component: QuestionDetailComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/questions/:id/edit',
@@ -359,15 +401,16 @@ const routes = [
     {
         path: '/search',
         component: SearchComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
     },
-    {
-        path: '/board/:id/report',
-        component: BoardDetailComponent,
-    },
+    // {
+    //     path: '/board/:id/report',
+    //     component: BoardDetailComponent,
+    // },
 ];
 
 
