@@ -26,52 +26,69 @@
                         <p>신고 누적 회원</p>
                         <p class="user-current-cnt">2</p>
                     </div>
+                    <div class="user-current-item">
+                        <p>제재 받은 회원</p>
+                        <p class="user-current-cnt">7</p>
+                    </div>
                 </div>
             </div>
 
             <div class="user-content-box">
                 <div class="user-list-title">
                     <p>번호</p>
+                    <p>이메일</p>
                     <p>닉네임</p>
                     <p>이름</p>
-                    <p>가입일</p>
-                    <p>게시글 수</p>
-                    <p>댓글 수</p>
+                    <p>가입일자</p>
+                    <p>탈퇴</p>
+                    <p>제재 기간</p>
+                    <p>제재 만료일자</p>
                 </div>
                 <div class="user-list-box" >
-                    <div class="user-item">
-                        <p>3</p>
-                        <p>나다</p>
-                        <p>이 새꺄</p>
-                        <p>2025-02-06 00:00:00</p>
-                        <p>100</p>
-                        <p>50</p>
-                    </div>
-                    <div class="user-item">
-                        <p>2</p>
-                        <p>그렇게</p>
-                        <p>다 가져가야만</p>
-                        <p>2025-02-06 00:00:00</p>
-                        <p>100</p>
-                        <p>50</p>
-                    </div>
-                    <div class="user-item">
-                        <p>1</p>
-                        <p>속이</p>
-                        <p>후련했냐!!</p>
-                        <p>2025-02-06 00:00:00</p>
-                        <p>100</p>
-                        <p>50</p>
-                    </div>
-                    <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
+                    <div v-for="item in userList" :ket="item" class="user-item">
+                            <router-link :to="`/admin/user/${item.user_id}`">
+                                <p>{{ item.user_id }}</p>
+                                <p>{{ item.user_email }}</p>
+                                <p>{{ item.user_nickname }}</p>
+                                <p>{{ item.user_name }}</p>
+                                <p>{{ item.created_at }}</p>
+                                <p>탈퇴</p>
+                                <p>영구정지</p>
+                                <p>9999-12-31 23:59:59</p>
+                            </router-link>
+                        </div>
                 </div>
+                <PaginationComponent
+                    :actionName="actionName"
+                    :searchData="searchData"
+                    :currentPage="$store.state.pagination.currentPage"
+                    :lastPage="$store.state.pagination.lastPage"
+                    :viewPageNumber="$store.state.pagination.viewPageNumber"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
+import PaginationComponent from '../../components/PaginationComponent.vue';
 
+const store = useStore();
+const actionName = 'userManage/showUserList';
+
+// 유저 리스트
+const userList = computed(() => store.state.userManage.userList);
+
+// 필터 관련
+const searchData = reactive({
+    page: store.state.pagination.currentPage,
+});
+
+onBeforeMount(() => {
+    store.dispatch(actionName, searchData);
+});
 </script>
 
 <style scoped>
@@ -137,7 +154,7 @@
 /* 유저 리스트 영역 관련 */
 .user-list-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1.5fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     font-size: 18px;
@@ -145,13 +162,26 @@
 }
 .user-list-box {
     padding: 5px;
+    margin-bottom: 15px;
 }
-.user-item{
+.user-item a{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1.5fr;
     text-align: center;
     width: 100%;
-    height: 30px;
+    height: 25px;
     margin-top: 10px;
+}
+.user-item > :nth-child(n + 2):nth-child(-n + 4){
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    padding: 0 10px;
+}
+
+/* 체크 아이콘 */
+.icon-check {
+    width: 20px;
 }
 </style>

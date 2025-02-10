@@ -10,6 +10,7 @@ import verification from './modules/verification';
 import map from './modules/map';
 import loading from './modules/loading';
 import search from './modules/search';
+import userManage from './modules/admin/userManage'
 
 export default createStore({
     modules: {
@@ -24,5 +25,7 @@ export default createStore({
         map,
         loading,
         search,
+        // 관리자
+        userManage,
     }
 })

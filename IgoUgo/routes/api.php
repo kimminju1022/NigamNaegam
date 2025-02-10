@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\UserManageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ChartController;
@@ -93,6 +94,8 @@ Route::get('/search/board/tester', [SearchController::class, 'searchTester']);
 Route::get('/search/board/content', [SearchController::class, 'searchBoardContent']);
 
 
+// 관리자 사이트 ---------------------------------------------------------------------------------------
+
 // 관리자 로그인
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('auth.admin.login');
 
@@ -105,6 +108,12 @@ Route::get('today/free', [ChartController::class, 'showTodayFree']);
 Route::get('today/question/yet', [ChartController::class, 'showTodayQuestionYet']);
 Route::get('today/question/done', [ChartController::class, 'showTodayQuestionDone']);
 
+// 유저 관리
+Route::get('/admin/user', [UserManageController::class, 'getUserList']);
+
+
+
+// 인증 관련 ---------------------------------------------------------------------------------------
 // 인증필요 라우트 그룹
 Route::middleware('my.auth')->group(function() {
     // 로그아웃

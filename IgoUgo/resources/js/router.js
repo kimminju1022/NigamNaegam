@@ -52,6 +52,7 @@ import AdminMainComponent from '../views/adminComponents/main/MainComponent.vue'
 
 // 유저 관리
 import AdminUserManageComponent from '../views/adminComponents/user/UserManageComponent.vue';
+import AdminUserManageDetailComponent from '../views/adminComponents/user/UserManageDetailComponent.vue';
 
 // 게시판 관리
 import AdminApiManageComponent from '../views/adminComponents/board/ApiManageComponent.vue';
@@ -192,6 +193,11 @@ const routes = [
     {
         path: '/admin/user',
         component: AdminUserManageComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/user/:id',
+        component: AdminUserManageDetailComponent,
         beforeEnter: chkAuth,
     },
     // 관리자 페이지_게시판_API통합 관리
