@@ -22,6 +22,8 @@ class AuthController extends Controller
     public function login(UserRequest $request) {
         $userInfo = User::where('user_email', $request->user_email)->first();
 
+        $userInfo->user_last_login = now();
+
         // 관리자인지 일반 유저인지 체크
         if($userInfo->manager_flg === '1') {
             throw new AuthenticationException('회원 정보 오류');
@@ -251,6 +253,8 @@ class AuthController extends Controller
     // 관리자 로그인
     public function adminLogin(UserRequest $request) {
         $userInfo = User::where('user_email', $request->user_email)->first();
+
+        $userInfo->user_last_login = now();
 
         // 관리자인지 일반 유저인지 체크
         if($userInfo->manager_flg === '0') {
