@@ -6,103 +6,128 @@
         </div>
         <div class="user-detail-content-container">
             <div class="user-detail-box box1">
-                <img class="user-profile" src="/logo_gam.png">
+                <img class="user-profile" :src="userDetail.user_profile">
                 <div class="user-personal-info">
                     <div class="user-info-list">
                         <p>이메일</p>
-                        <p>비밀번호</p>
                         <p>이름</p>
                         <p>닉네임</p>
                         <p>전화번호</p>
                     </div>
                     <div class="user-info-list">
-                        <p>tt@test.com</p>
-                        <p>tttttt</p>
-                        <p>테스트</p>
-                        <p>테에스으트으</p>
-                        <p>01000000000</p>
+                        <p>{{ userDetail.user_email }}</p>
+                        <p>{{ userDetail.user_name }}</p>
+                        <p>{{ userDetail.user_nickname }}</p>
+                        <p>{{ userDetail.user_phone }}</p>
                     </div>
                 </div>
                 <button class="btn bg-navy user-detail-update-btn">수정</button>
             </div>
-            <div class="user-detail-box"></div>
-            <div class="user-detail-box">
-                <div>
+
+            <div class="user-detail-box box2">
+                <div class="user-detail-box-second-title">활동 정보</div>
+                <div class="user-active-info">
+                    <div>가입일자 : {{ userDetail.created_at }}</div>
+                    <div>최근 로그인 : {{ userDetail.user_last_login }}</div>
                     <div>
+                        <p class="user-active-info-little-title">작성글 수</p>
+                        <div class="pd-left">
+                            <p class="item-bottom">리뷰 : 10개</p>
+                            <p class="item-bottom">자유 : 30개</p>
+                            <p class="item-bottom">문의 : 5개</p>
+                            <p class="item-bottom">댓글 : 50개</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="user-active-info-little-box">
+                            <p class="user-active-info-little-title">제재 누적 횟수</p>
+                            <p class="pd-left">2<span>회</span></p>
+                        </div>
+                        <div class="user-active-info-little-box">
+                            <p class="user-active-info-little-title">제재 기간</p>
+                            <p class="pd-left">
+                                <input type="radio" name="time" id="three-days" value="1">
+                                <label class="label-style" for="three-days">3일</label>
+                                <input type="radio" name="time" id="seven-days" value="2">
+                                <label class="label-style" for="seven-days">1주</label>
+                                <input type="radio" name="time" id="one-month" value="3">
+                                <label class="label-style" for="one-month">1달</label>
+                                <input type="radio" name="time" id="one-year" value="4">
+                                <label class="label-style" for="one-year">1년</label>
+                                <input type="radio" name="time" id="forever" value="5">
+                                <label class="label-style" for="forever">영구정지</label>
+                                <button class="btn bg-navy user-control-btn">적용</button>
+                            </p>
+                        </div>
+                        <div class="user-active-info-little-box">
+                            <p class="user-active-info-little-title">제재 만료 일자</p>
+                            <p class="pd-left">2025-02-06 00:00:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-detail-box box3">
+                <div>
+                    <div class="user-detail-report">
                         <p>신고 당한 게시글</p>
                     </div>
                     <div class="user-detail-list-title">
-                        <p>신고</p>
                         <p>번호</p>
                         <p>제목</p>
-                        <p>닉네임</p>
-                        <p>이름</p>
                         <p>작성일자</p>
+                        <p>신고 수</p>
                     </div>
                     <div class="user-detail-list-box" >
                         <div class="user-detail-item">
-                            <p>🚨</p>
                             <p>3</p>
-                            <p>아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주</p>
-                            <p>내가</p>
-                            <p>누구게</p>
+                            <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
+                            <p>10</p>
                         </div>
                         <div class="user-detail-item">
-                            <p></p>
                             <p>2</p>
-                            <p>짧은 제목</p>
-                            <p>알아서</p>
-                            <p>뭐하게</p>
+                            <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
+                            <p>10</p>
                         </div>
                         <div class="user-detail-item">
-                            <p>🚨</p>
                             <p>1</p>
-                            <p>기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이임</p>
-                            <p>후후후</p>
-                            <p>하하하</p>
+                            <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
+                            <p>10</p>
                         </div>
                         <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
                     </div>
                 </div>
                 <div>
-                    <div>
+                    <div class="user-detail-report">
                         <p>신고 당한 댓글</p>
                     </div>
                     <div class="user-detail-list-title">
-                        <p>신고</p>
-                        <p>번호</p>
-                        <p>제목</p>
-                        <p>닉네임</p>
-                        <p>이름</p>
-                        <p>작성일자</p>
+                        <p>글 번호</p>
+                        <p>글 제목</p>
+                        <p>댓글 작성일자</p>
+                        <p>신고 수</p>
                     </div>
                     <div class="user-detail-list-box" >
                         <div class="user-detail-item">
-                            <p>🚨</p>
                             <p>3</p>
-                            <p>아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주</p>
-                            <p>내가</p>
-                            <p>누구게</p>
+                            <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
+                            <p>10</p>
                         </div>
                         <div class="user-detail-item">
-                            <p></p>
                             <p>2</p>
-                            <p>짧은 제목</p>
-                            <p>알아서</p>
-                            <p>뭐하게</p>
+                            <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
+                            <p>10</p>
                         </div>
                         <div class="user-detail-item">
-                            <p>🚨</p>
                             <p>1</p>
-                            <p>기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이임</p>
-                            <p>후후후</p>
-                            <p>하하하</p>
+                            <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
+                            <p>10</p>
                         </div>
                         <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
                     </div>
@@ -113,7 +138,25 @@
 </template>
 
 <script setup>
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex'; 
+import { useRoute } from 'vue-router';
 
+const store = useStore();
+const route = useRoute();
+
+// 유저 상세 정보
+const userDetail = computed(() => store.state.userManage.userDetail);
+
+// 유저id
+const findData = reactive({
+    user_id: route.params.id
+});
+
+onBeforeMount(() => {
+    store.dispatch('userManage/showUserDetail', findData);
+    store.dispatch('userManage/showUserBoardCnt', findData);
+});
 </script>
 
 <style scoped>
@@ -141,16 +184,13 @@
 /* 유저 상세 내용 영역 */
 .user-detail-content-container {
     display: grid;
-    grid-template-columns: 450px 1fr;
+    grid-template-columns: 350px 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 20px;
 }
 .user-detail-box {
     background-color: #fff;
-    padding: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    padding: 20px;
 }
 
 /* 유저 내용 박스 1 */
@@ -172,7 +212,6 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    font-size: 20px;
 }
 .user-info-list p {
     margin: 10px 0;
@@ -181,20 +220,66 @@
     font-size: 20px;
     padding: 10px 20px;
     border-radius: 10px;
+    border: 1px solid #01083a;
 }
 .user-detail-update-btn:hover {
     background-color: #fff;
     color: #01083a;
     border: 1px solid #01083a;
 }
+
 /* 유저 내용 박스 2 */
+.box2 {
+    display: grid;
+    grid-template-rows: 50px 1fr;
+}
+.user-detail-box-second-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.user-active-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 30px 1fr;
+    gap: 20px;
+}
+.user-active-info-little-title {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #01083a;
+}
+.user-active-info-little-box {
+    margin-bottom: 20px;
+}
+.user-control-btn {
+    padding: 0 5px;
+    border: 1px solid #01083a;
+    border-radius: 5px;
+}
+.user-control-btn:hover {
+    background-color: #fff;
+    color: #01083a;
+    border: 1px solid #01083a;
+}
+.item-bottom {
+    margin-bottom: 10px;
+}
+
 /* 유저 내용 박스 3 */
+.box3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.user-detail-report {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
 .user-detail-list-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
     text-align: center;
     padding: 0 5px 10px 5px;
-    font-size: 18px;
     border-bottom: 1px solid #01083a;
 }
 .user-detail-list-box {
@@ -202,10 +287,24 @@
 }
 .user-detail-item{
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;
     margin-top: 10px;
+}
+.user-detail-item > :nth-child(n + 2):nth-child(-n + 4) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+}
+
+/* 기타 스타일 */
+.pd-left {
+    padding-left: 10px;
+}
+.label-style {
+    margin: 0 10px;
 }
 </style>

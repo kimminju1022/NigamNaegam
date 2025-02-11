@@ -11,15 +11,15 @@
                 <div @mouseenter="showDropdown" @mouseleave="hideDropdown">
                     <p>게시판관리</p>
                     <div v-if="dropdownVisible" class="admin-dropdown-menu">
-                        <router-link to="/admin/board/api"><p>API통합 관리</p></router-link>
+                        <!-- <router-link to="/admin/board/api"><p>API통합 관리</p></router-link> -->
                         <router-link to="/admin/board/review"><p>리뷰게시판</p></router-link>
                         <router-link to="/admin/board/free"><p>자유게시판</p></router-link>
                     </div>
                 </div>
                 
                 <router-link to="/admin/tester"><p>체험단</p></router-link>
-                <router-link to="/admin/recommend"><p>이달의 추천</p></router-link>
-                <router-link to="/admin/notification"><p>공지사항</p></router-link>
+                <!-- <router-link to="/admin/recommend"><p>이달의 추천</p></router-link>
+                <router-link to="/admin/notification"><p>공지사항</p></router-link> -->
                 <router-link to="/admin/question"><p>문의 관리</p></router-link>
                 <!-- <p>통계</p> -->
             </div>
@@ -36,7 +36,7 @@
                     <p>닉네임 {{ user.user_nickname }}</p>
                 </div>
 
-                <div class="admin-user-box">
+                <!-- <div class="admin-user-box">
                     <div class="admin-user-option">
                         <p>운영진</p>
                         <div class="admin-user-image-view">
@@ -45,7 +45,7 @@
                             <img class="admin-user-image-small" src="\logo_gam.png" alt="">
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="admin-user-btn">

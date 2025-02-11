@@ -110,6 +110,8 @@ Route::get('/admin/today/question/done', [ChartController::class, 'showTodayQues
 
 // 유저 관리
 Route::get('/admin/user', [UserManageController::class, 'getUserList']);
+Route::get('/admin/user/{id}', [UserManageController::class, 'getUserDetail']);
+Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'getBoardCnt']);
 
 
 
