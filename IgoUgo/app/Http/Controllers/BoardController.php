@@ -322,6 +322,8 @@ class BoardController extends Controller
 
 // 게시글-------------------------------------update end---------------------
 
+
+    // 경진 -------------------------------------------------------------------------------------
     // 게시판 리뷰 top4
     public function showReview(){
         $boardReview = Board::select('board_title', 'board_content', 'board_id', 'user_id')
@@ -409,5 +411,6 @@ class BoardController extends Controller
 
         return response()->json($responseData, 200);
     }
+    // 경진 -------------------------------------------------------------------------------------
 }
 

@@ -16,29 +16,24 @@
                         <p>작성일자</p>
                     </div>
                     <div class="que-list-box">
-                        <div class="que-item item-first">
-                            <p>3</p>
-                            <p>호텔</p>
-                            <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
-                            <p>유저이름</p>
-                            <p>2025-02-06 00:00:00</p>
-                        </div>
-                        <div class="que-item item-first">
-                            <p>2</p>
-                            <p>호텔</p>
-                            <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
-                            <p>유저이름</p>
-                            <p>2025-02-06 00:00:00</p>
-                        </div>
-                        <div class="que-item item-first">
-                            <p>1</p>
-                            <p>호텔</p>
-                            <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
-                            <p>유저이름</p>
-                            <p>2025-02-06 00:00:00</p>
+                        <div v-for="(item, index) in questionYet" class="que-item item-first">
+                            <!-- <p>{{ index + 1 }}</p> -->
+                            <p>{{ item.board_id }}</p>
+                            <p>{{ item.question_category.qc_name }}</p>
+                            <router-link :to="`/admin/question/${item.board_id}`">{{ item.board_title }}</router-link>
+                            <p>{{ item.user.user_nickname }}</p>
+                            <p>{{ item.created_at_timestamps }}</p>
                         </div>
                     </div>
                 </div>
+                <!-- 페이지네이션 -->
+                <PaginationComponent
+                    :actionName="actionNameQuestionYet"
+                    :searchData="searchDataQuestionYet"
+                    :currentPage="$store.state.pagination.adminQuestionYetCurrentPage"
+                    :lastPage="$store.state.pagination.adminQuestionYetLastPage"
+                    :viewPageNumber="$store.state.pagination.adminQuestionYetViewPageNumber"
+                />
             </div>
             <div class="que-content-box">
                 <p class="que-content-title">문의 완료</p>
@@ -53,42 +48,69 @@
                         <p>답변일자</p>
                     </div>
                     <div class="que-list-box">
-                        <div class="que-item item-second">
-                            <p>3</p>
-                            <p>호텔</p>
-                            <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
-                            <p>유저이름</p>
-                            <p>2025-02-06 00:00:00</p>
+                        <div v-for="(item, index) in questionDone" class="que-item item-second">
+                            <!-- <p>{{ index + 1 }}</p> -->
+                            <p>{{ item.board_id }}</p>
+                            <p>{{ item.question_category.qc_name }}</p>
+                            <router-link :to="`/admin/question/${item.board_id}`">{{ item.board_title }}</router-link>
+                            <p>{{ item.user.user_nickname }}</p>
+                            <p>{{ item.created_at_timestamps }}</p>
+                            <!-- <p>{{ item.question.user_id }}</p>
+                            <p>{{ item.question.updated_at }}</p> -->
                             <p>관리자</p>
-                            <p>2025-02-06 00:00:00</p>
-                        </div>
-                        <div class="que-item item-second">
-                            <p>2</p>
-                            <p>호텔</p>
-                            <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
-                            <p>유저이름</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>관리자</p>
-                            <p>2025-02-06 00:00:00</p>
-                        </div>
-                        <div class="que-item item-second">
-                            <p>1</p>
-                            <p>호텔</p>
-                            <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
-                            <p>유저이름</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>관리자</p>
-                            <p>2025-02-06 00:00:00</p>
+                            <p>2025-02-10 00:00:00</p>
                         </div>
                     </div>
                 </div>
+                <!-- 페이지네이션 -->
+                <PaginationComponent
+                    :actionName="actionNameQuestionDone"
+                    :searchData="searchDataQuestionDone"
+                    :currentPage="$store.state.pagination.adminQuestionDoneCurrentPage"
+                    :lastPage="$store.state.pagination.adminQuestionDoneLastPage"
+                    :viewPageNumber="$store.state.pagination.adminQuestionDoneViewPageNumber"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
+import PaginationComponent from '../../components/PaginationComponent.vue';
 
+const store = useStore();
+
+const questionYet = computed(() => store.state.adminQuestion.questionYet);
+const questionDone = computed(() => store.state.adminQuestion.questionDone);
+
+const actionNameQuestionYet = 'adminQuestion/questionYet';
+const actionNameQuestionDone = 'adminQuestion/questionDone';
+
+const searchDataQuestionYet = reactive({
+    page: store.state.pagination.adminQuestionYetCurrentPage,
+});
+
+const searchDataQuestionDone = reactive({
+    page: store.state.pagination.adminQuestionDoneCurrentPage,
+});
+
+
+onBeforeMount(() => {
+    // Promise.all([
+        // store.dispatch('adminQuestion/questionYet', searchData),
+        // store.dispatch('adminQuestion/questionDone', searchData),
+        store.dispatch(actionNameQuestionYet, searchDataQuestionYet);
+        store.dispatch(actionNameQuestionDone, searchDataQuestionDone);
+    // ]);
+    // .then(() => {
+    //     console.log('store.disaptch 성공');
+    // })
+    // .catch(() => {
+    //     alert('에러가 발생했습니다.');
+    // });
+});
 </script>
 
 <style scoped>
@@ -158,6 +180,13 @@
 }
 .item-second {
     grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 1.5fr;
+}
+.item-first > a, .item-second > a {
+    width: 90%;
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .que-item > p:nth-child(3) {
     white-space: nowrap;

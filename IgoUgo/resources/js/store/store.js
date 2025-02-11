@@ -12,6 +12,7 @@ import loading from './modules/loading';
 import search from './modules/search';
 import userManage from './modules/admin/userManage'
 import chart from './modules/admin/chart'
+import adminQuestion from './modules/admin/adminQuestion';
 
 export default createStore({
     modules: {
@@ -29,5 +30,6 @@ export default createStore({
         // 관리자
         userManage,
         chart,
+        adminQuestion,
     }
 })

@@ -41,7 +41,7 @@ export default {
                 axios.get(url)
                 .then(response => {
                     context.commit('setDailyUser', response.data.data);
-                    console.log(response.data.data);
+                    // console.log(response.data.data);
                     return resolve();
                 })
                 .catch(error => {
@@ -60,7 +60,7 @@ export default {
                 axios.get(url)
                 .then(response => {
                     context.commit('setDailyDeleteUser', response.data.data);
-                    console.log(response.data.data);
+                    // console.log(response.data.data);
                     return resolve();
                 })
                 .catch(error => {

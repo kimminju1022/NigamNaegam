@@ -28,6 +28,13 @@ export default {
         userQuestionCurrentPage: localStorage.getItem('userQuestionCurrentPage') ? Number(localStorage.getItem('userQuestionCurrentPage')): 1, // userQuestion_현재 페이지
         userQuestionLastPage: localStorage.getItem('userQuestionLastPage') ? Number(localStorage.getItem('userQuestionLastPage')): 1, // userQuestion_마지막 페이지
         userQuestionViewPageNumber: localStorage.getItem('userQuestionViewPageNumber') ? JSON.parse(localStorage.getItem('userQuestionViewPageNumber')) : [],
+        // 관리자 문의관리 메인
+        adminQuestionYetCurrentPage: localStorage.getItem('adminQuestionYetCurrentPage') ? Number(localStorage.getItem('adminQuestionYetCurrentPage')): 1, // userBoard_현재 페이지
+        adminQuestionYetLastPage: localStorage.getItem('adminQuestionYetLastPage') ? Number(localStorage.getItem('adminQuestionYetLastPage')): 1, // userBoard_마지막 페이지
+        adminQuestionYetViewPageNumber: localStorage.getItem('adminQuestionYetViewPageNumber') ? JSON.parse(localStorage.getItem('adminQuestionYetViewPageNumber')) : [],
+        adminQuestionDoneCurrentPage: localStorage.getItem('adminQuestionDoneCurrentPage') ? Number(localStorage.getItem('adminQuestionDoneCurrentPage')): 1, // userQuestion_현재 페이지
+        adminQuestionDoneLastPage: localStorage.getItem('adminQuestionDoneLastPage') ? Number(localStorage.getItem('adminQuestionDoneLastPage')): 1, // userQuestion_마지막 페이지
+        adminQuestionDoneViewPageNumber: localStorage.getItem('adminQuestionDoneViewPageNumber') ? JSON.parse(localStorage.getItem('adminQuestionDoneViewPageNumber')) : [],
     }),
     mutations: {
         setCurrentPage(state, page) {
@@ -83,6 +90,19 @@ export default {
             localStorage.setItem('userQuestionCurrentPage', 1);
             localStorage.setItem('userQuestionLastPage', 1);
             localStorage.setItem('userQuestionViewPageNumber', JSON.stringify([]));
+        // 관리자 문의관리 메인
+            state.adminQuestionYetCurrentPage = 1;
+            state.adminQuestionYetLastPage = 1;
+            state.adminQuestionYetViewPageNumber = [];
+            localStorage.setItem('adminQuestionYetCurrentPage', 1);
+            localStorage.setItem('adminQuestionYetLastPage', 1);
+            localStorage.setItem('adminQuestionYetViewPageNumber', JSON.stringify([]));
+            state.adminQuestionDoneCurrentPage = 1;
+            state.adminQuestionDoneLastPage = 1;
+            state.adminQuestionDoneViewPageNumber = [];
+            localStorage.setItem('adminQuestionDoneCurrentPage', 1);
+            localStorage.setItem('adminQuestionDoneLastPage', 1);
+            localStorage.setItem('adminQuestionDoneViewPageNumber', JSON.stringify([]));
             
         },
         setPagination(state, paginationData) {
@@ -107,8 +127,6 @@ export default {
             // 페이지 번호 배열 생성
             state.viewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
             localStorage.setItem('viewPageNumber', JSON.stringify(state.viewPageNumber));
-
-
         },
         setPaginationRegulation(state, lastPage) {
             state.lastPage = lastPage;
@@ -281,6 +299,56 @@ export default {
             // 페이지 번호 배열 생성
             state.userQuestionViewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
             localStorage.setItem('userQuestionViewPageNumber', JSON.stringify(state.userQuestionViewPageNumber));
+        },
+
+        // 관리자 문의 답변대기
+        setAdminQuestionYetPagination(state, paginationData) {
+            state.adminQuestionYetCurrentPage = paginationData.current_page;
+            state.adminQuestionYetLastPage = paginationData.last_page;
+            state.path = paginationData.path;
+            localStorage.setItem('adminQuestionYetCurrentPage', paginationData.current_page);
+            localStorage.setItem('adminQuestionYetLastPage', paginationData.last_page);
+            localStorage.setItem('paginationPath', paginationData.path);
+            // 페이지 번호 출력 연산
+            let offSet = Math.floor(state.viewPageCnt / 2); // 오프셋
+            let startPageNumber = (state.adminQuestionYetCurrentPage - offSet) < 1 ? 1 : state.adminQuestionYetCurrentPage - offSet; // 시작 페이지 번호 초기화
+            let endPageNumber = startPageNumber + (state.viewPageCnt - 1); // 마지막 페이지 번호 초기화
+            // 엔드페이지 조절 (토탈 페이지보다 클 경우)
+            if(endPageNumber > state.adminQuestionYetLastPage) {
+                endPageNumber = state.adminQuestionYetLastPage;
+            }
+            // 스타트 페이지 조절(음수 안나오게 조절)
+            if((endPageNumber - (state.viewPageCnt - 1)) > 1 && (startPageNumber > endPageNumber - (state.viewPageCnt - 1))) {
+                startPageNumber = endPageNumber - (state.viewPageCnt - 1);
+            }
+            // 페이지 번호 배열 생성
+            state.adminQuestionYetViewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
+            localStorage.setItem('adminQuestionYetViewPageNumber', JSON.stringify(state.adminQuestionYetViewPageNumber));
+        },
+
+        // 관리자 문의 답변완료
+        setAdminQuestionDonePagination(state, paginationData) {
+            state.adminQuestionDoneCurrentPage = paginationData.current_page;
+            state.adminQuestionDoneLastPage = paginationData.last_page;
+            state.path = paginationData.path;
+            localStorage.setItem('adminQuestionDoneCurrentPage', paginationData.current_page);
+            localStorage.setItem('adminQuestionDoneLastPage', paginationData.last_page);
+            localStorage.setItem('paginationPath', paginationData.path);
+            // 페이지 번호 출력 연산
+            let offSet = Math.floor(state.viewPageCnt / 2); // 오프셋
+            let startPageNumber = (state.adminQuestionDoneCurrentPage - offSet) < 1 ? 1 : state.adminQuestionDoneCurrentPage - offSet; // 시작 페이지 번호 초기화
+            let endPageNumber = startPageNumber + (state.viewPageCnt - 1); // 마지막 페이지 번호 초기화
+            // 엔드페이지 조절 (토탈 페이지보다 클 경우)
+            if(endPageNumber > state.adminQuestionDoneCurrentPage) {
+                endPageNumber = state.adminQuestionDoneLastPage;
+            }
+            // 스타트 페이지 조절(음수 안나오게 조절)
+            if((endPageNumber - (state.viewPageCnt - 1)) > 1 && (startPageNumber > endPageNumber - (state.viewPageCnt - 1))) {
+                startPageNumber = endPageNumber - (state.viewPageCnt - 1);
+            }
+            // 페이지 번호 배열 생성
+            state.adminQuestionDoneViewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
+            localStorage.setItem('adminQuestionDoneViewPageNumber', JSON.stringify(state.adminQuestionDoneViewPageNumber));
         },
     },
     actions: {

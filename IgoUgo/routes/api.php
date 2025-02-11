@@ -113,6 +113,9 @@ Route::get('/admin/user', [UserManageController::class, 'getUserList']);
 Route::get('/admin/user/{id}', [UserManageController::class, 'getUserDetail']);
 Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'getBoardCnt']);
 
+// 문의게시판
+Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);
+Route::get('/admin/question/done', [QuestionController::class, 'adminQuestionDone']);
 
 
 // 인증 관련 ---------------------------------------------------------------------------------------

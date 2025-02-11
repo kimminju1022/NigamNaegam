@@ -2,7 +2,6 @@
     <div class="mainpage-container">
         <div>
             <p class="main-title">메인 페이지</p>
-            <!-- <hr class="hr-style"> -->
         </div>
         <div class="main-content-container">
             <div>
@@ -63,79 +62,79 @@ const questionDoneInfoChart = ref(null)
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const chartDataSignInfo = reactive({
-    labels: ['', '', '', '', ''], // 각 바의 레이블
+    labels: ['', '', '', '', ''],
     datasets: [
         {
             label: '일일 가입자',
-            data: [0, 0, 0, 0, 0], // 각 바의 값
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
-            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
-            borderWidth: 1 // 테두리 두께
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
         }
     ]
 });
 
 const chartDataWithdrawInfo = reactive({
-    labels: ['', '', '', '', ''], // 각 바의 레이블
+    labels: ['', '', '', '', ''],
     datasets: [
         {
             label: '일일 탈퇴자',
-            data: [0, 0, 0, 0, 0], // 각 바의 값
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
-            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
-            borderWidth: 1 // 테두리 두께
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
         }
     ]
 });
 
 const chartDataReviewInfo = reactive({
-    labels: ['', '', '', '', ''], // 각 바의 레이블
+    labels: ['', '', '', '', ''],
     datasets: [
         {
             label: '일일 리뷰게시글',
-            data: [0, 0, 0, 0, 0], // 각 바의 값
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
-            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
-            borderWidth: 1 // 테두리 두께
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
         }
     ]
 });
 
 const chartDataFreeInfo = reactive({
-    labels: ['', '', '', '', ''], // 각 바의 레이블
+    labels: ['', '', '', '', ''],
     datasets: [
         {
             label: '일일 자유게시글',
-            data: [0, 0, 0, 0, 0], // 각 바의 값
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
-            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
-            borderWidth: 1 // 테두리 두께
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
         }
     ]
 });
 
 const chartDataQuestionYetInfo = reactive({
-    labels: ['', '', '', '', ''], // 각 바의 레이블
+    labels: ['', '', '', '', ''],
     datasets: [
         {
             label: '일일 문의 답변 대기',
-            data: [0, 0, 0, 0, 0], // 각 바의 값
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
-            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
-            borderWidth: 1 // 테두리 두께
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
         }
     ]
 });
 
 const chartDataQuestionDoneInfo = reactive({
-    labels: ['', '', '', '', ''], // 각 바의 레이블
+    labels: ['', '', '', '', ''],
     datasets: [
         {
             label: '일일 문의 답변 완료',
-            data: [0, 0, 0, 0, 0], // 각 바의 값
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
-            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
-            borderWidth: 1 // 테두리 두께
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
         }
     ]
 });
@@ -148,7 +147,7 @@ const chartOptions = computed(() => {
 });
 
 onBeforeMount(() => {
-    console.log('비포마운트');
+    // console.log('비포마운트');
     Promise.all([
         store.dispatch('chart/dailyUser'),
         store.dispatch('chart/dailyDeleteUser'),
@@ -158,7 +157,7 @@ onBeforeMount(() => {
         store.dispatch('chart/dailyQuestionDone'),
     ])
     .then(() => {
-        console.log('store.disaptch 성공');
+        // console.log('store.disaptch 성공');
         dailyUser();
         dailyDeleteUser();
         dailyReview();

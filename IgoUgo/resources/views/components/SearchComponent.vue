@@ -171,11 +171,11 @@
 
         <!-- 페이지네이션 -->
         <PaginationComponent
-                :actionName="actionName4"
-                :searchData="searchData4"
-                :currentPage="$store.state.pagination.testerCurrentPage"
-                :lastPage="$store.state.pagination.testerLastPage"
-                :viewPageNumber="$store.state.pagination.testerViewPageNumber"
+            :actionName="actionName4"
+            :searchData="searchData4"
+            :currentPage="$store.state.pagination.testerCurrentPage"
+            :lastPage="$store.state.pagination.testerLastPage"
+            :viewPageNumber="$store.state.pagination.testerViewPageNumber"
         />    
     </div>
 </template>

@@ -273,4 +273,44 @@ class QuestionController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+
+    // 관리자 -------------------------------------------------------------
+    // 메인페이지 답변대기 리스트
+    public function adminQuestionYet() {
+        $questionList = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
+                                ->with(['user', 'question_category'])
+                                ->where('bc_code', '2')
+                                ->with(['question' => function ($query) {
+                                    $query->where('que_status', '0');
+                                }])
+                                ->orderBy('created_at','DESC')
+                                ->paginate(5);
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>'답변대기 리스트 획득 성공'
+            ,'data' => $questionList->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // 메인페이지 답변완료 리스트
+    public function adminQuestionDone() {
+        $questionList = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
+                                ->with(['user', 'question_category'])
+                                ->where('bc_code', '2')
+                                ->with(['question' => function ($query) {
+                                    $query->where('que_status', '1');
+                                }])
+                                ->orderBy('created_at','DESC')
+                                ->paginate(5);
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>'답변완료 리스트 획득 성공'
+            ,'data' => $questionList->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
 }
