@@ -201,7 +201,7 @@
             </div>
         </div>
 
-        <div class="divisverysad">
+        <!-- <div class="divisverysad">
             <div class="announcement">
                 <div class="announcement-sidebar">
                     <div>
@@ -235,31 +235,26 @@
                             <p>안녕하세요 반갑습니다.</p>
                             <p class="announcement-date">2024-12-17</p>
                         </div>
-                        <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
                             <p class="announcement-date">2024-12-17</p>
                         </div>
-                        <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
                             <p class="announcement-date">2024-12-17</p>
                         </div>
-                        <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
                             <p class="announcement-date">2024-12-17</p>
                         </div>
-                        <!-- <hr> -->
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
                             <p class="announcement-date">2024-12-17</p>
                         </div>
-                        <!-- <hr> -->
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
