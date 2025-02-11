@@ -46,17 +46,17 @@
                 </div>
                 <div class="user-list-box" >
                     <div v-for="item in userList" :ket="item" class="user-item">
-                            <router-link :to="`/admin/user/${item.user_id}`">
-                                <p>{{ item.user_id }}</p>
-                                <p>{{ item.user_email }}</p>
-                                <p>{{ item.user_nickname }}</p>
-                                <p>{{ item.user_name }}</p>
-                                <p>{{ item.created_at }}</p>
-                                <p>탈퇴</p>
-                                <p>영구정지</p>
-                                <p>9999-12-31 23:59:59</p>
-                            </router-link>
-                        </div>
+                        <router-link :to="`/admin/user/${item.user_id}`">
+                            <p>{{ item.user_id }}</p>
+                            <p>{{ item.user_email }}</p>
+                            <p>{{ item.user_nickname }}</p>
+                            <p>{{ item.user_name }}</p>
+                            <p>{{ item.created_at }}</p>
+                            <p>탈퇴</p>
+                            <p>영구정지</p>
+                            <p>9999-12-31 23:59:59</p>
+                        </router-link>
+                    </div>
                 </div>
                 <PaginationComponent
                     :actionName="actionName"
