@@ -1,43 +1,138 @@
 <template>
-<!-- **************************  1  ************************************ -->
-<!-- <div class="card-body">
-    <div class="tab-content p-0">
-        <div class="chart tab-pane">
-            <Line :data="data" :options="option" />
+    <div class="mainpage-container">
+        <div>
+            <p class="main-title">메인 페이지</p>
+            <!-- <hr class="hr-style"> -->
         </div>
-        <div class="chart tab-pane">
-            <Bar :data="data" :options="option" />
+        <div class="main-content-container">
+            <div>
+                <p class="main-stat-title">가입 현황</p>
+                <div class="main-stat-box">
+                    <Bar ref="signInfoChart" :data="chartDataSignInfo" :options="chartOptions" />
+                </div>
+            </div>
+            <div>
+                <p class="main-stat-title">탈퇴 현황</p>
+                <div class="main-stat-box">
+                    <Bar ref="withdrawInfoChart" :data="chartDataWithdrawInfo" :options="chartOptions" />
+                </div>
+            </div>
+            <div>
+                <p class="main-stat-title">리뷰 게시판</p>
+                <div class="main-stat-box">
+                    <Bar ref="reviewInfoChart" :data="chartDataReviewInfo" :options="chartOptions" />
+                </div>
+            </div>
+            <div>
+                <p class="main-stat-title">자유 게시판</p>
+                <div class="main-stat-box">
+                    <Bar ref="freeInfoChart" :data="chartDataFreeInfo" :options="chartOptions" />
+                </div>
+            </div>
+            <div>
+                <p class="main-stat-title">문의 게시판 - 답변 대기</p>
+                <div class="main-stat-box">
+                    <Bar ref="questionYetInfoChart" :data="chartDataQuestionYetInfo" :options="chartOptions" />
+                </div>
+            </div>
+            <div>
+                <p class="main-stat-title">문의 게시판 - 답변 완료</p>
+                <div class="main-stat-box">
+                    <Bar ref="questionDoneInfoChart" :data="chartDataQuestionDoneInfo" :options="chartOptions" />
+                </div>
+            </div>
         </div>
     </div>
-</div> -->
-
-<!-- **************************  2  ************************************ -->
-<!-- <div style="width: 800px;"><canvas id="acquisitions"></canvas></div> -->
-
-<!-- **************************  3  ************************************ -->
-<Bar ref="myChart" :data="chartData" :options="chartOptions" />
-
-<button @click="test">ttttt</button>
 </template>
 
 <script setup>
-// DataPage.vue
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { computed, onBeforeMount, reactive, ref } from 'vue'
+import { useStore } from 'vuex';
 
-// Chart.js 설정 등록
+const store = useStore();
+
+const signInfoChart = ref(null)
+const withdrawInfoChart = ref(null)
+const reviewInfoChart = ref(null)
+const freeInfoChart = ref(null)
+const questionYetInfoChart = ref(null)
+const questionDoneInfoChart = ref(null)
+
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-// chartData와 chartOptions를 reactive하게 설정
-import { computed, reactive, ref } from 'vue'
-const myChart = ref(null)
-
-const chartData = reactive({
-    labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'], // 각 바의 레이블
+const chartDataSignInfo = reactive({
+    labels: ['', '', '', '', ''], // 각 바의 레이블
     datasets: [
         {
-            label: 'My Dataset',
-            data: [10,20,30,40], // 각 바의 값
+            label: '일일 가입자',
+            data: [0, 0, 0, 0, 0], // 각 바의 값
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
+            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
+            borderWidth: 1 // 테두리 두께
+        }
+    ]
+});
+
+const chartDataWithdrawInfo = reactive({
+    labels: ['', '', '', '', ''], // 각 바의 레이블
+    datasets: [
+        {
+            label: '일일 탈퇴자',
+            data: [0, 0, 0, 0, 0], // 각 바의 값
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
+            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
+            borderWidth: 1 // 테두리 두께
+        }
+    ]
+});
+
+const chartDataReviewInfo = reactive({
+    labels: ['', '', '', '', ''], // 각 바의 레이블
+    datasets: [
+        {
+            label: '일일 리뷰게시글',
+            data: [0, 0, 0, 0, 0], // 각 바의 값
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
+            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
+            borderWidth: 1 // 테두리 두께
+        }
+    ]
+});
+
+const chartDataFreeInfo = reactive({
+    labels: ['', '', '', '', ''], // 각 바의 레이블
+    datasets: [
+        {
+            label: '일일 자유게시글',
+            data: [0, 0, 0, 0, 0], // 각 바의 값
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
+            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
+            borderWidth: 1 // 테두리 두께
+        }
+    ]
+});
+
+const chartDataQuestionYetInfo = reactive({
+    labels: ['', '', '', '', ''], // 각 바의 레이블
+    datasets: [
+        {
+            label: '일일 문의 답변 대기',
+            data: [0, 0, 0, 0, 0], // 각 바의 값
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
+            borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
+            borderWidth: 1 // 테두리 두께
+        }
+    ]
+});
+
+const chartDataQuestionDoneInfo = reactive({
+    labels: ['', '', '', '', ''], // 각 바의 레이블
+    datasets: [
+        {
+            label: '일일 문의 답변 완료',
+            data: [0, 0, 0, 0, 0], // 각 바의 값
             backgroundColor: 'rgba(75, 192, 192, 0.2)', // 바의 배경 색상
             borderColor: 'rgba(75, 192, 192, 1)', // 바의 테두리 색상
             borderWidth: 1 // 테두리 두께
@@ -47,119 +142,94 @@ const chartData = reactive({
 
 const chartOptions = computed(() => {
     return {
-        responsive: true
+        responsive: true,
+        maintainAspectRatio :false,
     };
 });
 
-const test = async () => {
-    const test = await [90,80,70,60];
-    const test1 = ['a', 'b', 'c', 'd'];
-    chartData.datasets[0].data.forEach((value, key) => {
-        console.log(key);
-        chartData.datasets[0].data[key] = test.users.data[key];
+onBeforeMount(() => {
+    console.log('비포마운트');
+    Promise.all([
+        store.dispatch('chart/dailyUser'),
+        store.dispatch('chart/dailyDeleteUser'),
+        store.dispatch('chart/dailyReview'),
+        store.dispatch('chart/dailyFree'),
+        store.dispatch('chart/dailyQuestionYet'),
+        store.dispatch('chart/dailyQuestionDone'),
+    ])
+    .then(() => {
+        console.log('store.disaptch 성공');
+        dailyUser();
+        dailyDeleteUser();
+        dailyReview();
+        dailyFree();
+        dailyQuestionYet();
+        dailyQuestionDone();
+    })
+    .catch(() => {
+        alert('에러가 발생했습니다.');
     });
-    chartData.labels.forEach((value, key) => {
-        console.log(key);
-        chartData.labels[key] = test1.users.lavels[key];
+});
+
+const dailyUser = async() => {
+    chartDataSignInfo.datasets[0].data.forEach((value, key) => {
+        chartDataSignInfo.datasets[0].data[key] = store.state.chart.dailyUser[key].cnt;
     });
-    myChart.value.chart.update();
+    chartDataSignInfo.labels.forEach((value, key) => {
+        chartDataSignInfo.labels[key] = store.state.chart.dailyUser[key].day;
+    });
+    signInfoChart.value.chart.update();
 };
-// **************************  1  ************************************
-// import { Line, Bar } from 'vue-chartjs';
-// import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, LineElement, PointElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
-// import { computed, ref } from 'vue';
 
-// ChartJS.register(Title, Tooltip, Legend, ArcElement, LineElement, PointElement, CategoryScale, LinearScale, BarElement);
+const dailyDeleteUser = async() => {
+    chartDataWithdrawInfo.datasets[0].data.forEach((value, key) => {
+        chartDataWithdrawInfo.datasets[0].data[key] = store.state.chart.dailyDeleteUser[key].cnt;
+    });
+    chartDataWithdrawInfo.labels.forEach((value, key) => {
+        chartDataWithdrawInfo.labels[key] = store.state.chart.dailyDeleteUser[key].day;
+    });
+    withdrawInfoChart.value.chart.update();
+};
 
-// const xData = ref([]);
-// const yData = ref([]);
+const dailyReview = async() => {
+    chartDataReviewInfo.datasets[0].data.forEach((value, key) => {
+        chartDataReviewInfo.datasets[0].data[key] = store.state.chart.dailyReview[key].cnt;
+    });
+    chartDataReviewInfo.labels.forEach((value, key) => {
+        chartDataReviewInfo.labels[key] = store.state.chart.dailyReview[key].day;
+    });
+    reviewInfoChart.value.chart.update();
+};
 
-// const getData = function () {
-// 	const xArr = [];
-// 	const yArr = [];
+const dailyFree = async() => {
+    chartDataFreeInfo.datasets[0].data.forEach((value, key) => {
+        chartDataFreeInfo.datasets[0].data[key] = store.state.chart.dailyFree[key].cnt;
+    });
+    chartDataFreeInfo.labels.forEach((value, key) => {
+        chartDataFreeInfo.labels[key] = store.state.chart.dailyFree[key].day;
+    });
+    freeInfoChart.value.chart.update();
+};
 
-// 	axios.get('your request URL')
-// 	.then(function (response) {
-//         if (response !== undefined) {
-// 			for (let i = 0; i < response.data.length; i++) {
-// 				const obj = response.data[i];
-// 				xArr.push(obj.x);
-// 				yArr.push(obj.y);
-// 			}
-// 			xData.value = xArr;
-// 			yData.value = yArr;
-// 		}
-// 	})
-// 	.catch(function (error) {
-// 		console.log(error);
-// 	});
-// };
+const dailyQuestionYet = async() => {
+    chartDataQuestionYetInfo.datasets[0].data.forEach((value, key) => {
+        chartDataQuestionYetInfo.datasets[0].data[key] = store.state.chart.dailyQuestionYet[key].cnt;
+    });
+    chartDataQuestionYetInfo.labels.forEach((value, key) => {
+        chartDataQuestionYetInfo.labels[key] = store.state.chart.dailyQuestionYet[key].day;
+    });
+    questionYetInfoChart.value.chart.update();
+};
 
-// const data = computed(function () { 
-// 	return {
-// 		labels: xData.value,
-// 		datasets: [
-// 			{
-// 				label: 'labal data',
-// 				borderWidth: 1,
-// 				borderColor: 'your favorite color',
-// 				backgroundColor: 'your favorite color',
-// 				data: yData.value
-// 			}
-// 		]
-// 	}
-// });
-// const option = {
-// 	responsive: true,
-// 	maintainAspectRatio: false,
-// };
-
-
-// **************************  2  ************************************
-
-// import Chart from 'chart.js/auto'
-
-// (async function() {
-//     const data = [
-//         { year: 2010, count: 10 },
-//         { year: 2011, count: 20 },
-//         { year: 2012, count: 15 },
-//         { year: 2013, count: 25 },
-//         { year: 2014, count: 22 },
-//         { year: 2015, count: 30 },
-//         { year: 2016, count: 28 },
-//     ];
-
-//     // const now = new Date();
-
-//     // const date = String(now.getDate() + 1).padStart(2, '0');
-
-//     // const data = [
-//     //     { day: date, count: 10 },
-//     //     { day: date, count: 20 },
-//     //     { day: date, count: 15 },
-//     //     { day: date, count: 25 },
-//     //     { day: date, count: 22 },
-//     //     { day: date, count: 30 },
-//     //     { day: date, count: 28 },
-//     // ];
-
-//     new Chart(
-//         document.getElementById('acquisitions').getContext('2d'),
-//         {
-//         type: 'line',
-//         data: {
-//             labels: data.map(row => row.year),
-//             datasets: [
-//             {
-//                 label: 'Acquisitions by year',
-//                 data: data.map(row => row.count)
-//             }
-//             ]
-//         }
-//         }
-//     );
-// })();
+const dailyQuestionDone = async() => {
+    chartDataQuestionDoneInfo.datasets[0].data.forEach((value, key) => {
+        chartDataQuestionDoneInfo.datasets[0].data[key] = store.state.chart.dailyQuestionDone[key].cnt;
+    });
+    chartDataQuestionDoneInfo.labels.forEach((value, key) => {
+        chartDataQuestionDoneInfo.labels[key] = store.state.chart.dailyQuestionDone[key].day;
+    });
+    questionDoneInfoChart.value.chart.update();
+};
 </script>
 
 <style scoped>
@@ -199,8 +269,10 @@ const test = async () => {
 
 /* 통계 넣을 박스 */
 .main-stat-box {
-    min-width: 300px;
+    width: 420px;
     height: 350px;
     background-color: white;
+    padding: 10px;
 }
+
 </style>

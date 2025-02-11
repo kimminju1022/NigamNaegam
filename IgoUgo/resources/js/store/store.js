@@ -11,6 +11,7 @@ import map from './modules/map';
 import loading from './modules/loading';
 import search from './modules/search';
 import userManage from './modules/admin/userManage'
+import chart from './modules/admin/chart'
 
 export default createStore({
     modules: {
@@ -27,5 +28,6 @@ export default createStore({
         search,
         // 관리자
         userManage,
+        chart,
     }
 })

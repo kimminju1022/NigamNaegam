@@ -29,6 +29,10 @@ class AuthController extends Controller
             throw new AuthenticationException('회원 정보 오류');
         }
 
+        if($userInfo->user_out === '1') {
+            throw new AuthenticationException('강제 탈퇴 회원 오류');
+        }
+
         // 비밀번호 체크
         if(!(Hash::check($request->user_password, $userInfo->user_password))) {
             throw new AuthenticationException('비밀번호 체크 오류');

@@ -272,7 +272,7 @@ export default {
                 // context.commit('setAuthFlg', false);
                 context.commit('setManagerInfo', response.data.data);
 
-                alert('어서와 처음이지');
+                alert('너는 관리자');
 
                 router.replace('/admin/main');
             })
