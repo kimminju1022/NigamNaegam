@@ -14,15 +14,15 @@
                 <p>작성일자</p>
             </div>
             <div class="free-list-box" >
-                <div class="free-item">
+                <div v-for="item in postList" :key=item class="free-item">
                     <p>🚨</p>
-                    <p>3</p>
+                    <p>{{ item.board_id }}</p>
                     <p>아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주</p>
                     <p>내가</p>
                     <p>누구게</p>
                     <p>2025-02-06 00:00:00</p>
                 </div>
-                <div class="free-item">
+                <!-- <div class="free-item">
                     <p></p>
                     <p>2</p>
                     <p>짧은 제목</p>
@@ -37,7 +37,7 @@
                     <p>후후후</p>
                     <p>하하하</p>
                     <p>2025-02-06 00:00:00</p>
-                </div>
+                </div> -->
                 <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
             </div>
         </div>
@@ -45,6 +45,21 @@
 </template>
 
 <script setup>
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore();
+
+// 게시판 불러오기
+const postList = computed(()=> store.state.adminBoard.postList)
+
+
+const searchData = reactive({
+    boardCategory: 0
+})
+onBeforeMount(async() => {
+    store.dispatch('adminBoard/getHotelList', searchData)
+})
+
 
 </script>
 

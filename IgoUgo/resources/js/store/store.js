@@ -13,6 +13,7 @@ import search from './modules/search';
 import userManage from './modules/admin/userManage'
 import chart from './modules/admin/chart'
 import adminQuestion from './modules/admin/adminQuestion';
+import adminBoard from './modules/admin/adminBoard';
 
 export default createStore({
     modules: {
@@ -31,5 +32,6 @@ export default createStore({
         userManage,
         chart,
         adminQuestion,
+        adminBoard,
     }
 })
