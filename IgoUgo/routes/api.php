@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\UserManageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\admin\BoardReportController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
+use App\Models\BoardReport;
+use Database\Factories\BoardReportFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -118,6 +121,8 @@ Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'getComm
 Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);
 Route::get('/admin/question/done', [QuestionController::class, 'adminQuestionDone']);
 
+// 게신판관리
+Route::get('admin/review', [BoardReportController::class, 'posts']);
 
 // 인증 관련 ---------------------------------------------------------------------------------------
 // 인증필요 라우트 그룹
