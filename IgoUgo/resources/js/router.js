@@ -70,6 +70,7 @@ import AdminNotificationComponent from '../views/adminComponents/notification/No
 
 // 문의 관리
 import AdminQuestionManageComponent from '../views/adminComponents/question/QuestionManageComponent.vue';
+import QuestionManageDetailComponent from '../views/adminComponents/question/QuestionManageDetailComponent.vue';
 
 const chkAuth = (to, from, next) => {
 
@@ -240,6 +241,12 @@ const routes = [
     {
         path: '/admin/question',
         component: AdminQuestionManageComponent,
+        beforeEnter: chkAuth,
+    },
+    // 관리자 페이지_문의 디테일
+    {
+        path: '/admin/question/:id',
+        component: QuestionManageDetailComponent,
         beforeEnter: chkAuth,
     },
     // -------------------

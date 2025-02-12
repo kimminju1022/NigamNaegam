@@ -56,12 +56,12 @@
                                         <p></p>
                                         <p></p>
                                         <p></p>
-                                    </div>
+                                    </div> -->
                                     <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -87,12 +87,12 @@
                                         <!-- <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link> -->
                                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
-                                    <!-- <div class="dropdown-list dropdown-list2">
+                                    <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
                                     </div>
-                                    <div class="dropdown-list dropdown-list2">
+                                    <!-- <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
@@ -121,12 +121,12 @@
                                         <a @click="redirectBoards('1')">자유게시판</a>
                                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
-                                    <!-- <div class="dropdown-list dropdown-list2">
+                                    <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
                                     </div>
-                                    <div class="dropdown-list dropdown-list2">
+                                    <!-- <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                         </li>
-                        <!-- <li class="header-list-hover">
+                        <li class="header-list-hover">
                             <router-link to="">체험단 신청</router-link>
                             <div class="dropdown-content">
                                 <div class="dropdown-menu">
@@ -160,15 +160,15 @@
                                         <p></p>
                                         <p></p>
                                     </div>
-                                    <div class="dropdown-list dropdown-list2">
+                                    <!-- <div class="dropdown-list dropdown-list2">
                                         <p></p>
                                         <p></p>
                                         <p></p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </li>
-                        <li class="header-list-hover">
+                        <!-- <li class="header-list-hover">
                             <router-link to="">이달의 추천</router-link>
                             <div class="dropdown-content">
                                 <div class="dropdown-menu">
