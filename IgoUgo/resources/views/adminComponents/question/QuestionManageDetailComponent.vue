@@ -1,8 +1,15 @@
 <template>
-<div class="que-container">
-        <div>
-            <p class="que-title">문의 상세</p>
-            <hr class="hr-style">
+    <div class="que-container" v-if="questionDetail">
+        <div class="header-flex">
+            <div>
+                <p class="que-title">문의 상세</p>
+                <hr class="hr-style">
+            </div>
+            <div class="header-btn">
+                <button @click="$store.dispatch('adminQuestion/questionStore', adminQuestion)" class="btn bg-navy btn-header">완료</button>
+                <router-link :to="'/admin/question'"><button class="btn bg-navy btn-header">취소</button></router-link>
+                <button class="btn bg-navy btn-header">삭제</button>
+            </div>
         </div>
         <div class="que-content-container">
             <div class="que-content-box">
@@ -10,35 +17,65 @@
                 <div class="que-content-head">
                     <div class="que-content que-content-number">
                         <p>글번호</p>
-                        <p>30</p>
+                        <p>{{ questionDetail.board_id }}</p>
                     </div>
                     <div class="que-content que-content-title">
                         <p>제목</p>
-                        <input placeholder="내용" readonly>
+                        <textarea name="" id="" class="textarea-title" readonly>{{ questionDetail.board_title }}</textarea>
                     </div>
                     <div class="que-content que-content-user">
-                        <p>닉네임</p>
-                        <p>2025-02-12 00:00:00</p>
+                        <p>{{ questionDetail.user.user_nickname}}</p>
+                        <p>{{ questionDetail.created_at_timestamps }}</p>
                     </div>
                 </div>
-                    <textarea readonly>내용</textarea>
+                <div class="que-content-text">
+                    <textarea class="textarea-content" readonly>{{ questionDetail.board_content }}</textarea>
+                    <div class="img-grid">
+                        <img v-for="(image, index) in questionDetail.board_images" :key="index" :src="image.board_img">
+                    </div>
+                    <!-- <p>{{ questionDetail.board_images }}</p> -->
+                    <!-- <img src="../../../../public/logo_gam.png" alt=""> -->
                 </div>
+            </div>
             <div class="que-content-box">
                 <h3>관리자 답변</h3>
-                <div>
-                    <textarea name="" id="">여기는 관리자 답변</textarea>
+                <div class="que-content-admin">
+                    <p v-if="questionDetail.question.que_status === '1'">{{ questionDetail.question.user.user_name }}</p>
+                    <p v-else>미답변</p>
+                    <p v-if="questionDetail.question.que_status === '1'">{{ questionDetail.question.updated_at_timestamps }}</p>
+                    <p v-else>미답변 상태</p>
                 </div>
-                <div class="que-content-user">
-                    <p>관리자 이름</p>
-                    <p>답변 시간</p>
-                </div>
+                <textarea v-model="adminQuestion.que_content" class="textarea-admin-content" name="que_content">{{ questionDetail.question.que_content }}</textarea>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
+const store = useStore();
+const route = useRoute();
+
+const questionDetail = computed(() => store.state.adminQuestion.questionDetail);
+// console.log(questionDetail.value);
+
+const boardInfo = reactive({
+    board_id: route.params.id,
+});
+
+const adminQuestion = reactive({
+    que_content: '',
+    board_id: boardInfo.board_id,
+    // 관리자 정보 받아야함
+});
+
+onBeforeMount(()=>{
+    store.dispatch('adminQuestion/questionDetail', boardInfo);
+    // console.log('비포마운트 안', questionDetail.value);
+});
 </script>
 
 <style scoped>
@@ -48,6 +85,30 @@
     display: grid;
     grid-template-rows: 50px 1fr;
     gap: 30px;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-btn {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.btn-header {
+    border-radius: 50px;
+    width: 60px;
+    height: 40px;
+    font-size: 20px;
+}
+
+.btn-header:hover {
+    color: #01083a;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px #01083a inset;
 }
 
 /* 문의 관리 타이틀 */
@@ -78,8 +139,9 @@
     display: grid;
     gap: 20px;
     border-bottom: 1px solid #000;
-    grid-template-columns: 1.5fr 7fr 3fr;
+    grid-template-columns: 1fr 7fr 4fr;
     margin-top: 5px;
+    padding: 0 10px;
 }
 
 .que-content {
@@ -88,77 +150,75 @@
     gap: 10px;
 }
 
-/* .que-content:not(:last-child), .que-content > :first-child {
-    border-right: 1px solid #000;
-} */
-
 .que-content-number {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    /* place-items: center; */
 }
 
 .que-content-title {
     display: grid;
-    grid-template-columns: 1fr 7fr;
+    grid-template-columns: 1fr 10fr;
+    /* align-items: center; */
 }
 
 .que-content-user {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1.5fr 2fr;
+    /* place-items: center; */
+}
+
+.que-content-admin {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    justify-items: flex-end;
+    gap: 40px;
+    margin-top: 5px;
+    font-size: 18px;
+    border-bottom: 1px solid #000;
+}
+
+.que-content-admin p:last-child {
+    margin: 0 auto;
 }
 
 textarea {
     resize: none;
-    width: 100%;
-    height: 80%;
     margin-top: 10px;
     font-size: 17px;
-    background: #000;
-    color: #fff;
 }
 
+.textarea-title {
+    margin-top: 0;
+    height: 100%;
+}
 
+.textarea-content {
+    height: 250px;
+    padding: 0 20px;
+}
 
-.que-list-title {
-    display: grid;
-    text-align: center;
-    padding: 0 5px 10px 5px;
-    font-size: 18px;
-    border-bottom: 1px solid #01083a;
-}
-.title-first {
-    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr;
-}
-.title-second {
-    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 1.5fr;
-}
-.que-list-box {
-    padding: 5px;
-}
-.que-item {
-    display: grid;
-    text-align: center;
+.textarea-admin-content {
     width: 100%;
-    height: 30px;
-    margin-top: 10px;
+    height: 75%;
+    padding: 0 20px;
 }
-.item-first {
-    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr;
+
+.que-content-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
 }
-.item-second {
-    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 1.5fr;
+
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    place-items: center;
+    /* margin: 0 auto; */
 }
-.item-first > a, .item-second > a {
-    width: 90%;
-    margin: 0 auto;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+.img-grid > img {
+    max-width: 200px;
+    max-height: 100px;
 }
-.que-item > p:nth-child(3) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 10px;
-}
+
 </style>

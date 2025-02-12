@@ -5,6 +5,7 @@ export default {
     state: () => ({
         questionYet: [],
         questionDone: [],
+        questionDetail: null,
     }),
     mutations: {
         setQuestionYet(state, questionYet) {
@@ -12,6 +13,9 @@ export default {
         },
         setQuestionDone(state, questionDone) {
             state.questionDone = questionDone;
+        },
+        setQuestionDetail(state, questionDetail) {
+            state.questionDetail = questionDetail;
         },
     },
     actions: { 
@@ -27,7 +31,7 @@ export default {
     
                 axios.get(url, config)
                 .then(response => {
-                    console.log('yet : ', response.data.data.data[0]);
+                    // console.log('yet : ', response.data.data.data[0]);
                     context.commit('setQuestionYet', response.data.data.data);
                     context.commit('pagination/setAdminQuestionYetPagination', response.data.data, {root: true});
                     return resolve();
@@ -51,7 +55,7 @@ export default {
 
                 axios.get(url, config)
                 .then(response => {
-                    console.log('done : ', response.data.data.data[0]);
+                    // console.log('done : ', response.data.data.data[0]);
                     context.commit('setQuestionDone', response.data.data.data);
                     context.commit('pagination/setAdminQuestionDonePagination', response.data.data, {root: true});
                     return resolve();
@@ -61,6 +65,46 @@ export default {
                     return reject();
                 });
             })
+        },
+
+        // 문의게시글 디테일
+        questionDetail(context, data) {
+            const url = `/api/admin/question/${data.board_id}`;
+            const config = {
+                params: data,
+            }
+
+            axios.get(url, config)
+            .then(response => {
+                // console.log('js: ', response.data.data);
+                context.commit('setQuestionDetail', response.data.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+
+        // 문의게시글 관리자 답변 작성
+        questionStore(context, data) {
+            const url = `/api/admin/question/${data.board_id}`;
+            const config = {
+                params: data,
+            }
+
+            console.log(data);
+
+            const formData = new FormData();
+            formData.append('que_content', data.que_content);
+
+            axios.post(url, config)
+            .then(response => {
+                console.log('js: ', response.data.data);
+                // context.commit('setQuestionYet', response.data.data.data);
+                alert('답변 작성 완료');
+            })
+            .catch(error => {
+                console.log(error);
+            });
         },
     },
 

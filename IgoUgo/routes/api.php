@@ -120,6 +120,8 @@ Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'getComm
 // 문의게시판
 Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);
 Route::get('/admin/question/done', [QuestionController::class, 'adminQuestionDone']);
+Route::get('/admin/question/{id}', [QuestionController::class, 'showQuestionDetail']);
+Route::post('/admin/question/{id}', [QuestionController::class, 'storeQuestion']);
 
 // 게신판관리
 Route::get('admin/review', [BoardReportController::class, 'posts']);

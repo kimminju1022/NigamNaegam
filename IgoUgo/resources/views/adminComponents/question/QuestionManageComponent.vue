@@ -55,10 +55,10 @@
                             <router-link :to="`/admin/question/${item.board_id}`">{{ item.board_title }}</router-link>
                             <p>{{ item.user.user_nickname }}</p>
                             <p>{{ item.created_at_timestamps }}</p>
-                            <!-- <p>{{ item.question.user_id }}</p>
-                            <p>{{ item.question.updated_at }}</p> -->
-                            <p>관리자</p>
-                            <p>2025-02-10 00:00:00</p>
+                            <p>{{ item.question.user.user_name }}</p>
+                            <p>{{ item.question.updated_at_timestamps }}</p>
+                            <!-- <p>관리자</p>
+                            <p>2025-02-10 00:00:00</p> -->
                         </div>
                     </div>
                 </div>
