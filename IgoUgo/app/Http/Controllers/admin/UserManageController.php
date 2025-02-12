@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Board;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\UserControl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class UserManageController extends Controller
 {
-    public function getUserList() {
+    // 유저 리스트 출력
+    public function showUserList() {
         $userList = User::where('manager_flg', '0')
                         ->orderBy('created_at', 'DESC')
                         ->paginate(15);
@@ -26,7 +29,8 @@ class UserManageController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function getUserDetail(Request $request) {
+    // 유저 상세정보 출력
+    public function showUserDetail(Request $request) {
         $userId = $request->id;
         $userDetail = User::where('user_id', $userId)->first();
 
@@ -39,7 +43,8 @@ class UserManageController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function getBoardCnt(Request $request) {
+    // 유저가 작성한 게시글 수
+    public function showBoardCnt(Request $request) {
         $userId = $request->id;
         $userBoardCnt = Board::
                             select('bc_code', DB::raw('count(*) as cnt'))                    
@@ -47,16 +52,27 @@ class UserManageController extends Controller
                             ->groupBy('bc_code')
                             ->get();
 
+        $boardCode = ["0", "1", "2"];
+        $newBoardCode = collect($boardCode);
+        $userBoardCnt = $newBoardCode->map(function ($code) use ($userBoardCnt) {
+            $data = $userBoardCnt->firstWhere('bc_code', $code);
+            return [
+                'bc_code' => $code,
+                'cnt' => $data ? $data->cnt : 0,
+            ];
+        });
+
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
-            'userBoardCnt' => $userBoardCnt->toArray()
+            'userBoardCnt' => $userBoardCnt
         ];
 
         return response()->json($responseData, 200);
     }
 
-    public function getCommentCnt(Request $request) {
+    // 유저가 작성한 댓글 수
+    public function showCommentCnt(Request $request) {
         $userId = $request->id;
         $userCommentCnt = Comment::where('user_id', $userId)->count();
 
@@ -65,6 +81,63 @@ class UserManageController extends Controller
             'msg' => '게시글 획득 성공',
             'userCommentCnt' => $userCommentCnt
         ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 유저 제재 이력 횟수
+    public function showControlCnt(Request $request) {
+        $userId = $request->id;
+        $userControlCnt = UserControl::where('user_id', $userId)->count();
+
+        $responseData = [
+            'success' => true,
+            'msg' => '게시글 획득 성공',
+            'userControlCnt' => $userControlCnt
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 유저 상세정보 수정 처리
+    public function updateUserDetail(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $user = User::find($request->id);
+            // Log::debug($user);
+            Log::debug($request);
+            
+            if($user->user_email !== $request->user_email) {
+                // Log::debug($user);
+                $user->user_email = $request->user_email;
+            }
+            if($user->user_name !== $request->user_name) {
+                // Log::debug($user);
+                $user->user_name = $request->user_name;
+            }
+            if($user->user_nickname !== $request->user_nickname) {
+                // Log::debug($user);
+                $user->user_nickname = $request->user_nickname;
+            }
+            if($user->user_phone !== $request->user_phone) {
+                Log::debug($request->user_phone);
+                $user->user_phone = $request->user_phone;
+            }
+
+            $user->save();
+
+            DB::commit();
+
+            $responseData = [
+                'success' => true,
+                'msg' => '게시글 획득 성공',
+                'user' => $user->toArray()
+            ];
+        } catch(Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
 
         return response()->json($responseData, 200);
     }

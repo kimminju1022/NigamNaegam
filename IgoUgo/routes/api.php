@@ -112,10 +112,12 @@ Route::get('/admin/daily/question/yet', [ChartController::class, 'showDailyQuest
 Route::get('/admin/daily/question/done', [ChartController::class, 'showDailyQuestionDone']);
 
 // 유저 관리
-Route::get('/admin/user', [UserManageController::class, 'getUserList']);
-Route::get('/admin/user/{id}', [UserManageController::class, 'getUserDetail']);
-Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'getBoardCnt']);
-Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'getCommentCnt']);
+Route::get('/admin/user', [UserManageController::class, 'showUserList']);
+Route::get('/admin/user/{id}', [UserManageController::class, 'showUserDetail']);
+Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'showBoardCnt']);
+Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'showCommentCnt']);
+Route::get('/admin/user/{id}/controlcnt', [UserManageController::class, 'showControlCnt']);
+Route::get('/admin/user/{id}/updatedetail', [UserManageController::class, 'updateUserDetail']);
 
 // 문의게시판
 Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);

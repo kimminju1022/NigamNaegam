@@ -7,6 +7,7 @@ export default {
         userDetail: {},
         userBoardCnt: [],
         userCommentCnt: null,
+        userControlCnt: null,
     }),
     mutations: {
         setUserList(state, list) {
@@ -19,7 +20,10 @@ export default {
             state.userBoardCnt = list;
         },
         setUserCommentCnt(state, data) {
-            state.userBoardCnt = data;
+            state.userCommentCnt = data;
+        },
+        setUserControlCnt(state, data) {
+            state.userControlCnt = data;
         },
     },
     actions: {
@@ -85,7 +89,22 @@ export default {
             .catch(error => {
                 console.error(error);
             })
-        }
+        },
+
+        showUserControlCnt(context, findData) {
+            const url = '/api/admin/user/' + findData.user_id + '/controlcnt';
+            const config = {
+                params: findData
+            };
+
+            axios.get(url, config)
+            .then(response => {
+                context.commit('setUserControlCnt', response.data.userControlCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
     },
     getters: {
     

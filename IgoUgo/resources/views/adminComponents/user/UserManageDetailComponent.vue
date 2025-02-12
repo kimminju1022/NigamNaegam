@@ -7,21 +7,40 @@
         <div class="user-detail-content-container">
             <div class="user-detail-box box1">
                 <img class="user-profile" :src="userDetail.user_profile">
-                <div class="user-personal-info">
-                    <div class="user-info-list">
-                        <p>이메일</p>
-                        <p>이름</p>
-                        <p>닉네임</p>
-                        <p>전화번호</p>
+                <div v-if="userDetailFlg" class="user-personal-info-box">
+                    <div class="user-personal-info">
+                        <div class="user-info-list">
+                            <p>이메일</p>
+                            <p>이름</p>
+                            <p>닉네임</p>
+                            <p>전화번호</p>
+                        </div>
+                        <div class="user-info-list">
+                            <p>{{ userDetail.user_email }}</p>
+                            <p>{{ userDetail.user_name }}</p>
+                            <p>{{ userDetail.user_nickname }}</p>
+                            <p>{{ userDetail.user_phone }}</p>
+                        </div>
                     </div>
-                    <div class="user-info-list">
-                        <p>{{ userDetail.user_email }}</p>
-                        <p>{{ userDetail.user_name }}</p>
-                        <p>{{ userDetail.user_nickname }}</p>
-                        <p>{{ userDetail.user_phone }}</p>
-                    </div>
+                    <button @click="updateBtn" class="btn bg-navy user-detail-btn">수정</button>
                 </div>
-                <button class="btn bg-navy user-detail-update-btn">수정</button>
+                <div v-else class="user-personal-info-box">
+                    <div class="user-personal-info">
+                        <div class="user-info-list">
+                            <p>이메일</p>
+                            <p>이름</p>
+                            <p>닉네임</p>
+                            <p>전화번호</p>
+                        </div>
+                        <div class="user-info-list info-input-style">
+                            <input :value="userDetail.user_email">
+                            <input :value="userDetail.user_name">
+                            <input :value="userDetail.user_nickname">
+                            <input :value="userDetail.user_phone">
+                        </div>
+                    </div>
+                    <button @click="finishBtn" class="btn bg-navy user-detail-btn">완료</button>
+                </div>
             </div>
 
             <div class="user-detail-box box2">
@@ -32,28 +51,18 @@
                     <div>
                         <p class="user-active-info-little-title">작성글 수</p>
                         <div class="pd-left">
-                            <div v-for="item in userBoardCnt" :key="item.bc_code" class="item-bottom">
-                                <div v-if="item.bc_code === '0'">
-                                    <p>리뷰 : {{ item.cnt }}개</p>
-                                </div>
-                                <div v-else-if="item.bc_code === '1'">
-                                    <p>자유 : {{ item.cnt }}개</p>
-                                </div>
-                                <div v-else-if="item.bc_code === '2'">
-                                    <p>문의 : {{ item.cnt }}개</p>
-                                </div>
+                            <div v-for="item in userBoardCnt" :key="item" class="item-bottom">
+                                <div v-if="item.bc_code === '0'">리뷰 : {{ item.cnt }}개</div>
+                                <div v-else-if="item.bc_code === '1'">자유 : {{ item.cnt }}개</div>
+                                <div v-else-if="item.bc_code === '2'">문의 : {{ item.cnt }}개</div>
                             </div>
                             <p class="item-bottom">댓글 : {{ userCommentCnt }}개</p>
-                            <!-- <p class="item-bottom">리뷰 : 10개</p>
-                            <p class="item-bottom">자유 : 30개</p>
-                            <p class="item-bottom">문의 : 5개</p>
-                            <p class="item-bottom">댓글 : 50개</p> -->
                         </div>
                     </div>
                     <div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 누적 횟수</p>
-                            <p class="pd-left">2<span>회</span></p>
+                            <p class="pd-left">{{ userControlCnt }}회</p>
                         </div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 기간</p>
@@ -150,7 +159,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, reactive } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
 
@@ -161,18 +170,13 @@ const route = useRoute();
 const userDetail = computed(() => store.state.userManage.userDetail);
 
 // 유저가 작성한 게시글 수
-const userBoardCnt = computed(() => {
-    const boardCode = ["0", "1", "2"]; // 항상 포함될 bc_code 목록
-    const originalList = store.state.userManage.userBoardCnt;
-    // const safeList = Array.isArray(originalList) ? originalList : [];
-    return boardCode.map(code => {
-        const filteredList = originalList.find(item => item.bc_code === code);
-        return filteredList ? filteredList : {bc_code: code, cnt: 0};
-    });
-});
+const userBoardCnt = computed(() => store.state.userManage.userBoardCnt);
 
 // 유저가 작성한 댓글 수
 const userCommentCnt = computed(() => store.state.userManage.userCommentCnt);
+
+// 유저 제재 이력 횟수
+const userControlCnt = computed(() => store.state.userManage.userControlCnt);
 
 // 유저id
 const findData = reactive({
@@ -183,7 +187,20 @@ onBeforeMount(() => {
     store.dispatch('userManage/showUserDetail', findData);
     store.dispatch('userManage/showUserBoardCnt', findData);
     store.dispatch('userManage/showUserCommentCnt', findData);
+    store.dispatch('userManage/showUserControlCnt', findData);
 });
+
+// 수정 
+const userDetailFlg = ref(true);
+
+function updateBtn() {
+    userDetailFlg.value = false;
+}
+
+function finishBtn() {
+    userDetailFlg.value = true;
+    // store.dispatch('userManage/');
+}
 </script>
 
 <style scoped>
@@ -235,21 +252,36 @@ onBeforeMount(() => {
     border: 1px solid #01083a;
     border-radius: 50%;
 }
+.user-personal-info-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
 .user-personal-info {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
 }
+.info-input-style {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 .user-info-list p {
     margin: 10px 0;
 }
-.user-detail-update-btn {
+.user-info-list input {
+    padding: 4px;
+    border: 1px solid #01083a;
+}
+.user-detail-btn {
     font-size: 20px;
-    padding: 10px 20px;
+    padding: 5px 15px;
     border-radius: 10px;
     border: 1px solid #01083a;
 }
-.user-detail-update-btn:hover {
+.user-detail-btn:hover {
     background-color: #fff;
     color: #01083a;
     border: 1px solid #01083a;
