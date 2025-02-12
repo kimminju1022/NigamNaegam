@@ -117,7 +117,7 @@ Route::get('/admin/user/{id}', [UserManageController::class, 'showUserDetail']);
 Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'showBoardCnt']);
 Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'showCommentCnt']);
 Route::get('/admin/user/{id}/controlcnt', [UserManageController::class, 'showControlCnt']);
-Route::get('/admin/user/{id}/updatedetail', [UserManageController::class, 'updateUserDetail']);
+Route::post('/admin/user/{id}/updatedetail', [UserManageController::class, 'updateUserDetail']);
 
 // 문의게시판
 Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);

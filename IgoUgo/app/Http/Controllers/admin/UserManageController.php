@@ -106,7 +106,7 @@ class UserManageController extends Controller
 
             $user = User::find($request->id);
             // Log::debug($user);
-            Log::debug($request);
+            Log::debug('Request:', $request->all());
             
             if($user->user_email !== $request->user_email) {
                 // Log::debug($user);
@@ -131,12 +131,12 @@ class UserManageController extends Controller
 
             $responseData = [
                 'success' => true,
-                'msg' => '게시글 획득 성공',
+                'msg' => '게시글 수정 성공',
                 'user' => $user->toArray()
             ];
         } catch(Throwable $th) {
             DB::rollBack();
-            throw $th;
+            $th->getMessage();
         }
 
         return response()->json($responseData, 200);

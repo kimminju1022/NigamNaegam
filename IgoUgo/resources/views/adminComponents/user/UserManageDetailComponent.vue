@@ -33,10 +33,10 @@
                             <p>전화번호</p>
                         </div>
                         <div class="user-info-list info-input-style">
-                            <input :value="userDetail.user_email">
-                            <input :value="userDetail.user_name">
-                            <input :value="userDetail.user_nickname">
-                            <input :value="userDetail.user_phone">
+                            <input v-model="userDetail.user_email">
+                            <input v-model="userDetail.user_name">
+                            <input v-model="userDetail.user_nickname">
+                            <input v-model="userDetail.user_phone">
                         </div>
                     </div>
                     <button @click="finishBtn" class="btn bg-navy user-detail-btn">완료</button>
@@ -193,13 +193,17 @@ onBeforeMount(() => {
 // 수정 
 const userDetailFlg = ref(true);
 
+const user = reactive({
+    userDetail: userDetail
+});
+
 function updateBtn() {
     userDetailFlg.value = false;
 }
 
 function finishBtn() {
     userDetailFlg.value = true;
-    // store.dispatch('userManage/');
+    store.dispatch('userManage/updateUserDetail', user);
 }
 </script>
 
