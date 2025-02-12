@@ -112,6 +112,7 @@ Route::get('/admin/daily/question/done', [ChartController::class, 'showDailyQues
 Route::get('/admin/user', [UserManageController::class, 'getUserList']);
 Route::get('/admin/user/{id}', [UserManageController::class, 'getUserDetail']);
 Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'getBoardCnt']);
+Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'getCommentCnt']);
 
 // 문의게시판
 Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);

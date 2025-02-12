@@ -6,6 +6,7 @@ export default {
         userList: [],
         userDetail: {},
         userBoardCnt: [],
+        userCommentCnt: null,
     }),
     mutations: {
         setUserList(state, list) {
@@ -16,6 +17,9 @@ export default {
         },
         setUserBoardCnt(state, list) {
             state.userBoardCnt = list;
+        },
+        setUserCommentCnt(state, data) {
+            state.userBoardCnt = data;
         },
     },
     actions: {
@@ -31,7 +35,7 @@ export default {
                 context.commit('pagination/setPagination', response.data.userList, {root: true});
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         },
 
@@ -47,7 +51,7 @@ export default {
                 // console.log(response.data.userDetail);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         },
 
@@ -60,12 +64,28 @@ export default {
             axios.get(url, config)
             .then(response => {
                 context.commit('setUserBoardCnt', response.data.userBoardCnt);
-                console.log(response.data.userBoardCnt)
+                // console.log(response.data.userBoardCnt);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         },
+
+        showUserCommentCnt(context, findData) {
+            const url = '/api/admin/user/' + findData.user_id + '/commentcnt';
+            const config = {
+                params: findData
+            };
+
+            axios.get(url, config)
+            .then(response => {
+                context.commit('setUserCommentCnt', response.data.userCommentCnt);
+                // console.log(response.data.userCommentCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        }
     },
     getters: {
     

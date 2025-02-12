@@ -32,10 +32,22 @@
                     <div>
                         <p class="user-active-info-little-title">작성글 수</p>
                         <div class="pd-left">
-                            <p class="item-bottom">리뷰 : 10개</p>
+                            <div v-for="item in userBoardCnt" :key="item.bc_code" class="item-bottom">
+                                <div v-if="item.bc_code === '0'">
+                                    <p>리뷰 : {{ item.cnt }}개</p>
+                                </div>
+                                <div v-else-if="item.bc_code === '1'">
+                                    <p>자유 : {{ item.cnt }}개</p>
+                                </div>
+                                <div v-else-if="item.bc_code === '2'">
+                                    <p>문의 : {{ item.cnt }}개</p>
+                                </div>
+                            </div>
+                            <p class="item-bottom">댓글 : {{ userCommentCnt }}개</p>
+                            <!-- <p class="item-bottom">리뷰 : 10개</p>
                             <p class="item-bottom">자유 : 30개</p>
                             <p class="item-bottom">문의 : 5개</p>
-                            <p class="item-bottom">댓글 : 50개</p>
+                            <p class="item-bottom">댓글 : 50개</p> -->
                         </div>
                     </div>
                     <div>
@@ -138,7 +150,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
 
@@ -148,6 +160,20 @@ const route = useRoute();
 // 유저 상세 정보
 const userDetail = computed(() => store.state.userManage.userDetail);
 
+// 유저가 작성한 게시글 수
+const userBoardCnt = computed(() => {
+    const boardCode = ["0", "1", "2"]; // 항상 포함될 bc_code 목록
+    const originalList = store.state.userManage.userBoardCnt;
+    // const safeList = Array.isArray(originalList) ? originalList : [];
+    return boardCode.map(code => {
+        const filteredList = originalList.find(item => item.bc_code === code);
+        return filteredList ? filteredList : {bc_code: code, cnt: 0};
+    });
+});
+
+// 유저가 작성한 댓글 수
+const userCommentCnt = computed(() => store.state.userManage.userCommentCnt);
+
 // 유저id
 const findData = reactive({
     user_id: route.params.id
@@ -156,6 +182,7 @@ const findData = reactive({
 onBeforeMount(() => {
     store.dispatch('userManage/showUserDetail', findData);
     store.dispatch('userManage/showUserBoardCnt', findData);
+    store.dispatch('userManage/showUserCommentCnt', findData);
 });
 </script>
 

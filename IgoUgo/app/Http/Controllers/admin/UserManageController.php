@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,20 @@ class UserManageController extends Controller
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
-            'userBoardCnt' => $userBoardCnt
+            'userBoardCnt' => $userBoardCnt->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    public function getCommentCnt(Request $request) {
+        $userId = $request->id;
+        $userCommentCnt = Comment::where('user_id', $userId)->count();
+
+        $responseData = [
+            'success' => true,
+            'msg' => '게시글 획득 성공',
+            'userCommentCnt' => $userCommentCnt
         ];
 
         return response()->json($responseData, 200);
