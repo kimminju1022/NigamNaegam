@@ -32,12 +32,14 @@ import BoardListComponent from '../views/components/board/BoardListComponent.vue
 import BoardDetailComponent from '../views/components/board/BoardDetailComponent.vue';
 import BoardCreateComponent from '../views/components/board/BoardCreateComponent.vue';
 import BoardUpdateComponent from '../views/components/board/BoardUpdateComponent.vue';
-
 // 문의게시판
 import QuestionListComponent from '../views/components/question/QuestionListComponent.vue';
 import QuestionCreateComponent from '../views/components/question/QuestionCreateComponent.vue';
 import QuestionDetailComponent from '../views/components/question/QuestionDetailComponent.vue';
 import QuestionUpdateComponent from '../views/components/question/QuestionUpdateComponent.vue';
+// 체험단
+import TesterComponent from '../views/components/betaTester/TesterComponent.vue';
+import TesterDetailComponent from '../views/components/betaTester/TesterDetailComponent.vue';
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import LoadingComponent from '../views/components/LoadingComponent.vue';
@@ -249,8 +251,10 @@ const routes = [
         component: QuestionManageDetailComponent,
         beforeEnter: chkAuth,
     },
-    // -------------------
 
+    // ---------------------------------------------------------------------------------------------
+
+    // 유저사이트
     // 메인
     {
         path: '/',
@@ -404,6 +408,17 @@ const routes = [
     {
         path: '/questions/:id/edit',
         component: QuestionUpdateComponent,
+        beforeEnter: chkAuth,
+    },
+    // 체험단
+    {
+        path: '/testers',
+        component: TesterComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/testers/:id',
+        component: TesterDetailComponent,
         beforeEnter: chkAuth,
     },
     // 기타기타

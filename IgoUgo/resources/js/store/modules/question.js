@@ -66,7 +66,6 @@ export default {
         // 게시글 상세
         questionDetail(context, data) {
             const url = `/api/questions/${data.board_id}`;
-            // const url = `/api/questions/190`;
             const config = {
                 params: data,
             }
@@ -74,7 +73,6 @@ export default {
             axios.get(url, config)
             .then(response => {
                 // console.log(response.data);
-                
                 context.commit('setQuestionDetail', response.data.data);
             })
             .catch(error => {
@@ -178,26 +176,6 @@ export default {
                 console.error(error.response.data);
             });
         },
-
-        // 게시글 삭제
-        destroyQuestion(context, id) {
-            const url = `/api/questions/${id}`;
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            }
-
-            axios.delete(url, config)
-            .then(response => {
-                alert('삭제 성공');
-                router.push('/questions');
-            })
-            .catch(error => {
-                console.error(error.response);
-                alert('삭제 실패');
-            });
-        }   
     },
     getters: {
     },

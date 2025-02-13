@@ -24,10 +24,10 @@ export default {
             return new Promise((resolve, reject) => {
                 const url = '/api/admin/question/yet';
                 const config = {
-                        params: {
-                            page: searchData.page
-                        },
-                    }
+                    params: {
+                        page: searchData.page
+                    },
+                }
     
                 axios.get(url, config)
                 .then(response => {
@@ -69,42 +69,38 @@ export default {
 
         // 문의게시글 디테일
         questionDetail(context, data) {
-            const url = `/api/admin/question/${data.board_id}`;
-            const config = {
-                params: data,
-            }
-
-            axios.get(url, config)
-            .then(response => {
-                // console.log('js: ', response.data.data);
-                context.commit('setQuestionDetail', response.data.data);
-            })
-            .catch(error => {
-                console.log(error);
+            return new Promise((resolve, reject) => {
+                const url = `/api/admin/question/${data.board_id}`;
+                const config = {
+                    params: data,
+                }
+    
+                axios.get(url, config)
+                .then(response => {
+                    // console.log('js: ', response.data.data);
+                    context.commit('setQuestionDetail', response.data.data);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log(error);
+                    return reject();
+                });
             });
         },
 
         // 문의게시글 관리자 답변 작성
         questionStore(context, data) {
             const url = `/api/admin/question/${data.board_id}`;
-            // const config = {
-            //     // headers: {
-            //     //     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-            //     // },
-            //     params: data,
-            // }
+            const config = {
+                // headers: {
+                //     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                // },
+                params: data,
+            }
 
-            console.log(data);
-
-            const formData = new FormData();
-            formData.append('que_content', data.que_content);
-            formData.append('board_id', data.board_id);
-            formData.append('user_id', data.user_id);
-
-            axios.post(url, formData)
+            axios.post(url, null, config)
             .then(response => {
-                console.log('js: ', response.data.data);
-                // context.commit('setQuestionYet', response.data.data.data);
+                // console.log('js: ', response.data.question);
                 alert('답변 작성 완료');
             })
             .catch(error => {

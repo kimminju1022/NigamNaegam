@@ -135,7 +135,7 @@
                             </div>
                         </li>
                         <li class="header-list-hover">
-                            <router-link to="">체험단 신청</router-link>
+                            <router-link to="/testers">체험단 신청</router-link>
                             <div class="dropdown-content">
                                 <div class="dropdown-menu">
                                     <div class="dropdown-list">

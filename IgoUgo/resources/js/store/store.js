@@ -10,6 +10,9 @@ import verification from './modules/verification';
 import map from './modules/map';
 import loading from './modules/loading';
 import search from './modules/search';
+import tester from './modules/tester';
+
+// 관리자
 import userManage from './modules/admin/userManage'
 import chart from './modules/admin/chart'
 import adminQuestion from './modules/admin/adminQuestion';
@@ -28,6 +31,7 @@ export default createStore({
         map,
         loading,
         search,
+        tester,
         // 관리자
         userManage,
         chart,

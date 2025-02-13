@@ -339,7 +339,7 @@ export default {
             let startPageNumber = (state.adminQuestionDoneCurrentPage - offSet) < 1 ? 1 : state.adminQuestionDoneCurrentPage - offSet; // 시작 페이지 번호 초기화
             let endPageNumber = startPageNumber + (state.viewPageCnt - 1); // 마지막 페이지 번호 초기화
             // 엔드페이지 조절 (토탈 페이지보다 클 경우)
-            if(endPageNumber > state.adminQuestionDoneCurrentPage) {
+            if(endPageNumber > state.adminQuestionDoneLastPage) {
                 endPageNumber = state.adminQuestionDoneLastPage;
             }
             // 스타트 페이지 조절(음수 안나오게 조절)

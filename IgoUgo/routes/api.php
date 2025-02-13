@@ -10,6 +10,7 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\admin\TesterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
 use App\Models\BoardReport;
@@ -95,6 +96,9 @@ Route::get('/search/product', [SearchController::class, 'searchProduct']);
 Route::get('/search/board', [SearchController::class, 'searchBoard']);
 Route::get('/search/board/tester', [SearchController::class, 'searchTester']);
 Route::get('/search/board/content', [SearchController::class, 'searchBoardContent']);
+
+// 체험단 게시판
+Route::get('/testers', [TesterController::class, 'index']);
 
 
 // 관리자 사이트 ---------------------------------------------------------------------------------------

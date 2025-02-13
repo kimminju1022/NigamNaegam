@@ -19,9 +19,9 @@
                         <div v-for="(item, index) in questionYet" class="que-item item-first">
                             <!-- <p>{{ index + 1 }}</p> -->
                             <p>{{ item.board_id }}</p>
-                            <p>{{ item.question_category.qc_name }}</p>
+                            <p>{{ item?.question_category?.qc_name }}</p>
                             <router-link :to="`/admin/question/${item.board_id}`">{{ item.board_title }}</router-link>
-                            <p>{{ item.user.user_nickname }}</p>
+                            <p>{{ item?.user?.user_nickname }}</p>
                             <p>{{ item.created_at_timestamps }}</p>
                         </div>
                     </div>
@@ -51,12 +51,12 @@
                         <div v-for="(item, index) in questionDone" class="que-item item-second">
                             <!-- <p>{{ index + 1 }}</p> -->
                             <p>{{ item.board_id }}</p>
-                            <p>{{ item.question_category.qc_name }}</p>
+                            <p>{{ item?.question_category?.qc_name }}</p>
                             <router-link :to="`/admin/question/${item.board_id}`">{{ item.board_title }}</router-link>
-                            <p>{{ item.user.user_nickname }}</p>
+                            <p>{{ item?.user?.user_nickname }}</p>
                             <p>{{ item.created_at_timestamps }}</p>
-                            <p>{{ item.question.user.user_name }}</p>
-                            <p>{{ item.question.updated_at_timestamps }}</p>
+                            <p>{{ item?.question?.user?.user_name }}</p>
+                            <p>{{ item?.question?.updated_at_timestamps }}</p>
                             <!-- <p>관리자</p>
                             <p>2025-02-10 00:00:00</p> -->
                         </div>
@@ -98,18 +98,8 @@ const searchDataQuestionDone = reactive({
 
 
 onBeforeMount(() => {
-    // Promise.all([
-        // store.dispatch('adminQuestion/questionYet', searchData),
-        // store.dispatch('adminQuestion/questionDone', searchData),
-        store.dispatch(actionNameQuestionYet, searchDataQuestionYet);
-        store.dispatch(actionNameQuestionDone, searchDataQuestionDone);
-    // ]);
-    // .then(() => {
-    //     console.log('store.disaptch 성공');
-    // })
-    // .catch(() => {
-    //     alert('에러가 발생했습니다.');
-    // });
+    store.dispatch(actionNameQuestionYet, searchDataQuestionYet);
+    store.dispatch(actionNameQuestionDone, searchDataQuestionDone);
 });
 </script>
 

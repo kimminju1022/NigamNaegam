@@ -8,7 +8,7 @@
             <div class="header-btn">
                 <button @click="$store.dispatch('adminQuestion/questionStore', adminQuestion)" class="btn bg-navy btn-header">완료</button>
                 <router-link :to="'/admin/question'"><button class="btn bg-navy btn-header">취소</button></router-link>
-                <button @click="deleteQuestion(questionDetail.board_id)" class="btn bg-navy btn-header">삭제</button>
+                <!-- <button @click="deleteQuestion(questionDetail.board_id)" class="btn bg-navy btn-header">삭제</button> -->
             </div>
         </div>
         <div class="que-content-container">
@@ -41,20 +41,21 @@
             <div class="que-content-box">
                 <h3>관리자 답변</h3>
                 <div class="que-content-admin">
-                    <p v-if="questionDetail.question.que_status === '1'">{{ questionDetail.question.user.user_name }}</p>
+                    <p v-if="questionDetail?.question?.que_status === '1'">{{ questionDetail?.question?.user?.user_name }}</p>
                     <p v-else>미답변</p>
-                    <p v-if="questionDetail.question.que_status === '1'">{{ questionDetail.question.updated_at_timestamps }}</p>
+                    <p v-if="questionDetail?.question?.que_status === '1'">{{ questionDetail?.question?.updated_at_timestamps }}</p>
                     <p v-else>미답변 상태</p>
                 </div>
-                <textarea class="textarea-admin-content" name="que_content" maxlength="2000">{{ questionDetail.question.que_content }}</textarea>
-                <!-- <textarea v-model="adminQuestion.que_content" class="textarea-admin-content" name="que_content" maxlength="2000"></textarea> -->
+                
+                <!-- <textarea class="textarea-admin-content" name="que_content" maxlength="2000"></textarea> -->
+                <textarea v-model="adminQuestion.que_content" class="textarea-admin-content" name="que_content" maxlength="2000"></textarea>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -62,26 +63,25 @@ const store = useStore();
 const route = useRoute();
 
 const questionDetail = computed(() => store.state.adminQuestion.questionDetail);
-// console.log(questionDetail.value);
+// console.log(questionDetail);
 
-const boardInfo = reactive({
-    board_id: route.params.id,
-});
-
-const managerInfo = localStorage.getItem('managerInfo');
-const managerInfoObj = JSON.parse(managerInfo);
-// console.log(managerInfoObj.user_id);
+const managerInfo = computed(() => store.state.auth.managerInfo);
 
 const adminQuestion = reactive({
-    que_content: '이건 프론트에서 보내는 중',
-    // que_content: store.state.adminQuestion.questionDetail.question.que_content,
-    board_id: boardInfo.board_id,
-    user_id: managerInfoObj.user_id,
-    // 관리자 정보 받아야함
+    // que_content: '이건 프론트에서 보내는 중',
+    que_content: '',
+    board_id: route.params.id,
+    user_id: managerInfo.value.user_id,
 });
 
 onBeforeMount(()=>{
-    store.dispatch('adminQuestion/questionDetail', boardInfo);
+    store.dispatch('adminQuestion/questionDetail', adminQuestion)
+    .then(() => {
+        adminQuestion.que_content = questionDetail.value.question.que_content;
+    })
+    .catch(error => {
+        console.error(error);
+    });
     // console.log('비포마운트 안', questionDetail.value);
 });
 
@@ -109,7 +109,7 @@ const deleteQuestion = (id) => {
 
 .header-btn {
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
 

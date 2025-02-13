@@ -298,17 +298,16 @@ class QuestionController extends Controller
     // 메인페이지 답변완료 리스트
     public function adminQuestionDone() {
         $questionList = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
-                                // ->with(['question', 'user', 'question_category'])
                                 ->with(['question' => function ($query) {
                                     $query->select(DB::raw("*, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at_timestamps"))
-                                            ->with('user');  // question과 관련된 user를 함께 로드
-                                    $query->where('que_status', '1');  // que_status가 '1'인 question만 로드
+                                            ->with('user');
+                                    $query->where('que_status', '1');
                                 }, 'user', 'question_category'])
                                 ->whereHas('question', function ($query) {
                                     $query->where('que_status', '1');
                                 })
                                 ->where('bc_code', '2')
-                                ->orderBy('created_at','DESC')
+                                // ->orderBy('created_at','DESC')
                                 ->paginate(5);
 
         $responseData = [
@@ -339,26 +338,17 @@ class QuestionController extends Controller
     }
 
     // 관리자 답변 작성
-    public function storeQuestion(Request $request) {
-
-
-        // $responseData = [
-        //     'success' => true
-        //     ,'msg' =>'게시글 획득 성공'
-        // ];
-        // return response()->json($responseData, 200);
-
-        // try {
-        //     DB::beginTransaction();
-            Log::debug('request', $request->toArray());
-            $question = Question::find($request->board_id);
-            // Log::debug('question : ',$question->toArray());
-            Log::debug($question);
+    public function storeQuestion(Request $request, $id) {
+        try {
+            DB::beginTransaction();
+            // Log::debug('request', $request->all());
+            $question = Question::where('board_id', $id)->first();
+            // Log::debug('question : ', $question->toArray());
 
             if(!$question) {
                 $responseData = [
                     'success' => false
-                    ,'msg' => '답변 업데이트 실패'
+                    ,'msg' => '답변 획득 실패'
                 ];
             }
 
@@ -371,9 +361,11 @@ class QuestionController extends Controller
                 $question->user_id = $request->user_id;
             }
 
+            $question->que_status = '1';
+
             $question->save();
 
-            // DB::commit();
+            DB::commit();
             
             $responseData = [
                 'success' => true
@@ -382,9 +374,9 @@ class QuestionController extends Controller
             ];
             
             return response()->json($responseData, 200);
-        // } catch(Throwable $th){
-        //     DB::rollBack();
-        //     $th->getMessage();
-        // }
+        } catch(Throwable $th){
+            DB::rollBack();
+            $th->getMessage();
+        }
     }
 }
