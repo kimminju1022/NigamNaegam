@@ -8,7 +8,7 @@
             <div class="header-btn">
                 <button @click="$store.dispatch('adminQuestion/questionStore', adminQuestion)" class="btn bg-navy btn-header">완료</button>
                 <router-link :to="'/admin/question'"><button class="btn bg-navy btn-header">취소</button></router-link>
-                <button class="btn bg-navy btn-header">삭제</button>
+                <button @click="deleteQuestion(questionDetail.board_id)" class="btn bg-navy btn-header">삭제</button>
             </div>
         </div>
         <div class="que-content-container">
@@ -16,11 +16,12 @@
                 <h3>유저 문의</h3>
                 <div class="que-content-head">
                     <div class="que-content que-content-number">
-                        <p>글번호</p>
-                        <p>{{ questionDetail.board_id }}</p>
+                        <!-- <p>글번호</p> -->
+                        <p>글번호 : {{ questionDetail.board_id }}</p>
+                        <p>{{ questionDetail.question_category.qc_name }}</p>
                     </div>
                     <div class="que-content que-content-title">
-                        <p>제목</p>
+                        <p>제목 :</p>
                         <textarea name="" id="" class="textarea-title" readonly>{{ questionDetail.board_title }}</textarea>
                     </div>
                     <div class="que-content que-content-user">
@@ -45,7 +46,8 @@
                     <p v-if="questionDetail.question.que_status === '1'">{{ questionDetail.question.updated_at_timestamps }}</p>
                     <p v-else>미답변 상태</p>
                 </div>
-                <textarea v-model="adminQuestion.que_content" class="textarea-admin-content" name="que_content">{{ questionDetail.question.que_content }}</textarea>
+                <textarea class="textarea-admin-content" name="que_content" maxlength="2000">{{ questionDetail.question.que_content }}</textarea>
+                <!-- <textarea v-model="adminQuestion.que_content" class="textarea-admin-content" name="que_content" maxlength="2000"></textarea> -->
             </div>
         </div>
     </div>
@@ -66,9 +68,15 @@ const boardInfo = reactive({
     board_id: route.params.id,
 });
 
+const managerInfo = localStorage.getItem('managerInfo');
+const managerInfoObj = JSON.parse(managerInfo);
+// console.log(managerInfoObj.user_id);
+
 const adminQuestion = reactive({
-    que_content: '',
+    que_content: '이건 프론트에서 보내는 중',
+    // que_content: store.state.adminQuestion.questionDetail.question.que_content,
     board_id: boardInfo.board_id,
+    user_id: managerInfoObj.user_id,
     // 관리자 정보 받아야함
 });
 
@@ -76,6 +84,13 @@ onBeforeMount(()=>{
     store.dispatch('adminQuestion/questionDetail', boardInfo);
     // console.log('비포마운트 안', questionDetail.value);
 });
+
+const deleteQuestion = (id) => {
+    const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    if(check) {
+        store.dispatch('adminQuestion/destroyQuestion', id);
+    }
+}
 </script>
 
 <style scoped>
@@ -139,20 +154,21 @@ onBeforeMount(()=>{
     display: grid;
     gap: 20px;
     border-bottom: 1px solid #000;
-    grid-template-columns: 1fr 7fr 4fr;
+    grid-template-columns: 2fr 7fr 4fr;
     margin-top: 5px;
     padding: 0 10px;
 }
 
 .que-content {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
     font-size: 18px;
     gap: 10px;
 }
 
 .que-content-number {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     /* place-items: center; */
 }
 

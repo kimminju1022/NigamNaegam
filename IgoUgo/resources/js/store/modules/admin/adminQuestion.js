@@ -87,16 +87,21 @@ export default {
         // 문의게시글 관리자 답변 작성
         questionStore(context, data) {
             const url = `/api/admin/question/${data.board_id}`;
-            const config = {
-                params: data,
-            }
+            // const config = {
+            //     // headers: {
+            //     //     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            //     // },
+            //     params: data,
+            // }
 
             console.log(data);
 
             const formData = new FormData();
             formData.append('que_content', data.que_content);
+            formData.append('board_id', data.board_id);
+            formData.append('user_id', data.user_id);
 
-            axios.post(url, config)
+            axios.post(url, formData)
             .then(response => {
                 console.log('js: ', response.data.data);
                 // context.commit('setQuestionYet', response.data.data.data);
@@ -106,6 +111,26 @@ export default {
                 console.log(error);
             });
         },
+
+        // 게시글 삭제
+        destroyQuestion(context, id) {
+            const url = `/api/questions/${id}`;
+            // const config = {
+            //     headers: {
+            //         'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            //     }
+            // }
+
+            axios.delete(url)
+            .then(response => {
+                alert('삭제 성공');
+                router.push('/admin/question');
+            })
+            .catch(error => {
+                console.error(error.response);
+                alert('삭제 실패');
+            });
+        }  
     },
 
     getters: {

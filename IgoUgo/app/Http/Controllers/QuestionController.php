@@ -348,19 +348,32 @@ class QuestionController extends Controller
         // ];
         // return response()->json($responseData, 200);
 
-        try {
-            DB::beginTransaction();
-            
+        // try {
+        //     DB::beginTransaction();
+            Log::debug('request', $request->toArray());
             $question = Question::find($request->board_id);
+            // Log::debug('question : ',$question->toArray());
             Log::debug($question);
+
+            if(!$question) {
+                $responseData = [
+                    'success' => false
+                    ,'msg' => '답변 업데이트 실패'
+                ];
+            }
 
             if($question->que_content !== $request->que_content) {
                 $question->que_content = $request->que_content;
             }
 
             // 관리자 정보 받아야함
+            if($question->user_id !== $request->user_id) {
+                $question->user_id = $request->user_id;
+            }
 
-            DB::commit();
+            $question->save();
+
+            // DB::commit();
             
             $responseData = [
                 'success' => true
@@ -369,9 +382,9 @@ class QuestionController extends Controller
             ];
             
             return response()->json($responseData, 200);
-        } catch(Throwable $th){
-            DB::rollBack();
-            $th->getMessage();
-        }
+        // } catch(Throwable $th){
+        //     DB::rollBack();
+        //     $th->getMessage();
+        // }
     }
 }
