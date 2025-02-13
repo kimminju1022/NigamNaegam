@@ -18,18 +18,28 @@ class BoardReportController extends Controller
 
         $boardPost = Board::select(
                                 'boards.board_id', 
-                                'boards.board_title', 
-                                'boards.board_content', 
+                                'boards.board_title',
+                                'products.area_code',
                                 'users.user_name', 
-                                'users.user_nickname', 
+                                'users.user_nickname',
+                                'boards.created_at',
                                 DB::raw('count(board_reports.board_id) as report_count'),
                                 )
-                            ->leftjoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id')
-                            ->leftjoin('users', 'users.user_id', '=', 'boards.user_id')
+                                ->leftJoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id')
+                                ->leftJoin('users', 'boards.user_id', '=', 'users.user_id')
+                                ->leftJoin('reviews', 'boards.board_id', '=', 'reviews.board_id')
+                                ->leftJoin('products', 'reviews.product_id', '=', 'products.product_id') 
                             ->whereNull('boards.deleted_at')
                             ->where('boards.bc_code', $bcCode)
-                            ->groupBy('boards.board_id', 'boards.board_title', 'boards.board_content', 'users.user_name', 'users.user_nickname')
-                            ->paginate(15);
+                            ->groupBy(
+                                'boards.board_id', 
+                                'boards.board_title', 
+                                'products.area_code',
+                                'users.user_name', 
+                                'users.user_nickname', 
+                                'boards.created_at',
+                            )
+                            ->paginate(17);
                             
         $responseData = [
             'success' => true,
@@ -41,4 +51,10 @@ class BoardReportController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+    // public function postDetail(Request $request) {
+    //     $boardPostDetail = Board::select(
+    //                                 'boards'
+    //     )
+    // }
 }

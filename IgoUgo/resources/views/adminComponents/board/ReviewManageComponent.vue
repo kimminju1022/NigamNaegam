@@ -8,44 +8,56 @@
             <div class="review-list-title">
                 <p>신고</p>
                 <p>번호</p>
+                <p>카테고리</p>
                 <p>제목</p>
                 <p>닉네임</p>
                 <p>이름</p>
                 <p>작성일자</p>
             </div>
             <div class="review-list-box" >
-                <div class="review-item">
-                    <p>🚨</p>
-                    <p>3</p>
-                    <p>아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주</p>
-                    <p>내가</p>
-                    <p>누구게</p>
-                    <p>2025-02-06 00:00:00</p>
+                <div v-for="item in postList" :key="item" class="review-item">
+                    <p v-if="item.report_count > 0">{{ item.report_count }}</p>
+                    <p v-else>0</p>
+                    <p>{{ item.board_id }}</p>
+                    <p>{{ item.area_code }}</p>
+                    <p>{{ item.board_title }}</p>
+                    <p>{{ item.user_nickname }}</p>
+                    <p>{{ item.user_name }}</p>
+                    <p>{{ item.created_at }}</p>
                 </div>
-                <div class="review-item">
-                    <p></p>
-                    <p>2</p>
-                    <p>짧은 제목</p>
-                    <p>알아서</p>
-                    <p>뭐하게</p>
-                    <p>2025-02-06 00:00:00</p>
+                <div class = "review-post-List">
+                    <PaginationComponent
+                    :actionName="actionName"
+                    :searchData="searchData"
+                    :currentPage="$store.state.pagination.currentPage"
+                    :lastPage="$store.state.pagination.lastPage"
+                    :viewPageNumber="$store.state.pagination.viewPageNumber"
+                    />
                 </div>
-                <div class="review-item">
-                    <p>🚨</p>
-                    <p>1</p>
-                    <p>기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이임</p>
-                    <p>후후후</p>
-                    <p>하하하</p>
-                    <p>2025-02-06 00:00:00</p>
-                </div>
-                <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useStore } from 'vuex';
+import PaginationComponent from '../../components/PaginationComponent.vue';
+const store = useStore();
 
+// 게시판 불러오기
+const postList = computed(()=> store.state.adminBoard.postList);
+const actionName = 'adminBoard/getPostList';
+
+
+const searchData = reactive({
+    boardCategory: 0,
+    page: store.state.pagination.currentPage,
+});
+
+onBeforeMount(async() => {
+    store.dispatch(actionName, searchData)
+});
 </script>
 
 <style scoped>
@@ -78,7 +90,7 @@
 }
 .review-list-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr 1.5fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     font-size: 18px;
@@ -89,7 +101,7 @@
 }
 .review-item{
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr 1.5fr;
     text-align: center;
     width: 100%;
     height: 30px;
@@ -100,5 +112,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 10px;
+}
+.review-post-List {
+    text-align: center;
+    margin-top: 20px;
 }
 </style>

@@ -15,30 +15,23 @@
             </div>
             <div class="free-list-box" >
                 <div v-for="item in postList" :key=item class="free-item">
-                    <p>🚨</p>
+                    <p v-if="item.report_count > 0">{{ item.report_count }}</p>
+                    <p v-else>0</p>
                     <p>{{ item.board_id }}</p>
-                    <p>아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주</p>
-                    <p>내가</p>
-                    <p>누구게</p>
-                    <p>2025-02-06 00:00:00</p>
+                    <p>{{ item.board_title }}</p>
+                    <p>{{ item.user_nickname }}</p>
+                    <p>{{ item.user_name }}</p>
+                    <p>{{ item.created_at }}</p>
                 </div>
-                <!-- <div class="free-item">
-                    <p></p>
-                    <p>2</p>
-                    <p>짧은 제목</p>
-                    <p>알아서</p>
-                    <p>뭐하게</p>
-                    <p>2025-02-06 00:00:00</p>
+                <div class="free-post-List">
+                    <PaginationComponent
+                    :actionName="actionName"
+                    :searchData="searchData"
+                    :currentPage="$store.state.pagination.currentPage"
+                    :lastPage="$store.state.pagination.lastPage"
+                    :viewPageNumber="$store.state.pagination.viewPageNumber"
+                    />
                 </div>
-                <div class="free-item">
-                    <p>🚨</p>
-                    <p>1</p>
-                    <p>기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이임</p>
-                    <p>후후후</p>
-                    <p>하하하</p>
-                    <p>2025-02-06 00:00:00</p>
-                </div> -->
-                <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
             </div>
         </div>
     </div>
@@ -47,18 +40,22 @@
 <script setup>
 import { computed, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
+import PaginationComponent from '../../components/PaginationComponent.vue';
 const store = useStore();
 
 // 게시판 불러오기
-const postList = computed(()=> store.state.adminBoard.postList)
+const postList = computed(()=> store.state.adminBoard.postList);
+const actionName = 'adminBoard/getPostList';
 
 
 const searchData = reactive({
-    boardCategory: 0
-})
+    boardCategory: 1,
+    page: store.state.pagination.currentPage,
+});
+
 onBeforeMount(async() => {
-    store.dispatch('adminBoard/getHotelList', searchData)
-})
+    store.dispatch(actionName, searchData)
+});
 
 
 </script>
@@ -115,5 +112,9 @@ onBeforeMount(async() => {
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 10px;
+}
+.free-post-List {
+    text-align: center;
+    margin-top: 20px;
 }
 </style>
