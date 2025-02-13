@@ -8,6 +8,8 @@ export default {
         userBoardCnt: [],
         userCommentCnt: null,
         userControlCnt: null,
+        userBoardReport: [],
+        userCommentReport: [],
     }),
     mutations: {
         setUserList(state, list) {
@@ -24,6 +26,12 @@ export default {
         },
         setUserControlCnt(state, data) {
             state.userControlCnt = data;
+        },
+        setUserBoardReport(state, list) {
+            state.userBoardReport = list;
+        },
+        setUserCommentReport(state, list) {
+            state.userCommentReport = list;
         },
     },
     actions: {
@@ -127,13 +135,47 @@ export default {
 
             axios.post(url, formData, config)
             .then(response => {
-                context.commit('setUserList', response.data.user);
+                // context.commit('setUserList', response.data.user);
+                context.commit('setUserDetail', response.data.user);
                 alert('수정 성공');
             })
             .catch(error => {
                 alert('수정 실패');
                 console.error(error);
             });
+        },
+
+        // 유저 신고 당한 게시글 리스트
+        showBoardReport(context, findData) {
+            const url = '/api/admin/user/' + findData.user_id + '/boardreport';
+            const config = {
+                params: findData.user_id
+            };
+
+            axios.get(url, config)
+            .then(response => {
+                context.commit('setUserBoardReport', response.data.boardReport.data);
+                console.log("board: ", response.data.boardReport.data);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
+
+        // 유저 신고 당한 댓글 리스트
+        showCommentReport(context, findData) {
+            const url = '/api/admin/user/' + findData.user_id + '/commentreport';
+            const config = {
+                params: findData.user_id
+            };
+
+            axios.get(url, config)
+            .then(response => {
+                context.commit('setUserCommentReport', response.data.commentReport);
+            })
+            .catch(error => {
+                console.error(error);
+            })
         },
     },
     getters: {

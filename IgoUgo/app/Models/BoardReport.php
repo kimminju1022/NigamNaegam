@@ -34,4 +34,8 @@ class BoardReport extends Model
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function board() {
+        return $this->belongsTo(Board::class, 'board_id', 'board_id');
+    }
 }

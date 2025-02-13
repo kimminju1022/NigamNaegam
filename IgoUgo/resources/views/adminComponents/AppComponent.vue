@@ -24,7 +24,7 @@
                 <!-- <p>통계</p> -->
             </div>
         </div>
-        <div>
+        <div class="admin-user-box">
             <div class="admin-user">
                 <div class="admin-user-image-info">
                     <img class="admin-user-image" :src="user.user_profile">
@@ -32,8 +32,8 @@
                 </div>
 
                 <div class="admin-user-info">
-                    <p>아이디 {{ user.user_email }}</p>
-                    <p>닉네임 {{ user.user_nickname }}</p>
+                    <p>아이디 : {{ user.user_email }}</p>
+                    <p>닉네임 : {{ user.user_nickname }}</p>
                 </div>
 
                 <!-- <div class="admin-user-box">
@@ -99,7 +99,7 @@ const logout = () =>{
 /* 왼쪽 헤더 */
 .admin-header-left {
     display: grid;
-    grid-template-rows: 1.2fr 1fr 60px;
+    grid-template-rows: 1.2fr 1.5fr 60px;
     background-color: #01083a;
     height: 100vh;
 }
@@ -143,9 +143,9 @@ const logout = () =>{
     width: 230px;
     display: grid;
     /* grid-template-rows: 180px 60px 120px; */
-    grid-template-rows: 3fr 1fr 1.5fr;
+    grid-template-rows: 2fr 1fr;
     border-radius: 10px;
-    gap: 10px;
+    gap: 50px;
     justify-self: center;
 }
 .admin-user-image {
@@ -172,7 +172,8 @@ const logout = () =>{
 
 /* 회색박스 안에 작은 흰색? 박스 */
 .admin-user-box {
-    justify-self: center;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 .admin-user-option {

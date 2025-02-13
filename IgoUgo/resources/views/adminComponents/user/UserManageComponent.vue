@@ -45,7 +45,7 @@
                     <p>제재 만료일자</p>
                 </div>
                 <div class="user-list-box" >
-                    <div v-for="item in userList" :ket="item" class="user-item">
+                    <div v-for="item in userList" :key="item" class="user-item">
                         <router-link :to="`/admin/user/${item.user_id}`">
                             <p>{{ item.user_id }}</p>
                             <p>{{ item.user_email }}</p>

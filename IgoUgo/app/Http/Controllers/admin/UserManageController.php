@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
+use App\Models\BoardReport;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\UserControl;
@@ -138,6 +139,59 @@ class UserManageController extends Controller
             DB::rollBack();
             $th->getMessage();
         }
+
+        return response()->json($responseData, 200);
+    }
+
+    // 유저 신고당한 게시글
+    public function showBoardReport(Request $request) {
+        $userId = $request->id;
+        // $boardReport = Board::select('board_id', 'user_id', 'board_title', 'created_at')
+        //                         ->with(['reports' => function ($query) {
+        //                         $query->select(DB::raw("board_id, count(*) as cnt"))
+        //                                 ->groupBy('board_id');
+        //                         }])
+        //                         ->where('user_id', $userId)
+        //                         ->orderBy('created_at', 'DESC')
+        //                         ->paginate(5);
+
+        $boardReport = BoardReport::
+                                    with(['board' => function ($query) use ($userId) {
+                                        $query->select('board_id', DB::raw("count(*) as cnt"))
+                                                ->where('user_id', $userId)
+                                                ->groupBy('board_id');
+                                    }])
+                                    ->get();
+
+        $responseData = [
+            'success' => true,
+            'msg' => '게시글 획득 성공',
+            'boardReport' => $boardReport
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 유저 신고당한 댓글
+    public function showCommentReport(Request $request) {
+        $userId = $request->id;
+        $commentReport = Comment::select('comment_id', 'board_id', 'user_id', 'created_at')
+                                ->with(['reports' => function($query) {
+                                    $query->select('comment_id', DB::raw("count(*) as cnt"))
+                                            ->groupBy('comment_id');                        
+                                }])
+                                ->with(['board' => function($query) {
+                                    $query->select('board_id', 'board_title');
+                                }])
+                                ->where('user_id', $userId)
+                                ->orderBy('created_at', 'DESC')
+                                ->get();
+
+        $responseData = [
+            'success' => true,
+            'msg' => '댓글 획득 성공',
+            'commentReport' => $commentReport
+        ];
 
         return response()->json($responseData, 200);
     }

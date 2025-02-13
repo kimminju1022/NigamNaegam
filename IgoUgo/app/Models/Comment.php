@@ -45,8 +45,9 @@ class Comment extends Model
     public function board() {
         return $this->belongsTo(board::class, 'board_id', 'board_id');
     }
-    public function report(){
-        return $this->hasMany(CommentReport::class,'comment_id', 'user_id', 'comment_id', 'user_id'); 
+    public function reports(){
+        // return $this->hasMany(CommentReport::class,'comment_id', 'user_id', 'comment_id', 'user_id'); 
+        return $this->hasMany(CommentReport::class,'comment_id', 'comment_id'); 
     }
     
 

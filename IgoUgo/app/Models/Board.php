@@ -34,17 +34,11 @@ class Board extends Model
      */
     protected function serializeDate(\DateTimeInterface $date) {
         $today = Carbon::instance($date)->isToday();
-        // $manager = User::where('manager_flg' === '1')->all(); // 매니저 여부 체크
-        
-        // if(!$manager) {
             if($today) {
                 return $date->format('H:i');
             } else {
                 return $date->format('Y-m-d');
-            } // 매니저가 아닐 경우 보드리스트에서 보일 시간
-        // } else {
-            // return $date->format('Y-m-d H:i:s'); // 매니저일 경우 관리자사이트에서 보일 시간
-        // }
+            }
     }
 
     public function user() {
@@ -89,20 +83,12 @@ class Board extends Model
         return $this->hasOneThrough(ReviewCategory::class, Review::class, 'board_id', 'bc_code', 'board_id', 'bc_code');
     }
     
-    public function route() {
-        return $this->hasOne(Route::class, 'board_id', 'board_id');
-    }
-
-    public function route_spots() {
-        return $this->hasManyThrough(Route::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
-        // return $this->hasManyThrough(RouteSpot::class, Route::class, 'board_id', 'route_id', 'board_id', 'route_id');
-    }
-    
     public function board_images(){
         return $this->hasMany(BoardImage::class, 'board_id', 'board_id');
     }
 
-    public function report(){
-        return $this->hasMany(BoardReport::class,'board_id', 'user_id', 'board_id', 'user_id'); 
+    public function reports(){
+        // return $this->hasMany(BoardReport::class,'board_id', 'user_id', 'board_id', 'user_id'); 
+        return $this->hasMany(BoardReport::class,'board_id', 'board_id'); 
     }
 }

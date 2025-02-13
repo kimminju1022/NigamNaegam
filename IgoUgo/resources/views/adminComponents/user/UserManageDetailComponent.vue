@@ -100,25 +100,12 @@
                         <p>신고 수</p>
                     </div>
                     <div class="user-detail-list-box" >
-                        <div class="user-detail-item">
-                            <p>3</p>
-                            <p>제목제목제목제목제목제목제목제목제목</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>10</p>
+                        <div v-for="item in userBoardReport" :key="item" class="user-detail-item">
+                            <p>{{ item.board_id }}</p>
+                            <p>{{ item.board_title }}</p>
+                            <p>{{ item.created_at }}</p>
+                            <p>{{ item.reports[0].cnt }}</p>
                         </div>
-                        <div class="user-detail-item">
-                            <p>2</p>
-                            <p>제목제목제목제목제목제목제목제목제목</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>10</p>
-                        </div>
-                        <div class="user-detail-item">
-                            <p>1</p>
-                            <p>제목제목제목제목제목제목제목제목제목</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>10</p>
-                        </div>
-                        <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
                     </div>
                 </div>
                 <div>
@@ -132,7 +119,14 @@
                         <p>신고 수</p>
                     </div>
                     <div class="user-detail-list-box" >
-                        <div class="user-detail-item">
+                        <div v-for="item in userCommentReport" :key="item" class="user-detail-item">
+                            <p>{{ item.board_id }}</p>
+                            <p>{{ item.board.board_title }}</p>
+                            <p>{{ item.created_at }}</p>
+                            <p>{{ item.reports[0].cnt }}</p>
+                        </div>
+                    
+                        <!-- <div class="user-detail-item">
                             <p>3</p>
                             <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
@@ -149,8 +143,7 @@
                             <p>제목제목제목제목제목제목제목제목제목</p>
                             <p>2025-02-06 00:00:00</p>
                             <p>10</p>
-                        </div>
-                        <div style="text-align: center;">여기에도 페이지네이션 넣어야함</div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -178,6 +171,12 @@ const userCommentCnt = computed(() => store.state.userManage.userCommentCnt);
 // 유저 제재 이력 횟수
 const userControlCnt = computed(() => store.state.userManage.userControlCnt);
 
+// 유저 신고 당한 게시글
+const userBoardReport = computed(() => store.state.userManage.userBoardReport);
+
+// 유저 신고 당한 댓글
+const userCommentReport = computed(() => store.state.userManage.userCommentReport);
+
 // 유저id
 const findData = reactive({
     user_id: route.params.id
@@ -188,6 +187,8 @@ onBeforeMount(() => {
     store.dispatch('userManage/showUserBoardCnt', findData);
     store.dispatch('userManage/showUserCommentCnt', findData);
     store.dispatch('userManage/showUserControlCnt', findData);
+    store.dispatch('userManage/showBoardReport', findData);
+    store.dispatch('userManage/showCommentReport', findData);
 });
 
 // 수정 
