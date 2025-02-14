@@ -98,6 +98,8 @@ const chkAuth = (to, from, next) => {
         ,/^\/boards\/[0-9]+$/
         ,/^\/questions$/
         ,/^\/search$/
+        ,/^\/testers$/
+        ,/^\/testers\/[0-9]+$/
     ];
 
     const store = useStore();

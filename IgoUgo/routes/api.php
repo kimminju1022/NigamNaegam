@@ -99,6 +99,7 @@ Route::get('/search/board/content', [SearchController::class, 'searchBoardConten
 
 // 체험단 게시판
 Route::get('/testers', [TesterController::class, 'index']);
+Route::get('/testers/{id}', [TesterController::class, 'show']);
 
 
 // 관리자 사이트 ---------------------------------------------------------------------------------------

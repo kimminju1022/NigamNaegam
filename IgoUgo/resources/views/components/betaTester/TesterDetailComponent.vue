@@ -1,39 +1,40 @@
 <template>
-    <div class="container" v-if="questionDetail">
-        <h1>문의게시판</h1>
-        <router-link :to="`/testers`"><button class="btn bg-navy header-btn">목록</button></router-link>
+    <div class="container" v-if="testerDetail">
+        <h1>체험단 신청</h1>
+        <div class="header-btn-box">
+            <router-link :to="`/testers`"><button class="btn bg-navy header-btn">목록</button></router-link>
+        </div>
         <div class="board-box">
             <div class="board-box-flex">
-                <!-- <div class="board-title-box board-title-category">
-                    <p>카테고리</p>
-                </div>
-                <div class="board-title-box board-title">
-                    <p>제목</p>
-                    <input type="text" placeholder="바쁘다바빠">
-                </div>
-                <div class="board-user">
-                    <p>2025-01-01 00:00</p>
-                </div> -->
-                    <p>카테고리</p>
-                    <div class="board-title">
-                        <p>제목</p>
-                        <!-- <input type="text" placeholder="바쁘다바빠"> -->
-                        <p>여기는 제목 바쁘다바빠</p>
-                    </div>
-                    <p>2025-01-01 00:00</p>
+                <p>카테고리</p>
+                <p>{{ testerDetail.board_title }}</p>
+                <p>{{ testerDetail.created_at }}</p>
             </div>
             <div class="board-content-box">
-                <!-- <p>내용</p> -->
                 <div class="board-content">
                     <div class="board-content-img">
                         <div class="img-grid">
-                            <!-- <img v-for="(image, index) in questionDetail.board_images" :key="index" :src="image.board_img"> -->
-                        </div>
+                            <img v-for="(image, index) in testerDetail.board_images" :key="index" :src="image.board_img">
+                        </div> 
                     </div>
                     <div class="content-textarea">
-                        <textarea readonly>카테고리</textarea>
+                        <textarea readonly>{{ testerDetail.board_content }}</textarea>
                     </div>
+                    <p>모집 기한 : 2025-01-01</p>
+                    <p>신청은 댓글로</p>
                 </div>
+            </div>
+            <div>
+                <div>
+
+                </div>
+                <!-- <PaginationComponent
+                    :actionName="actionName"
+                    :searchData="searchData"
+                    :currentPage="$store.state.pagination.currentPage"
+                    :lastPage="$store.state.pagination.lastPage"
+                    :viewPageNumber="$store.state.pagination.viewPageNumber"
+                /> -->
             </div>
         </div>
     </div>
@@ -43,19 +44,25 @@
 import { computed, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+// import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 const route = useRoute();
+// const actionName = 'question/questionList';
 
-const questionDetail = computed(() => store.state.question.questionDetail);
-// console.log(questionDetail);
+const testerDetail = computed(() => store.state.tester.testerDetail);
 
 const boardInfo = reactive({
     board_id: route.params.id,
 });
+// const searchData = reactive({
+//     page: store.state.pagination.currentPage,
+// });
+
 
 onBeforeMount(()=>{
-    store.dispatch('question/questionDetail', boardInfo);
+    store.dispatch('tester/testerDetail', boardInfo);
+    // store.dispatch(actionName, searchData);
 });
 </script>
 
@@ -79,13 +86,9 @@ onBeforeMount(()=>{
     border-radius: 20px;
     width: 70px;
     height: 30px;
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.board-box, .admin-content-box {
+.board-box {
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;
     margin-top: 50px;
@@ -96,99 +99,39 @@ onBeforeMount(()=>{
     font-size: 17px;
 }
 
-.board-title-box > p:first-child
-, .board-content-box > p:first-child
-, .admin-content-box > p:first-child {
-    font-size: 18px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.board-title {
-    display: flex;
-}
-
-.board-content > div:not(:last-child){
-    width: 90%;
-    margin: 20px auto;
-}
-
 .board-box p, .board-content textarea {
     font-size: 17px;
 }
 
-.board-title-box textarea {
-    font-size: 17px;
-    resize: none;
-    margin: 5px;
-}
-
-.board-box >.board-box-flex > :first-child {
-    border-right: 1px solid #01083a;
-}
-/* .board-box >.board-box-flex > :first-child, .board-title-box > p:not(.board-title-category :last-child){
+/* .board-box >.board-box-flex > :first-child {
     border-right: 1px solid #01083a;
 } */
 
 .board-box-flex {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 1fr 7fr 1fr;
+    place-items: center;
 }
 
-.board-title {
-    display: grid;
-    grid-template-columns: 1fr 2.99fr;
-    border-bottom: 1px solid #01083a;
-}
-
-.board-title-category {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid #01083a;
-}
-
-.board-title-category :last-child {
-    font-size: 17px;
-    margin: 0  auto;
-    /* width: 80%; */
-}
-.board-box > div > :first-child:not(:last-child) {
-    border-right: 1px solid #01083a;
-}
-
-.admin-content > *:not(:last-child) {
-    border-bottom: 1px solid #01083a;
-}
-
-.board-content > :last-child {
+.board-content-box {
     border-top: 1px solid #01083a;
 }
 
-.board-user, .board-admin {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-}
-
-.border-user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.board-user img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50px;
-    border: 2px solid #01083a18;
+.board-content {
+    width: 70%;
+    margin: 50px auto;
 }
 
 .board-content textarea {
     resize: none;
-    height: 250px;
-    width: 99%;
-    margin: 10px;
+    height: 600px;
+    width: 100%;
+    /* margin: 10px auto; */
 }
+
+/* .textarea-center {
+    margin: 0 auto;
+} */
 
 .board-content-img {
     margin: 20px auto;

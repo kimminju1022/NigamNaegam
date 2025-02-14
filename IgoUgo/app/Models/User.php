@@ -72,4 +72,8 @@ class User extends Authenticatable
     public function questions(){
         return $this->hasMany(Question::class, 'user_id', 'user_id');
     }
+
+    public function tester_managements(){
+        return $this->hasMany(TesterManagement::class, 'user_id', 'user_id');
+    }
 }

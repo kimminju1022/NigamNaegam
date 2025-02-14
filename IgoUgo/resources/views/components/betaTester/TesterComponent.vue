@@ -10,7 +10,9 @@
             <div class="board-title">
                 <p>번호</p>
                 <p>카테고리</p>
+                <p></p>
                 <p>제목</p>
+                <p></p>
                 <p>작성일자</p>
                 <p>조회수</p>
             </div>
@@ -18,35 +20,45 @@
                 <div class="board-content">
                     <p>5</p>
                     <p>공지</p>
+                    <p></p>
                     <p>파일업로드 오류 시 간단해결방법</p>
+                    <p></p>
                     <p>2024.12.11</p>
                     <p>204</p>
                 </div>
                 <div class="board-content">
                     <p>4</p>
                     <p>공지</p>
+                    <p></p>
                     <p>로그인 에러 시 문의방법</p>
+                    <p></p>
                     <p>2024.11.11</p>
                     <p>224</p>
                 </div>
                 <div class="board-content">
                     <p>3</p>
                     <p>공지</p>
+                    <p></p>
                     <p>게시글 수정 오류 해결방법</p>
+                    <p></p>
                     <p>2024.11.11</p>
                     <p>763</p>
                 </div>
                 <div class="board-content">
                     <p>2</p>
                     <p>공지</p>
+                    <p></p>
                     <p>자주 질문하는 오류 해결방법</p>
+                    <p></p>
                     <p>2024.11.01</p>
                     <p>744</p>
                 </div>
                 <div class="board-content">
                     <p>1</p>
                     <p>공지</p>
+                    <p></p>
                     <p>민원 해결 절차 안내</p>
+                    <p></p>
                     <p>2024.12.11</p>
                     <p>428</p>
                 </div>
@@ -55,12 +67,24 @@
                 <div v-for="item in testerList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
                     <p>카테고리</p>
+                    <p></p>
                     <router-link :to="`/testers/${item.board_id}`">{{ item.board_title }}</router-link>
-                    <!-- <p>{{ item.user.user_nickname }}</p> -->
+                    <p></p>
                     <p>{{ item.created_at }}</p>
                     <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
+
+            <!-- <div class="card-list">
+                <div v-for="item in testerList" :key="item" >
+                    <router-link :to="`/testers/${item.board_id}`">
+                        <div class="card">
+                            <img :src="item.board_images[0]" @error="e => e.target.src='default/board_default.png'" class="img-card">
+                            <p class="font-bold card-title">{{ item.board_title }}</p>
+                        </div>
+                    </router-link>
+                </div>
+            </div> -->
         </div>
     </div>
     <!-- 페이지네이션 -->
@@ -136,7 +160,7 @@ onBeforeMount(() => {
 
 .board-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 7fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 7fr 1fr 1.5fr 1fr;
     text-align: center;
     padding: 10px;
     font-weight: 600;
@@ -158,7 +182,7 @@ onBeforeMount(() => {
 
 .board-content{
     display: grid;
-    grid-template-columns: 1fr 1fr 7fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 7fr 1fr 1.5fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;
@@ -166,7 +190,7 @@ onBeforeMount(() => {
     font-size: 16px;
 }
 
-.board-content > :nth-child(n + 3):nth-child(-n + 4){
+.board-content > :nth-child(4){
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -174,41 +198,51 @@ onBeforeMount(() => {
     padding: 0 10px;
 }
 
-.board-content-box > .board-content > :nth-child(3){
+/* .board-content-box > .board-content > :nth-child(4){
     text-align: left;
     padding: 0 20px;
+} */
+
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    column-gap: 15px;
+    row-gap: 40px;
+    margin-top: 40px;
+}
+.card {
+    height: 250px;
+    width: 300px;
+    border: 1px solid #e9e9e9;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: 185px 65px;
+    margin: 0 auto;
+    justify-items: center;
+    /* 호버효과 css */
+    position: relative;
+    transition: 0.2s ease-in-out;
 }
 
-.secret-content {
-    color: #969696;
-    /* color: red; */
+/* 카드호버 */
+.card:hover {
+    transform: translateY(-10px);
+    cursor: pointer;
+    box-shadow: 1px 1px 20px #ddd;
+}
+.card-title {
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
+    align-self: center;
 }
-
-.board-content img {
-    width: 16px;
-    height: 16px;
-    /* line-height: 16px; */
-}
-
-.reply-yet {
-    color: red;
-}
-
-.reply-done {
-    color: blue;
-}
-
-.board-create-btn{
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-.board-create-btn button {
-    font-size: 18px;
-    border-radius: 20px;
-    width: 70px;
-    text-align: center;
-    height: 33px;
+.img-card {
+    width: 100%;
+    height: 185px;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    border-radius: 5px 5px 0px 0px;
 }
 </style>
