@@ -23,6 +23,7 @@ class QuestionController extends Controller
         $questionList = Board::with(['question', 'user', 'board_category'])
                                 // ->where('bc_type', $bcType)
                                 ->where('bc_code', $bc_code)
+                                ->where('board_flg', '0')
                                 ->orderBy('created_at','DESC')
                                 ->paginate(15);
 
@@ -63,6 +64,7 @@ class QuestionController extends Controller
                                 ->where('user_id', $id)
                                 // ->where('bc_type', $bcType)
                                 ->where('bc_code', '2')
+                                ->where('board_flg', '0')
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate(5);
         // Log::debug($questionList);
@@ -284,6 +286,7 @@ class QuestionController extends Controller
                                     $query->where('que_status', '0');
                                 })
                                 ->where('bc_code', '2')
+                                ->where('board_flg', '0')
                                 ->orderBy('created_at','DESC')
                                 ->paginate(5);
 
@@ -307,6 +310,7 @@ class QuestionController extends Controller
                                     $query->where('que_status', '1');
                                 })
                                 ->where('bc_code', '2')
+                                ->where('board_flg', '0')
                                 // ->orderBy('created_at','DESC')
                                 ->paginate(5);
 

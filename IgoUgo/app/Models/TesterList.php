@@ -5,20 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TesterDueDate extends Model
+class TesterManagement extends Model
 {
     use HasFactory;
-    // 체험단 기간 관리
-
-    protected $primaryKey = 'tester_dd_id';
+    // 당첨된 체험단 명단
+        
+    protected $primaryKey = 'tester_list_id';
 
     protected $fillable = [
         'board_id',
-        'tester_code',
-        'tester_name',
-        'due_date',
+        'user_id',
+        'review_chk',
     ];
-    
+
+    public function users() {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
     public function boards() {
         return $this->belongsTo(Board::class, 'board_id', 'board_id');
     }

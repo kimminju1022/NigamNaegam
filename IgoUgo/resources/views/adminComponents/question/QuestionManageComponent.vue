@@ -48,7 +48,7 @@
                         <p>답변일자</p>
                     </div>
                     <div class="que-list-box">
-                        <div v-for="(item, index) in questionDone" class="que-item item-second">
+                        <div v-for="item in questionDone" class="que-item item-second">
                             <!-- <p>{{ index + 1 }}</p> -->
                             <p>{{ item.board_id }}</p>
                             <p>{{ item?.question_category?.qc_name }}</p>

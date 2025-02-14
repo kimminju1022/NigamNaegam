@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
 use App\Models\BoardImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TesterController extends Controller
@@ -14,6 +15,7 @@ class TesterController extends Controller
     public function index() {
         $testerList = Board::with(['board_category', 'board_images'])
                                 ->where('bc_code', '3')
+                                ->where('board_flg', '0')
                                 ->orderBy('created_at','DESC')
                                 ->paginate(15);
 
@@ -27,7 +29,12 @@ class TesterController extends Controller
 
     // 체험단 디테일
     public function show($id) {
-        $tester = Board::with(['board_images'])
+        $tester = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as created_at_timestamps"))
+                        ->with(['board_images', 'comments' => function ($query) {
+                            $query->select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as created_at_timestamps"))
+                            ->with('user');
+                        }])
+                        ->withCount('comments')
                         ->where('board_id', $id)
                         ->first();
         // $tester = Board::with(['board_images', 'tester_due_dates'])

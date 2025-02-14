@@ -38,8 +38,8 @@ import QuestionCreateComponent from '../views/components/question/QuestionCreate
 import QuestionDetailComponent from '../views/components/question/QuestionDetailComponent.vue';
 import QuestionUpdateComponent from '../views/components/question/QuestionUpdateComponent.vue';
 // 체험단
-import TesterComponent from '../views/components/betaTester/TesterComponent.vue';
-import TesterDetailComponent from '../views/components/betaTester/TesterDetailComponent.vue';
+import TesterComponent from '../views/components/tester/TesterComponent.vue';
+import TesterDetailComponent from '../views/components/tester/TesterDetailComponent.vue';
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import LoadingComponent from '../views/components/LoadingComponent.vue';
@@ -63,6 +63,7 @@ import AdminFreeManageComponent from '../views/adminComponents/board/FreeManageC
 
 // 체험단
 import AdminTesterComponent from '../views/adminComponents/tester/TesterComponent.vue';
+import AdminTesterDetailComponent from '../views/adminComponents/tester/TesterDetailComponent.vue';
 
 // 이달의 추천
 import AdminMonthlyRecommendComponent from '../views/adminComponents/recommend/MonthlyRecommendComponent.vue';
@@ -72,7 +73,7 @@ import AdminNotificationComponent from '../views/adminComponents/notification/No
 
 // 문의 관리
 import AdminQuestionManageComponent from '../views/adminComponents/question/QuestionManageComponent.vue';
-import QuestionManageDetailComponent from '../views/adminComponents/question/QuestionManageDetailComponent.vue';
+import AdminQuestionManageDetailComponent from '../views/adminComponents/question/QuestionManageDetailComponent.vue';
 
 const chkAuth = (to, from, next) => {
 
@@ -229,6 +230,11 @@ const routes = [
         component: AdminTesterComponent,
         beforeEnter: chkAuth,
     },
+    {
+        path: '/admin/tester/:id',
+        component: AdminTesterDetailComponent,
+        beforeEnter: chkAuth,
+    },
     // 관리자 페이지_이달의 추천
     {
         path: '/admin/recommend',
@@ -250,7 +256,7 @@ const routes = [
     // 관리자 페이지_문의 디테일
     {
         path: '/admin/question/:id',
-        component: QuestionManageDetailComponent,
+        component: AdminQuestionManageDetailComponent,
         beforeEnter: chkAuth,
     },
 

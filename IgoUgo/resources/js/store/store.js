@@ -17,6 +17,7 @@ import userManage from './modules/admin/userManage'
 import chart from './modules/admin/chart'
 import adminQuestion from './modules/admin/adminQuestion';
 import adminBoard from './modules/admin/adminBoard';
+import adminTester from './modules/admin/adminTester';
 
 export default createStore({
     modules: {
@@ -37,5 +38,6 @@ export default createStore({
         chart,
         adminQuestion,
         adminBoard,
+        adminTester,
     }
 })

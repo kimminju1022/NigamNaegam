@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../axios';
 
 export default {
     namespaced: true,
@@ -37,7 +37,7 @@ export default {
                     return resolve();
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                     return reject();
                 });
             })
@@ -61,7 +61,7 @@ export default {
                     return resolve();
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                     return reject();
                 });
             })
@@ -82,7 +82,7 @@ export default {
                     return resolve();
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                     return reject();
                 });
             });

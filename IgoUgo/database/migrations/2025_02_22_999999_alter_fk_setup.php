@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tester_managements', function(Blueprint $table) {
+        Schema::table('tester_lists', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('board_id')->references('board_id')->on('boards');
         });
 
-        Schema::table('tester_due_dates', function(Blueprint $table) {
+        Schema::table('tester_managements', function(Blueprint $table) {
             $table->foreign('board_id')->references('board_id')->on('boards');
         });
     }
@@ -30,12 +30,12 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tester_managements', function (Blueprint $table) {
+        Schema::table('tester_lists', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['board_id']);
         });
 
-        Schema::table('tester_due_dates', function (Blueprint $table) {
+        Schema::table('tester_managements', function (Blueprint $table) {
             $table->dropForeign(['board_id']);
         });
     }

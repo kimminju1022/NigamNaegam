@@ -42,7 +42,7 @@ class Board extends Model
     }
 
     public function user() {
-        return $this->belongsTo(User::class, 'user_id', 'user_id')->select('user_id', 'user_nickname', 'user_profile');
+        return $this->belongsTo(User::class, 'user_id', 'user_id')->select('user_id', 'user_name', 'user_nickname', 'user_profile');
     }
 
     public function board_category() {
@@ -92,11 +92,11 @@ class Board extends Model
         return $this->hasMany(BoardReport::class,'board_id', 'board_id'); 
     }
 
-    public function tester_managements(){
+    public function tester_lists(){
         return $this->hasMany(TesterManagement::class, 'board_id', 'board_id');
     }
 
-    public function tester_due_dates(){
+    public function tester_managements(){
         return $this->hasOne(TesterDueDate::class, 'board_id', 'board_id');
     }
 }
