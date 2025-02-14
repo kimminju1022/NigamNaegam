@@ -62,7 +62,7 @@
                     <div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 누적 횟수</p>
-                            <p class="pd-left">{{ userControlCnt }}회</p>
+                            <p class="pd-left">{{ userControl.userControlCnt }}회</p>
                         </div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 기간</p>
@@ -82,7 +82,7 @@
                         </div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 만료 일자</p>
-                            <p class="pd-left">2025-02-06 00:00:00</p>
+                            <p class="pd-left">{{ userControl.userControlExp?.expires_at }}</p>
                         </div>
                     </div>
                 </div>
@@ -106,6 +106,14 @@
                             <p>{{ item.latest_created_at }}</p>
                             <p>{{ item.report_count }}</p>
                         </div>
+                        <!-- 페이지네이션 -->
+                        <PaginationComponent
+                            :actionName="actionNameBoardReport"
+                            :searchData="searchDataBoardReport"
+                            :currentPage="$store.state.pagination.adminUserBoardReportCurrentPage"
+                            :lastPage="$store.state.pagination.adminUserBoardReportLastPage"
+                            :viewPageNumber="$store.state.pagination.adminUserBoardReportViewPageNumber"
+                        />
                     </div>
                 </div>
                 <div>
@@ -125,25 +133,14 @@
                             <p>{{ item.latest_created_at }}</p>
                             <p>{{ item.report_cnt }}</p>
                         </div>
-                    
-                        <!-- <div class="user-detail-item">
-                            <p>3</p>
-                            <p>제목제목제목제목제목제목제목제목제목</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>10</p>
-                        </div>
-                        <div class="user-detail-item">
-                            <p>2</p>
-                            <p>제목제목제목제목제목제목제목제목제목</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>10</p>
-                        </div>
-                        <div class="user-detail-item">
-                            <p>1</p>
-                            <p>제목제목제목제목제목제목제목제목제목</p>
-                            <p>2025-02-06 00:00:00</p>
-                            <p>10</p>
-                        </div> -->
+                        <!-- 페이지네이션 -->
+                        <PaginationComponent
+                            :actionName="actionNameCommentReport"
+                            :searchData="searchDataCommentReport"
+                            :currentPage="$store.state.pagination.adminUserCommentReportCurrentPage"
+                            :lastPage="$store.state.pagination.adminUserCommentReportLastPage"
+                            :viewPageNumber="$store.state.pagination.adminUserCommentReportViewPageNumber"
+                        />
                     </div>
                 </div>
             </div>
@@ -155,6 +152,7 @@
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
+import PaginationComponent from '../../components/PaginationComponent.vue';
 
 const store = useStore();
 const route = useRoute();
@@ -169,13 +167,25 @@ const userBoardCnt = computed(() => store.state.userManage.userBoardCnt);
 const userCommentCnt = computed(() => store.state.userManage.userCommentCnt);
 
 // 유저 제재 이력 횟수
-const userControlCnt = computed(() => store.state.userManage.userControlCnt);
+const userControl = computed(() => store.state.userManage.userControl);
 
 // 유저 신고 당한 게시글
 const userBoardReport = computed(() => store.state.userManage.userBoardReport);
 
 // 유저 신고 당한 댓글
 const userCommentReport = computed(() => store.state.userManage.userCommentReport);
+
+const actionNameBoardReport = 'userManage/showBoardReport';
+const actionNameCommentReport = 'userManage/showCommentReport';
+
+const searchDataBoardReport = reactive({
+    user_id: route.params.id,
+    page: store.state.pagination.adminUserBoardReportCurrentPage,
+});
+const searchDataCommentReport = reactive({
+    user_id: route.params.id,
+    page: store.state.pagination.adminUserCommentReportCurrentPage,
+});
 
 // 유저id
 const findData = reactive({
@@ -186,9 +196,12 @@ onBeforeMount(() => {
     store.dispatch('userManage/showUserDetail', findData);
     store.dispatch('userManage/showUserBoardCnt', findData);
     store.dispatch('userManage/showUserCommentCnt', findData);
-    store.dispatch('userManage/showUserControlCnt', findData);
-    store.dispatch('userManage/showBoardReport', findData);
-    store.dispatch('userManage/showCommentReport', findData);
+    store.dispatch('userManage/showUserControl', findData);
+    // store.dispatch('userManage/showBoardReport', findData);
+    // store.dispatch('userManage/showCommentReport', findData);
+
+    store.dispatch(actionNameBoardReport, searchDataBoardReport);
+    store.dispatch(actionNameCommentReport, searchDataCommentReport);
 });
 
 // 수정 
@@ -341,7 +354,7 @@ function finishBtn() {
 }
 .user-detail-list-title {
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 2.5fr 1fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     border-bottom: 1px solid #01083a;
@@ -351,7 +364,7 @@ function finishBtn() {
 }
 .user-detail-item{
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 2.5fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;

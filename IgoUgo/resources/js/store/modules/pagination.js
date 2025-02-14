@@ -35,6 +35,13 @@ export default {
         adminQuestionDoneCurrentPage: localStorage.getItem('adminQuestionDoneCurrentPage') ? Number(localStorage.getItem('adminQuestionDoneCurrentPage')): 1, // userQuestion_현재 페이지
         adminQuestionDoneLastPage: localStorage.getItem('adminQuestionDoneLastPage') ? Number(localStorage.getItem('adminQuestionDoneLastPage')): 1, // userQuestion_마지막 페이지
         adminQuestionDoneViewPageNumber: localStorage.getItem('adminQuestionDoneViewPageNumber') ? JSON.parse(localStorage.getItem('adminQuestionDoneViewPageNumber')) : [],
+        // 관리자 유저관리-상세
+        adminUserBoardReportCurrentPage: localStorage.getItem('adminUserBoardReportCurrentPage') ? Number(localStorage.getItem('adminUserBoardReportCurrentPage')) : 1, // userBoardReport_현재 페이지
+        adminUserBoardReportLastPage: localStorage.getItem('adminUserBoardReportLastPage') ? Number(localStorage.getItem('adminUserBoardReportLastPage')) : 1, // userBoardReport_마지막 페이지
+        adminUserBoardReportViewPageNumber: localStorage.getItem('adminUserBoardReportViewPageNumber') ? JSON.parse(localStorage.getItem('adminUserBoardReportViewPageNumber')) : [],
+        adminUserCommentReportCurrentPage: localStorage.getItem('adminUserCommentReportCurrentPage') ? Number(localStorage.getItem('adminUserCommentReportCurrentPage')) : 1, // userCommentReport_현재 페이지
+        adminUserCommentReportLastPage: localStorage.getItem('adminUserCommentReportLastPage') ? Number(localStorage.getItem('adminUserCommentReportLastPage')) : 1, // userCommentReport_마지막 페이지
+        adminUserCommentReportViewPageNumber: localStorage.getItem('adminUserCommentReportViewPageNumber') ? JSON.parse(localStorage.getItem('adminUserCommentReportViewPageNumber')) : [],
     }),
     mutations: {
         setCurrentPage(state, page) {
@@ -104,6 +111,19 @@ export default {
             localStorage.setItem('adminQuestionDoneLastPage', 1);
             localStorage.setItem('adminQuestionDoneViewPageNumber', JSON.stringify([]));
             
+        // 관리자 유저관리-상세
+            state.adminUserBoardReportCurrentPage = 1;
+            state.adminUserBoardReportLastPage = 1;
+            state.adminUserBoardReportViewPageNumber = [];
+            localStorage.setItem('adminUserBoardReportCurrentPage', 1);
+            localStorage.setItem('adminUserBoardReportLastPage', 1);
+            localStorage.setItem('adminUserBoardReportViewPageNumber', JSON.stringify([]));
+            state.adminUserCommentReportCurrentPage = 1;
+            state.adminUserCommentReportLastPage = 1;
+            state.adminUserCommentReportViewPageNumber = [];
+            localStorage.setItem('adminUserCommentReportCurrentPage', 1);
+            localStorage.setItem('adminUserCommentReportLastPage', 1);
+            localStorage.setItem('adminUserCommentReportViewPageNumber', JSON.stringify([]));
         },
         setPagination(state, paginationData) {
             state.currentPage = paginationData.current_page;
@@ -349,6 +369,57 @@ export default {
             // 페이지 번호 배열 생성
             state.adminQuestionDoneViewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
             localStorage.setItem('adminQuestionDoneViewPageNumber', JSON.stringify(state.adminQuestionDoneViewPageNumber));
+        },
+
+        // 관리자 유저관리-상세-신고 게시글
+        setAdminUserBoardReportPagination(state, paginationData) {
+            state.adminUserBoardReportCurrentPage = paginationData.current_page;
+            state.adminUserBoardReportLastPage = paginationData.last_page;
+            state.path = paginationData.path;
+            localStorage.setItem('adminUserBoardReportCurrentPage', paginationData.current_page);
+            localStorage.setItem('adminUserBoardReportLastPage', paginationData.last_page);
+            localStorage.setItem('paginationPath', paginationData.path);
+
+            // 페이지 번호 출력 연산
+            let offSet = Math.floor(state.viewPageCnt / 2); // 오프셋
+            let startPageNumber = (state.adminUserBoardReportCurrentPage - offSet) < 1 ? 1 : state.adminUserBoardReportCurrentPage - offSet; // 시작 페이지 번호 초기화
+            let endPageNumber = startPageNumber + (state.viewPageCnt - 1); // 마지막 페이지 번호 초기화
+            // 엔드페이지 조절 (토탈 페이지보다 클 경우)
+            if(endPageNumber > state.adminUserBoardReportLastPage) {
+                endPageNumber = state.adminUserBoardReportLastPage;
+            }
+            // 스타트 페이지 조절(음수 안나오게 조절)
+            if((endPageNumber - (state.viewPageCnt - 1)) > 1 && (startPageNumber > endPageNumber - (state.viewPageCnt - 1))) {
+                startPageNumber = endPageNumber - (state.viewPageCnt - 1);
+            }
+            // 페이지 번호 배열 생성
+            state.adminUserBoardReportViewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
+            localStorage.setItem('adminUserBoardReportViewPageNumber', JSON.stringify(state.adminUserBoardReportViewPageNumber));
+        },
+
+        // 관리자 유저관리-상세-신고 댓글
+        setAdminUserCommentReportPagination(state, paginationData) {
+            state.adminUserCommentReportCurrentPage = paginationData.current_page;
+            state.adminUserCommentReportLastPage = paginationData.last_page;
+            state.path = paginationData.path;
+            localStorage.setItem('adminUserCommentReportCurrentPage', paginationData.current_page);
+            localStorage.setItem('adminUserCommentReportLastPage', paginationData.last_page);
+            localStorage.setItem('paginationPath', paginationData.path);
+            // 페이지 번호 출력 연산
+            let offSet = Math.floor(state.viewPageCnt / 2); // 오프셋
+            let startPageNumber = (state.adminUserCommentReportCurrentPage - offSet) < 1 ? 1 : state.adminUserCommentReportCurrentPage - offSet; // 시작 페이지 번호 초기화
+            let endPageNumber = startPageNumber + (state.viewPageCnt - 1); // 마지막 페이지 번호 초기화
+            // 엔드페이지 조절 (토탈 페이지보다 클 경우)
+            if(endPageNumber > state.adminUserCommentReportLastPage) {
+                endPageNumber = state.adminUserCommentReportLastPage;
+            }
+            // 스타트 페이지 조절(음수 안나오게 조절)
+            if((endPageNumber - (state.viewPageCnt - 1)) > 1 && (startPageNumber > endPageNumber - (state.viewPageCnt - 1))) {
+                startPageNumber = endPageNumber - (state.viewPageCnt - 1);
+            }
+            // 페이지 번호 배열 생성
+            state.adminUserCommentReportViewPageNumber = Array.from({ length: endPageNumber - startPageNumber + 1 }, (_, idx) => idx + startPageNumber);
+            localStorage.setItem('adminUserCommentReportViewPageNumber', JSON.stringify(state.adminUserCommentReportViewPageNumber));
         },
     },
     actions: {

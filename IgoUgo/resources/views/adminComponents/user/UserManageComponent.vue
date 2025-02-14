@@ -40,8 +40,7 @@
                     <p>닉네임</p>
                     <p>이름</p>
                     <p>가입일자</p>
-                    <p>탈퇴</p>
-                    <p>제재 기간</p>
+                    <p>탈퇴 여부</p>
                     <p>제재 만료일자</p>
                 </div>
                 <div class="user-list-box" >
@@ -52,9 +51,9 @@
                             <p>{{ item.user_nickname }}</p>
                             <p>{{ item.user_name }}</p>
                             <p>{{ item.created_at }}</p>
-                            <p>탈퇴</p>
-                            <p>영구정지</p>
-                            <p>9999-12-31 23:59:59</p>
+                            <p v-if="item.user_flg === '1'">탈퇴</p>
+                            <p v-else></p>
+                            <p>{{ item.expires_at }}</p>
                         </router-link>
                     </div>
                 </div>
@@ -154,7 +153,7 @@ onBeforeMount(() => {
 /* 유저 리스트 영역 관련 */
 .user-list-title {
     display: grid;
-    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1fr 1.5fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     font-size: 18px;
@@ -166,7 +165,7 @@ onBeforeMount(() => {
 }
 .user-item a{
     display: grid;
-    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1fr 1.5fr;
     text-align: center;
     width: 100%;
     height: 25px;

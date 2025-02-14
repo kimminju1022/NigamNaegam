@@ -7,7 +7,7 @@ export default {
         userDetail: {},
         userBoardCnt: [],
         userCommentCnt: null,
-        userControlCnt: null,
+        userControl: [],
         userBoardReport: [],
         userCommentReport: [],
     }),
@@ -24,8 +24,8 @@ export default {
         setUserCommentCnt(state, data) {
             state.userCommentCnt = data;
         },
-        setUserControlCnt(state, data) {
-            state.userControlCnt = data;
+        setUserControl(state, data) {
+            state.userControl = data;
         },
         setUserBoardReport(state, list) {
             state.userBoardReport = list;
@@ -103,8 +103,8 @@ export default {
             })
         },
 
-        // 유저 제재 횟수
-        showUserControlCnt(context, findData) {
+        // 유저 제재 이력
+        showUserControl(context, findData) {
             const url = '/api/admin/user/' + findData.user_id + '/controlcnt';
             const config = {
                 params: findData
@@ -112,7 +112,7 @@ export default {
 
             axios.get(url, config)
             .then(response => {
-                context.commit('setUserControlCnt', response.data.userControlCnt);
+                context.commit('setUserControl', response.data);
             })
             .catch(error => {
                 console.error(error);
@@ -147,34 +147,43 @@ export default {
 
         // 유저 신고 당한 게시글 리스트
         showBoardReport(context, findData) {
-            const url = '/api/admin/user/' + findData.user_id + '/boardreport';
-            const config = {
-                params: findData.user_id
-            };
+            return new Promise((resolve, reject) => {
+                const url = '/api/admin/user/' + findData.user_id + '/boardreport';
+                const config = {
+                    params: findData
+                };
 
-            axios.get(url, config)
-            .then(response => {
-                context.commit('setUserBoardReport', response.data.boardReport.data);
-                // console.log("board: ", response.data.boardReport.data);
-            })
-            .catch(error => {
-                console.error(error);
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setUserBoardReport', response.data.boardReport.data);
+                    context.commit('pagination/setAdminUserBoardReportPagination', response.data.boardReport, {root: true});
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                })
             })
         },
 
         // 유저 신고 당한 댓글 리스트
         showCommentReport(context, findData) {
-            const url = '/api/admin/user/' + findData.user_id + '/commentreport';
-            const config = {
-                params: findData.user_id
-            };
+            return new Promise((resolve, reject) => {
+                const url = '/api/admin/user/' + findData.user_id + '/commentreport';
+                const config = {
+                    params: findData
+                };
 
-            axios.get(url, config)
-            .then(response => {
-                context.commit('setUserCommentReport', response.data.commentReport.data);
-            })
-            .catch(error => {
-                console.error(error);
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setUserCommentReport', response.data.commentReport.data);
+                    context.commit('pagination/setAdminUserCommentReportPagination', response.data.commentReport, {root: true});
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                })
             })
         },
     },

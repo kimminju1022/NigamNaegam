@@ -18,8 +18,23 @@ class UserManageController extends Controller
 {
     // 유저 리스트 출력
     public function showUserList() {
-        $userList = User::where('manager_flg', '0')
-                        ->orderBy('created_at', 'DESC')
+        // $userList = User::where('manager_flg', '0')
+        //                 ->orderBy('created_at', 'DESC')
+        //                 ->paginate(15);
+
+        $userList = User::leftJoin('user_controls', 'users.user_id', 'user_controls.user_id')
+                        ->where('manager_flg', '0')
+                        ->select(
+                            'users.user_id',
+                            'users.user_flg',
+                            'users.user_out',
+                            'users.user_email',
+                            'users.user_name',
+                            'users.user_nickname',
+                            'users.created_at',
+                            'user_controls.expires_at',
+                        )
+                        ->orderBy('users.created_at', 'DESC')
                         ->paginate(15);
 
         $responseData = [
@@ -87,15 +102,17 @@ class UserManageController extends Controller
         return response()->json($responseData, 200);
     }
 
-    // 유저 제재 이력 횟수
-    public function showControlCnt(Request $request) {
+    // 유저 제재 이력
+    public function showUserControl(Request $request) {
         $userId = $request->id;
         $userControlCnt = UserControl::where('user_id', $userId)->count();
+        $userControlExp = UserControl::where('user_id', $userId)->orderBy('created_at', 'DESC')->select('user_id', 'expires_at')->first();
 
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
-            'userControlCnt' => $userControlCnt
+            'userControlCnt' => $userControlCnt,
+            'userControlExp' => $userControlExp,
         ];
 
         return response()->json($responseData, 200);
@@ -147,24 +164,6 @@ class UserManageController extends Controller
     // 유저 신고당한 게시글
     public function showBoardReport(Request $request) {
         $userId = $request->id;
-        // $boardReport = Board::select('board_id', 'user_id', 'board_title', 'created_at')
-        //                         ->with(['reports' => function ($query) {
-        //                         $query->select(DB::raw("board_id, count(*) as cnt"))
-        //                                 ->groupBy('board_id');
-        //                         }])
-        //                         ->where('user_id', $userId)
-        //                         ->orderBy('created_at', 'DESC')
-        //                         ->paginate(5);
-
-        // $boardReport = BoardReport::whereIn('board_id', function ($query) use ($userId) {
-        //                                 $query->select('board_id', 'created_at')
-        //                                         ->from('boards')
-        //                                         ->where('user_id', $userId);
-        //                             })
-        //                             ->select('board_id', DB::raw("count(*) as report_cnt"))
-        //                             ->groupBy('board_id')
-        //                             ->get();
-
         $boardReport = BoardReport::join('boards', 'board_reports.board_id', 'boards.board_id')
                                     ->where('boards.user_id', $userId)
                                     ->select(
@@ -192,18 +191,6 @@ class UserManageController extends Controller
     // 유저 신고당한 댓글
     public function showCommentReport(Request $request) {
         $userId = $request->id;
-        // $commentReport = Comment::select('comment_id', 'board_id', 'user_id', 'created_at')
-        //                         ->with(['reports' => function($query) {
-        //                             $query->select('comment_id', DB::raw("count(*) as cnt"))
-        //                                     ->groupBy('comment_id');                        
-        //                         }])
-        //                         ->with(['board' => function($query) {
-        //                             $query->select('board_id', 'board_title');
-        //                         }])
-        //                         ->where('user_id', $userId)
-        //                         ->orderBy('created_at', 'DESC')
-        //                         ->get();
-
         $commentReport = CommentReport::join('comments', 'comment_reports.comment_id', 'comments.comment_id')
                                         ->join('boards', 'comments.board_id', 'boards.board_id')
                                         ->where('comments.user_id', $userId)

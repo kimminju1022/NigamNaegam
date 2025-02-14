@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class UserControl extends Model
 {
     use HasFactory;
+
+    /**
+     * TimeZone format when serializing JSON
+     * 
+     * @param \DateTimeInterface $date
+     * 
+     * @return String('Y-m-d H:i:s)
+     */
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
