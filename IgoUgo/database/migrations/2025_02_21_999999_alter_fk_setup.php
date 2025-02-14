@@ -79,26 +79,6 @@ return new class extends Migration
         Schema::table('products', function(Blueprint $table) {
             $table->foreign('area_code')->references('area_code')->on('areas');
         });
-
-        // Schema::table('routes', function(Blueprint $table) {
-        //     $table->foreign('board_id')->references('board_id')->on('boards');
-        // });
-
-        // Schema::table('route_spots', function(Blueprint $table) {
-        //     $table->foreign('route_id')->references('route_id')->on('routes');
-        // });
-
-        // Schema::table('festivals', function(Blueprint $table) {
-        //     $table->foreign('area_code')->references('area_code')->on('areas');
-        // });
-
-        // Schema::table('notices', function(Blueprint $table) {
-        //     $table->foreign('user_id')->references('user_id')->on('users');
-        // });
-
-        // Schema::table('notice_images', function(Blueprint $table) {
-        //     $table->foreign('notice_id')->references('notice_id')->on('notices');
-        // });
     }
 
     /**
@@ -173,21 +153,5 @@ return new class extends Migration
         Schema::table('products', function(Blueprint $table) {
             $table->dropForeign(['area_code']);
         });
-
-        // Schema::table('routes', function(Blueprint $table) {
-        //     $table->dropForeign(['board_id']);
-        // });
-
-        // Schema::table('route_spots', function(Blueprint $table) {
-        //     $table->dropForeign(['route_id']);
-        // });
-
-        // Schema::table('notices', function(Blueprint $table) {
-        //     $table->dropForeign(['user_id']);
-        // });
-
-        // Schema::table('notice_images', function(Blueprint $table) {
-        //     $table->dropForeign(['notice_id']);
-        // });
     }
 };
