@@ -155,7 +155,7 @@ export default {
             axios.get(url, config)
             .then(response => {
                 context.commit('setUserBoardReport', response.data.boardReport.data);
-                console.log("board: ", response.data.boardReport.data);
+                // console.log("board: ", response.data.boardReport.data);
             })
             .catch(error => {
                 console.error(error);
@@ -171,7 +171,7 @@ export default {
 
             axios.get(url, config)
             .then(response => {
-                context.commit('setUserCommentReport', response.data.commentReport);
+                context.commit('setUserCommentReport', response.data.commentReport.data);
             })
             .catch(error => {
                 console.error(error);

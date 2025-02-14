@@ -103,8 +103,8 @@
                         <div v-for="item in userBoardReport" :key="item" class="user-detail-item">
                             <p>{{ item.board_id }}</p>
                             <p>{{ item.board_title }}</p>
-                            <p>{{ item.created_at }}</p>
-                            <p>{{ item.reports[0].cnt }}</p>
+                            <p>{{ item.latest_created_at }}</p>
+                            <p>{{ item.report_count }}</p>
                         </div>
                     </div>
                 </div>
@@ -114,16 +114,16 @@
                     </div>
                     <div class="user-detail-list-title">
                         <p>글 번호</p>
-                        <p>글 제목</p>
+                        <p>댓글 내용</p>
                         <p>댓글 작성일자</p>
                         <p>신고 수</p>
                     </div>
                     <div class="user-detail-list-box" >
                         <div v-for="item in userCommentReport" :key="item" class="user-detail-item">
                             <p>{{ item.board_id }}</p>
-                            <p>{{ item.board.board_title }}</p>
-                            <p>{{ item.created_at }}</p>
-                            <p>{{ item.reports[0].cnt }}</p>
+                            <p>{{ item.comment_content }}</p>
+                            <p>{{ item.latest_created_at }}</p>
+                            <p>{{ item.report_cnt }}</p>
                         </div>
                     
                         <!-- <div class="user-detail-item">

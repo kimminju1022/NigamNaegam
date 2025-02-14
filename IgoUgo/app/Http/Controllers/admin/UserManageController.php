@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Board;
 use App\Models\BoardReport;
 use App\Models\Comment;
+use App\Models\CommentReport;
 use App\Models\User;
 use App\Models\UserControl;
 use Illuminate\Http\Request;
@@ -155,13 +156,29 @@ class UserManageController extends Controller
         //                         ->orderBy('created_at', 'DESC')
         //                         ->paginate(5);
 
-        $boardReport = BoardReport::
-                                    with(['board' => function ($query) use ($userId) {
-                                        $query->select('board_id', DB::raw("count(*) as cnt"))
-                                                ->where('user_id', $userId)
-                                                ->groupBy('board_id');
-                                    }])
-                                    ->get();
+        // $boardReport = BoardReport::whereIn('board_id', function ($query) use ($userId) {
+        //                                 $query->select('board_id', 'created_at')
+        //                                         ->from('boards')
+        //                                         ->where('user_id', $userId);
+        //                             })
+        //                             ->select('board_id', DB::raw("count(*) as report_cnt"))
+        //                             ->groupBy('board_id')
+        //                             ->get();
+
+        $boardReport = BoardReport::join('boards', 'board_reports.board_id', 'boards.board_id')
+                                    ->where('boards.user_id', $userId)
+                                    ->select(
+                                        'board_reports.board_id',
+                                        'boards.board_title',
+                                        DB::raw("max(boards.created_at) as latest_created_at"),
+                                        DB::raw("count(*) as report_count")
+                                    )
+                                    ->groupBy(
+                                        'board_reports.board_id',
+                                        'boards.board_title'
+                                    )
+                                    ->orderBy('latest_created_at', 'DESC')
+                                    ->paginate(5);
 
         $responseData = [
             'success' => true,
@@ -175,17 +192,37 @@ class UserManageController extends Controller
     // 유저 신고당한 댓글
     public function showCommentReport(Request $request) {
         $userId = $request->id;
-        $commentReport = Comment::select('comment_id', 'board_id', 'user_id', 'created_at')
-                                ->with(['reports' => function($query) {
-                                    $query->select('comment_id', DB::raw("count(*) as cnt"))
-                                            ->groupBy('comment_id');                        
-                                }])
-                                ->with(['board' => function($query) {
-                                    $query->select('board_id', 'board_title');
-                                }])
-                                ->where('user_id', $userId)
-                                ->orderBy('created_at', 'DESC')
-                                ->get();
+        // $commentReport = Comment::select('comment_id', 'board_id', 'user_id', 'created_at')
+        //                         ->with(['reports' => function($query) {
+        //                             $query->select('comment_id', DB::raw("count(*) as cnt"))
+        //                                     ->groupBy('comment_id');                        
+        //                         }])
+        //                         ->with(['board' => function($query) {
+        //                             $query->select('board_id', 'board_title');
+        //                         }])
+        //                         ->where('user_id', $userId)
+        //                         ->orderBy('created_at', 'DESC')
+        //                         ->get();
+
+        $commentReport = CommentReport::join('comments', 'comment_reports.comment_id', 'comments.comment_id')
+                                        ->join('boards', 'comments.board_id', 'boards.board_id')
+                                        ->where('comments.user_id', $userId)
+                                        ->select(
+                                            'comment_reports.comment_id',
+                                            'comments.user_id',
+                                            'comments.comment_content',
+                                            'boards.board_id',
+                                            DB::raw("max(comments.created_at) as latest_created_at"),
+                                            DB::raw("count(*) as report_cnt")
+                                        )
+                                        ->groupBy(
+                                            'comment_reports.comment_id',
+                                            'comments.user_id',
+                                            'comments.comment_content',
+                                            'boards.board_id',
+                                        )
+                                        ->orderBy('latest_created_at', 'DESC')
+                                        ->paginate(5);
 
         $responseData = [
             'success' => true,
