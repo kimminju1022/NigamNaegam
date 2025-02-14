@@ -131,6 +131,7 @@ Route::post('/admin/question/{id}', [QuestionController::class, 'storeQuestion']
 
 // 게신판관리
 Route::get('admin/review', [BoardReportController::class, 'posts']);
+Route::get('admin/review/{contentid}', [BoardReportController::class, 'postDetail']);
 
 // 체험단 관리
 Route::get('/admin/testers', [AdminTesterController::class, 'index']);

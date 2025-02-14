@@ -60,6 +60,7 @@ import AdminUserManageDetailComponent from '../views/adminComponents/user/UserMa
 import AdminApiManageComponent from '../views/adminComponents/board/ApiManageComponent.vue';
 import AdminReviewManageComponent from '../views/adminComponents/board/ReviewManageComponent.vue';
 import AdminFreeManageComponent from '../views/adminComponents/board/FreeManageComponent.vue';
+import AdminBoardDetailComponent from '../views/adminComponents/board/AdminBoardDetailComponent.vue';
 
 // 체험단
 import AdminTesterComponent from '../views/adminComponents/tester/TesterComponent.vue';
@@ -257,6 +258,11 @@ const routes = [
     {
         path: '/admin/question/:id',
         component: AdminQuestionManageDetailComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/board/review/:boardid',
+        component: AdminBoardDetailComponent,
         beforeEnter: chkAuth,
     },
 

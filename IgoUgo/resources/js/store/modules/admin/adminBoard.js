@@ -23,10 +23,10 @@ export default {
                 .then(response => {
                     context.commit('setPostList', response.data.userBoardCnt.data);
                     context.commit('pagination/setPagination', response.data.userBoardCnt, {root: true});
-                    return resolve;
+                    return resolve();
                 }).catch(error => {
                     console.log('오류오류',error);
-                    return reject;
+                    return reject();
                 })
             });
         }

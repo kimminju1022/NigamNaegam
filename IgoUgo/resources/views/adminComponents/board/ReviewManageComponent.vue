@@ -19,8 +19,13 @@
                     <p v-if="item.report_count > 0">{{ item.report_count }}</p>
                     <p v-else>0</p>
                     <p>{{ item.board_id }}</p>
-                    <p>{{ item.area_code }}</p>
-                    <p>{{ item.board_title }}</p>
+                    <p v-if="item.contenttypeid === '12'">관광지</p>
+                    <p v-else-if="item.contenttypeid === '14'">문화시설</p>
+                    <p v-else-if="item.contenttypeid === '28'">레포츠</p>
+                    <p v-else-if="item.contenttypeid === '32'">호텔</p>
+                    <p v-else-if="item.contenttypeid === '38'">쇼핑</p>
+                    <p v-else>음식점</p>
+                    <router-link :to="`/admin/board/review/${item.board_id}`" >{{ item.board_title }}</router-link>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.user_name }}</p>
                     <p>{{ item.created_at }}</p>
@@ -51,7 +56,7 @@ const actionName = 'adminBoard/getPostList';
 
 
 const searchData = reactive({
-    boardCategory: 0,
+    bc_code: '0',
     page: store.state.pagination.currentPage,
 });
 
@@ -107,7 +112,7 @@ onBeforeMount(async() => {
     height: 30px;
     margin-top: 10px;
 }
-.review-item > p:nth-child(3) {
+.review-item > :nth-child(4) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
