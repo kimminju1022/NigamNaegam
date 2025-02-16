@@ -35,6 +35,29 @@
 </template>
 <script setup>
 
+import { computed, onBeforeMount, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex/dist/vuex.cjs.js';
+
+const store = useStore();
+const route = useRoute();
+
+const actionName = 'adminBoard/getPostDetail';
+
+const postDetail = computed(()=> store.state.adminBoard.postDetail);
+
+const searchData = reactive({
+    bc_code: '0',
+    board_id: route.params.boardid,
+    page: store.state.pagination.currentPage,
+});
+
+onBeforeMount(async() => {
+    await store.dispatch(actionName, searchData);
+    console.log(store.state.adminBoard.postDetail);
+    // console.log(searchData.board_id)
+})
+
 </script>
 <style scoped>
 /* 메인버튼 */

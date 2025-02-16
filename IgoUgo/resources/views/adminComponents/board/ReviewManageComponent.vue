@@ -61,6 +61,7 @@ const searchData = reactive({
 });
 
 onBeforeMount(async() => {
+    // console.log(store.state.adminBoard.postList);
     store.dispatch(actionName, searchData)
 });
 </script>

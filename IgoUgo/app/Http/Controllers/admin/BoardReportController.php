@@ -14,7 +14,7 @@ class BoardReportController extends Controller
 {
     public function posts(Request $request) {
 
-        $bcCode =$request->boardCategory;
+        $bcCode =$request->bc_code;
 
         $boardPost = Board::select(
                                 'boards.board_id', 
@@ -51,9 +51,11 @@ class BoardReportController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function postDetail(Request $request) {
+    public function postDetail(Request $request, $board_id) {
 
         $bcCode = $request->bc_code;
+        // Log::debug($bcCode);
+        // Log::debug($board_id);
 
         $boardPostDetail = Board::select(
                                     'boards.board_id', 
@@ -65,10 +67,11 @@ class BoardReportController extends Controller
                                     DB::raw('count(board_reports.board_id) as report_count'),
                                 )
                                 ->leftJoin('users', 'boards.user_id', "=", "users.user_id") // 유저 연결
+                                ->leftJoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id') // 보드리포트 연결
                                 ->leftJoin('reviews', 'boards.board_id', '=', 'reviews.board_id') // 프로덕트 연결
                                 ->leftJoin('products', 'reviews.product_id', '=', 'products.product_id') // 프로덕트 연결
-                                ->leftJoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id') // 보드리포트 연결
                                 ->where('boards.bc_code', $bcCode)
+                                ->where('boards.board_id', $board_id)
                                 ->groupBy(
                                     'boards.board_id', 
                                     'products.contenttypeid',
@@ -78,13 +81,15 @@ class BoardReportController extends Controller
                                     'boards.board_content'
                                 )
                                 ->withTrashed()
-                                ->paginate(17);
-        Log::debug('test');
+                                ->get();
+        // Log::debug('test');
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
             'userBoardCnt' => $boardPostDetail->toArray()
         ];     
+
+        // Log::debug('BoardPostDetail Query:', $boardPostDetail->toArray());
         
         return response()->json($responseData, 200);
     }
