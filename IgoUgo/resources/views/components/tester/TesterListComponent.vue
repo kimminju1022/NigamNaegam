@@ -17,58 +17,22 @@
                 <p>조회수</p>
             </div>
             <div class="board-notice-box" >
-                <div class="board-content">
-                    <p>5</p>
+                <div v-for="(item, index) in noticeTopList" class="board-content">
+                    <p>{{ index + 1 }}</p>
                     <p>공지</p>
                     <p></p>
-                    <p>파일업로드 오류 시 간단해결방법</p>
+                    <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
                     <p></p>
-                    <p>2024.12.11</p>
-                    <p>204</p>
-                </div>
-                <div class="board-content">
-                    <p>4</p>
-                    <p>공지</p>
-                    <p></p>
-                    <p>로그인 에러 시 문의방법</p>
-                    <p></p>
-                    <p>2024.11.11</p>
-                    <p>224</p>
-                </div>
-                <div class="board-content">
-                    <p>3</p>
-                    <p>공지</p>
-                    <p></p>
-                    <p>게시글 수정 오류 해결방법</p>
-                    <p></p>
-                    <p>2024.11.11</p>
-                    <p>763</p>
-                </div>
-                <div class="board-content">
-                    <p>2</p>
-                    <p>공지</p>
-                    <p></p>
-                    <p>자주 질문하는 오류 해결방법</p>
-                    <p></p>
-                    <p>2024.11.01</p>
-                    <p>744</p>
-                </div>
-                <div class="board-content">
-                    <p>1</p>
-                    <p>공지</p>
-                    <p></p>
-                    <p>민원 해결 절차 안내</p>
-                    <p></p>
-                    <p>2024.12.11</p>
-                    <p>428</p>
+                    <p>{{ item.created_at }}</p>
+                    <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
             <div class="board-content-box">
                 <div v-for="item in testerList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
-                    <p>카테고리</p>
+                    <p>{{ item.tester_management?.tester_name }}</p>
                     <p></p>
-                    <router-link :to="`/testers/${item.board_id}`">{{ item.board_title }}</router-link>
+                    <router-link :to="`/testers/${item.board_id}`">{{ item.board_title }}<span> [{{ item.comments_count }}]</span></router-link>
                     <p></p>
                     <p>{{ item.created_at }}</p>
                     <p>{{ item.view_cnt }}</p>
@@ -103,7 +67,9 @@ import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
 const actionName = 'tester/testerList';
+const actionNameNotice = 'notice/noticeTopList';
 const testerList = computed(() => store.state.tester.testerList);
+const noticeTopList = computed(() => store.state.notice.noticeTopList);
 
 // 필터 관련
 const searchData = reactive({
@@ -112,6 +78,7 @@ const searchData = reactive({
 
 onBeforeMount(() => {
     store.dispatch(actionName, searchData);
+    store.dispatch(actionNameNotice);
 });
 
 </script>
@@ -196,6 +163,11 @@ onBeforeMount(() => {
     text-overflow: ellipsis;
     color: #000;
     padding: 0 10px;
+}
+
+.board-content span {
+    font-size: 13px;
+    color: #4c4c4c;
 }
 
 /* .board-content-box > .board-content > :nth-child(4){

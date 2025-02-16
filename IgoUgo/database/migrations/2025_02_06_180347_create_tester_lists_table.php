@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('tester_list_id');
             $table->bigInteger('board_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->char('review_chk', '1')->default('0');
+            $table->char('review_chk', 1)->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

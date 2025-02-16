@@ -5,7 +5,7 @@
                 <p class="tester-title">체험단</p>
                 <hr class="hr-style">
             </div>
-            <button class="btn bg-navy btn-create">작성</button>
+            <router-link to="/admin/tester/create"><button class="btn bg-navy btn-create">작성</button></router-link>
         </div>
         <div class="tester-content-box">
             <div class="tester-list-title">
@@ -23,13 +23,14 @@
                 <div>
                     <div v-for="item in testerList" class="tester-item">
                         <p>{{ item.board_id }}</p>
-                        <p>서울</p>
-                        <p>호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔호텔</p>
+                        <p>{{ item.tester_management?.tester_area }}</p>
+                        <p>{{ item.tester_management?.tester_place }}</p>
                         <router-link :to="`/admin/tester/${item.board_id}`">{{ item.board_title }}</router-link>
                         <p>{{ item.comments_count }}</p>
-                        <p>{{ item.user.user_name }}</p>
-                        <p>2025-02-06 00:00:00</p>
-                        <p>{{ item.createda_at_timestamps }}</p>
+                        <p>{{ item.user?.user_name }}</p>
+                        <!-- <p>2025-02-06 00:00:00</p> -->
+                        <p>{{ item.created_at_timestamps }}</p>
+                        <p>{{ item.tester_management?.dd }}</p>
                         <p>0/10</p>
                         <!-- 당첨인원은 마감일자 후에 띄우기 -->
                     </div>
@@ -55,7 +56,7 @@ import PaginationComponent from '../../components/PaginationComponent.vue';
 
 const store = useStore();
 
-const testerList = computed(() => store.state.adminTester.testerList);
+const testerList = computed(() => store.state.adminTester.boardList);
 
 const actionName = 'adminTester/testerList';
 const searchData = reactive({

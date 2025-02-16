@@ -17,10 +17,10 @@
                     </div>
                 </div>
                 
-                <router-link to="/admin/tester"><p>체험단</p></router-link>
-                <!-- <router-link to="/admin/recommend"><p>이달의 추천</p></router-link>
-                <router-link to="/admin/notification"><p>공지사항</p></router-link> -->
-                <router-link to="/admin/question"><p>문의 관리</p></router-link>
+                <router-link to="/admin/tester" @click="$store.commit('pagination/setPaginationInitialize')"><p>체험단</p></router-link>
+                <!-- <router-link to="/admin/recommend"><p>이달의 추천</p></router-link> -->
+                <router-link to="/admin/notice" @click="$store.commit('pagination/setPaginationInitialize')"><p>공지사항</p></router-link>
+                <router-link to="/admin/question" @click="$store.commit('pagination/setPaginationInitialize')"><p>문의 관리</p></router-link>
                 <!-- <p>통계</p> -->
             </div>
         </div>

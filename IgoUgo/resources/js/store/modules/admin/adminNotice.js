@@ -1,36 +1,31 @@
 import axios from "../../../axios";
-import router from '../../../router';
+import router from "../../../router";
 
 export default {
     namespaced: true,
     state: () => ({
-        boardList: [],
-        testerList: [],
-        boardDetail: null,
+        noticeList: [],
+        noticeDetail: null,
     }),
     mutations: {
-        setBoardList(state, boardList) {
-            state.boardList = boardList;
+        setNoticeList(state, noticeList) {
+            state.noticeList = noticeList;
         },
-        setTesterList(state, testerList) {
-            state.testerList = testerList;
-        },
-        setBoardDetail(state, boardDetail) {
-            state.boardDetail = boardDetail;
+        setNoticeDetail(state, noticeDetail) {
+            state.noticeDetail = noticeDetail;
         },
     },
     actions: {
-        // 체험단 게시글 리스트
-        testerList(context, searchData) {
-            const url = '/api/admin/tester';
+        // 공지사항 리스트
+        noticeList(context, searchData) {
+            const url = '/api/admin/notice';
             const config = {
                 params: searchData,
             }
-
             axios.get(url, config)
             .then(response => {
-                // console.log(response.data);
-                context.commit('setBoardList', response.data.data.data);
+                // console.log('noticeList',response.data.data.data);
+                context.commit('setNoticeList', response.data.data.data);
                 context.commit('pagination/setPagination', response.data.data, {root: true});
             }) 
             .catch(error => {
@@ -39,25 +34,22 @@ export default {
         },
 
         // 게시글 상세
-        testerDetail(context, data) {
-            const url = `/api/admin/tester/${data.board_id}`;
-            const config = {
-                params: data,
-            }
+        noticeDetail(context, data) {
+            const url = `/api/admin/notice/${data.board_id}`;
 
-            axios.get(url, config)
+            axios.get(url)
             .then(response => {
                 // console.log(response.data);
-                context.commit('setBoardDetail', response.data.data);
+                context.commit('setNoticeDetail', response.data.data);
             })
             .catch(error => {
-                console.error(error.response.data);
+                console.error(error);
             });
         },
 
-        // 체험단 작성
-        storeTester(context, data) {
-            const url = '/api/admin/tester';
+        // 게시글 작성
+        storeNotice(context, data) {
+            const url = '/api/admin/notice';
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -68,12 +60,7 @@ export default {
 
             const formData = new FormData();
             formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);     
-            formData.append('tester_place', data.tester_place);     
-            formData.append('tester_area', data.tester_area);
-            formData.append('tester_code', data.tester_code);
-            formData.append('tester_name', data.tester_name);
-            formData.append('due_date', data.due_date);
+            formData.append('board_content', data.board_content);
             
             // 이미지 배열 넘기기
             if (data.board_img && data.board_img.length > 0) {
@@ -85,41 +72,35 @@ export default {
             axios.post(url, formData, config)
             .then(response => {
                 // console.log(response.data);                
-                context.commit('setBoardList', response.data.board);
-                context.commit('setTesterList', response.data.tester);
+                context.commit('setNoticeList', response.data.data.data);
                 
-                router.replace('/admin/tester');
+                router.replace('/admin/notice');
             })
             .catch(error => {
-                console.error(error.response.data);
+                console.error(error);
             });
         },
 
         // 게시글 수정
-        updateTester(context, data) {
-            const url = `/api/admin/tester/${data.testerDetail.board_id}`;
+        updateNotice(context, data) {
+            const url = `/api/admin/notice/${data.noticeDetail.board_id}`;
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 },
             }
-            // console.log('updateTester data : ',data);
+            // console.log('data : ',data);
 
             const formData = new FormData();
             formData.append('board_title', data.testerDetail.board_title);
             formData.append('board_content', data.testerDetail.board_content);     
-            formData.append('tester_place', data.testerDetail.tester_management.tester_place);     
-            formData.append('tester_area', data.testerDetail.tester_management.tester_area);
-            formData.append('tester_code', data.testerDetail.tester_management.tester_code);
-            formData.append('tester_name', data.testerDetail.tester_management.tester_name);
-            formData.append('due_date', data.testerDetail.tester_management.due_date);
             formData.append('user_id', data.user_id);
             formData.append('board_id', data.board_id);
 
             // 이미지 배열 넘기기
-            if (data.testerDetail.board_images && data.testerDetail.board_images.length > 0) {
-                data.testerDetail.board_images.forEach((image) => {
+            if (data.noticeDetail.board_images && data.noticeDetail.board_images.length > 0) {
+                data.noticeDetail.board_images.forEach((image) => {
                     formData.append('board_img_path[]', image.board_img);
                 });
             }
@@ -135,12 +116,11 @@ export default {
 
             axios.post(url, formData, config)
             .then(response => {
-                context.commit('setBoardList', response.data.board);
-                // console.log(response);
                 // console.log(response.data);
+                context.commit('setNoticeList', response.data.board);
 
                 alert('수정 성공');
-                router.replace(`/admin/tester/${data.testerDetail.board_id}`);
+                router.replace(`/admin/notice/${data.noticeDetail.board_id}`);
                 }
             )
             .catch(error => {
@@ -150,8 +130,8 @@ export default {
         },
 
         // 게시글 삭제
-        destroyTester(context, id) {
-            const url = `/api/admin/tester/${id}`;
+        destroyNotice(context, id) {
+            const url = `/api/admin/notice/${id}`;
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -161,15 +141,14 @@ export default {
             axios.delete(url, config)
             .then(response => {
                 alert('삭제 성공');
-                router.push('/admin/tester');
+                router.push('/admin/notice');
             })
             .catch(error => {
-                console.error(error.response);
+                console.error(error.response.data);
                 alert('삭제 실패');
             });
         },   
     },
     getters: {
-
     },
 }

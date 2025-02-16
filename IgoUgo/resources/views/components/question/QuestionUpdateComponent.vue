@@ -74,7 +74,7 @@ const store =  useStore();
 
 const question = reactive({
     questionDetail: store.state.question.questionDetail
-    ,board_img :[]
+    ,board_img: []
 });
 
 // console.log('question : ',question);

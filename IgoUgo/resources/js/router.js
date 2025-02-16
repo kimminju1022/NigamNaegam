@@ -38,8 +38,11 @@ import QuestionCreateComponent from '../views/components/question/QuestionCreate
 import QuestionDetailComponent from '../views/components/question/QuestionDetailComponent.vue';
 import QuestionUpdateComponent from '../views/components/question/QuestionUpdateComponent.vue';
 // 체험단
-import TesterComponent from '../views/components/tester/TesterComponent.vue';
+import TesterListComponent from '../views/components/tester/TesterListComponent.vue';
 import TesterDetailComponent from '../views/components/tester/TesterDetailComponent.vue';
+// 공지사항
+import NoticeListComponent from '../views/components/notice/NoticeListComponent.vue';
+import NoticeDetailComponent from '../views/components/notice/NoticeDetailComponent.vue';
 // 기타
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import LoadingComponent from '../views/components/LoadingComponent.vue';
@@ -65,12 +68,17 @@ import AdminBoardDetailComponent from '../views/adminComponents/board/AdminBoard
 // 체험단
 import AdminTesterComponent from '../views/adminComponents/tester/TesterComponent.vue';
 import AdminTesterDetailComponent from '../views/adminComponents/tester/TesterDetailComponent.vue';
+import AdminTesterCreateComponent from '../views/adminComponents/tester/TesterCreateComponent.vue';
+import AdminTesterUpdateComponent from '../views/adminComponents/tester/TesterUpdateComponent.vue';
 
 // 이달의 추천
 import AdminMonthlyRecommendComponent from '../views/adminComponents/recommend/MonthlyRecommendComponent.vue';
 
 // 공지사항
-import AdminNotificationComponent from '../views/adminComponents/notification/NotificationComponent.vue';
+import AdminNoticeComponent from '../views/adminComponents/notice/NoticeManageComponent.vue';
+import AdminNoticeDetailComponent from '../views/adminComponents/notice/NoticeDetailComponent.vue';
+import AdminNoticeCreateComponent from '../views/adminComponents/notice/NoticeCreateComponent.vue';
+import AdminNoticeUpdateComponent from '../views/adminComponents/notice/NoticeUpdateComponent.vue';
 
 // 문의 관리
 import AdminQuestionManageComponent from '../views/adminComponents/question/QuestionManageComponent.vue';
@@ -236,6 +244,16 @@ const routes = [
         component: AdminTesterDetailComponent,
         beforeEnter: chkAuth,
     },
+    {
+        path: '/admin/tester/create',
+        component: AdminTesterCreateComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/tester/:id/edit',
+        component: AdminTesterUpdateComponent,
+        beforeEnter: chkAuth,
+    },
     // 관리자 페이지_이달의 추천
     {
         path: '/admin/recommend',
@@ -244,8 +262,23 @@ const routes = [
     },
     // 관리자 페이지_공지사항
     {
-        path: '/admin/notification',
-        component: AdminNotificationComponent,
+        path: '/admin/notice',
+        component: AdminNoticeComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/notice/:id',
+        component: AdminNoticeDetailComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/notice/create',
+        component: AdminNoticeCreateComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/notice/:id/edit',
+        component: AdminNoticeUpdateComponent,
         beforeEnter: chkAuth,
     },
     // 관리자 페이지_문의 관리
@@ -254,7 +287,6 @@ const routes = [
         component: AdminQuestionManageComponent,
         beforeEnter: chkAuth,
     },
-    // 관리자 페이지_문의 디테일
     {
         path: '/admin/question/:id',
         component: AdminQuestionManageDetailComponent,
@@ -427,12 +459,23 @@ const routes = [
     // 체험단
     {
         path: '/testers',
-        component: TesterComponent,
+        component: TesterListComponent,
         beforeEnter: chkAuth,
     },
     {
         path: '/testers/:id',
         component: TesterDetailComponent,
+        beforeEnter: chkAuth,
+    },
+    // 공지사항
+    {
+        path: '/notices',
+        component: NoticeListComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/notices/:id',
+        component: NoticeDetailComponent,
         beforeEnter: chkAuth,
     },
     // 기타기타

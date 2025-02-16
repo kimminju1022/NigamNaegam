@@ -13,7 +13,7 @@ class TesterController extends Controller
 {
     // 체험단 리스트
     public function index() {
-        $testerList = Board::with(['board_category', 'board_images'])
+        $testerList = Board::with(['board_category', 'board_images', 'tester_managements'])
                                 ->where('bc_code', '3')
                                 ->where('board_flg', '0')
                                 ->orderBy('created_at','DESC')
@@ -37,10 +37,6 @@ class TesterController extends Controller
                         ->withCount('comments')
                         ->where('board_id', $id)
                         ->first();
-        // $tester = Board::with(['board_images', 'tester_due_dates'])
-        //                 ->where('board_id', $id)
-        //                 ->first();
-        // Log::debug($tester);
 
         if($tester) {
             $tester->view_cnt += 1;

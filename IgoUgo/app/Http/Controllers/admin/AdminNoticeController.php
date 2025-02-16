@@ -4,74 +4,65 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
+use App\Models\BoardImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\BoardImage;
-use App\Models\TesterManagement;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 use MyToken;
+use Throwable;
 
-
-class AdminTesterController extends Controller
+class AdminNoticeController extends Controller
 {
-    // 관리자 체험단 리스트
+    // 공지사항 리스트
     public function index() {
-        $testerList = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as created_at_timestamps"))
-                                ->with(['tester_management' => function ($query) {
-                                    $query->select(DB::raw("*, DATE_FORMAT(due_date, '%Y-%m-%d') as dd"));
-                                }, 
-                                // 'comments' => function($query) {
-                                //     $query->orderBy('created_at', 'desc');
-                                // }, 
-                                'board_images', 'user'])
-                                ->where('bc_code', '3')
-                                ->where('board_flg', '0')
-                                ->withCount('comments')
-                                ->orderBy('created_at','DESC')
-                                ->paginate(17);
+        $notice = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
+                        ->with('user', function ($query) {
+                            $query->withTrashed();
+                        })
+                        ->where('bc_code', '5')
+                        ->where('board_flg', '0')
+                        ->orderBy('created_at','DESC')
+                        ->paginate(17);
 
         $responseData = [
-            'success' => true
-            ,'msg' =>'게시글 리스트 획득 성공'
-            ,'data' => $testerList->toArray()
+        'success' => true
+        ,'msg' =>'게시글 리스트 획득 성공'
+        ,'data' => $notice->toArray()
         ];
+
         return response()->json($responseData, 200);
     }
 
-    // 관리자 체험단 디테일
+    // 공지사항 디테일
     public function show($id) {
-        $tester = Board::with(['tester_management' => function ($query) {
-                            $query->select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as formatted_created_at
-                                                    , DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as formatted_updated_at
-                                                    , DATE_FORMAT(due_date, '%Y-%m-%d') as dd"));
-                            }, 'comments' => function($query) {
-                                $query->orderBy('created_at', 'desc');
-                            }, 'user', 'board_images'])
+        $notice= Board::select(DB::raw("*, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at_timestamps"))
+                        ->with(['user'=> function ($query) {
+                            $query->withTrashed();
+                        }, 'board_images'])
                         ->where('board_id', $id)
                         ->first();
-                        
+
         $responseData = [
             'success' => true
             ,'msg' =>'게시글 획득 성공'
-            ,'data' => $tester->toArray()
+            ,'data' => $notice->toArray()
         ];
         return response()->json($responseData, 200);
     }
-    
-    // 관리자 체험단 작성
+
+    // 공지사항 작성
     public function store(Request $request) {
         try {
             DB::beginTransaction();
-
+            Log::debug('rr', $request->toArray());
             $insertData = $request->only('board_title','board_content');
             $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
             $insertData['view_cnt'] = 0;
-            $insertData['bc_code'] = '3';
+            $insertData['bc_code'] = '5';
 
             $board = Board::create($insertData);
 
+            Log::debug('bb', $board->toArray());
             // 이미지 저장
             if($request->hasFile('board_img')) {
                 foreach ($request->board_img as $file) {
@@ -80,24 +71,14 @@ class AdminTesterController extends Controller
                         'board_id' => $board->board_id,
                         'board_img' => $path,
                     ]);
+                    // Log::debug('Image path:', $path->toArray());
                 }
             }
-
-            // 체험단 장소 관리
-            $insertTester['board_id'] = $board->board_id;
-            $insertTester['tester_place'] = $request->tester_place;
-            $insertTester['tester_area'] = $request->tester_area;
-            $insertTester['tester_code'] = $request->tester_code;
-            $insertTester['tester_name'] = $request->tester_name;
-            $insertTester['due_date'] = Carbon::parse($request->due_date.' 23:59:59')->format('Y-m-d H:i:s');
-
-            $testerManagement = TesterManagement::create($insertTester);
 
             $responseData = [
                 'success' => true
                 ,'msg' => '게시글 작성 성공'
-                ,'board' => $board->toArray()
-                ,'tester' => $testerManagement->toArray()
+                ,'data' => $board->toArray()
             ];
             DB::commit();
             
@@ -112,7 +93,7 @@ class AdminTesterController extends Controller
     public function update(Request $request) {
         try {
             DB::beginTransaction();
-            // Log::debug('수정 시작');
+
             Log::debug($request);
             
             $board = Board::find($request->board_id);
@@ -161,29 +142,6 @@ class AdminTesterController extends Controller
                     ]);
                 }
             }
-
-            $tester = TesterManagement::where('board_id',$request->board_id)->first();
-    
-            if($tester->tester_place !== $request->tester_place) {
-                $tester->tester_place = $request->tester_place;
-            } 
-            if($tester->tester_area !== $request->tester_area) {
-                $tester->tester_area = $request->tester_area;
-            } 
-    
-            if($tester->tester_code !== $request->tester_code) {
-                $tester->tester_code = $request->tester_code;
-            } 
-    
-            if($tester->tester_name !== $request->tester_name) {
-                $tester->tester_name = $request->tester_name;
-            } 
-    
-            if($tester->due_date !== $request->due_date) {
-                $tester->due_date = Carbon::parse($request->due_date.' 23:59:59')->format('Y-m-d H:i:s');
-            } 
-    
-            $tester->save();
     
             DB::commit();
 
@@ -192,7 +150,6 @@ class AdminTesterController extends Controller
                 ,'msg' => '게시글 업데이트 성공'
                 ,'board' => $board->toArray()
                 ,'board_img' => $boardImg->toArray()
-                ,'tester' => $tester->toArray()
             ];
         } catch(Throwable $th) {
             DB::rollBack();
@@ -212,16 +169,13 @@ class AdminTesterController extends Controller
         $board->board_flg = '1';
         $board->save(); 
 
+        
         $board_img = BoardImage::with('board')
                                 ->where('board_id', $id)
                                 ->first();
-                
-        $board_img->delete();
-        
-        $tester = TesterManagement::where('board_id', $id)
-                                    ->first();
-
-        $tester->delete();
+        if($board_img) {
+            $board_img->delete();
+        }
 
         $responseData = [
             'success' => true

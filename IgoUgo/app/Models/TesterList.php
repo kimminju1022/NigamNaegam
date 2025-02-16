@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TesterManagement extends Model
+class TesterList extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     // 당첨된 체험단 명단
-        
+    protected $table = 'tester_lists';
     protected $primaryKey = 'tester_list_id';
 
     protected $fillable = [

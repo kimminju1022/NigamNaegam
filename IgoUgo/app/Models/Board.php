@@ -93,10 +93,10 @@ class Board extends Model
     }
 
     public function tester_lists(){
-        return $this->hasMany(TesterManagement::class, 'board_id', 'board_id');
+        return $this->hasMany(TesterList::class, 'board_id', 'board_id');
     }
 
-    public function tester_managements(){
-        return $this->hasOne(TesterDueDate::class, 'board_id', 'board_id');
+    public function tester_management(){
+        return $this->hasOne(TesterManagement::class, 'board_id', 'board_id');
     }
 }

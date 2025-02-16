@@ -6,21 +6,22 @@
         </div>
         <div class="board-box">
             <div class="board-box-flex">
-                <p>카테고리</p>
+                <p>{{ testerDetail.tester_management?.tester_name }}</p>
                 <p>{{ testerDetail.board_title }}</p>
                 <p>{{ testerDetail.created_at_timestamps }}</p>
             </div>
             <div class="board-content-box">
                 <div class="board-content">
                     <div class="board-content-img">
-                        <div class="img-grid">
+                        <!-- <div class="img-grid">
                             <img v-for="(image, index) in testerDetail.board_images" :key="index" :src="image.board_img">
-                        </div> 
+                        </div>  -->
+                        <img :src="testerDetail.board_images[0]?.board_img" alt="board_img1 무조건 가게정보사진">
                     </div>
                     <div class="content-textarea">
-                        <textarea readonly>{{ testerDetail.board_content }}</textarea>
+                        <textarea ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</textarea>
                     </div>
-                    <p>모집 기한 : 2025-01-01</p>
+                    <p>모집 기한 : {{ testerDetail.tester_management?.dd }}</p>
                     <p>신청은 댓글로</p>
                 </div>
             </div>
@@ -30,23 +31,28 @@
             <div class="comment-box">
                 <div class="comment-list-box">
                     <div class="comment-flex">
-                        <!-- <div class="comment-text-box"> -->
-                            <textarea  class="comment-text-box">여기는 댓글</textarea>
-                        <!-- </div> -->
-                        <button class="btn bg-store">등록</button>
+                        <!-- <textarea @click="chkAuth" class="comment-text-box" :disabled="!store.state.auth.authFlg"></textarea> -->
+                        <textarea v-model="searchDataComment.comment" @click="chkAuth" class="comment-text-box"></textarea>
+                        <button @click="storeComment" class="btn bg-store" :disabled="!store.state.auth.authFlg">등록</button>
                     </div>
                     <p>총 댓글 : {{ testerDetail.comments_count }}</p>
                     <div class="comment-list">
-                        <!-- <div class="comment-user">
-                            <div class="user-profile-flex">
-                                <img src="/images/404_error.png" alt="">
-                                <div class="user-flex">
-                                    <p>닉네임</p>
-                                    <p>작성일자</p>
+                        <div v-for="item in commentList" class="comment-user">
+                            <div class="comment-user-header">
+                                <div class="user-profile-flex">
+                                    <img :src="item.user?.user_profile" alt="">
+                                    <div class="user-flex">
+                                        <p>{{ item.user?.user_nickname }}</p>
+                                        <p>{{ item.created_at }}</p>
+                                    </div>
                                 </div>
+                                <button @click="deleteComment(item.comment_id)" v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-clear btn-delete">X</button>
                             </div>
-                            <p>댓글 내용</p>
-                        </div> -->
+                            <p>{{ item.comment_content }}</p>
+                        </div>
+                    </div>
+                    <!-- <p>총 댓글 : {{ testerDetail.comments_count }}</p>
+                    <div class="comment-list">
                         <div v-for="item in testerDetail.comments" class="comment-user">
                             <div class="comment-user-header">
                                 <div class="user-profile-flex">
@@ -56,11 +62,11 @@
                                         <p>{{ item.created_at_timestamps }}</p>
                                     </div>
                                 </div>
-                                <button class="btn bg-clear btn-delete">X</button>
+                                <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-clear btn-delete">X</button>
                             </div>
                             <p>{{ item.comment_content }}</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <PaginationComponent
                     :actionName="actionName"
@@ -75,7 +81,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../PaginationComponent.vue';
@@ -83,22 +89,53 @@ import PaginationComponent from '../PaginationComponent.vue';
 const store = useStore();
 const route = useRoute();
 const actionName = 'tester/testerDetail';
+const actionNameCommentList = 'comment/commentList';
 
 const testerDetail = computed(() => store.state.tester.testerDetail);
-
+const commentList = computed(() => store.state.comment.commentList);
 // const boardInfo = reactive({
 //     board_id: route.params.id,
 // });
 const searchData = reactive({
     board_id: route.params.id,
+    // page: store.state.pagination.currentPage,
+});
+
+const searchDataComment = reactive({
+    board_id: route.params.id,
+    comment: '',
     page: store.state.pagination.currentPage,
 });
 
+const chkAuth = () => {
+    if(!store.state.auth.authFlg) {
+        alert('로그인 후 작성 가능');
+    }
+}
+
+const storeComment = () => {
+    store.dispatch('comment/storeComment', searchDataComment);
+}
+
+const textArea = ref(null);
+
+const resize = () => {
+    textArea.value.style.height = "1px";
+    textArea.value.style.height = textArea.value.scrollHeight + "px";
+};
 
 onBeforeMount(()=>{
-    // store.dispatch('tester/testerDetail', boardInfo);
     store.dispatch(actionName, searchData);
+    store.dispatch(actionNameCommentList, searchData);
 });
+
+const deleteComment = (id) => {
+    const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    if(check) {
+        store.dispatch('comment/destroyComment', id);
+    }
+    console.log(commentList.comment_id);
+}
 </script>
 
 <style scoped>
@@ -160,9 +197,9 @@ onBeforeMount(()=>{
 
 .board-content textarea {
     resize: none;
-    height: 600px;
+    min-height: 300px;
     width: 100%;
-    /* margin: 10px auto; */
+    /* height: 100%; */
 }
 
 /* .textarea-center {
@@ -171,6 +208,12 @@ onBeforeMount(()=>{
 
 .board-content-img {
     margin: 20px auto;
+}
+
+.board-content-img > img {
+    margin: 0 auto;
+    max-width: 500px;
+    max-height: 500px;
 }
 
 .img-grid {
@@ -288,6 +331,7 @@ onBeforeMount(()=>{
 
 .btn-delete {
     font-size: 18px;
+    font-weight: 600;
 }
 
 .btn-delete:hover {

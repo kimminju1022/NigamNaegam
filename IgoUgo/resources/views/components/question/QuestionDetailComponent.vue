@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="content-textarea">
-                        <textarea readonly>{{ questionDetail.board_content }}</textarea>
+                        <textarea ref="textArea" @input="resize" readonly>{{ questionDetail.board_content }}</textarea>
                     </div>
                     <div class="board-user">
                         <div class="border-user-profile">
@@ -64,11 +64,11 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -85,6 +85,13 @@ const boardInfo = reactive({
 onBeforeMount(()=>{
     store.dispatch('question/questionDetail', boardInfo);
 });
+
+const textArea = ref(null);
+
+const resize = () => {
+    textArea.value.style.height = "1px";
+    textArea.value.style.height = textArea.value.scrollHeight + "px";
+};
 
 const deleteQuestion = (id) => {
     const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');

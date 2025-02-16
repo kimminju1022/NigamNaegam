@@ -18,46 +18,14 @@
                 <p>작성일자</p>
                 <p>조회수</p>
             </div>
-            <div class="board-notice-box" >
-                <div class="board-content">
-                    <p>5</p>
+            <div class="board-notice-box">
+                <div v-for="(item, index) in noticeTopList" class="board-content">
+                    <p>{{ index + 1 }}</p>
                     <p>공지</p>
-                    <p>파일업로드 오류 시 간단해결방법</p>
-                    <p>라라핑</p>
-                    <p>2024.12.11</p>
-                    <p>204</p>
-                </div>
-                <div class="board-content">
-                    <p>4</p>
-                    <p>공지</p>
-                    <p>로그인 에러 시 문의방법</p>
-                    <p>차나핑</p>
-                    <p>2024.11.11</p>
-                    <p>224</p>
-                </div>
-                <div class="board-content">
-                    <p>3</p>
-                    <p>공지</p>
-                    <p>게시글 수정 오류 해결방법</p>
-                    <p>라라핑</p>
-                    <p>2024.11.11</p>
-                    <p>763</p>
-                </div>
-                <div class="board-content">
-                    <p>2</p>
-                    <p>공지</p>
-                    <p>자주 질문하는 오류 해결방법</p>
-                    <p>믿어핑</p>
-                    <p>2024.11.01</p>
-                    <p>744</p>
-                </div>
-                <div class="board-content">
-                    <p>1</p>
-                    <p>공지</p>
-                    <p>민원 해결 절차 안내</p>
-                    <p>차캐핑</p>
-                    <p>2024.12.11</p>
-                    <p>428</p>
+                    <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
+                    <p>관리자</p>
+                    <p>{{ item.created_at }}</p>
+                    <p>{{ item.view_cnt }}</p>
                 </div>
             </div>
             <div class="board-content-box">
@@ -85,7 +53,7 @@
     <!-- 페이지네이션 -->
     <!-- <PaginationComponent :actionName="actionName" :searchData="searchData" /> -->
     <PaginationComponent
-        :actionName="actionName"
+        :actionName="actionNameQuestion"
         :searchData="searchData"
         :currentPage="$store.state.pagination.currentPage"
         :lastPage="$store.state.pagination.lastPage"
@@ -99,8 +67,10 @@ import { useStore } from 'vuex';
 import PaginationComponent from '../PaginationComponent.vue';
 
 const store = useStore();
-const actionName = 'question/questionList';
+const actionNameQuestion = 'question/questionList';
+const actionNameNotice = 'notice/noticeTopList';
 const questionList = computed(() => store.state.question.questionList);
+const noticeTopList = computed(() => store.state.notice.noticeTopList);
 
 // 필터 관련
 const searchData = reactive({
@@ -108,7 +78,8 @@ const searchData = reactive({
 });
 
 onBeforeMount(() => {
-    store.dispatch(actionName, searchData);
+    store.dispatch(actionNameQuestion, searchData);
+    store.dispatch(actionNameNotice);
 });
 </script>
 

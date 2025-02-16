@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\UserManageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\admin\BoardReportController;
+use App\Http\Controllers\admin\AdminNoticeController as AdminNoticeController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HotelController;
@@ -98,6 +100,11 @@ Route::get('/search/board/content', [SearchController::class, 'searchBoardConten
 Route::get('/testers', [TesterController::class, 'index']);
 Route::get('/testers/{id}', [TesterController::class, 'show']);
 
+// 공지사항
+Route::get('/notices/top', [NoticeController::class, 'topList']);
+Route::get('/notices', [NoticeController::class, 'index']);
+Route::get('/notices/{id}', [NoticeController::class, 'show']);
+
 
 // 관리자 사이트 ---------------------------------------------------------------------------------------
 
@@ -134,7 +141,19 @@ Route::get('admin/review', [BoardReportController::class, 'posts']);
 Route::get('admin/review/{boardid}', [BoardReportController::class, 'postDetail']);
 
 // 체험단 관리
-Route::get('/admin/testers', [AdminTesterController::class, 'index']);
+Route::get('/admin/tester', [AdminTesterController::class, 'index']);
+Route::get('/admin/tester/{id}', [AdminTesterController::class, 'show']);
+Route::post('/admin/tester', [AdminTesterController::class, 'store']);
+Route::get('/admin/tester/{id}/edit', [AdminTesterController::class, 'edit']);
+Route::post('/admin/tester/{id}', [AdminTesterController::class, 'update']);
+Route::delete('/admin/tester/{id}', [AdminTesterController::class, 'destroy']);
+
+// 공지사항
+Route::get('/admin/notice', [AdminNoticeController::class, 'index']);
+Route::get('/admin/notice/{id}', [AdminNoticeController::class, 'show']);
+Route::post('/admin/notice', [AdminNoticeController::class, 'store']);
+Route::post('/admin/notice/:id/edit', [AdminNoticeController::class, 'update']);
+Route::delete('/admin/notice/{id}', [AdminNoticeController::class, 'destroy']);
 
 // 인증 관련 ---------------------------------------------------------------------------------------
 // 인증필요 라우트 그룹
@@ -170,13 +189,18 @@ Route::middleware('my.auth')->group(function() {
     Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
     
     // 댓글  관련
-    Route::post('/comments', [CommentController::class, 'store']);
-    Route::post('/comments/{id}/report',[CommentController::class, 'report'])->name('comment.report');
-    Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
+    // Route::post('/comments', [CommentController::class, 'store']);
+    // Route::post('/comments/{id}/report',[CommentController::class, 'report'])->name('comment.report');
+    // Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
     
     // 문의게시판 관련
     Route::post('/questions', [QuestionController::class, 'store']);
     Route::get('/questions/{id}/edit', [QuestionController::class, 'edit']);
     Route::post('/questions/{id}', [QuestionController::class, 'update'])->name('question.update');
     Route::delete('/questions/{id}', [QuestionController::class, 'destroy']);
+
+    // 체험단 댓글
+    Route::get('/testers/comments/{id}', [CommentController::class, 'index']);
+    Route::post('/testers/comments', [CommentController::class, 'store']);
+    Route::delete('/testers/comments/{id}', [CommentController::class, 'destroy']);
 });

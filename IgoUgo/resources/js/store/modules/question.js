@@ -176,6 +176,26 @@ export default {
                 console.error(error.response.data);
             });
         },
+
+        // 게시글 삭제
+        destroyQuestion(context, id) {
+            const url = `/api/questions/${id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+
+            axios.delete(url, config)
+            .then(response => {
+                alert('삭제 성공');
+                router.push('/questions');
+            })
+            .catch(error => {
+                console.error(error.response);
+                alert('삭제 실패');
+            });
+        },   
     },
     getters: {
     },

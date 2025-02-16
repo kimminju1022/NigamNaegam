@@ -21,16 +21,6 @@ export default {
         userFreeList: [],
         likesCount:'',
     }),
-    // 검색 API 호출 함수
-    // export const fetchSearchResults = async (keyword) => {
-    //     try {
-    //         const response = await axios.get(`${API_URL}?search=${encodeURIComponent(keyword)}`);
-    //     return response.data; // 검색 결과 반환
-    //     } catch (error) {
-    //     console.error("검색 요청 실패:", error);
-    //     return [];
-    //     }
-    // },
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
         setBoardDetail(state, data){

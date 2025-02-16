@@ -15,12 +15,13 @@
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
                     <!-- <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link> -->
                     <!-- FAQ는 통계기능이 생기면 합시당 -->
+                    <router-link to="/notices" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link>
                     <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의사항</button></router-link>
                     <router-link to="/before/registration"><button class="btn bg-clear header-btn">회원가입</button></router-link>
                     <router-link to="/login"><button class="btn bg-navy header-bg-btn">로그인</button></router-link>
                 </div>
                 <div v-else class="header-title-button">
-                    <!-- <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link> -->
+                    <router-link to="/notices" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">공지사항</button></router-link>
                     <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')"><button class="btn bg-clear header-btn">문의사항</button></router-link>
                     <!-- <button @click="$store.dispatch('auth/logout')" class="btn bg-logout header-logout">로그아웃</button> -->
                     <button @click="logout" class="btn bg-logout header-logout">로그아웃</button>
@@ -49,7 +50,7 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <!-- <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link> -->
+                                        <router-link to="/notices" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
                                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <!-- <div class="dropdown-list dropdown-list2">
@@ -84,7 +85,7 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
-                                        <!-- <router-link to="" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link> -->
+                                        <router-link to="/notices" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
                                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
@@ -119,6 +120,7 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="/notices" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
                                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
@@ -135,7 +137,7 @@
                             </div>
                         </li>
                         <li class="header-list-hover">
-                            <router-link to="/testers">체험단 신청</router-link>
+                            <router-link to="/testers" @click="$store.commit('pagination/setPaginationInitialize')">체험단 신청</router-link>
                             <div class="dropdown-content">
                                 <div class="dropdown-menu">
                                     <div class="dropdown-list">
@@ -153,6 +155,7 @@
                                     <div class="dropdown-list">
                                         <a @click="redirectBoards('0')">리뷰게시판</a>
                                         <a @click="redirectBoards('1')">자유게시판</a>
+                                        <router-link to="/notices" @click="$store.commit('pagination/setPaginationInitialize')">공지사항</router-link>
                                         <router-link to="/questions" @click="$store.commit('pagination/setPaginationInitialize')">문의사항</router-link>
                                     </div>
                                     <div class="dropdown-list dropdown-list2">
@@ -470,12 +473,14 @@ const redirectBoards = async (bcCode) => {
 
 a {
     text-decoration: none;
-    color: #01083a;
+    /* color: #01083a; */
+    color: #000;
     cursor: pointer;
 }
 
 a:visited {
-    color : #01083A;
+    /* color : #01083A; */
+    color: #000;
 }
 
 li {
