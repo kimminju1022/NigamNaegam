@@ -5,29 +5,29 @@
 </div>
 <div class="main-table-background-color">
     <p class="main-table-name">리뷰게시판</p>
-    <p class="main-table-report">신고 : </p>
-    <div class="main-table">
+    <p v-if="postDetail" class="main-table-report">신고 : {{ postDetail[0].report_count }}</p>
+    <div v-if="postDetail" class="main-table">
         <div class="adminboard-table">
             <div class="adminboard-column">번호</div>
             <div class="adminboard-table-left adminboard-table-grid" >
-                <p class="adminboard-content">안농</p>
+                <p class="adminboard-content">{{ postDetail[0].board_id }}</p>
                 <div class="admin-table-info">
                     <p>카테고리 : 호텔 </p>
-                    <p>작성자 : 싫어핑</p>
-                    <p>작성일자 : 2024-24-24</p>
+                    <p>작성자 : {{ postDetail[0].user_nickname }}</p>
+                    <p>작성일자 : {{ postDetail[0].created_at }}</p>
                 </div>
             </div>
         </div>
         <div class="adminboard-table">
             <div class="adminboard-column">제목</div>
             <div class="adminboard-table-left first-table-aline">
-                <p class="adminboard-content">방가워</p>
+                <p class="adminboard-content">{{ postDetail[0].board_title }}</p>
             </div>
         </div>
         <div class="adminboard-table">
             <div class="adminboard-column">내용</div>
             <div class="adminboard-table-left">
-                <p class="adminboard-content">잘가</p>
+                <p class="adminboard-content">{{ postDetail[0].board_content }}</p>
             </div>
         </div>
     </div>
@@ -49,13 +49,11 @@ const postDetail = computed(()=> store.state.adminBoard.postDetail);
 const searchData = reactive({
     bc_code: '0',
     board_id: route.params.boardid,
-    page: store.state.pagination.currentPage,
 });
 
 onBeforeMount(async() => {
     await store.dispatch(actionName, searchData);
     console.log(store.state.adminBoard.postDetail);
-    // console.log(searchData.board_id)
 })
 
 </script>

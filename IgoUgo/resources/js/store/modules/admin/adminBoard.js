@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     state: () => ({
 		postList: [],
-        postDetail: [],
+        postDetail: null,
     }),
     mutations: {
         setPostList(state, list) {
@@ -44,7 +44,6 @@ export default {
                 const config = {
                     params: {
                         bc_code: data.bc_code,  // bc_code는 쿼리 파라미터로 전달
-                        page: data.page
                     }
                 };
                 
@@ -52,7 +51,6 @@ export default {
                 .then(response => {
                     // console.log(response.data)
                     context.commit('setPostDetail', response.data.userBoardCnt);
-                    context.commit('pagination/setPagination', response.data.userBoardCnt, {root: true});
                     return resolve();
                 }).catch(error => {
                     console.log('오류오류', error);
