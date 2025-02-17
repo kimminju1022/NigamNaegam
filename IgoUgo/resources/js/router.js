@@ -79,6 +79,7 @@ import AdminNoticeUpdateComponent from '../views/adminComponents/notice/NoticeUp
 // 문의 관리
 import AdminQuestionManageComponent from '../views/adminComponents/question/QuestionManageComponent.vue';
 import AdminQuestionManageDetailComponent from '../views/adminComponents/question/QuestionManageDetailComponent.vue';
+import AdminFreeDetailComponent from '../views/adminComponents/board/AdminFreeDetailComponent.vue';
 
 const chkAuth = (to, from, next) => {
 
@@ -254,6 +255,11 @@ const routes = [
         path: '/admin/board/review/:boardid',
         component: AdminBoardDetailComponent,
         beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/board/free/:boardid',
+        component: AdminFreeDetailComponent,
+        eforeEnter: chkAuth,
     },
 
     // ---------------------------------------------------------------------------------------------

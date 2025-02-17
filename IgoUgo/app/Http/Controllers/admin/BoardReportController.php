@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
+use App\Models\BoardImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 // use App\Models\BoardReport;
@@ -23,6 +24,7 @@ class BoardReportController extends Controller
                                 'users.user_name', 
                                 'users.user_nickname',
                                 'boards.created_at',
+                                'boards.board_flg',
                                 DB::raw('count(board_reports.board_id) as report_count'),
                                 )
                                 ->leftJoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id')
@@ -37,6 +39,7 @@ class BoardReportController extends Controller
                                 'users.user_name', 
                                 'users.user_nickname', 
                                 'boards.created_at',
+                                'boards.board_flg',
                             )
                             ->paginate(17);
                             
@@ -80,7 +83,6 @@ class BoardReportController extends Controller
                                     'boards.board_title',
                                     'boards.board_content'
                                 )
-                                ->withTrashed()
                                 ->get();
         // Log::debug('test');
         $responseData = [
@@ -91,6 +93,30 @@ class BoardReportController extends Controller
 
         // Log::debug('BoardPostDetail Query:', $boardPostDetail->toArray());
         
+        return response()->json($responseData, 200);
+    }
+
+    public function destroyPost($board_id) {
+        $boardPostDelete = Board::where('board_flg', '0')
+                                ->where('board_id', $board_id)
+                                ->update(['board_flg' => '1']);
+
+        $boardImgDelete = BoardImage::where('board_id', $board_id)
+                                ->delete();
+
+        
+        if ($boardPostDelete > 0 && $boardImgDelete >= 0) {
+            $responseData = [
+                'success' => true,
+                'msg' => '게시글 삭제 성공',
+            ];
+        } else {
+            $responseData = [
+                'success' => false,
+                'msg' => '삭제할 게시글이 없습니다.',
+            ];
+        }
+
         return response()->json($responseData, 200);
     }
 }

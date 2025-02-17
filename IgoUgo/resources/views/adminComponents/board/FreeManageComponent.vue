@@ -17,8 +17,8 @@
                 <div v-for="item in postList" :key=item class="free-item">
                     <p v-if="item.report_count > 0">{{ item.report_count }}</p>
                     <p v-else>0</p>
-                    <p>{{ item.board_id }}</p>
-                    <p>{{ item.board_title }}</p>
+                    <p :class="{ 'deleted-class': item.board_flg === '1' }">{{ item.board_id }}</p>
+                    <router-link :to="`/admin/board/free/${item.board_id}`" >{{ item.board_title }}</router-link>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.user_name }}</p>
                     <p>{{ item.created_at }}</p>
@@ -49,12 +49,13 @@ const actionName = 'adminBoard/getPostList';
 
 
 const searchData = reactive({
-    boardCategory: 1,
+    bc_code: 1,
     page: store.state.pagination.currentPage,
 });
 
 onBeforeMount(async() => {
-    store.dispatch(actionName, searchData)
+    store.dispatch(actionName, searchData);
+    // console.log(postList);
 });
 
 
@@ -107,7 +108,7 @@ onBeforeMount(async() => {
     height: 30px;
     margin-top: 10px;
 }
-.free-item > p:nth-child(3) {
+.free-item >:nth-child(3) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -116,5 +117,8 @@ onBeforeMount(async() => {
 .free-post-List {
     text-align: center;
     margin-top: 20px;
+}
+.deleted-class {
+    opacity: 20%;
 }
 </style>

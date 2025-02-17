@@ -1,7 +1,9 @@
 <template>
 <div class="main-btn">
-    <button class="main-btn-size">삭제</button>
-    <button class="main-btn-size">취소</button>
+    <button @click="deletePost()" class="main-btn-size">삭제</button>
+    <router-link :to="'/admin/board/review'" >
+        <button class="main-btn-size">취소</button>
+    </router-link>
 </div>
 <div class="main-table-background-color">
     <p class="main-table-name">리뷰게시판</p>
@@ -53,8 +55,12 @@ const searchData = reactive({
 
 onBeforeMount(async() => {
     await store.dispatch(actionName, searchData);
-    console.log(store.state.adminBoard.postDetail);
+    // console.log(store.state.adminBoard.postDetail);
 })
+
+function deletePost() {
+        store.dispatch('adminBoard/destroyPost', searchData);
+}
 
 </script>
 <style scoped>
@@ -71,6 +77,7 @@ onBeforeMount(async() => {
     font-size: 30px;
     font-weight: 900;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 /* 테이블쪽 */
@@ -104,6 +111,7 @@ onBeforeMount(async() => {
 .adminboard-table-left {
     display: flex;
     border-left: solid 2px #000;
+    overflow: scroll;
 }
 .first-table-aline {
     align-items: center;
