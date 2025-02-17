@@ -93,8 +93,8 @@ export default {
             // console.log('data : ',data);
 
             const formData = new FormData();
-            formData.append('board_title', data.testerDetail.board_title);
-            formData.append('board_content', data.testerDetail.board_content);     
+            formData.append('board_title', data.noticeDetail.board_title);
+            formData.append('board_content', data.noticeDetail.board_content);     
             formData.append('user_id', data.user_id);
             formData.append('board_id', data.board_id);
 
@@ -117,7 +117,7 @@ export default {
             axios.post(url, formData, config)
             .then(response => {
                 // console.log(response.data);
-                context.commit('setNoticeList', response.data.board);
+                context.commit('setNoticeList', response.data.data);
 
                 alert('수정 성공');
                 router.replace(`/admin/notice/${data.noticeDetail.board_id}`);

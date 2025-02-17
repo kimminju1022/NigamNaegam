@@ -19,7 +19,8 @@
                         <img :src="testerDetail.board_images[0]?.board_img" alt="board_img1 무조건 가게정보사진">
                     </div>
                     <div class="content-textarea">
-                        <textarea ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</textarea>
+                        <!-- <textarea ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</textarea> -->
+                        <pre ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</pre>
                     </div>
                     <p>모집 기한 : {{ testerDetail.tester_management?.dd }}</p>
                     <p>신청은 댓글로</p>
@@ -69,7 +70,7 @@
                     </div> -->
                 </div>
                 <PaginationComponent
-                    :actionName="actionName"
+                    :actionName="actionNameCommentList"
                     :searchData="searchData"
                     :currentPage="$store.state.pagination.currentPage"
                     :lastPage="$store.state.pagination.lastPage"
@@ -115,6 +116,7 @@ const chkAuth = () => {
 
 const storeComment = () => {
     store.dispatch('comment/storeComment', searchDataComment);
+    testerDetail.value.comments_count++;
 }
 
 const textArea = ref(null);
@@ -170,6 +172,10 @@ const deleteComment = (id) => {
     padding: 10px;
     font-size: 17px;
 }
+
+.board-content {
+    text-align: center;
+} 
 
 .board-box p, .board-content textarea {
     font-size: 17px;

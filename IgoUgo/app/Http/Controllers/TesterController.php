@@ -14,7 +14,7 @@ class TesterController extends Controller
     // 체험단 리스트
     public function index() {
         $testerList = Board::with(['board_category', 'board_images', 'tester_management'])
-        ->withCount('comments')
+                                ->withCount('comments')
                                 ->where('bc_code', '3')
                                 ->where('board_flg', '0')
                                 ->orderBy('created_at','DESC')

@@ -9,6 +9,9 @@ export default {
         setCommentList(state, commentList) {
             state.commentList = commentList;
         },
+        setUnshiftCommentList(state, data) {
+            state.commentList.unshift(data);
+        },
         // 댓글 입력란 초기화
         setSearchDataComment(state, comment) {
             state.searchDataComment.comment = comment;
@@ -37,7 +40,6 @@ export default {
         },
 
         // 댓글 작성
-        // storeComment({state, rootGetters, commit}, data) {
         storeComment(context, data) {
             const url = '/api/testers/comments';
             const config = {
@@ -54,14 +56,7 @@ export default {
             axios.post(url, formData, config)
             .then(response => {
                 // console.log(response.data);                
-                context.commit('setCommentList', response.data.data);
-                // context.commit('pagination/setPagination', response.data.data, {root: true});
-                
-                // if(state.commentList.length < 10) {
-                //     commit('setCommentList', response.data.data);
-                // } else {
-                //     commit('pagination/setPaginationRegulation', rootGetters['pagination/getPlusOneLastPage'], {root: true});
-                // }
+                context.commit('setUnshiftCommentList', response.data.data);
             })
             .catch(error => {
                 console.error(error);

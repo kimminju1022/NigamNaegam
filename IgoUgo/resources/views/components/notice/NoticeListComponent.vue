@@ -11,7 +11,7 @@
                 <p>작성일자</p>
                 <p>조회수</p>
             </div>
-            <div class="board-notice-box" >
+            <!-- <div class="board-notice-box" >
                 <div v-for="(item, index) in noticeTopList" class="board-content">
                     <p>{{ index + 1 }}</p>
                     <p>공지</p>
@@ -21,10 +21,10 @@
                     <p>{{ item.created_at }}</p>
                     <p>{{ item.view_cnt }}</p>
                 </div>
-            </div>
+            </div> -->
             <div class="board-content-box">
                 <div v-for="(item, index) in noticeList" class="board-content">
-                    <p>{{ index + 1 }}</p>
+                    <p>{{ item.board_id }}</p>
                     <p>공지</p>
                     <p></p>
                     <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>

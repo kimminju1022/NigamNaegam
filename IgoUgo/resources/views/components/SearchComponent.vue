@@ -147,7 +147,7 @@
             <div class="search-content-box">
                 <div class="search-title">
                     <p>번호</p>
-                    <p>몰라</p>
+                    <p></p>
                     <p>카테고리</p>
                     <p>제목</p>
                     <p></p>
@@ -159,11 +159,11 @@
                 <div v-else>
                     <div v-for="(item, index) in $store.state.search.searchTesterList" :key="item" class="search-content">
                         <p>{{ index+1 }}</p>
-                        <p class="area_name">몰라</p>
-                        <p>{{ item.board_category.bc_name }}</p>
+                        <p class="area_name"></p>
+                        <p>{{ item.tester_management?.tester_name }}</p>
                         <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
                         <p></p>
-                        <p>{{ item.created_at }}</p>
+                        <p>{{ item.tester_management?.dd }}</p>
                     </div>
                 </div>
             </div>

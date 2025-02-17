@@ -29,6 +29,10 @@ class AuthController extends Controller
             throw new AuthenticationException('회원 정보 오류');
         }
 
+        if($userInfo->user_flg === '1') {
+            throw new AuthenticationException('탈퇴 회원 오류');
+        }
+
         if($userInfo->user_out === '1') {
             throw new AuthenticationException('강제 탈퇴 회원 오류');
         }

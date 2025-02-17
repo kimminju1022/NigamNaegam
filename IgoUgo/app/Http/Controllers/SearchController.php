@@ -95,6 +95,35 @@ class SearchController extends Controller
         return response()->json($responseData, 200);
     }
 
+    public function searchTester(Request $request) {
+        // Log::debug($request);
+        $key = $request->input('search');
+
+        // $board_testers = Board::with(['board_category', 'tester_management'])
+        $board_testers = Board::with(['tester_management' => function ($query) {
+                                        $query->select(DB::raw("*, DATE_FORMAT(due_date, '%Y-%m-%d') as dd"));
+                                    }, 'board_category'])
+                                ->where('board_flg', '0')
+                                ->where(function($query) use ($key) {
+                                    $query->where('board_title', 'LIKE', '%' . $key . '%')
+                                        ->orWhere('board_content', 'LIKE', '%' . $key . '%');
+                                })
+                                ->where(function($query) {
+                                    $query->where('bc_code', '3');
+                                })
+                                ->orderBy('created_at', 'DESC')
+                                ->paginate(5);
+                                // board_flg 0인 것만 들고와야함
+                                
+        $responseData = [
+            'success' => true
+            ,'msg' => '검색결과 획득 성공'
+            ,'tester' => $board_testers->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
     // search in boardlist _____민주
     public function searchBoardContent(Request $request) {
         // Log::debug($request);
@@ -142,32 +171,6 @@ class SearchController extends Controller
             ,'productId' => $bc_code === '0' ? $boards->productId : ''
             // ,'likeCount' => $board->likes_count
             ,'board' => $boards->toArray()
-        ];
-
-        return response()->json($responseData, 200);
-    }
-
-    public function searchTester(Request $request) {
-        // Log::debug($request);
-        $key = $request->input('search');
-
-        $board_testers = Board::with('board_category')
-                                ->where('board_flg', '0')
-                                ->where(function($query) use ($key) {
-                                    $query->where('board_title', 'LIKE', '%' . $key . '%')
-                                        ->orWhere('board_content', 'LIKE', '%' . $key . '%');
-                                })
-                                ->where(function($query) {
-                                    $query->where('bc_code', '3');
-                                })
-                                ->orderBy('created_at', 'DESC')
-                                ->paginate(5);
-                                // board_flg 0인 것만 들고와야함
-                                
-        $responseData = [
-            'success' => true
-            ,'msg' => '검색결과 획득 성공'
-            ,'tester' => $board_testers->toArray()
         ];
 
         return response()->json($responseData, 200);

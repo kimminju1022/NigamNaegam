@@ -152,6 +152,7 @@ class CommentController extends Controller
             $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
 
             $comment = Comment::create($insertData);
+            $comment->load('user');
 
             $responseData = [
                 'success' => true

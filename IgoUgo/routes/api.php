@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\admin\AdminChartController;
 use App\Http\Controllers\admin\AdminTesterController;
 use App\Http\Controllers\admin\UserManageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\admin\BoardReportController;
-use App\Http\Controllers\admin\AdminNoticeController as AdminNoticeController;
+use App\Http\Controllers\admin\AdminNoticeController;
+use App\Http\Controllers\admin\AdminQuestionController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CommentController;
@@ -112,13 +114,13 @@ Route::get('/notices/{id}', [NoticeController::class, 'show']);
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('auth.admin.login');
 
 // 차트
-Route::get('/admin/daily/user/signup', [ChartController::class, 'showDailySignUp']);
-Route::get('/admin/monthly/user/signup', [ChartController::class, 'showMonthlySignUp']);
-Route::get('/admin/daily/user/delete', [ChartController::class, 'showDailyDeletedAccount']);
-Route::get('/admin/daily/review', [ChartController::class, 'showDailyReview']);
-Route::get('/admin/daily/free', [ChartController::class, 'showDailyFree']);
-Route::get('/admin/daily/question/yet', [ChartController::class, 'showDailyQuestionYet']);
-Route::get('/admin/daily/question/done', [ChartController::class, 'showDailyQuestionDone']);
+Route::get('/admin/daily/user/signup', [AdminChartController::class, 'showDailySignUp']);
+Route::get('/admin/monthly/user/signup', [AdminChartController::class, 'showMonthlySignUp']);
+Route::get('/admin/daily/user/delete', [AdminChartController::class, 'showDailyDeletedAccount']);
+Route::get('/admin/daily/review', [AdminChartController::class, 'showDailyReview']);
+Route::get('/admin/daily/free', [AdminChartController::class, 'showDailyFree']);
+Route::get('/admin/daily/question/yet', [AdminChartController::class, 'showDailyQuestionYet']);
+Route::get('/admin/daily/question/done', [AdminChartController::class, 'showDailyQuestionDone']);
 
 // 유저 관리
 Route::get('/admin/user', [UserManageController::class, 'showUserList']);
@@ -137,10 +139,10 @@ Route::get('/admin/today/control', [UserManageController::class, 'showUserContro
 Route::post('/admin/user/{id}/updatecontrol', [UserManageController::class, 'updateUserControl']);
 
 // 문의게시판
-Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);
-Route::get('/admin/question/done', [QuestionController::class, 'adminQuestionDone']);
-Route::get('/admin/question/{id}', [QuestionController::class, 'showQuestionDetail']);
-Route::post('/admin/question/{id}', [QuestionController::class, 'storeQuestion']);
+Route::get('/admin/question/yet', [AdminQuestionController::class, 'adminQuestionYet']);
+Route::get('/admin/question/done', [AdminQuestionController::class, 'adminQuestionDone']);
+Route::get('/admin/question/{id}', [AdminQuestionController::class, 'showQuestionDetail']);
+Route::post('/admin/question/{id}', [AdminQuestionController::class, 'storeQuestion']);
 
 // 게신판관리
 Route::get('admin/review', [BoardReportController::class, 'posts']);
@@ -158,7 +160,8 @@ Route::delete('/admin/tester/{id}', [AdminTesterController::class, 'destroy']);
 Route::get('/admin/notice', [AdminNoticeController::class, 'index']);
 Route::get('/admin/notice/{id}', [AdminNoticeController::class, 'show']);
 Route::post('/admin/notice', [AdminNoticeController::class, 'store']);
-Route::post('/admin/notice/:id/edit', [AdminNoticeController::class, 'update']);
+Route::get('/admin/notice/{id}/edit', [AdminNoticeController::class, 'edit']);
+Route::post('/admin/notice/{id}', [AdminNoticeController::class, 'update']);
 Route::delete('/admin/notice/{id}', [AdminNoticeController::class, 'destroy']);
 
 // 인증 관련 ---------------------------------------------------------------------------------------

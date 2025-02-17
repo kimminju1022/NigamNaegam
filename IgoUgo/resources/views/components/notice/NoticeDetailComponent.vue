@@ -19,7 +19,8 @@
                         <img :src="noticeDetail.board_images[0]?.board_img" alt="board_img1 무조건 가게정보사진">
                     </div>
                     <div class="content-textarea">
-                        <textarea ref="textArea" @keup="resize" readonly>{{ noticeDetail.board_content }}</textarea>
+                        <pre ref="textArea" @keup="resize" readonly>{{ noticeDetail.board_content }}</pre>
+                        <!-- <textarea ref="textArea" @keup="resize" readonly>{{ noticeDetail.board_content }}</textarea> -->
                         <!-- <p>{{ noticeDetail.board_content }}</p> -->
                     </div>
                 </div>
@@ -103,6 +104,10 @@ onBeforeMount(()=>{
     margin: 20px auto;
 } */
 
+.board-content {
+    text-align: center;
+} 
+
 .board-box p, .board-content textarea {
     font-size: 17px;
 }
@@ -135,18 +140,16 @@ onBeforeMount(()=>{
 
 .board-content-img > img {
     margin: 0 auto;
-    max-width: 500px;
-    max-height: 500px;
-}
-
-.content-textarea {
-    vertical-align: middle;
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .content-textarea > textarea {
     resize: none;
     width: 100%;
-    min-height: 300px;
+    /* min-height: 300px; */
+    text-align: center;
+    /* vertical-align: middle; */
 }
 
 .img-grid {

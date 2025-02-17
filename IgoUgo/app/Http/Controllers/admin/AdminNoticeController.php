@@ -55,6 +55,7 @@ class AdminNoticeController extends Controller
         try {
             DB::beginTransaction();
             Log::debug('rr', $request->toArray());
+            Log::debug($request->board_img);
             $insertData = $request->only('board_title','board_content');
             $insertData['user_id'] = MyToken::getValueInPayload($request->bearerToken(), 'idt');
             $insertData['view_cnt'] = 0;
@@ -148,7 +149,7 @@ class AdminNoticeController extends Controller
             $responseData = [
                 'success' => true
                 ,'msg' => '게시글 업데이트 성공'
-                ,'board' => $board->toArray()
+                ,'data' => $board->toArray()
                 ,'board_img' => $boardImg->toArray()
             ];
         } catch(Throwable $th) {
@@ -168,13 +169,17 @@ class AdminNoticeController extends Controller
         // $board->delete();
         $board->board_flg = '1';
         $board->save(); 
-
         
         $board_img = BoardImage::with('board')
                                 ->where('board_id', $id)
-                                ->first();
-        if($board_img) {
-            $board_img->delete();
+                                ->get();
+        // if($board_img) {
+        //     $board_img->delete();
+        // }
+        if($board_img->isNotEmpty()) {
+            $board_img->each(function($img) {
+                $img->delete();
+            });
         }
 
         $responseData = [

@@ -12,7 +12,7 @@ class NoticeController extends Controller
         $notice = Board::where('bc_code', '5')
                         ->where('board_flg', '0')
                         ->orderBy('created_at','DESC')
-                        ->paginate(10);
+                        ->paginate(15);
 
         $responseData = [
         'success' => true

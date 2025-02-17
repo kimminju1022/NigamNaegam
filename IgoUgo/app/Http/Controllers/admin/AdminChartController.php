@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Board;
 use App\Models\User;
 use Carbon\Carbon;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class ChartController extends Controller
+class AdminChartController extends Controller
 {
     // 일일 가입회원 수
     public function showDailySignUp() {
