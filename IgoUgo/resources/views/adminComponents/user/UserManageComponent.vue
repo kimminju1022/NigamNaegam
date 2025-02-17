@@ -12,23 +12,23 @@
                 <div class="user-current-list">
                     <div class="user-current-item">
                         <p>신규 가입</p>
-                        <p class="user-current-cnt">2</p>
+                        <p class="user-current-cnt">{{ userSignUpCnt }}</p>
                     </div>
                     <div class="user-current-item">
                         <p>탈퇴 회원</p>
-                        <p class="user-current-cnt">5</p>
+                        <p class="user-current-cnt">{{ userDeleteCnt }}</p>
                     </div>
                     <div class="user-current-item">
                         <p>강제 탈퇴 회원</p>
-                        <p class="user-current-cnt">10</p>
+                        <p class="user-current-cnt">{{ userOutCnt }}</p>
                     </div>
-                    <div class="user-current-item">
+                    <!-- <div class="user-current-item">
                         <p>신고 누적 회원</p>
                         <p class="user-current-cnt">2</p>
-                    </div>
+                    </div> -->
                     <div class="user-current-item">
                         <p>제재 받은 회원</p>
-                        <p class="user-current-cnt">7</p>
+                        <p class="user-current-cnt">{{ userControlCnt }}</p>
                     </div>
                 </div>
             </div>
@@ -80,6 +80,12 @@ const actionName = 'userManage/showUserList';
 // 유저 리스트
 const userList = computed(() => store.state.userManage.userList);
 
+// 유저 오늘 현황
+const userSignUpCnt = computed(() => store.state.userManage.userTodaySignUpCnt);
+const userDeleteCnt = computed(() => store.state.userManage.userTodayDeleteCnt);
+const userOutCnt = computed(() => store.state.userManage.userTodayOutCnt);
+const userControlCnt = computed(() => store.state.userManage.userTodayControlCnt);
+
 // 필터 관련
 const searchData = reactive({
     page: store.state.pagination.currentPage,
@@ -87,6 +93,10 @@ const searchData = reactive({
 
 onBeforeMount(() => {
     store.dispatch(actionName, searchData);
+    store.dispatch('userManage/showUserTodaySignUpCnt');
+    store.dispatch('userManage/showUserTodayDeleteCnt');
+    store.dispatch('userManage/showUserTodayOutCnt');
+    store.dispatch('userManage/showUserTodayControlCnt');
 });
 </script>
 
@@ -108,7 +118,7 @@ onBeforeMount(() => {
 
 /* hr 스타일 */
 .hr-style {
-    /* width: 500px; */
+    width: 500px;
     margin-top: 5px;
 }
 
@@ -170,6 +180,7 @@ onBeforeMount(() => {
     width: 100%;
     height: 25px;
     margin-top: 10px;
+    border-bottom: 1px solid #dddddd;
 }
 .user-item > :nth-child(n + 2):nth-child(-n + 4){
     white-space: nowrap;

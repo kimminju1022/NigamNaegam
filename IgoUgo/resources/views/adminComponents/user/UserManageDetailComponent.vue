@@ -67,17 +67,17 @@
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 기간</p>
                             <p class="pd-left">
-                                <input type="radio" name="time" id="three-days" value="1">
+                                <input class="input-style" type="radio" name="time" id="three-days" value="0" v-model="selectedExp">
                                 <label class="label-style" for="three-days">3일</label>
-                                <input type="radio" name="time" id="seven-days" value="2">
+                                <input class="input-style" type="radio" name="time" id="seven-days" value="1" v-model="selectedExp">
                                 <label class="label-style" for="seven-days">1주</label>
-                                <input type="radio" name="time" id="one-month" value="3">
+                                <input class="input-style" type="radio" name="time" id="one-month" value="2" v-model="selectedExp">
                                 <label class="label-style" for="one-month">1달</label>
-                                <input type="radio" name="time" id="one-year" value="4">
+                                <input class="input-style" type="radio" name="time" id="one-year" value="3" v-model="selectedExp">
                                 <label class="label-style" for="one-year">1년</label>
-                                <input type="radio" name="time" id="forever" value="5">
+                                <input class="input-style" type="radio" name="time" id="forever" value="4" v-model="selectedExp">
                                 <label class="label-style" for="forever">영구정지</label>
-                                <button class="btn bg-navy user-control-btn">적용</button>
+                                <button @click="blockBtn" class="btn bg-navy user-control-btn">적용</button>
                             </p>
                         </div>
                         <div class="user-active-info-little-box">
@@ -175,9 +175,9 @@ const userBoardReport = computed(() => store.state.userManage.userBoardReport);
 // 유저 신고 당한 댓글
 const userCommentReport = computed(() => store.state.userManage.userCommentReport);
 
+// 페이지네이션
 const actionNameBoardReport = 'userManage/showBoardReport';
 const actionNameCommentReport = 'userManage/showCommentReport';
-
 const searchDataBoardReport = reactive({
     user_id: route.params.id,
     page: store.state.pagination.adminUserBoardReportCurrentPage,
@@ -199,12 +199,11 @@ onBeforeMount(() => {
     store.dispatch('userManage/showUserControl', findData);
     // store.dispatch('userManage/showBoardReport', findData);
     // store.dispatch('userManage/showCommentReport', findData);
-
     store.dispatch(actionNameBoardReport, searchDataBoardReport);
     store.dispatch(actionNameCommentReport, searchDataCommentReport);
 });
 
-// 수정 
+// 상세정보 수정 
 const userDetailFlg = ref(true);
 
 const user = reactive({
@@ -218,6 +217,52 @@ function updateBtn() {
 function finishBtn() {
     userDetailFlg.value = true;
     store.dispatch('userManage/updateUserDetail', user);
+}
+
+// 제재 기간 적용
+const selectedExp = ref();
+const expires_at = ref();
+
+const control = reactive({
+    user_id: route.params.id,
+    expires_at: expires_at
+});
+
+const addZero = (num) => String(num).padStart(2, '0');
+const setExpDate = (exp) => {
+    const year = exp.getFullYear(); // 년도
+    const month = exp.getMonth() + 1; // 월
+    const date = exp.getDate(); // 날짜
+    const hours = exp.getHours(); // 시
+    const minutes = exp.getMinutes(); // 분
+    const seconds = exp.getSeconds(); // 초
+
+    expires_at.value = year + '-' + addZero(month) + '-' + addZero(date) + ' ' + addZero(hours) + ':' + addZero(minutes) + ':' + addZero(seconds);
+};
+
+function blockBtn() {
+    let newDate = new Date();
+    if(selectedExp.value === '0'){
+        newDate.setDate(newDate.getDate() + 3);
+        setExpDate(newDate);
+        store.dispatch('userManage/updateUserControl', control);
+    } else if (selectedExp.value === '1') {
+        newDate.setDate(newDate.getDate() + 7);
+        setExpDate(newDate);
+        store.dispatch('userManage/updateUserControl', control);
+    } else if (selectedExp.value === '2') {
+        newDate.setMonth(newDate.getMonth() + 1);
+        setExpDate(newDate);
+        store.dispatch('userManage/updateUserControl', control);
+    } else if (selectedExp.value === '3') {
+        newDate.setFullYear(newDate.getFullYear() + 1);
+        setExpDate(newDate);
+        store.dispatch('userManage/updateUserControl', control);
+    } else if (selectedExp.value === '4') {
+        newDate = new Date(9999, 11, 31, 23, 59, 59);
+        setExpDate(newDate);
+        store.dispatch('userManage/updateUserControl', control);
+    }
 }
 </script>
 
@@ -381,7 +426,11 @@ function finishBtn() {
 .pd-left {
     padding-left: 10px;
 }
+.input-style {
+    cursor: pointer;
+}
 .label-style {
-    margin: 0 10px;
+    margin: 0 15px 0 5px;
+    cursor: pointer;
 }
 </style>

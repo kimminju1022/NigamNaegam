@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\CommentReport;
 use App\Models\User;
 use App\Models\UserControl;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,25 +19,30 @@ class UserManageController extends Controller
 {
     // 유저 리스트 출력
     public function showUserList() {
-        // $userList = User::where('manager_flg', '0')
-        //                 ->orderBy('created_at', 'DESC')
-        //                 ->paginate(15);
-
-        $userList = User::leftJoin('user_controls', 'users.user_id', 'user_controls.user_id')
-                        ->where('manager_flg', '0')
-                        ->select(
+        $subquery = DB::table('user_controls as uc1')
+                        ->select('uc1.user_id', 'uc1.expires_at', 'uc1.created_at')
+                        ->whereRaw('uc1.created_at = (
+                            select max(uc2.created_at)
+                            from user_controls as uc2
+                            where uc2.user_id = uc1.user_id
+                        )');
+        $userList = User::select(
                             'users.user_id',
-                            'users.user_flg',
-                            'users.user_out',
                             'users.user_email',
                             'users.user_name',
                             'users.user_nickname',
+                            'users.user_flg',
                             'users.created_at',
-                            'user_controls.expires_at',
+                            'u_control.expires_at',
+                            'u_control.created_at as control_created_at'
                         )
+                        ->leftJoinSub($subquery, 'u_control', function ($join) {
+                            $join->on('users.user_id', 'u_control.user_id');
+                        })
+                        ->where('users.manager_flg', '0')
                         ->orderBy('users.created_at', 'DESC')
                         ->paginate(15);
-
+        
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
@@ -218,5 +224,103 @@ class UserManageController extends Controller
         ];
 
         return response()->json($responseData, 200);
+    }
+
+    // 오늘 유저 현황
+    // 신규 가입
+    public function showUserSignUpCnt() {
+        // $todayDateTime = Carbon::now()->toDateTimeString(); // 오늘 날짜와 시간까지
+        // $todayDate = Carbon::today()->toDateString(); // 오늘 날짜만
+        $start_date = Carbon::today()->startOfDay(); // 오늘 날짜 00:00:00
+        $end_date = Carbon::today()->endOfDay(); // 오늘 날짜 23:59:59
+
+        $today_signup = User::where('manager_flg', '0')
+                            ->whereBetween('created_at', [$start_date, $end_date])
+                            ->count();
+        $responseData = [
+            'success' => true,
+            'msg' => '신규 가입 회원 수 획득 성공',
+            'signupCnt' => $today_signup,
+        ];
+
+        return response()->json($responseData, 200);
+    }
+    // 탈퇴 회원
+    public function showUserDeleteCnt() {
+        $start_date = Carbon::today()->startOfDay(); // 오늘 날짜 00:00:00
+        $end_date = Carbon::today()->endOfDay(); // 오늘 날짜 23:59:59
+
+        $today_delete = User::where('manager_flg', '0')
+                            ->where('user_flg', '1')
+                            ->whereBetween('updated_at', [$start_date, $end_date])
+                            ->count();
+        $responseData = [
+            'success' => true,
+            'msg' => '탈퇴 회원 수 획득 성공',
+            'deleteCnt' => $today_delete,
+        ];
+
+        return response()->json($responseData, 200);
+    }
+    // 강제 탈퇴 회원
+    public function showUserOutCnt() {
+        $start_date = Carbon::today()->startOfDay(); // 오늘 날짜 00:00:00
+        $end_date = Carbon::today()->endOfDay(); // 오늘 날짜 23:59:59
+
+        $today_out = User::where('manager_flg', '0')
+                            ->where('user_out', '1')
+                            ->whereBetween('updated_at', [$start_date, $end_date])
+                            ->count();
+        $responseData = [
+            'success' => true,
+            'msg' => '강퇴 회원 수 획득 성공',
+            'outCnt' => $today_out,
+        ];
+
+        return response()->json($responseData, 200);
+    }
+    // 제재 받은 회원
+    public function showUserControlCnt() {
+        $start_date = Carbon::today()->startOfDay(); // 오늘 날짜 00:00:00
+        $end_date = Carbon::today()->endOfDay(); // 오늘 날짜 23:59:59
+
+        $today_control = UserControl::whereBetween('created_at', [$start_date, $end_date])
+                            ->count();
+        $responseData = [
+            'success' => true,
+            'msg' => '제재 받은 회원 수 획득 성공',
+            'controlCnt' => $today_control,
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 제재 기간 적용
+    public function updateUserControl(Request $request) {
+        try{
+            DB::beginTransaction();
+            $insertData['user_id'] = $request->id;
+            $insertData['expires_at'] = $request->expires_at;
+
+            $userControl = UserControl::create($insertData);
+
+            DB::commit();
+            
+            $responseData = [
+                'success' => true,
+                'msg' => '회원 제재 기간 등록 성공',
+                'userControl' => $userControl->toArray()
+            ];
+            
+            return response()->json($responseData, 200);
+        } catch(Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'msg' => '회원 제재 기간 등록 실패',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+
     }
 }

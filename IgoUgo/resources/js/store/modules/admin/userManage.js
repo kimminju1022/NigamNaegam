@@ -10,6 +10,10 @@ export default {
         userControl: [],
         userBoardReport: [],
         userCommentReport: [],
+        userTodaySignUpCnt: null,
+        userTodayDeleteCnt: null,
+        userTodayOutCnt: null,
+        userTodayControlCnt: null,
     }),
     mutations: {
         setUserList(state, list) {
@@ -32,6 +36,18 @@ export default {
         },
         setUserCommentReport(state, list) {
             state.userCommentReport = list;
+        },
+        setUserTodaySignUpCnt(state, data) {
+            state.userTodaySignUpCnt = data;
+        },
+        setUserTodayDeleteCnt(state, data) {
+            state.userTodayDeleteCnt = data;
+        },
+        setUserTodayOutCnt(state, data) {
+            state.userTodayOutCnt = data;
+        },
+        setUserTodayControlCnt(state, data) {
+            state.userTodayControlCnt = data;
         },
     },
     actions: {
@@ -135,7 +151,6 @@ export default {
 
             axios.post(url, formData, config)
             .then(response => {
-                // context.commit('setUserList', response.data.user);
                 context.commit('setUserDetail', response.data.user);
                 alert('수정 성공');
             })
@@ -185,6 +200,79 @@ export default {
                     return reject();
                 })
             })
+        },
+
+        // 오늘 유저 현황
+        // 신규 회원 수
+        showUserTodaySignUpCnt(context) {
+            const url = '/api/admin/today/signup';
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setUserTodaySignUpCnt', response.data.signupCnt);
+                // console.log(response.data.signupCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
+        // 탈퇴 회원 수
+        showUserTodayDeleteCnt(context) {
+            const url = '/api/admin/today/delete';
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setUserTodayDeleteCnt', response.data.deleteCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
+        // 강퇴 회원 수
+        showUserTodayOutCnt(context) {
+            const url = '/api/admin/today/out';
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setUserTodayOutCnt', response.data.outCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
+        // 제재 받은 회원 수
+        showUserTodayControlCnt(context) {
+            const url = '/api/admin/today/control';
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setUserTodayControlCnt', response.data.controlCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
+
+        // 제재 기간 적용
+        updateUserControl(context, control) {
+            const url = '/api/admin/user/' + control.user_id + '/updatecontrol';
+            const config = {
+                params: control.user_id
+            };
+
+            const formData = new FormData();
+
+            formData.append('expires_at', control.expires_at);
+
+            axios.post(url, control, config)
+            .then(response => {
+                context.commit('setUserDetail', response.data.userControl);
+                alert('적용되었습니다.');
+            })
+            .catch(error => {
+                alert('적용 실패하였습니다.');
+                console.error(error);
+            });
         },
     },
     getters: {

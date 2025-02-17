@@ -129,6 +129,11 @@ Route::get('/admin/user/{id}/controlcnt', [UserManageController::class, 'showUse
 Route::post('/admin/user/{id}/updatedetail', [UserManageController::class, 'updateUserDetail']);
 Route::get('/admin/user/{id}/boardreport', [UserManageController::class, 'showBoardReport']);
 Route::get('/admin/user/{id}/commentreport', [UserManageController::class, 'showCommentReport']);
+Route::get('/admin/today/signup', [UserManageController::class, 'showUserSignUpCnt']);
+Route::get('/admin/today/delete', [UserManageController::class, 'showUserDeleteCnt']);
+Route::get('/admin/today/out', [UserManageController::class, 'showUserOutCnt']);
+Route::get('/admin/today/control', [UserManageController::class, 'showUserControlCnt']);
+Route::post('/admin/user/{id}/updatecontrol', [UserManageController::class, 'updateUserControl']);
 
 // 문의게시판
 Route::get('/admin/question/yet', [QuestionController::class, 'adminQuestionYet']);
