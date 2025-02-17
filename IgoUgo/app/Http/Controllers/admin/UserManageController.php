@@ -108,17 +108,29 @@ class UserManageController extends Controller
         return response()->json($responseData, 200);
     }
 
-    // 유저 제재 이력
+    // 유저 제재 이력 - 누적 횟수
     public function showUserControl(Request $request) {
         $userId = $request->id;
-        $userControlCnt = UserControl::where('user_id', $userId)->count();
-        $userControlExp = UserControl::where('user_id', $userId)->orderBy('created_at', 'DESC')->select('user_id', 'expires_at')->first();
+        $userControlCnt = UserControl::where('user_id', $userId)->withTrashed()->count();
 
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
             'userControlCnt' => $userControlCnt,
-            'userControlExp' => $userControlExp,
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // 유저 제재 이력 - 만료 일자
+    public function showUserControlExp(Request $request) {
+        $userId = $request->id;
+        $userControlExp = UserControl::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
+
+        $responseData = [
+            'success' => true,
+            'msg' => '게시글 획득 성공',
+            'userControlExp' => $userControlExp->toArray(),
         ];
 
         return response()->json($responseData, 200);
@@ -130,23 +142,15 @@ class UserManageController extends Controller
             DB::beginTransaction();
 
             $user = User::find($request->id);
-            // Log::debug($user);
             Log::debug('Request:', $request->all());
             
-            if($user->user_email !== $request->user_email) {
-                // Log::debug($user);
-                $user->user_email = $request->user_email;
-            }
             if($user->user_name !== $request->user_name) {
-                // Log::debug($user);
                 $user->user_name = $request->user_name;
             }
             if($user->user_nickname !== $request->user_nickname) {
-                // Log::debug($user);
                 $user->user_nickname = $request->user_nickname;
             }
             if($user->user_phone !== $request->user_phone) {
-                Log::debug($request->user_phone);
                 $user->user_phone = $request->user_phone;
             }
 
@@ -175,13 +179,18 @@ class UserManageController extends Controller
                                     ->select(
                                         'board_reports.board_id',
                                         'boards.board_title',
+                                        'boards.bc_code',
+                                        'boards.deleted_at',
                                         DB::raw("max(boards.created_at) as latest_created_at"),
                                         DB::raw("count(*) as report_count")
                                     )
                                     ->groupBy(
                                         'board_reports.board_id',
-                                        'boards.board_title'
+                                        'boards.board_title',
+                                        'boards.bc_code',
+                                        'boards.deleted_at'
                                     )
+                                    ->withTrashed()
                                     ->orderBy('latest_created_at', 'DESC')
                                     ->paginate(5);
 
@@ -205,6 +214,7 @@ class UserManageController extends Controller
                                             'comments.user_id',
                                             'comments.comment_content',
                                             'boards.board_id',
+                                            'comments.deleted_at',
                                             DB::raw("max(comments.created_at) as latest_created_at"),
                                             DB::raw("count(*) as report_cnt")
                                         )
@@ -213,7 +223,9 @@ class UserManageController extends Controller
                                             'comments.user_id',
                                             'comments.comment_content',
                                             'boards.board_id',
+                                            'comments.deleted_at'
                                         )
+                                        ->withTrashed()
                                         ->orderBy('latest_created_at', 'DESC')
                                         ->paginate(5);
 
@@ -303,6 +315,12 @@ class UserManageController extends Controller
             $insertData['expires_at'] = $request->expires_at;
 
             $userControl = UserControl::create($insertData);
+
+            if($request->expires_at === '9999-12-31 23:59:59') {
+                $user = User::find($request->id);
+                $user->user_out = '1';
+                $user->save();
+            }
 
             DB::commit();
             

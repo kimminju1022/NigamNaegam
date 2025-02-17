@@ -7,7 +7,8 @@ export default {
         userDetail: {},
         userBoardCnt: [],
         userCommentCnt: null,
-        userControl: [],
+        userControlCnt: null,
+        userControlExp: [],
         userBoardReport: [],
         userCommentReport: [],
         userTodaySignUpCnt: null,
@@ -28,8 +29,11 @@ export default {
         setUserCommentCnt(state, data) {
             state.userCommentCnt = data;
         },
-        setUserControl(state, data) {
-            state.userControl = data;
+        setUserControlCnt(state, data) {
+            state.userControlCnt = data;
+        },
+        setUserControlExp(state, list) {
+            state.userControlExp = list;
         },
         setUserBoardReport(state, list) {
             state.userBoardReport = list;
@@ -119,7 +123,7 @@ export default {
             })
         },
 
-        // 유저 제재 이력
+        // 유저 제재 이력 누적 횟수
         showUserControl(context, findData) {
             const url = '/api/admin/user/' + findData.user_id + '/controlcnt';
             const config = {
@@ -128,7 +132,23 @@ export default {
 
             axios.get(url, config)
             .then(response => {
-                context.commit('setUserControl', response.data);
+                context.commit('setUserControlCnt', response.data.userControlCnt);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        },
+
+        // 유저 제재 이력 만료 일자
+        showUserControlExp(context, findData) {
+            const url = '/api/admin/user/' + findData.user_id + '/controlexp';
+            const config = {
+                params: findData
+            };
+
+            axios.get(url, config)
+            .then(response => {
+                context.commit('setUserControlExp', response.data.userControlExp);
             })
             .catch(error => {
                 console.error(error);
@@ -144,7 +164,6 @@ export default {
 
             const formData = new FormData();
 
-            formData.append('user_email', user.userDetail.user_email);
             formData.append('user_name', user.userDetail.user_name);
             formData.append('user_nickname', user.userDetail.user_nickname);
             formData.append('user_phone', user.userDetail.user_phone);
@@ -266,7 +285,7 @@ export default {
 
             axios.post(url, control, config)
             .then(response => {
-                context.commit('setUserDetail', response.data.userControl);
+                context.commit('setUserControlExp', response.data.userControl);
                 alert('적용되었습니다.');
             })
             .catch(error => {

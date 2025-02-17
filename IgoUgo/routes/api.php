@@ -126,6 +126,7 @@ Route::get('/admin/user/{id}', [UserManageController::class, 'showUserDetail']);
 Route::get('/admin/user/{id}/boardcnt', [UserManageController::class, 'showBoardCnt']);
 Route::get('/admin/user/{id}/commentcnt', [UserManageController::class, 'showCommentCnt']);
 Route::get('/admin/user/{id}/controlcnt', [UserManageController::class, 'showUserControl']);
+Route::get('/admin/user/{id}/controlexp', [UserManageController::class, 'showUserControlExp']);
 Route::post('/admin/user/{id}/updatedetail', [UserManageController::class, 'updateUserDetail']);
 Route::get('/admin/user/{id}/boardreport', [UserManageController::class, 'showBoardReport']);
 Route::get('/admin/user/{id}/commentreport', [UserManageController::class, 'showCommentReport']);

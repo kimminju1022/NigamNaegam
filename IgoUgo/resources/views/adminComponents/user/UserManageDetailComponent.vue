@@ -33,7 +33,7 @@
                             <p>전화번호</p>
                         </div>
                         <div class="user-info-list info-input-style">
-                            <input v-model="userDetail.user_email">
+                            <p>{{ userDetail.user_email }}</p>
                             <input v-model="userDetail.user_name">
                             <input v-model="userDetail.user_nickname">
                             <input v-model="userDetail.user_phone">
@@ -62,7 +62,7 @@
                     <div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 누적 횟수</p>
-                            <p class="pd-left">{{ userControl.userControlCnt }}회</p>
+                            <p class="pd-left">{{ userControlCnt }}회</p>
                         </div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 기간</p>
@@ -82,7 +82,7 @@
                         </div>
                         <div class="user-active-info-little-box">
                             <p class="user-active-info-little-title">제재 만료 일자</p>
-                            <p class="pd-left">{{ userControl.userControlExp?.expires_at }}</p>
+                            <p class="pd-left">{{ userControlExp?.expires_at }}</p>
                         </div>
                     </div>
                 </div>
@@ -98,6 +98,7 @@
                         <p>제목</p>
                         <p>작성일자</p>
                         <p>신고 수</p>
+                        <p>삭제여부</p>
                     </div>
                     <div class="user-detail-list-box" >
                         <div v-for="item in userBoardReport" :key="item" class="user-detail-item">
@@ -105,6 +106,8 @@
                             <p>{{ item.board_title }}</p>
                             <p>{{ item.latest_created_at }}</p>
                             <p>{{ item.report_count }}</p>
+                            <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
+                            <p v-else></p>
                         </div>
                         <!-- 페이지네이션 -->
                         <PaginationComponent
@@ -125,6 +128,7 @@
                         <p>댓글 내용</p>
                         <p>댓글 작성일자</p>
                         <p>신고 수</p>
+                        <p>삭제여부</p>
                     </div>
                     <div class="user-detail-list-box" >
                         <div v-for="item in userCommentReport" :key="item" class="user-detail-item">
@@ -132,6 +136,7 @@
                             <p>{{ item.comment_content }}</p>
                             <p>{{ item.latest_created_at }}</p>
                             <p>{{ item.report_cnt }}</p>
+                            <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
                         </div>
                         <!-- 페이지네이션 -->
                         <PaginationComponent
@@ -166,8 +171,11 @@ const userBoardCnt = computed(() => store.state.userManage.userBoardCnt);
 // 유저가 작성한 댓글 수
 const userCommentCnt = computed(() => store.state.userManage.userCommentCnt);
 
-// 유저 제재 이력 횟수
-const userControl = computed(() => store.state.userManage.userControl);
+// 유저 제재 이력 누적 횟수
+const userControlCnt = computed(() => store.state.userManage.userControlCnt);
+
+// 유저 제재 이력 만료 일자
+const userControlExp = computed(() => store.state.userManage.userControlExp);
 
 // 유저 신고 당한 게시글
 const userBoardReport = computed(() => store.state.userManage.userBoardReport);
@@ -197,6 +205,7 @@ onBeforeMount(() => {
     store.dispatch('userManage/showUserBoardCnt', findData);
     store.dispatch('userManage/showUserCommentCnt', findData);
     store.dispatch('userManage/showUserControl', findData);
+    store.dispatch('userManage/showUserControlExp', findData);
     // store.dispatch('userManage/showBoardReport', findData);
     // store.dispatch('userManage/showCommentReport', findData);
     store.dispatch(actionNameBoardReport, searchDataBoardReport);
@@ -245,22 +254,27 @@ function blockBtn() {
     if(selectedExp.value === '0'){
         newDate.setDate(newDate.getDate() + 3);
         setExpDate(newDate);
+        store.dispatch('userManage/showUserControl', control);
         store.dispatch('userManage/updateUserControl', control);
     } else if (selectedExp.value === '1') {
         newDate.setDate(newDate.getDate() + 7);
         setExpDate(newDate);
+        store.dispatch('userManage/showUserControl', control);
         store.dispatch('userManage/updateUserControl', control);
     } else if (selectedExp.value === '2') {
         newDate.setMonth(newDate.getMonth() + 1);
         setExpDate(newDate);
+        store.dispatch('userManage/showUserControl', control);
         store.dispatch('userManage/updateUserControl', control);
     } else if (selectedExp.value === '3') {
         newDate.setFullYear(newDate.getFullYear() + 1);
         setExpDate(newDate);
+        store.dispatch('userManage/showUserControl', control);
         store.dispatch('userManage/updateUserControl', control);
     } else if (selectedExp.value === '4') {
         newDate = new Date(9999, 11, 31, 23, 59, 59);
         setExpDate(newDate);
+        store.dispatch('userManage/showUserControl', control);
         store.dispatch('userManage/updateUserControl', control);
     }
 }
@@ -399,7 +413,7 @@ function blockBtn() {
 }
 .user-detail-list-title {
     display: grid;
-    grid-template-columns: 1fr 2fr 2.5fr 1fr;
+    grid-template-columns: 1fr 2fr 2.5fr 1fr 1fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     border-bottom: 1px solid #01083a;
@@ -409,7 +423,7 @@ function blockBtn() {
 }
 .user-detail-item{
     display: grid;
-    grid-template-columns: 1fr 2fr 2.5fr 1fr;
+    grid-template-columns: 1fr 2fr 2.5fr 1fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;
@@ -432,5 +446,9 @@ function blockBtn() {
 .label-style {
     margin: 0 15px 0 5px;
     cursor: pointer;
+}
+.check-img-style {
+    width: 20px;
+    height: 20px;
 }
 </style>
