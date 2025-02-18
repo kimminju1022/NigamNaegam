@@ -39,6 +39,7 @@ class BoardController extends Controller
                     )
                     ->select('boards.*', 'users.user_nickname', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
             })
+            ->where('board_title', 'like', "%$request->search%")
             ->where('boards.bc_code', '=', $request->bc_code)
             ->orderBy('boards.created_at', 'desc')
             ->paginate(15);

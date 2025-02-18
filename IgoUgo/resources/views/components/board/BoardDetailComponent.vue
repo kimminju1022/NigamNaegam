@@ -63,7 +63,7 @@
         <div class="board-detail-reply ">
             <p>댓글</p>
             <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요" v-model="commentsInfo.comment_content">
-            <button @click="$store.dispatch('board/storeComment',commentsInfo)" class="btn bg-navy board-detail-btn">작성</button>
+            <button @click="storeComment();" class="btn bg-navy board-detail-btn">작성</button>
             <p style="text-align: end; padding-right: 40px;">총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
         <hr>
@@ -76,16 +76,22 @@
             <div v-for="item in $store.state.board.boardComments" :key="item" class="comments">
                 <p>{{ item.comment_content }}</p>
                 <p>                    
-                    <button class="boardReport_btn" @click="commentReport">🚨</button>
-                    {{ item.user_nickname }}
+                    <button class="boardReport_btn" @click="commentReport(item.comment_id)">🚨</button>
+                    {{ item.user.user_nickname }}
                 </p>
                 <p>{{ item.created_at }}</p>
-                <button v-if="$store.state.auth.userInfo.user_id == item.user_id" class="clear_btn" @click="deleteComments(item.comment_id)">🗑️</button>
+                <button v-if="$store.state.auth.userInfo.user_id == item.user.user_id" class="clear_btn" @click="deleteComments(item.comment_id)">🗑️</button>
             </div>
         </div>
         <div class="pagination-btn">
             <!-- 페이지네이션 -->
-            <PaginationComponent :actionName="actionName" :searchData="searchData" />
+            <PaginationComponent
+                :actionName="actionName"
+                :searchData="searchData"
+                :currentPage="$store.state.pagination.currentPage"
+                :lastPage="$store.state.pagination.lastPage"
+                :viewPageNumber="$store.state.pagination.viewPageNumber"
+            />
         </div>
     </div>
 
@@ -160,7 +166,15 @@ const boardReport= () => {
     }
 }
 
-   // 댓글 삭제
+// ------------------ meerkat Start ------------------
+// 댓글 작성
+const storeComment = () => {
+    store.dispatch('board/storeComment', commentsInfo)
+    .then(() => {
+        commentsInfo.comment_content = '';
+    });
+};
+// 댓글 삭제
 const deleteComments = (id) => {
     const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
     const data = {
@@ -168,20 +182,24 @@ const deleteComments = (id) => {
         board_id: searchData.board_id,
         comment_id: id
     };
-        if(check) {
-            store.dispatch('board/commentsDelete', data);
-        }
-    };
+
+    if(check) {
+        store.dispatch('board/commentsDelete', data);
+    }
+};
     // 댓글 신고
-const commentReport= () => {
+const commentReport= (comment_id) => {
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
     if (userResponse) {
         // 신고적용할 조건필요
         // router.push('/boards/');
-        store.dispatch('board/commentReport', id); 
+        store.dispatch('board/commentReport', comment_id); 
     } else {
     }
 }
+// ------------------ meerkat End ------------------
+
+
 // alert 안내문구---------------------end-----------------
 const actionName = 'board/boardCommentPagination';
 const searchData = reactive({

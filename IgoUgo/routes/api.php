@@ -85,8 +85,10 @@ Route::get('/boards/{id}', [BoardController::class, 'show'])->name('board.show')
 // 검색관련
 Route::get('search', [BoardController::class, 'index'])->name('search.index'); //보드로 해도 되나?
 
+// ------------------ meerkat Start ------------------
 // 코멘트 관련
-Route::get('/comments', [CommentController::class, 'index'])->name('comment.index');
+Route::get('/comments', [CommentController::class, 'boardIndex'])->name('comment.board.index');
+// ------------------ meerkat End ------------------
 
 // 문의 게시판용 라우터
 Route::get('/questions', [QuestionController::class, 'index']);
@@ -204,11 +206,6 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/boards/{id}/report',[BoardController::class, 'report'])->name('board.report'); 
     Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
     
-    // 댓글  관련
-    // Route::post('/comments', [CommentController::class, 'store']);
-    // Route::post('/comments/{id}/report',[CommentController::class, 'report'])->name('comment.report');
-    // Route::delete('/comments/{id}',[CommentController::class, 'destroy'])->name('comment.destroy');
-    
     // 문의게시판 관련
     Route::post('/questions', [QuestionController::class, 'store']);
     Route::get('/questions/{id}/edit', [QuestionController::class, 'edit']);
@@ -219,4 +216,13 @@ Route::middleware('my.auth')->group(function() {
     Route::get('/testers/comments/{id}', [CommentController::class, 'index']);
     Route::post('/testers/comments', [CommentController::class, 'store']);
     Route::delete('/testers/comments/{id}', [CommentController::class, 'destroy']);
+    
+    // ------------------ meerkat Start ------------------
+    // 댓글  관련
+    Route::post('/comments', [CommentController::class, 'boardStore']);
+    Route::post('/comments/{id}/report',[CommentController::class, 'boardCommentReport'])->name('comment.board.report');
+    Route::delete('/comments/{id}',[CommentController::class, 'boardDestroy'])->name('comment.board.destroy');
+    // ------------------ meerkat End ------------------
 });
+// ------------------ meerkat Start ------------------
+// ------------------ meerkat End ------------------

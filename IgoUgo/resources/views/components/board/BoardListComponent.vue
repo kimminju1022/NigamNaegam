@@ -3,7 +3,7 @@
         {{ bcName }} 
     </h2>
     <div class="board-search-tb">
-        <input v-model="search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+        <input v-model="searchData.search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
         <!-- <button @click="$store.dispatch('/search/board')" class="btn bg-navy board-search-btn">검색</button> -->
         <button @click="searchBoardContent" class="btn bg-navy board-search-btn">검색</button>
     </div>
@@ -40,18 +40,7 @@
             <!-- [유저] 리스트 시작 -->
             
             <div  class="board-list" >
-                <div v-if="!searchBoardContentList.length"  class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
-                    <p>{{ item.board_id }}</p>
-                    <p v-if="$store.state.board.bcCode === '0'">{{ item.area_name }}</p>
-                    <!-- <router-link v-if="$store.state.board.bcCode === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcCode === '2', 'grid-5': $store.state.board.bcCode === '1'}">{{ item.board_title }}</router-link> -->
-                    <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
-                    <p>{{ item.user_nickname }}</p>
-                    <p>{{ item.created_at }}</p>
-                    <p>{{ item.like_cnt }}</p>
-                    <p>{{ item.view_cnt }}</p>
-                </div>    
-                <!-- [검색] 검색결과 시작 -->
-                <div v-if="searchBoardContentList.length" v-for="item in searchBoardContentList" :key="item.id">
+                <div class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
                     <p>{{ item.board_id }}</p>
                     <p v-if="$store.state.board.bcCode === '0'">{{ item.area_name }}</p>
                     <!-- <router-link v-if="$store.state.board.bcCode === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcCode === '2', 'grid-5': $store.state.board.bcCode === '1'}">{{ item.board_title }}</router-link> -->
@@ -94,24 +83,12 @@ const gridClass = computed(() => {
     return store.state.board.bcCode === '0' ? 'grid-7' : 'grid-6';
 });
 
-
-/** 키워드 검색 처리  ------------start */
-const search = ref('');
-
-const searchBoardContent = () => {
-    store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
-    store.dispatch('search/searchBoardContent',{search: search.value, page: 1});
-    console.log('search :',search.value);
-    // store.dispatch('searchBoard',{search: search.value, page: 1});
-}
-const searchBoardContentList = computed(() => store.state.search.searchBoardContentList);
-// -------------------------------search_end******
-
 /* 페이지네이션 관련------------start*/
 const actionName = 'board/getBoardListPagination';
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     bc_code: store.state.board.bcCode,
+    search: ''
 });
 watch(
     () => store.state.board.bcCode,
@@ -121,12 +98,26 @@ watch(
 );
 // -------------------------------pagination_end******
 
+
+// --------------------------- meerkat Start ---------------------------
+// 검색 처리
+const searchBoardContent = () => {
+    store.commit('pagination/setPaginationInitialize'); // pagination 초기화    
+    store.dispatch(actionName, searchData);
+}
+
+// 게시판 이동시 검색어 초기화
+watch(() => store.state.board.bcCode, () => {
+    searchData.search = '';
+});
+// --------------------------- meerkat End ---------------------------
+
 // beforemount
 onBeforeMount(async () => {
     // console.log('나온다아아아아앙')
     // 백앤드로 요청 보내는 액션메소드
     // if(boardList.value.length === 0){
-        store.dispatch('board/getBoardListPagination', searchData);
+        store.dispatch(actionName, searchData);
     // }
 });
 

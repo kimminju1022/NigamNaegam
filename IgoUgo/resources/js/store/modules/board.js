@@ -301,65 +301,59 @@ export default {
             });
         },
 
+        // --------------------------- meerkat Start ---------------------------
         // 댓글 ------------------------------------start
         // 댓글 작성
         storeComment({state, rootGetters, commit}, data){
-            const url = '/api/comments';
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            return new Promise(resolve => {
+                const url = '/api/comments';
+                const config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    }
                 }
-            }
-
-            // console.log(data);
-
-            axios.post(url, JSON.stringify(data), config)
-            .then(response => {
-                // commit('setCommentsTotal', state.commentsTotal + 1);
-                // console.log(response.data);
-                // console.log(response.data.board);
-                // console.log(response.data.review);
-                
-                if(state.boardComments.length < 10) {
-                    commit('setPushBoardComment', response.data.comment);
-                } else {
-                    commit('pagination/setPaginationRegulation', rootGetters['pagination/getPlusOneLastPage'], {root: true});
-                }
-            })
-            .catch(error => {
-                console.error(error);
+    
+                // console.log(data);
+    
+                axios.post(url, JSON.stringify(data), config)
+                .then(response => {
+                    // commit('setCommentsTotal', state.commentsTotal + 1);
+                    // console.log(response.data);
+                    // console.log(response.data.board);
+                    // console.log(response.data.review);
+                    
+                    if(state.boardComments.length < 10) {
+                        commit('setPushBoardComment', response.data.comment);
+                    } else {
+                        commit('pagination/setPaginationRegulation', rootGetters['pagination/getPlusOneLastPage'], {root: true});
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+                .finally(() => resolve());
             });
-        },
-        postCommentCreate(context){
-            // const url = '/api/boards/create';
-            const url = '/api/comments';
-            const config = {
-                header: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            }
-
-            axios.get(url, config)
-            .then()
-            .catch();
         },
         /**
          *  댓글 획득
          */
         boardCommentPagination(context, searchData) {
-            const url = '/api/comments';
-            const config = {
-                params: searchData
-            };
+            return new Promise(resolve => {
+                const url = '/api/comments';
+                const config = {
+                    params: searchData
+                };
 
-            axios.get(url, config)
-            .then(response =>{
-                context.commit('setBoardComments', response.data.comments.data);
-                // context.commit('', response.data.comments.total);
-                context.commit('pagination/setPagination', response.data.comments, {root: true});
-            })
-            .catch(error => {
-                console.error(error);
+                axios.get(url, config)
+                .then(response =>{
+                    context.commit('setBoardComments', response.data.comments.data);
+                    // context.commit('', response.data.comments.total);
+                    context.commit('pagination/setPagination', response.data.comments, {root: true});
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+                .finally(() => resolve());
             });
         },
         /**
@@ -374,38 +368,38 @@ export default {
             }
 
             axios.delete(url, config)
-            .then(response => {
-                commit('setRemoveBoardComment', data.comment_id);
-                const prevCurrentPage = data.page - 1;
-                
-                if(prevCurrentPage > 0 && state.boardComments.length < 1) {
-                    dispatch('boardCommentPagination', {board_id: data.board_id, page: prevCurrentPage});
-                }
-                alert('삭제 성공');
-                // commit('setCommentsTotal', state.commentsTotal - 1);
+            .then(response => {                
+                let prevCurrentPage = state.boardComments.length <= 1 ? data.page - 1 : data.page;
+
+                // 댓글 리스트 다시 불러오기
+                dispatch('boardCommentPagination', {board_id: data.board_id, page: prevCurrentPage})
+                .then(() => {
+                    alert('삭제 성공');
+                });
             })
             .catch(error => {
                 console.error(error);
                 alert('삭제 실패');
             });
         },
-
-        commentReport(context) {
-            const url = `/api/comments/${id}/report`; //해당 댓글id
+        commentReport(context, comment_id) {
+            const url = `/api/comments/${comment_id}/report`; //해당 댓글id
             const config = {
-                header:{
+                headers:{
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
-            } //신고자 id수집 및 권한 확인
-            const payload = { comment_id: id }; //전달할 댓글 정보값
-            axios.post(url, payload, config)
-            .then()
-            alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다')
-
+            }
+            axios.post(url, null, config)
+            .then(response => {
+                alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다');
+            })
             .catch(error => {
                 alert('신고가 불가합니다\n관리자에게 직접 문의 바랍니다')
             });
         },
+
+        // --------------------------- meerkat End ---------------------------
+
 
         /** 게시글획득
          *  @param{*} context
