@@ -17,6 +17,7 @@
                     </div>
                 </div>
                 
+                <router-link to="/admin/comment" @click="$store.commit('pagination/setPaginationInitialize')"><p>댓글관리</p></router-link>
                 <router-link to="/admin/tester" @click="$store.commit('pagination/setPaginationInitialize')"><p>체험단</p></router-link>
                 <!-- <router-link to="/admin/recommend"><p>이달의 추천</p></router-link> -->
                 <router-link to="/admin/notice" @click="$store.commit('pagination/setPaginationInitialize')"><p>공지사항</p></router-link>
@@ -99,7 +100,7 @@ const logout = () =>{
 /* 왼쪽 헤더 */
 .admin-header-left {
     display: grid;
-    grid-template-rows: 1.2fr 1.5fr 60px;
+    grid-template-rows: 1.2fr 1.2fr 60px;
     background-color: #01083a;
     height: 100vh;
 }

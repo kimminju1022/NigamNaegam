@@ -81,6 +81,10 @@ import AdminQuestionManageComponent from '../views/adminComponents/question/Ques
 import AdminQuestionManageDetailComponent from '../views/adminComponents/question/QuestionManageDetailComponent.vue';
 import AdminFreeDetailComponent from '../views/adminComponents/board/AdminFreeDetailComponent.vue';
 
+// 댓글 관리
+import AdminCommentMangeComponent from '../views/adminComponents/comment/CommentManageComponent.vue';
+import AdminCommentMangeDetailComponent from '../views/adminComponents/comment/CommentManageDetailComponent.vue';
+
 const chkAuth = (to, from, next) => {
 
     // 유저가 로그인없이 이용가능한 페이지
@@ -251,6 +255,7 @@ const routes = [
         component: AdminQuestionManageDetailComponent,
         beforeEnter: chkAuth,
     },
+    // 관리자 페이지_게시판_상세
     {
         path: '/admin/board/review/:boardid',
         component: AdminBoardDetailComponent,
@@ -259,7 +264,18 @@ const routes = [
     {
         path: '/admin/board/free/:boardid',
         component: AdminFreeDetailComponent,
-        eforeEnter: chkAuth,
+        beforeEnter: chkAuth,
+    },
+    // 관리자 페이지_댓글 관리
+    {
+        path: '/admin/comment',
+        component: AdminCommentMangeComponent,
+        beforeEnter: chkAuth,
+    },
+    {
+        path: '/admin/comment/:commentid',
+        component: AdminCommentMangeDetailComponent,
+        beforeEnter: chkAuth,
     },
 
     // ---------------------------------------------------------------------------------------------

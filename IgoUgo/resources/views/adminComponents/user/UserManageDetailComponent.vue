@@ -101,13 +101,25 @@
                         <p>삭제여부</p>
                     </div>
                     <div class="user-detail-list-box" >
-                        <div v-for="item in userBoardReport" :key="item" class="user-detail-item">
-                            <p>{{ item.board_id }}</p>
-                            <p>{{ item.board_title }}</p>
-                            <p>{{ item.latest_created_at }}</p>
-                            <p>{{ item.report_count }}</p>
-                            <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
-                            <p v-else></p>
+                        <div v-for="item in userBoardReport" :key="item">
+                            <div v-if="item.deleted_at === null">
+                                <router-link :to="`/admin/board/${item.bc_code === '0' ? 'review' : 'free'}/${item.board_id}`" class="user-detail-item">
+                                    <p>{{ item.board_id }}</p>
+                                    <p>{{ item.board_title }}</p>
+                                    <p>{{ item.latest_created_at }}</p>
+                                    <p>{{ item.report_count }}</p>
+                                    <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
+                                    <p v-else></p>
+                                </router-link>
+                            </div>
+                            <div v-else class="user-detail-item">
+                                <p>{{ item.board_id }}</p>
+                                <p>{{ item.board_title }}</p>
+                                <p>{{ item.latest_created_at }}</p>
+                                <p>{{ item.report_count }}</p>
+                                <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
+                                <p v-else></p>
+                            </div>
                         </div>
                         <!-- 페이지네이션 -->
                         <PaginationComponent
@@ -136,7 +148,8 @@
                             <p>{{ item.comment_content }}</p>
                             <p>{{ item.latest_created_at }}</p>
                             <p>{{ item.report_cnt }}</p>
-                            <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
+                            <p v-if="item.comment_deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
+                            <p v-else></p>
                         </div>
                         <!-- 페이지네이션 -->
                         <PaginationComponent
@@ -429,7 +442,7 @@ function blockBtn() {
     height: 30px;
     margin-top: 10px;
 }
-.user-detail-item > :nth-child(n + 2):nth-child(-n + 4) {
+.user-detail-item  p:nth-child(n + 2):nth-child(-n + 4) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

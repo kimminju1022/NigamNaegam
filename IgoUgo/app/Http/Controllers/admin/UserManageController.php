@@ -130,7 +130,7 @@ class UserManageController extends Controller
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
-            'userControlExp' => $userControlExp->toArray(),
+            'userControlExp' => ($userControlExp ? $userControlExp->toArray() : []),
         ];
 
         return response()->json($responseData, 200);
@@ -176,6 +176,7 @@ class UserManageController extends Controller
         $userId = $request->id;
         $boardReport = BoardReport::join('boards', 'board_reports.board_id', 'boards.board_id')
                                     ->where('boards.user_id', $userId)
+                                    ->whereIn('boards.bc_code', ['0', '1'])
                                     ->select(
                                         'board_reports.board_id',
                                         'boards.board_title',
@@ -209,12 +210,14 @@ class UserManageController extends Controller
         $commentReport = CommentReport::join('comments', 'comment_reports.comment_id', 'comments.comment_id')
                                         ->join('boards', 'comments.board_id', 'boards.board_id')
                                         ->where('comments.user_id', $userId)
+                                        ->whereIn('boards.bc_code', ['0', '1'])
                                         ->select(
                                             'comment_reports.comment_id',
                                             'comments.user_id',
                                             'comments.comment_content',
                                             'boards.board_id',
-                                            'comments.deleted_at',
+                                            'boards.deleted_at as board_deleted_at',
+                                            'comments.deleted_at as comment_deleted_at',
                                             DB::raw("max(comments.created_at) as latest_created_at"),
                                             DB::raw("count(*) as report_cnt")
                                         )
@@ -223,7 +226,8 @@ class UserManageController extends Controller
                                             'comments.user_id',
                                             'comments.comment_content',
                                             'boards.board_id',
-                                            'comments.deleted_at'
+                                            'board_deleted_at',
+                                            'comment_deleted_at'
                                         )
                                         ->withTrashed()
                                         ->orderBy('latest_created_at', 'DESC')
