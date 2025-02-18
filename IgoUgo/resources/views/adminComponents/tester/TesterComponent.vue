@@ -117,7 +117,7 @@ onBeforeMount(() => {
 }
 .tester-list-title {
     display: grid;
-    grid-template-columns: 0.5fr 0.5fr 1.5fr 1.5fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
+    grid-template-columns: 0.5fr 0.5fr 1.5fr 1.5fr 0.5fr 0.5fr 1fr 0.7fr 0.5fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     border-bottom: 1px solid #01083a;
@@ -130,7 +130,7 @@ onBeforeMount(() => {
 }
 .tester-item{
     display: grid;
-    grid-template-columns: 0.5fr 0.5fr 1.5fr 1.5fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
+    grid-template-columns: 0.5fr 0.5fr 1.5fr 1.5fr 0.5fr 0.5fr 1fr 0.7fr 0.5fr;
     text-align: center;
     width: 100%;
     height: 30px;

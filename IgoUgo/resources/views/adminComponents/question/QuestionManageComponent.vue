@@ -6,7 +6,7 @@
         </div>
         <div class="que-content-container">
             <div class="que-content-box">
-                <p class="que-content-title">문의 대기</p>
+                <p class="que-content-title que-yet">문의 대기</p>
                 <div>
                     <div class="que-list-title title-first">
                         <p>번호</p>
@@ -36,7 +36,7 @@
                 />
             </div>
             <div class="que-content-box">
-                <p class="que-content-title">문의 완료</p>
+                <p class="que-content-title que-done">문의 완료</p>
                 <div>
                     <div class="que-list-title title-second">
                         <p>번호</p>
@@ -54,7 +54,7 @@
                             <p>{{ item?.question_category?.qc_name }}</p>
                             <router-link :to="`/admin/question/${item.board_id}`">{{ item.board_title }}</router-link>
                             <p>{{ item?.user?.user_nickname }}</p>
-                            <p>{{ item.created_at_timestamps }}</p>
+                            <p>{{ item?.created_at_timestamps }}</p>
                             <p>{{ item?.question?.user?.user_name }}</p>
                             <p>{{ item?.question?.updated_at_timestamps }}</p>
                             <!-- <p>관리자</p>
@@ -142,6 +142,12 @@ onBeforeMount(() => {
     font-size: 20px;
     margin-left: 10px;
 }
+.que-yet {
+    color: red;
+}
+.que-done {
+    color: blue;
+}
 .que-list-title {
     display: grid;
     text-align: center;
@@ -153,7 +159,7 @@ onBeforeMount(() => {
     grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr;
 }
 .title-second {
-    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 2fr;
 }
 .que-list-box {
     padding: 5px;
@@ -169,7 +175,7 @@ onBeforeMount(() => {
     grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr;
 }
 .item-second {
-    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 5fr 1fr 1.5fr 1fr 2fr;
 }
 .item-first > a, .item-second > a {
     width: 90%;

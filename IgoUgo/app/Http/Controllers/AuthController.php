@@ -186,21 +186,12 @@ class AuthController extends Controller
     // 구글 로그인
     public function redirectToProvider($provider){
         return Socialite::driver($provider)->stateless()->redirect(); // 이거만 하면됨
-
-        // // Google 로그인 URL을 반환
-        // $googleRedirectUrl = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
-
-        // // 리디렉션 URL을 클라이언트로 반환
-        // return response()->json(['redirect_url' => $googleRedirectUrl]);
-        
     }
 
     public function handleProviderCallback($provider){
         $socialInfo = Socialite::driver($provider)->stateless()->user();
         
         $userInfo = User::where('user_email', $socialInfo->getEmail())->first();
-
-        // Log::debug('userInfo : ', $userInfo->toArray());
 
         // 유저 없을 경우
         if(!$userInfo) {

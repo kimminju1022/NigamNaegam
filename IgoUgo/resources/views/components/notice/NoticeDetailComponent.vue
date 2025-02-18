@@ -1,6 +1,6 @@
 <template>
     <div class="container" v-if="noticeDetail">
-        <!-- <h1>공지사항</h1> -->
+        <h1><router-link :to="`/notices`">공지사항</router-link></h1>
         <div class="header-btn-box">
             <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
         </div>
@@ -13,13 +13,10 @@
             <div class="board-content-box">
                 <div class="board-content">
                     <div class="board-content-img">
-                        <!-- <div class="img-grid">
-                            <img v-for="(image, index) in noticeDetail.board_images" :key="index" :src="image.board_img">
-                        </div> -->
                         <img :src="noticeDetail.board_images[0]?.board_img" alt="board_img1 무조건 가게정보사진">
                     </div>
                     <div class="content-textarea">
-                        <pre ref="textArea" @keup="resize" readonly>{{ noticeDetail.board_content }}</pre>
+                        <pre ref="textArea" readonly>{{ noticeDetail.board_content }}</pre>
                         <!-- <textarea ref="textArea" @keup="resize" readonly>{{ noticeDetail.board_content }}</textarea> -->
                         <!-- <p>{{ noticeDetail.board_content }}</p> -->
                     </div>
@@ -46,13 +43,6 @@ const boardInfo = reactive({
 onBeforeMount(()=>{
     store.dispatch('notice/noticeDetail', boardInfo);
 });
-
-// const textArea = ref(null);
-
-// const resize = () => {
-//     textArea.value.style.height = "1px";
-//     textArea.value.style.height = textArea.value.scrollHeight + "px";
-// };
 </script>
 <style scoped>
 .container{
@@ -144,12 +134,17 @@ onBeforeMount(()=>{
     max-height: 300px;
 }
 
-.content-textarea > textarea {
+/* .content-textarea > textarea {
     resize: none;
     width: 100%;
-    /* min-height: 300px; */
+    min-height: 300px;
     text-align: center;
-    /* vertical-align: middle; */
+} */
+
+.content-textarea > pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow: auto;
 }
 
 .img-grid {

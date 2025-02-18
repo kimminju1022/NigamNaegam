@@ -104,7 +104,7 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 },
             }
-            // console.log('updateTester data : ',data);
+            console.log('updateTester data : ',data);
 
             const formData = new FormData();
             formData.append('board_title', data.testerDetail.board_title);
@@ -113,7 +113,7 @@ export default {
             formData.append('tester_area', data.testerDetail.tester_management.tester_area);
             formData.append('tester_code', data.testerDetail.tester_management.tester_code);
             formData.append('tester_name', data.testerDetail.tester_management.tester_name);
-            formData.append('due_date', data.testerDetail.tester_management.due_date);
+            formData.append('due_date', data.testerDetail.tester_management.dd);
             formData.append('user_id', data.user_id);
             formData.append('board_id', data.board_id);
 

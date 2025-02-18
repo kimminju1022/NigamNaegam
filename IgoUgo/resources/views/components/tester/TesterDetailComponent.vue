@@ -1,6 +1,6 @@
 <template>
     <div class="container" v-if="testerDetail">
-        <h1>체험단 신청</h1>
+        <h1><router-link :to="`/testers`">체험단 신청</router-link></h1>
         <div class="header-btn-box">
             <router-link :to="`/testers`"><button class="btn bg-navy header-btn">목록</button></router-link>
         </div>
@@ -16,7 +16,7 @@
                         <!-- <div class="img-grid">
                             <img v-for="(image, index) in testerDetail.board_images" :key="index" :src="image.board_img">
                         </div>  -->
-                        <img :src="testerDetail.board_images[0]?.board_img" alt="board_img1 무조건 가게정보사진">
+                        <img :src="testerDetail.board_images[0]?.board_img">
                     </div>
                     <div class="content-textarea">
                         <!-- <textarea ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</textarea> -->
@@ -218,11 +218,12 @@ const deleteComment = (id) => {
 
 .board-content-img > img {
     margin: 0 auto;
-    max-width: 500px;
-    max-height: 500px;
+    /* max-width: 500px; */
+    min-width: 500px;
+    max-height: 700px;
 }
 
-.img-grid {
+/* .img-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     place-items: center;
@@ -231,7 +232,7 @@ const deleteComment = (id) => {
 .img-grid > img {
     max-width: 185px;
     max-height: 185px;
-}
+} */
 
 /* 댓글 */
 

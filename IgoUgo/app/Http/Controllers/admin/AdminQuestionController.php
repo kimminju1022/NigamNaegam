@@ -34,18 +34,21 @@ class AdminQuestionController extends Controller
 
     // 메인페이지 답변완료 리스트
     public function adminQuestionDone() {
-        $questionList = Board::select(DB::raw("*, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
+        $questionList = Board::select(DB::raw("*, DATE_FORMAT(boards.created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
+                                ->join('questions', 'boards.board_id', '=', 'questions.board_id')
                                 ->with(['question' => function ($query) {
                                     $query->select(DB::raw("*, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at_timestamps"))
-                                            ->with('user');
-                                    $query->where('que_status', '1');
+                                            ->with('user')
+                                            ->where('que_status', '1')
+                                            ->orderBy('updated_at','DESC');
                                 }, 'user', 'question_category'])
                                 ->whereHas('question', function ($query) {
                                     $query->where('que_status', '1');
                                 })
                                 ->where('bc_code', '2')
                                 ->where('board_flg', '0')
-                                // ->orderBy('created_at','DESC')
+                                ->orderBy('questions.updated_at', 'desc')
+                                // ->orderBy('updated_at','DESC')
                                 ->paginate(5);
 
         $responseData = [

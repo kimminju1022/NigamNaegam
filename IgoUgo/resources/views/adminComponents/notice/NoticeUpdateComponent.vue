@@ -56,14 +56,14 @@ const notice = reactive({
 });
 
 const previews = ref([]);
-const maxFiles = 5;
+const maxFiles = 1;
 
 const setFile = (e) => {
     const arrayFiles = Array.from(e.target.files);
     const totalFiles = notice.board_img.length + arrayFiles.length + notice.noticeDetail.board_images.length;
 
     // 5MB 이하 파일만 허용
-    if(!arrayFiles.every(file => file.size <= 5 * 1024 * 1024)) {
+    if(!arrayFiles.every(file => file.size <= 1 * 1024 * 1024)) {
         alert(`파일 크기 5MB이하만 추가할 수 있습니다.`);
     // } else if (emptyFilesSpace < 0) {
     } else if (totalFiles > maxFiles) {

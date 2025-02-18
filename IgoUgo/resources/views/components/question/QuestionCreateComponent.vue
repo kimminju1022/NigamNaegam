@@ -9,11 +9,11 @@
             <div class="board-box-flex">
                 <div class="board-title-box board-title">
                     <p>제목</p>
-                    <input v-model="question.board_title" type="text" name="board_title">
+                    <input v-model="question.board_title" type="text" name="board_title" required>
                 </div>
                 <div class="board-title-box board-title-category">
                     <p>카테고리 선택</p>
-                    <select v-model="question.qc_code" name="category" id="category" class="question_category">
+                    <select v-model="question.qc_code" name="category" id="category" class="question_category" required>
                         <option value="0">로그인</option>
                         <option value="1">회원가입</option>
                         <option value="2">게시판</option>
@@ -40,7 +40,7 @@
             </div>
             <div class="board-content">
                 <p>내용</p>
-                <textarea v-model="question.board_content" name="board_content"></textarea>
+                <textarea v-model="question.board_content" name="board_content" required></textarea>
             </div>
         </div>
     </div>

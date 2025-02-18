@@ -31,55 +31,6 @@
                 <router-link :to="`/user/${$store.state.auth.userInfo.user_id}/edit`"><button class="btn bg-navy">수정</button></router-link>
             </div>
         </div>
-        <!-- <div v-if="isMobileView">
-            <div class="question-box">
-                <h3>나의 문의 내역</h3>
-                <div class="question-content-box">
-                    <div class="question-title">
-                        <p>상태</p>
-                        <p>제목</p>
-                        <p>작성일자</p>
-                    </div>
-                    <hr>
-                    <div class="question-content">
-                        <p>대기</p>
-                        <a href="">대표가 정말 뽀빠이인가요?</a>
-                        <p>24 / 12 / 05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>대기</p>
-                        <a href="">깁스는 언제 풀 수 있을까요?</a>
-                        <p>24 / 12 / 05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>완료</p>
-                        <a href="">충격파 치료가 그렇게 아픈가요?</a>
-                        <p>24 / 12 / 05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>완료</p>
-                        <a href="">여백의 미가 진정한 미인가요?</a>
-                        <p>24 / 12 / 05</p>
-                    </div>
-                    <div class="question-content">
-                        <p>완료</p>
-                        <a href="">세븐밸리 살려내라</a>
-                        <p>24 / 12 / 05</p>
-                    </div>
-                </div>
-            </div>
-            <div class="pagination">
-                <a href="#"><button class="btn bg-clear"><</button></a>
-                <a href="#"><button class="btn bg-clear">1</button></a>
-                <a href="#"><button class="btn bg-clear">2</button></a>
-                <a href="#"><button class="btn bg-clear">3</button></a>
-                <a href="#"><button class="btn bg-clear">4</button></a>
-                <a href="#"><button class="btn bg-clear">5</button></a>
-                <a href="#"><button class="btn bg-clear">></button></a>
-            </div>
-        </div> -->
-        <!-- <div v-else> -->
-
         <div class="my-question">
             <div class="question-box">
                 <h3>내가 쓴 게시글</h3>
@@ -98,15 +49,13 @@
                         <p>작성일자</p>
                     </div>
                     <div v-for="item in userReview" :key="item" class="board-content">
-                        <p>{{ item.board_id }}</p>
-                        <!-- <p>{{ item.review.rc_code }}</p> -->
-                        <!-- 이거 이름으로 들고오는 방법 생각해보기 -->
-                        <p v-if="item.product.contenttypeid === '12'">관광지</p>
-                        <p v-else-if="item.product.contenttypeid === '14'">문화시설</p>
-                        <p v-else-if="item.product.contenttypeid === '28'">레포츠</p>
-                        <p v-else-if="item.product.contenttypeid === '32'">호텔</p>
-                        <p v-else-if="item.product.contenttypeid === '38'">쇼핑</p>
-                        <p v-else="item.product.contenttypeid === '39'">음식점</p>
+                        <p>{{ item?.board_id }}</p>
+                        <p v-if="item?.product?.contenttypeid === '12'">관광지</p>
+                        <p v-else-if="item?.product?.contenttypeid === '14'">문화시설</p>
+                        <p v-else-if="item?.product?.contenttypeid === '28'">레포츠</p>
+                        <p v-else-if="item?.product?.contenttypeid === '32'">호텔</p>
+                        <p v-else-if="item?.product?.contenttypeid === '38'">쇼핑</p>
+                        <p v-else="item?.product?.contenttypeid === '39'">음식점</p>
                         <p></p>
                         <router-link :to="`/boards/${item.board_id}`">{{ item.board_title }}</router-link>
                         <p>{{ item.likes_count }}</p>

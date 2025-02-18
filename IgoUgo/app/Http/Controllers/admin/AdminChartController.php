@@ -48,25 +48,6 @@ class AdminChartController extends Controller
         ];
         return response()->json($responseData, 200);
     }
-
-    // // 한 달 가입회원 수
-    // public function showMonthlySignUp() {
-    //     Log::debug('함수 실행');
-    //     $date_start = Carbon::today()->startOfMonth()->toDateString();
-    //     $date_end = Carbon::today()->endOfMonth()->toDateString();
-
-    //     Log::debug($date_start);
-
-    //     $monthly_user = User::whereBetween('created_at', [$date_start, $date_end])
-    //                         ->count();
-
-    //     $responseData = [
-    //         'success' => true
-    //         ,'msg' =>'한 달 가입회원 수 획득 성공'
-    //         ,'data' => $monthly_user
-    //     ];
-    //     return response()->json($responseData, 200);
-    // }
     
     // 일일 탈퇴회원 수
     public function showDailyDeletedAccount() {

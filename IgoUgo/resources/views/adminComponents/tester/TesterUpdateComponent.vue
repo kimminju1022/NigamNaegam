@@ -42,7 +42,7 @@
                 </div>
                 <div class="place-conent-time">
                     <p>모집 기한</p>
-                    <input v-model="tester.testerDetail.tester_management.due_date" type="date" name="due_date">
+                    <input v-model="tester.testerDetail.tester_management.dd" type="date" name="due_date">
                     <!-- <input v-model="formattedDueDate" type="date" name="due_date"> -->
                 </div>
             </div>
@@ -146,14 +146,14 @@ watch(() => store.state.adminTester.boardDetail, (newBoardDetail) => {
 });
 
 const previews = ref([]);
-const maxFiles = 5;
+const maxFiles = 1;
 
 const setFile = (e) => {
     const arrayFiles = Array.from(e.target.files);
     const totalFiles = tester.board_img.length + arrayFiles.length + tester.testerDetail.board_images.length;
 
     // 5MB 이하 파일만 허용
-    if(!arrayFiles.every(file => file.size <= 5 * 1024 * 1024)) {
+    if(!arrayFiles.every(file => file.size <= 1 * 1024 * 1024)) {
         alert(`파일 크기 5MB이하만 추가할 수 있습니다.`);
     // } else if (emptyFilesSpace < 0) {
     } else if (totalFiles > maxFiles) {

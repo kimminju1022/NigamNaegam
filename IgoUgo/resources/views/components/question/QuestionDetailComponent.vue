@@ -1,6 +1,6 @@
 <template>
     <div class="container" v-if="questionDetail">
-        <h1>문의게시판</h1>
+        <h1><router-link :to="`/questions`">문의게시판</router-link></h1>
         <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
             <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
             <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link>
@@ -76,7 +76,6 @@ const store = useStore();
 const route = useRoute();
 
 const questionDetail = computed(() => store.state.question.questionDetail);
-// console.log(questionDetail);
 
 const boardInfo = reactive({
     board_id: route.params.id,

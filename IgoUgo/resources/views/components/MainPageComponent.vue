@@ -201,7 +201,7 @@
             </div>
         </div>
 
-        <!-- <div class="divisverysad">
+        <div class="divisverysad">
             <div class="announcement">
                 <div class="announcement-sidebar">
                     <div>
@@ -226,16 +226,16 @@
                     <div>
                         <div class="announcement-title">
                             <p>공지사항</p>
-                            <button class="btn bg-clear" style="font-size: 30px;">+</button>
+                            <router-link to="/notices"><button class="btn bg-clear" style="font-size: 30px;">+</button></router-link>
                         </div>
                         <hr class="hr-style">
                     </div>
                     <div>
-                        <div class="announcement-list"> 
-                            <p>안녕하세요 반갑습니다.</p>
-                            <p class="announcement-date">2024-12-17</p>
+                        <div v-for="item in noticeTopList" class="announcement-list"> 
+                            <router-link :to="`/notices/${item.board_id}`">{{ item.board_title }}</router-link>
+                            <p class="announcement-date">{{ item.created_at }}</p>
                         </div>
-                        <div class="announcement-list"> 
+                        <!-- <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
                             <p class="announcement-date">2024-12-17</p>
                         </div>
@@ -250,11 +250,11 @@
                         <div class="announcement-list"> 
                             <p>안녕하세요 반갑습니다.</p> 
                             <p class="announcement-date">2024-12-17</p>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -277,6 +277,8 @@ const store = useStore();
 const boardReview = computed(() => store.state.board.boardReview);
 const boardFree = computed(() => store.state.board.boardFree);
 const productRandom = computed(() => store.state.product.productRandom);
+const actionNameNotice = 'notice/noticeTopList';
+const noticeTopList = computed(() => store.state.notice.noticeTopList);
 
 // Register Swiper modules
 const modules = [Pagination, Navigation, Scrollbar, Autoplay];
@@ -293,6 +295,7 @@ onBeforeMount(() => {
     store.dispatch('product/takeProductRandom');
     // console.log('1Review', boardReview.value);
     // console.log('test', store.state.board.boardReview);
+    store.dispatch(actionNameNotice);
 });
 window.addEventListener('resize', flgSetup);
 </script>

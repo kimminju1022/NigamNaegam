@@ -286,8 +286,7 @@
         <footer>
             <div class="footer-inner">
                 <div class="footer-menu">
-                    <router-link to="">공지사항</router-link>
-                    <router-link to="">FAQ</router-link>
+                    <router-link to="/notices">공지사항</router-link>
                     <router-link to="/questions">문의게시판</router-link>
                 </div>
                 <div class="footer-line"></div>
@@ -300,22 +299,18 @@
                             <p>(주)  절어서 한국속으로</p>
                         </div>
                         <div class="footer-text">
-                            <!-- <p>(주)  절어서 한국속으로</p> -->
                             <p>팀원 : 김민주</p>
                             <p>얘들아 그만하고 제발 좀 자~</p>
                         </div>
                         <div class="footer-text">
-                            <!-- <p>(주)  절어서 한국속으로</p> -->
                             <p>팀원 : 김지민</p>
                             <p>이게 왜 되지? 이게 왜 안 되지?</p>
                         </div>
                         <div class="footer-text">
-                            <!-- <p>(주)  절어서 한국속으로</p> -->
                             <p>팀원 : 윤종승</p>
                             <p>(이마 탁!) 앗!</p>
                         </div>
                         <div class="footer-text">
-                            <!-- <p>(주)  절어서 한국속으로</p> -->
                             <p>팀원 : 이경진</p>
                             <p>어?!아까 됐는데 왜 또 안되지?</p>
                         </div>
@@ -326,11 +321,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="footer-bottom">
-                <div class="copy-right">
-                    <p>COPYRIGHT ⓒ 2024 IgoUgo All rights reserved</p>
-                </div>
-            </div> -->
         </footer>
     </div>
 
@@ -362,37 +352,8 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
-const user = computed(()=> store.state.auth.userInfo);
 const router = useRouter();
-const route = useRoute();
-
-// import { ref, onMounted, onBeforeUnmount } from 'vue';
-
-// // 창 크기 여부
-// const isHambuger = ref(window.innerWidth <= 900);  // 600 이하일 때 햄버거 메뉴 표시
-// // 메뉴 상태 
-// const isMenuOpen = ref(false);
-
-// // 창 크기 변화 감지
-// const handleResize = () => {
-//     isHambuger.value = window.innerWidth <= 900;  // 창 크기 변화에 따라 햄버거 버튼 상태 변경
-// };
-
-// onMounted(() => {
-//     isHambuger.value = window.innerWidth <= 900;
-//   // 창 크기 변화 이벤트 리스너 등록
-//     window.addEventListener('resize', handleResize);
-// });
-
-// onBeforeUnmount(() => {
-//   // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
-//     window.removeEventListener('resize', handleResize);
-// });
-
-// // 메뉴 열기/닫기
-// const toggleMenu = () => {
-//     isMenuOpen.value = !isMenuOpen.value;
-// };
+const user = computed(()=> store.state.auth.userInfo);
 
 const flg = ref('0');
 
@@ -525,9 +486,7 @@ header {
     background-color: #fff;
     position: sticky;
     top: 0;
-    /* z-index: 1; */
     margin: 0 auto;
-    /* max-width: 1300px; */
     max-width: 1920px;
     gap: 15px;
 }
@@ -542,7 +501,6 @@ header {
 }
 
 .header-title > :first-child {
-    /* justify-self: center; */
     margin-left: 15%;
 }
 
@@ -558,13 +516,8 @@ header {
     border-radius: 50px;
     width: 50px;
     height: 50px;
-    /* border: 2px solid #01083A; */
     border: 2px solid #01083a18;
 }
-
-/* .header-list > :last-child {
-    margin-left: auto;
-} */
 
 .header-logo-img {
     width: 90px;
@@ -576,7 +529,6 @@ header {
 }
 
 .header-title-img {
-    /* width: 450px; */
     width: 250px;
 }
 
@@ -622,7 +574,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* margin: 0 8px; */
     gap: 20px;
     margin-bottom: 20px;
 }
@@ -648,10 +599,6 @@ header {
 
 .header-list-hover a:before
 , .header-list-hover a:after {
-/* .header-list-hover a:before
-, .header-list-hover a:after
-, .header-list-hover p:before
-, .header-list-hover p:after { */
     content: "";
     transition: 0.3s all ease;
     -webkit-backface-visibility: hidden;

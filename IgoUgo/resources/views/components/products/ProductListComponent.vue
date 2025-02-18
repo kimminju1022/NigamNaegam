@@ -48,9 +48,10 @@
                 </div>
             </div>
 
-            <LoadingComponent v-if="loading" />
+            <!-- <LoadingComponent v-if="loading" /> -->
 
-            <div v-else>
+            <!-- <div v-else> -->
+            <div>
                 <!-- <div v-else-if="error">{{ error }}</div> -->
                 <div class="card-list">
                     <div v-for="item in products" :key="item">
