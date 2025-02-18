@@ -41,6 +41,7 @@ class BoardReportController extends Controller
                                 'boards.created_at',
                                 'boards.board_flg',
                             )
+                            ->orderBy('boards.created_at', 'DESC')
                             ->paginate(17);
                             
         $responseData = [
@@ -67,6 +68,7 @@ class BoardReportController extends Controller
                                     'boards.created_at',
                                     'boards.board_title',
                                     'boards.board_content',
+                                    'boards.board_flg',
                                     DB::raw('count(board_reports.board_id) as report_count'),
                                 )
                                 ->leftJoin('users', 'boards.user_id', "=", "users.user_id") // 유저 연결
@@ -81,7 +83,8 @@ class BoardReportController extends Controller
                                     'users.user_nickname',
                                     'boards.created_at',
                                     'boards.board_title',
-                                    'boards.board_content'
+                                    'boards.board_content',
+                                    'boards.board_flg'
                                 )
                                 ->get();
         // Log::debug('test');

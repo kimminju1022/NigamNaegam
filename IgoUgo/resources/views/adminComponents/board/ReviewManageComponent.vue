@@ -13,12 +13,13 @@
                 <p>닉네임</p>
                 <p>이름</p>
                 <p>작성일자</p>
+                <p>삭제여부</p>
             </div>
             <div class="review-list-box" >
                 <div v-for="item in postList" :key="item" class="review-item">
                     <p v-if="item.report_count > 0">{{ item.report_count }}</p>
                     <p v-else>0</p>
-                    <p>{{ item.board_id }}</p>
+                    <p :class="{ 'deleted-class': item.board_flg === '1' }">{{ item.board_id }}</p>
                     <p v-if="item.contenttypeid === '12'">관광지</p>
                     <p v-else-if="item.contenttypeid === '14'">문화시설</p>
                     <p v-else-if="item.contenttypeid === '28'">레포츠</p>
@@ -29,6 +30,8 @@
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.user_name }}</p>
                     <p>{{ item.created_at }}</p>
+                    <p v-if="item.board_flg === '0'"></p>
+                    <p v-if="item.board_flg === '1'"><img class="check-img-style" src="/img_admin/check.png"></p>
                 </div>
                 <div class = "review-post-List">
                     <PaginationComponent
@@ -96,7 +99,7 @@ onBeforeMount(async() => {
 }
 .review-list-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr 1.5fr 1fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     font-size: 18px;
@@ -107,7 +110,7 @@ onBeforeMount(async() => {
 }
 .review-item{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr 1.5fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;
@@ -122,5 +125,14 @@ onBeforeMount(async() => {
 .review-post-List {
     text-align: center;
     margin-top: 20px;
+}
+.deleted-class {
+    opacity: 20%;
+}
+
+/* 기타 */
+.check-img-style {
+    width: 20px;
+    height: 20px;
 }
 </style>

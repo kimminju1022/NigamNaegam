@@ -21,6 +21,7 @@ import adminQuestion from './modules/admin/adminQuestion';
 import adminBoard from './modules/admin/adminBoard';
 import adminTester from './modules/admin/adminTester';
 import adminNotice from './modules/admin/adminNotice';
+import adminComment from './modules/admin/adminComment';
 
 export default createStore({
     modules: {
@@ -43,6 +44,7 @@ export default createStore({
         chart,
         adminQuestion,
         adminBoard,
+        adminComment,
         adminTester,
         adminNotice,
     }

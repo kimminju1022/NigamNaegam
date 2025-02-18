@@ -1,13 +1,15 @@
 <template>
 <div class="main-btn">
-    <button @click="deletePost()" class="main-btn-size">삭제</button>
+    <button v-if="postDetail[0].board_flg === '0'" @click="deletePost()" class="main-btn-size">삭제</button>
+    <p v-if="postDetail[0].board_flg === '1'">이미 삭제된 게시글입니다.</p>
+    <!-- <button @click="deletePost()" class="main-btn-size">삭제</button> -->
     <router-link :to="'/admin/board/review'" >
         <button class="main-btn-size">취소</button>
     </router-link>
 </div>
 <div class="main-table-background-color">
     <p class="main-table-name">리뷰게시판</p>
-    <p v-if="postDetail" class="main-table-report">신고 : {{ postDetail[0].report_count }}</p>
+    <!-- <p v-if="postDetail" class="main-table-report">신고 : {{ postDetail[0].report_count }}회</p> -->
     <div v-if="postDetail" class="main-table">
         <div class="adminboard-table">
             <div class="adminboard-column">번호</div>
@@ -17,6 +19,7 @@
                     <p>카테고리 : 호텔 </p>
                     <p>작성자 : {{ postDetail[0].user_nickname }}</p>
                     <p>작성일자 : {{ postDetail[0].created_at }}</p>
+                    <p>신고 : {{ postDetail[0].report_count }}회</p>
                 </div>
             </div>
         </div>
@@ -39,7 +42,7 @@
 
 import { computed, onBeforeMount, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex/dist/vuex.cjs.js';
+import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
@@ -68,6 +71,7 @@ function deletePost() {
 .main-btn {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 .main-btn-size {
     height: 50px;
@@ -82,8 +86,9 @@ function deletePost() {
 
 /* 테이블쪽 */
 .main-table-name {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 900;
+    margin-bottom: 20px;
 }
 .main-table-report {
     font-size: 18px;

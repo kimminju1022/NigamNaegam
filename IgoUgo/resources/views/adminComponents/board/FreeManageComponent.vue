@@ -12,6 +12,7 @@
                 <p>닉네임</p>
                 <p>이름</p>
                 <p>작성일자</p>
+                <p>삭제여부</p>
             </div>
             <div class="free-list-box" >
                 <div v-for="item in postList" :key=item class="free-item">
@@ -22,6 +23,8 @@
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.user_name }}</p>
                     <p>{{ item.created_at }}</p>
+                    <p v-if="item.board_flg === '0'"></p>
+                    <p v-if="item.board_flg === '1'"><img class="check-img-style" src="/img_admin/check.png"></p>
                 </div>
                 <div class="free-post-List">
                     <PaginationComponent
@@ -91,7 +94,7 @@ onBeforeMount(async() => {
 }
 .free-list-title {
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr 1fr;
     text-align: center;
     padding: 0 5px 10px 5px;
     font-size: 18px;
@@ -102,7 +105,7 @@ onBeforeMount(async() => {
 }
 .free-item{
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 5fr 1fr 1fr 1.5fr 1fr;
     text-align: center;
     width: 100%;
     height: 30px;
@@ -120,5 +123,11 @@ onBeforeMount(async() => {
 }
 .deleted-class {
     opacity: 20%;
+}
+
+/* 기타 */
+.check-img-style {
+    width: 20px;
+    height: 20px;
 }
 </style>

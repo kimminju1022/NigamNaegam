@@ -8,6 +8,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\admin\BoardReportController;
 use App\Http\Controllers\admin\AdminNoticeController;
 use App\Http\Controllers\admin\AdminQuestionController;
+use App\Http\Controllers\admin\CommentReportController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CommentController;
@@ -164,6 +165,11 @@ Route::post('/admin/notice', [AdminNoticeController::class, 'store']);
 Route::get('/admin/notice/{id}/edit', [AdminNoticeController::class, 'edit']);
 Route::post('/admin/notice/{id}', [AdminNoticeController::class, 'update']);
 Route::delete('/admin/notice/{id}', [AdminNoticeController::class, 'destroy']);
+
+// 댓글 관리
+Route::get('/admin/comment', [CommentReportController::class, 'showCommentList']);
+Route::get('/admin/comment/{commentid}', [CommentReportController::class, 'showCommentDetail']);
+Route::delete('/admin/comment/destroy/{commentid}', [CommentReportController::class, 'destroyComment']);
 
 // 인증 관련 ---------------------------------------------------------------------------------------
 // 인증필요 라우트 그룹
