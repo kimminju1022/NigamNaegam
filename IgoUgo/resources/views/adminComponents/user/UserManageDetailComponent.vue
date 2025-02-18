@@ -108,8 +108,7 @@
                                     <p>{{ item.board_title }}</p>
                                     <p>{{ item.latest_created_at }}</p>
                                     <p>{{ item.report_count }}</p>
-                                    <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
-                                    <p v-else></p>
+                                    <p></p>
                                 </router-link>
                             </div>
                             <div v-else class="user-detail-item">
@@ -117,8 +116,7 @@
                                 <p>{{ item.board_title }}</p>
                                 <p>{{ item.latest_created_at }}</p>
                                 <p>{{ item.report_count }}</p>
-                                <p v-if="item.deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
-                                <p v-else></p>
+                                <p><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
                             </div>
                         </div>
                         <!-- 페이지네이션 -->
@@ -143,14 +141,33 @@
                         <p>삭제여부</p>
                     </div>
                     <div class="user-detail-list-box" >
-                        <div v-for="item in userCommentReport" :key="item" class="user-detail-item">
+                        <div v-for="item in userCommentReport" :key="item">
+                            <div v-if="item.comment_deleted_at === null">
+                                <router-link :to="`/admin/comment/${item.comment_id}`" class="user-detail-item">
+                                    <p>{{ item.board_id }}</p>
+                                    <p>{{ item.comment_content }}</p>
+                                    <p>{{ item.latest_created_at }}</p>
+                                    <p>{{ item.report_cnt }}</p>
+                                    <p></p>
+                                </router-link>
+                            </div>
+                            <div v-else class="user-detail-item">
+                                <p>{{ item.board_id }}</p>
+                                <p>{{ item.comment_content }}</p>
+                                <p>{{ item.latest_created_at }}</p>
+                                <p>{{ item.report_cnt }}</p>
+                                <p><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
+                            </div>
+                        </div>
+
+                        <!-- <div v-for="item in userCommentReport" :key="item" class="user-detail-item">
                             <p>{{ item.board_id }}</p>
                             <p>{{ item.comment_content }}</p>
                             <p>{{ item.latest_created_at }}</p>
                             <p>{{ item.report_cnt }}</p>
                             <p v-if="item.comment_deleted_at"><img class="check-img-style" src="/img_admin/check.png" alt=""></p>
                             <p v-else></p>
-                        </div>
+                        </div> -->
                         <!-- 페이지네이션 -->
                         <PaginationComponent
                             :actionName="actionNameCommentReport"
