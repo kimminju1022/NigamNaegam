@@ -230,7 +230,7 @@ function getCurrentLocation() {
 
                 resolve();
             },
-            (error) => {
+            () => {
                 // 위치 정보 가져오기 실패 시
                 // console.log('위치 정보를 가져오는 데 실패');
 
@@ -241,10 +241,10 @@ function getCurrentLocation() {
                 // console.error(error);
                 
                 isLocationAvailable.value = false; // 위치 정보 사용 불가
-                reject();
+                // reject();
+                resolve();
                 
-            }
-            );
+            } );
         } else {
             console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
             reject();
