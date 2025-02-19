@@ -280,7 +280,8 @@ watch(() => store.state.search.searchKeyword, newKeyword => {
 }
 
 .search-box > p span {
-    color: red;
+    /* color: red; */
+    color: #0000ff;
     font-weight: 600;
 }
 

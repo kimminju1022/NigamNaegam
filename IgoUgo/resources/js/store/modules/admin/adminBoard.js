@@ -55,7 +55,7 @@ export default {
                 axios.get(url, config)
                 .then(response => {
                     // console.log(response.data)
-                    context.commit('setPostDetail', response.data.userBoardCnt);
+                    context.commit('setPostDetail', response.data.boardPostDetail);
                     return resolve();
                 }).catch(error => {
                     console.log('오류오류', error);

@@ -204,7 +204,7 @@
         <div class="divisverysad">
             <div class="announcement">
                 <div class="announcement-sidebar">
-                    <div>
+                    <div class="announcement-text">
                         <p>내 감! 니 감? 의 소식을<br>확인해보세요</p>
                     </div>
                     <div class="announcement-info">
@@ -515,7 +515,7 @@ a, a:visited {
 .swiper-pagination {
     color: #01083a;
     margin-bottom: 65px;
-    margin-left: 1093px;
+    margin-left: 1095px;
     width: 105px;
 }
 /* 스크롤 */
@@ -602,9 +602,9 @@ a, a:visited {
     /* display: flex;
     flex-direction: column; */
     display: grid;
-    grid-template-rows: 0fr 1fr 1fr;
+    grid-template-rows: 0fr 1fr 0.5fr;
     gap: 20px;
-    margin-top: 50px;
+    margin: 50px 0;
 }
 
 .main-popular-review {
@@ -769,6 +769,7 @@ a, a:visited {
 .announcement-info-qna {
     font-size: 20px;
     padding: 10px 0;
+    font-weight: 600;
 }
 
 /* 공지사항 */
@@ -814,6 +815,10 @@ hr {
 
 .announcement-date {
     text-align: end;
+}
+
+.announcement-text {
+    font-weight: 600;
 }
 
 /* ---------- 반응형 ---------- */

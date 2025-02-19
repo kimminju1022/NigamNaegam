@@ -738,7 +738,8 @@ const clearMarkers = () => {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         column-gap: 15px;
         row-gap: 40px;
-        margin-top: 40px;
+        /* margin-top: 40px; */
+        margin: 40px 0;
     }
     .card {
         height: 250px;
@@ -774,6 +775,7 @@ const clearMarkers = () => {
         object-fit: cover;
         background-repeat: no-repeat;
         border-radius: 5px 5px 0px 0px;
+        border-bottom: 1px solid #e9e9e9;
     }
     
     /* 폰트 관련 */

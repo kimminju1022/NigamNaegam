@@ -91,7 +91,7 @@ class BoardReportController extends Controller
         $responseData = [
             'success' => true,
             'msg' => '게시글 획득 성공',
-            'userBoardCnt' => $boardPostDetail->toArray()
+            'boardPostDetail' => $boardPostDetail->toArray()
         ];     
 
         // Log::debug('BoardPostDetail Query:', $boardPostDetail->toArray());

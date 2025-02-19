@@ -771,6 +771,7 @@ const clearMarkers = () => {
     }
     .near-by-btn-disabled {
         opacity: 0.5;
+        pointer-events: none;
     }
     
     /* 정렬 순서 관련 */
@@ -808,7 +809,8 @@ const clearMarkers = () => {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         column-gap: 15px;
         row-gap: 40px;
-        margin-top: 40px;
+        /* margin-top: 40px; */
+        margin: 40px 0;
     }
     .card {
         height: 250px;
