@@ -1,10 +1,10 @@
 <template>
 <div class="main-btn">
-    <button v-if="postDetail[0].board_flg === '0'" @click="deletePost()" class="main-btn-size">삭제</button>
-    <p v-if="postDetail[0].board_flg === '1'">이미 삭제된 게시글입니다.</p>
+    <button v-if="postDetail && postDetail[0]?.board_flg === '0'" @click="deletePost()" class="btn bg-navy main-btn-size">삭제</button>
+    <p v-if="postDetail && postDetail[0]?.board_flg === '1'">이미 삭제된 게시글입니다.</p>
     <!-- <button @click="deletePost()" class="main-btn-size">삭제</button> -->
     <router-link :to="'/admin/board/review'" >
-        <button class="main-btn-size">취소</button>
+        <button class="btn bg-navy main-btn-size">취소</button>
     </router-link>
 </div>
 <div class="main-table-background-color">
@@ -74,14 +74,26 @@ function deletePost() {
     align-items: center;
 }
 .main-btn-size {
-    height: 50px;
+    /* height: 50px;
     width: 100px;
     background-color: transparent;
     border: none;
     font-size: 30px;
     font-weight: 900;
     margin-bottom: 10px;
-    cursor: pointer;
+    cursor: pointer; */
+    width: 70px;
+    height: 45px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+.main-btn-size:hover {
+    color: #01083a;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px #01083a inset;
 }
 
 /* 테이블쪽 */

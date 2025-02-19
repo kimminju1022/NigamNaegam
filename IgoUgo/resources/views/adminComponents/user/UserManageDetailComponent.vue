@@ -1,8 +1,13 @@
 <template>
     <div class="user-detail-container">
-        <div>
-            <p class="user-detail-title">회원정보</p>
-            <hr class="hr-style">
+        <div class="header-flex">
+            <div>
+                <p class="user-detail-title">회원정보</p>
+                <hr class="hr-style">
+            </div>
+            <!-- <div class="header-btn"> -->
+                <router-link to="/admin/user"><button class="btn bg-navy btn-list">목록</button></router-link>
+            <!-- </div> -->
         </div>
         <div class="user-detail-content-container">
             <div class="user-detail-box box1">
@@ -328,7 +333,7 @@ function blockBtn() {
 
 /* hr 스타일 */
 .hr-style {
-    /* width: 500px; */
+    width: 500px;
     margin-top: 5px;
 }
 
@@ -464,6 +469,24 @@ function blockBtn() {
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 10px;
+}
+
+/* 헤더 */
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+}
+.btn-list {
+    width: 70px;
+    height: 45px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 20px;
+}
+.btn-list:hover {
+    color: #01083a;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px #01083a inset;
 }
 
 /* 기타 스타일 */
