@@ -20,15 +20,13 @@ export default {
         userReviewList: [],
         userFreeList: [],
         likesCount:'',
+        likeImgPath: '', // add meerkat
     }),
     mutations: {
         // 스테이트의 변수를 변경하기 위한 함수를 정의하는 영역
         setBoardDetail(state, data){
             // console.log('Board Detail State:', data); // 데이터 확인
             state.boardDetail = data;
-        },
-        setBoardDelete(state, id) {
-            state.boardDetail = state.boardDetail.filter(item => item.board_id !== id);
         },
         setBoardComments(state, data) {
             state.boardComments = data;
@@ -73,10 +71,18 @@ export default {
         setPushBoardComment(state, data) {
             state.boardComments.push(data);
         },
-        // setLikesCount(state,likeFlg){
-        //     state.likeFlg = state.boardDetail.
-        // },
-
+        // ----------------- meerkat Start -----------------
+        setLikeImgPath(state, flg){
+            state.likeImgPath = flg ? '/images/heart.png' : '/images/bbungheart.png';
+        },
+        setCalculateLikeCount(state, flg) {
+            if(flg) {
+                state.boardDetail.likes_count++;
+            } else {
+                state.boardDetail.likes_count--;
+            }
+        },
+        // ----------------- meerkat End -----------------
     },
     actions: {
         /** 게시글획득
@@ -108,21 +114,29 @@ export default {
                 });
             });
         },
-        showBoardDetail(context, id) {
-            const url = '/api/boards/'+ id;
+        showBoardDetail(context, obj) {
+            const url = '/api/boards/'+ obj.id;
+
+            // ----------------- meerkat Start -----------------
+            const config = obj.authFlg ? {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            } : {};
+            // ----------------- meerkat End -----------------
             
-            axios.get(url)
+            axios.get(url, config)
             .then(response => {
-                console.log(response.data); 
+                console.log(response.data.likeFlg);
                 context.commit('setBoardDetail', response.data.board);
                 context.commit('setBcName', response.data.bcName);
                 context.commit('setRcName', response.data.rcName);
                 context.commit('setAreaName', response.data.areaName);
                 context.commit('setProductTitle',response.data.productTitle);
-                console.log(response.data.board);
+                context.commit('setLikeImgPath', response.data.likeFlg); // add meerkat
             })
             .catch(error => {
-                // console.error(error.response.data);
+                console.error(error);
             });
         },
         
@@ -248,8 +262,7 @@ export default {
 
             axios.delete(url, config)
             .then(response => {
-                commit('setBoardDelete',data.board_id)
-                alert('삭제 성공');
+
             })
             .catch(error => {
                 console.error(error);
@@ -258,17 +271,17 @@ export default {
         },
 
         /**게시글 신고 */
-        boardReport(context) {
-            const url = `/api/board/${id}/report`;
+        boardReport(context, id) {
+            const url = `/api/boards/${id}/report`;
             const config = {
-                header:{
+                headers :{
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
-            axios.get(url)
-            .then()
-            alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다')
-
+            axios.post(url, null, config)
+            .then(response => {
+                alert('신고가 접수되었습니다\n관리자 검증 후 조치하도록 하겠습니다');
+            })
             .catch(error => {
                 alert('신고가 불가합니다\n관리자에게 직접 문의 바랍니다')
             });
@@ -302,6 +315,28 @@ export default {
         },
 
         // --------------------------- meerkat Start ---------------------------
+        // 좋아요
+        likeProcess(context, id) {
+            return new Promise(resolve => {
+                const url = `/api/boards/like/${id}`;
+                const config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    }
+                };
+
+                axios.put(url, null, config)
+                .then(response => {
+                    context.commit('setLikeImgPath', response.data.likeFlg);
+                    context.commit('setCalculateLikeCount', response.data.likeFlg);
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+                .finally(() => resolve());
+            });
+        },
+
         // 댓글 ------------------------------------start
         // 댓글 작성
         storeComment({state, rootGetters, commit}, data){
@@ -311,7 +346,7 @@ export default {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                     }
-                }
+                };
     
                 // console.log(data);
     

@@ -21,7 +21,6 @@ class BoardReport extends Model
     protected $fillable = [
         'user_id',
         'board_id',
-        'comment_id'
     ];
 
     /**

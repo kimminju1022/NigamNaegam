@@ -78,7 +78,6 @@ class CommentController extends Controller
         $responseData = [
             'success' => true
             ,'msg' => ''
-            ,'data' => null
         ];
 
         $userId = MyToken::getValueInPayload($request->bearerToken(), 'idt');
@@ -97,7 +96,6 @@ class CommentController extends Controller
                 $report->comment_id = $id;
                 $report->user_id = $userId;
                 $report->save();
-                $responseData['data'] = $report->toArray();
             }
 
             DB::commit();

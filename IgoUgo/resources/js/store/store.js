@@ -13,6 +13,7 @@ import search from './modules/search';
 import tester from './modules/tester';
 import comment from './modules/comment';
 import notice from './modules/notice';
+import productSearch from './modules/productSearch'; // add meerkat
 
 // 관리자
 import userManage from './modules/admin/userManage'
@@ -39,6 +40,7 @@ export default createStore({
         tester,
         notice,
         comment,
+        productSearch, // add meerkat
         // 관리자
         userManage,
         chart,

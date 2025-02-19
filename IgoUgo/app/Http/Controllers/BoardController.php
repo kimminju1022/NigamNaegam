@@ -6,6 +6,8 @@ use App\Http\Requests\BoardRequest;
 use App\Models\Board;
 use App\Models\BoardCategory;
 use App\Models\BoardImage;
+use App\Models\BoardReport;
+use App\Models\Like;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -65,9 +67,11 @@ class BoardController extends Controller
         return response()->json($responseData, 200);
     }
         
+    // ---------------------- meerkat Start ----------------------
     // 게시글 획득_상세
-    public function show($id) {
+    public function show(Request $request, $id) {
         $board_target = Board::find($id);
+ 
 
         // 게시글 ID에 대한 조회 시간 확인
         if (!isset($viewedBoards[$id])) {
@@ -86,7 +90,7 @@ class BoardController extends Controller
                             ->join('products', 'products.product_id', '=', 'reviews.product_id')
                             ->join('review_categories','products.contenttypeid', '=', 'review_categories.rc_code')
                             ->join('areas', 'areas.area_code', '=', 'products.area_code')
-                            ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.title');     //3rd
+                            ->addSelect('areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.title');     //3rd
                             /**2nd code
                              * ->join('review_categories', 'review_categories.bc_code', '=', 'reviews.bc_code')
                              * ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.bc_code', 'reviews.area_code');
@@ -98,6 +102,13 @@ class BoardController extends Controller
                     ->where('boards.board_id', '=', $id)
                     ->first();
 
+        // 좋아요 여부 
+        $likeFlg = false;
+        if($request->bearerToken()) {
+            $idt =  MyToken::getValueInPayload($request->bearerToken(), 'idt');
+            $likeFlg = Like::where('board_id', $board->board_id)->where('user_id', $idt)->where('like_flg', '1')->exists();
+        }
+
         $responseData = [
             'success' => true
             ,'msg' =>'게시글획득성공'
@@ -107,9 +118,38 @@ class BoardController extends Controller
             ,'productId' => $bc_code === '0' ? $board->productId : ''
             // ,'likeCount' => $board->likes_count
             ,'board' => $board->toArray()
+            ,'likeFlg' => $likeFlg
         ];
+
         return response()->json($responseData, 200);
     }
+
+    // 좋아요
+    public function like(Request $request, $id) {
+        $idt =  MyToken::getValueInPayload($request->bearerToken(), 'idt');
+        
+        $like = Like::where('board_id', $id)->where('user_id', $idt)->first();
+        if($like) {
+            $like->like_flg = $like->like_flg === '0' ? '1' : '0';
+        } else {
+            $like = new Like();
+            $like->board_id = $id;
+            $like->user_id = $idt;
+            $like->like_flg = '0';
+        }
+
+        $like->save();
+
+        $responseData = [
+            'success' => true
+            ,'msg' =>'좋아요 변경 성공'
+            ,'likeFlg' => $like->like_flg === '0' ? false : true
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    // ---------------------- meerkat End ----------------------
 
     // 게시글 작성
     public function store(BoardRequest $request) {
@@ -279,8 +319,7 @@ class BoardController extends Controller
         return response()->json($responseData, 200);
     }
 
-    // 게시글 수정 시 리뷰테이블 삭제 --------------------------!!!!!!!!!!!!
-
+    // ------------------- meerkat Start -------------------
     // 게시글 삭제
     public function destroy($id) {
         $board = Board::destroy($id);
@@ -294,16 +333,44 @@ class BoardController extends Controller
     }
 
     // 게시글 신고
-    public function report($id){
-        $board = Board::report($id);
-        
+    public function report(Request $request, $id){
+        // responseData 초기화
         $responseData = [
             'success' => true
-            ,'msg' => '게시글 신고 성공'
+            ,'msg' => ''
         ];
 
+        $idt = MyToken::getValueInPayload($request->bearerToken(), 'idt');
+
+        // 신고 정보 저장
+        try {
+            DB::beginTransaction();
+
+            // 중복 신고 방지 체크
+            $existingReport = BoardReport::where('board_id', $id)
+                ->where('user_id', $idt)
+                ->exists();
+            
+            if(!$existingReport) {
+                $report = new BoardReport();
+                $report->board_id = $id;
+                $report->user_id = $idt;
+                $report->save();
+            }
+
+            DB::commit();
+            $responseData['success'] = true;
+            $responseData['msg'] = '신고가 접수되었습니다.';
+        } catch(Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        // 성공 응답
         return response()->json($responseData, 200);
     }
+    // ------------------- meerkat Start -------------------
+
     // 게시글 좋아요
     // public function likeFlg($userId,$likes){
     //     $like = Board::where('user_id', $userId)

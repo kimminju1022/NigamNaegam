@@ -88,7 +88,7 @@ const actionName = 'board/getBoardListPagination';
 const searchData = reactive({
     page: store.state.pagination.currentPage,
     bc_code: store.state.board.bcCode,
-    search: ''
+    search: '',
 });
 watch(
     () => store.state.board.bcCode,

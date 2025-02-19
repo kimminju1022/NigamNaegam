@@ -9,12 +9,12 @@
         <!-- 버튼영역 -->
         
         <div class="board-detailItem-btn"> 
-            <!-- <router-link :to="`/boards/${boardDetail.board_id}/edit`"><button class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button></router-link> -->
+            <!-- <router-link :to="`/boards/${boardDetail.board_id}/edit`"><button class="btn bg-navy board-detail-btn" @click="editConfirm(boardDetail.board_id)">수정</button></router-link> -->
             <!--<button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="detailConfirm(boardDetail.board_id)">수정</button>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="editConfirm(boardDetail.board_id)">수정</button>
             <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-clear board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
 
         </div>
@@ -28,10 +28,14 @@
         <!-- <p v-if="boardDetail.bc_code === '0'">{{ $store.state.board.productTitle }}</p> -->
         <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
-        <button class="loveIt_btn" @click="boardLikeEvent"><img style="height: 20px;" src="/images/bbungheart.png">   : </button>
+        <button class="loveIt_btn" @click="likeProccess(boardDetail.board_id)">
+            <img style="height: 20px;" :src="$store.state.board.likeImgPath">
+            :
+            <span>{{ boardDetail.likes_count }}</span>
+        </button>
         <!-- <p> {{ loveIt[0] }}</p> -->
         <!-- <p>조회 : {{ absolve[]++ }}</p> -->
-        <button class="boardReport_btn" @click="boardReport">🚨 신고 </button>
+        <button class="boardReport_btn" @click="boardReport(boardDetail.board_id)">🚨 신고 </button>
     </div>
     
     <!-- 등록이미지 -->
@@ -116,18 +120,9 @@ const commentsInfo =  reactive({
     ,board_id: route.params.id
 });
 
-
-// 좋아요 on off기능------------------start-----------------
-// const btn = document.getElementById("like")
-//     btn.addEventListener('click',function(){
-//             btn.classList.toggle('active')
-//     })
-
-// 좋아요 on off기능--------------------end-----------------
-
 // alert 안내문구---------------------start-----------------
     // 게시물수정
-const detailConfirm = () => {
+const editConfirm = () => {
     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
     if (userResponse) {
         router.push(`/boards/${route.params.id}/update`);
@@ -139,14 +134,14 @@ const deleteConfirm = () => {
     
     if (userResponse) {
         store.dispatch('board/boardDelete', route.params.id)
-            .then(() => {
-                alert('게시글 삭제 성공');
-                router.push('/boards/');
-            })
-            .catch(error => {
-                alert('삭제 중 오류 발생');
-                console.error(error);
-            });
+        .then(() => {
+            alert('게시글 삭제 성공');
+            router.replace('/boards');
+        })
+        .catch(error => {
+            alert('삭제 중 오류 발생');
+            console.error(error);
+        });
     }
 };
     /*2차
@@ -156,13 +151,12 @@ const deleteConfirm = () => {
     }  */
 
     // 신고
-const boardReport= () => {
+const boardReport= (id) => {
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
     if (userResponse) {
         // 신고적용할 조건필요
         // router.push('/boards/');
         store.dispatch('board/boardReport', id); 
-    } else {
     }
 }
 
@@ -197,6 +191,19 @@ const commentReport= (comment_id) => {
     } else {
     }
 }
+
+// 좋아요 관련
+let debouncingLikeFlg = false;
+const likeProccess = (id) => {
+    if(!debouncingLikeFlg) {
+        debouncingLikeFlg = true;
+        store.dispatch('board/likeProcess', id)
+        .then(() => {
+            debouncingLikeFlg = false;
+        });
+    }
+}
+
 // ------------------ meerkat End ------------------
 
 
@@ -239,8 +246,8 @@ const gridDetail = computed(() => {
 
 // 비포마운트처리
 onBeforeMount(()=>{
-    store.dispatch('board/showBoardDetail', route.params.id);
-    store.dispatch(actionName, searchData);
+    store.dispatch('board/showBoardDetail', {id: route.params.id, authFlg: store.state.auth.authFlg}); // 디테일
+    store.dispatch(actionName, searchData); // 코멘트 페이지네이션
 });
 
 </script>

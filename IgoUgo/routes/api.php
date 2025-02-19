@@ -198,13 +198,13 @@ Route::middleware('my.auth')->group(function() {
     Route::get('/user/review/{id}', [BoardController::class, 'showMyReview']);
     Route::get('/user/free/{id}', [BoardController::class, 'showMyFree']);
 
-
     // 게시판 관련
     Route::post('/boards',[BoardController::class, 'store']);
     Route::get('/boards/{id}/edit',[BoardController::class, 'edit'])->name('board.edit');
     Route::post('/boards/{id}',[BoardController::class, 'update'])->name('board.update');
     Route::post('/boards/{id}/report',[BoardController::class, 'report'])->name('board.report'); 
     Route::delete('/boards/{id}',[BoardController::class, 'destroy'])->name('board.destroy');
+    Route::put('/boards/like/{id}', [BoardController::class, 'like'])->name('board.like');
     
     // 문의게시판 관련
     Route::post('/questions', [QuestionController::class, 'store']);

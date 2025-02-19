@@ -17,83 +17,9 @@
                     <!-- <div v-for="searchItem in searchKeyword" class="board-category"> -->
                     <div class="board_category">
                         <div class="search-box">
-                            <!-- <input type="search" @input="inputText = $event.target.value"> -->
-                            <input class="search-bar" type="text" placeholder="검색 버튼으로 리뷰할 곳을 검색해 주세요">
-                            <button @click="modalOpen = true" class="btn bg-navy header-bg-btn">검색</button>
-                            <!-- ⭐ 검색 모달 -->
-                            <div class="modal_search" v-show="modalSearch">
-                                <div class="modal_container">
-                                    <div class="modal_searchBar">
-                                        <input v-model="search" class="search-bar" type="text" placeholder="어디를 다녀 오셨나요?">
-                                        <button @click="searchProducts" class="btn bg-clear search_btn">검색</button>
-                                    </div>
-                                    <div class="product_resultContent">
-                                        <!-- <h3>검색 결과 {{ $store.state.search.searchProducts.length }}개</h3> -->
-                                        <div class="searchResult_head">
-                                            <p>지역</p>
-                                            <p>상품명</p>
-                                            <p>주소</p>
-                                        </div>
-                                        <div class="searchResult_content" v-for="item in searchReseults" :key="item">
-                                            <p v-if="item.area !== null">{{ item.areas.area_name }}</p>
-                                            <p v-if="item.area !== null">{{ item.products.title }}</p>
-                                            <p v-if="item.area !== null">{{ item.products.addr1 }}</p>
-                                        </div>
-                                        <div class="pagination-btn">
-                                            <!-- 페이지네이션 -->
-                                            <PaginationComponent :actionName="actionName" :searchData="searchData" />
-                                        </div>
-                                    </div>
-                                    <div class="modal_searchBtn">
-                                        <button @click="modalClose">❌취소</button>
-                                        <button>✔️선택</button>
-                                    </div>
-                                </div>
-                            </div>
+                            <button @click="modalSearchFlg = true" class="btn bg-navy header-bg-btn">검색</button>
                         </div>
-                                
-                                <!-- <button @click="createSearch" class="btn bg-navy header-bg-btn">검색</button> -->
-                            <!-- <input v-model="keyword" class="board-search" type="text" placeholder="검색어를 입력해 주세요"> -->
-                            <!-- <input class="board-search" action="" type="text" placeholder="검색어를 입력해 주세요"> -->
-                            <!-- <button @click="keywordSearch" class="btn bg-navy board-search-btn">검색</button> -->
-                <!-- 20250131 2차코드수정 -->
-                <!-- <div class="board-category">
-                    <p>리뷰</p>
-                    <select v-model="boardInfo.rc_code" name="rc_code">
-                        <option disabled hidden selected>--유형선택--</option>                            
-                        <option value="1">숙박</option>
-                        <option value="0">맛집</option>
-                        <option value="2">관광</option>
-                        <option value="3">문화</option>
-                        <option value="4">레포츠</option>
-                        <option value="5">쇼핑</option>
-                    </select>
-                </div>
-                <div class="board-category">
-                    <p>지역</p>
-                    <select v-model="boardInfo.area_code" name="area_code">
-                        <option disabled hidden selected>--지역선택--</option>
-                        <option value="0">서울</option>
-                        <option value="2">인천</option>
-                        <option value="3">대전</option>
-                        <option value="4">대구</option>
-                        <option value="5">광주</option>
-                        <option value="6">부산</option>
-                        <option value="7">울산</option>
-                        <option value="8">세종</option>
-                        <option value="31">경기</option>
-                        <option value="32">강원</option>
-                        <option value="33">충북</option>
-                        <option value="34">충남</option>
-                        <option value="35">경북</option>
-                        <option value="36">경남</option>
-                        <option value="37">전북</option>
-                        <option value="38">전남</option>
-                        <option value="39">제주</option>
-                    </select>
-                </div> -->
-                
-                <!-- 별점 -->
+                        <!-- 별점 -->
                         <div class="board-starGrade board-category">
                             <p>별점</p>
                             <div class="star-grade">
@@ -124,18 +50,12 @@
                 <p>파일 첨부</p>
                 <div class="board-img-content">
                     <input class="file-btn" @change="setFile" type="file" multiple accept="image/*" name="uploadFile">
-                        <!-- <input @change="setFile" type="file" name="board_images[]" multiple accept="image/*"> -->
                     <div :class="gridDetail"> 
                         <div class="img-preview" v-for="(previewImage, index) in previews" :key="index">
                             <!-- <p>{{ gridDetail }}</p> -->
                             <img :src="previewImage" alt="Uploaded Image"> 
                             <button @click="clearFile(index)" class="btn bg-clear">X</button> 
                         </div>
-                        <!-- <input @change="setFile2" type="file" name="board_img2" accept="image/*"> -->
-                        <!-- <div class="img-preview">
-                            <img :src="preview2">
-                            <button @click="clearFile2" v-show="preview2" class="btn bg-clear">X</button>
-                        </div> -->
                     </div>  
                 </div>
             </div>
@@ -149,22 +69,39 @@
             <button @click="$store.dispatch('board/storeBoard', boardInfo)" class="btn bg-navy success-btn">완료</button>
         </div>
     </div>
-
-
-
+    
+    <!-- ------------------------ meerkat Start ------------------------ -->
+    <!-- ⭐ 검색 모달 -->
+    <div class="modal_search" v-show="modalSearchFlg">
+        <div class="modal_container">
+            <div class="modal_searchBar">
+                <input v-model="searchKeyword" class="search-bar" type="text" placeholder="어디를 다녀 오셨나요?">
+                <button @click="searchProducts" class="btn bg-clear search_btn">검색</button>
+            </div>
+            <div class="product_resultContent">
+                <div class="searchResult_head">
+                    <p>지역</p>
+                    <p>상품명</p>
+                    <p>주소</p>
+                </div>
+                <div class="searchResult_content" v-for="item in $store.state.productSearch.searchData" :key="item">
+                    <p>대ㅑ구</p>
+                    <p>으아아아</p>
+                    <p>우주시</p>
+                </div>
+            </div>
+            <div class="modal_searchBtn">
+                <button @click="modalSearchFlg = false;">❌취소</button>
+                <button>✔️선택</button>
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------ meerkat End ------------------------ -->
 </template>
 
 <script setup>
 import { reactive, ref, computed} from 'vue';
 import { useStore } from 'vuex';
-// export default {
-//     name: "boardSearchComponent",
-//     data() {
-//         return {
-//             inputText: '',
-//         }
-//     }
-// }
 
 const store = useStore();
 
@@ -176,34 +113,9 @@ const boardInfo = reactive({
     ,area_code: ''
     ,rc_code: ''
     ,rate: ''
+    ,product_id: 0
 });
 
-// 게시판 타입 값 가져오기
-const bcCode = computed(() => store.bc_code); 
-const searchResults = computed(() => {
-    return this.$store.state.searchProduct;
-})
-
-//검색관련[상품->호텔,즐길거리]----start**
-const search = ref('');
-const modalSearch = ref(false);
-const modalOpen = () => {
-    modalSearch.value = true;
-};
-// const modalOpen = () => {
-//     modalSearch.value = true;
-// }
-const modalClose = () => {
-    modalSearch.value = false;
-}
-
-const searchReseults = (()=> {
-    store.commit('pagination/setPaginationInitialize');
-    console.log('search :',search.value);
-    store.dispatch('search/searchProduct', {search: search.value, page: 1});
-})
-
-// 검색관련 -----------------------end**
 
 
 // img관련 ----------------------start *****
@@ -244,6 +156,16 @@ const clearFile = (index) => {
     boardInfo.board_img.splice(index, 1); // 파일 제거
     previews.value.splice(index, 1); // 미리보기 제거
 };
+
+// --------------------- meerkat Start ---------------------
+//검색 관련
+const modalSearchFlg = ref(false);
+const searchKeyword = ref('');
+const searchProducts = () => {
+
+};
+
+// --------------------- meerkat End ---------------------
 
 </script>
 
