@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <!-- <LoadingComponent v-if="loading" /> -->
+            <LoadingComponent v-if="loading" />
 
             <!-- <div v-else> -->
             <div>
@@ -182,13 +182,13 @@ function getCurrentLocation() {
                 return resolve();
             },
             (error) => {
-                console.log('위치 정보를 가져오는 데 실패');
+                // console.log('위치 정보를 가져오는 데 실패');
                 if (error.code === 1) {
                     // 사용자가 위치 정보를 거절한 경우
-                    console.log('위치 정보 사용을 거부했습니다.');
+                    // console.log('위치 정보 사용을 거부했습니다.');
                 } else if (error.code === 2) {
                     // 위치 정보를 얻을 수 없는 경우 (예: GPS를 찾을 수 없음)
-                    console.log('위치 정보를 찾을 수 없습니다.');
+                    // console.log('위치 정보를 찾을 수 없습니다.');
                 } else {
                     // 그 외의 오류 처리
                     console.log('알 수 없는 오류');
@@ -197,7 +197,7 @@ function getCurrentLocation() {
                 store.commit('product/setProductSort', 'createdtime');
                 store.dispatch(actionName, searchData);
 
-                console.error(error);
+                // console.error(error);
                 
                 isLocationAvailable.value = false; // 위치 정보 사용 불가
                 return resolve();
