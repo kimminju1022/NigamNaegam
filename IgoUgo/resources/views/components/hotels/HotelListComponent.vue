@@ -232,13 +232,13 @@ function getCurrentLocation() {
             },
             (error) => {
                 // 위치 정보 가져오기 실패 시
-                console.log('위치 정보를 가져오는 데 실패');
+                // console.log('위치 정보를 가져오는 데 실패');
 
                 searchData.sort = 'createdtime';
                 store.commit('hotel/setHotelSort', 'createdtime');
                 store.dispatch('hotel/getHotelsPagination', searchData);
 
-                console.error(error);
+                // console.error(error);
                 
                 isLocationAvailable.value = false; // 위치 정보 사용 불가
                 reject();

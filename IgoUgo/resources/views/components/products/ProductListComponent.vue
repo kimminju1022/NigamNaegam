@@ -152,6 +152,8 @@ const searchData = reactive({
 });
 
 function sortData(sortType) {
+    // if (!isLocationAvailable.value) return
+
     if(sortType === searchData.sort) {
         searchData.sort = 'createdtime';
         store.commit('product/setProductSort', 'createdtime');
@@ -180,9 +182,17 @@ function getCurrentLocation() {
                 return resolve();
             },
             (error) => {
-                // 위치 정보 가져오기 실패 시
                 console.log('위치 정보를 가져오는 데 실패');
-
+                if (error.code === 1) {
+                    // 사용자가 위치 정보를 거절한 경우
+                    console.log('위치 정보 사용을 거부했습니다.');
+                } else if (error.code === 2) {
+                    // 위치 정보를 얻을 수 없는 경우 (예: GPS를 찾을 수 없음)
+                    console.log('위치 정보를 찾을 수 없습니다.');
+                } else {
+                    // 그 외의 오류 처리
+                    console.log('알 수 없는 오류');
+                }
                 searchData.sort = 'createdtime';
                 store.commit('product/setProductSort', 'createdtime');
                 store.dispatch(actionName, searchData);
@@ -190,28 +200,35 @@ function getCurrentLocation() {
                 console.error(error);
                 
                 isLocationAvailable.value = false; // 위치 정보 사용 불가
-                return reject();
+                return resolve();
             }
             );
         } else {
             console.log('이 브라우저는 지오로케이션을 지원하지 않음.');
+            isLocationAvailable.value = false; // 위치 정보 사용 불가
             return reject();
         }
     }); 
 };
 
 watch(
-    () => route.params.contenttypeid,
+    () => route.params.contenttypeid, // 라우터 파라미터의 변화 감지
     (newId) => {
+        if (!newId) return;  // newId가 없으면 실행하지 않음
+
+        // console.log('contentTypeId변경');
+
+        // 필요한 작업 수행
         store.dispatch('product/resetProductAreaCode');
         searchData.contentTypeId = parseInt(newId);
-        productTitle.value = productIdList[newId];
+        productTitle.value = productIdList[newId] || '기본 제목';
         searchData.area_code = [];
         searchData.page = 1;
         store.dispatch(actionName, searchData);
-        findProduct.content_type_id = newId;
-    }
+    },
+    { immediate: true } // 초기 로드시에도 실행
 );
+
 
 // store.dispatch(actionName, searchData);
 
@@ -225,8 +242,21 @@ const flgSetup = () => {
 onBeforeMount(async () => {
     await getCurrentLocation();
     store.commit('loading/setLoading', true);
-    // 타이틀
-    productTitle.value = productIdList[route.params.contenttypeid];
+
+    // contenttypeid를 route.params.contenttypeid로 정의
+    const contentTypeId = route.params.contenttypeid;
+
+    if (contentTypeId) {
+        // console.log('온비포마운트 테스트 contentid');
+
+        store.dispatch('product/resetProductAreaCode');
+        searchData.contentTypeId = parseInt(contentTypeId);
+        productTitle.value = productIdList[contentTypeId] || '기본 제목';
+        searchData.area_code = [];
+        searchData.page = 1;
+        store.dispatch(actionName, searchData);
+    }
+
     flgSetup(); // 리사이즈 이벤트
     
     await store.dispatch(actionName, searchData);
@@ -235,7 +265,6 @@ onBeforeMount(async () => {
     // console.log('에리아데이터', areaData);
     store.commit('loading/setLoading', false);
 });
-
 window.addEventListener('resize', flgSetup);
 
 const areaList = computed(() => store.state.product.productArea);
@@ -762,6 +791,7 @@ const clearMarkers = () => {
     }
     .near-by-btn-disabled {
         opacity: 0.5;
+        pointer-events: none;
     }
     /* 기타 등등 */
     .img-x { 
