@@ -64,23 +64,41 @@ export default {
             });
         },
 
-        destroyPost(context, data) {
-                const url = `/api/admin/destroy/${data.board_id}`
-                const config = {
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                    }
+        destroyReview(context, data) {
+            const url = `/api/admin/destroy/${data.board_id}`
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
-                axios.delete(url, config)
-                .then(reponse => {
-                    alert('삭제 성공');
-                    router.push('/admin/board/review');
-                })
-                .catch(error => {
-                    console.error(error.response.data);
-                    alert('삭제 실패');
-                });
             }
+            axios.delete(url, config)
+            .then(reponse => {
+                alert('삭제 성공');
+                router.push('/admin/board/review');
+            })
+            .catch(error => {
+                console.error(error.response.data);
+                alert('삭제 실패');
+            });
+        },
+
+        destroyFree(context, data) {
+            const url = `/api/admin/destroy/${data.board_id}`
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+            axios.delete(url, config)
+            .then(reponse => {
+                alert('삭제 성공');
+                router.push('/admin/board/free');
+            })
+            .catch(error => {
+                console.error(error.response.data);
+                alert('삭제 실패');
+            });
+        },
     },
     getters: {
 				

@@ -62,7 +62,7 @@ onBeforeMount(async() => {
 })
 
 function deletePost() {
-        store.dispatch('adminBoard/destroyPost', searchData);
+        store.dispatch('adminBoard/destroyReview', searchData);
 }
 
 </script>

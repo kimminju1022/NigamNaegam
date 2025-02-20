@@ -63,7 +63,7 @@
 
     // 삭제처리
     function deletePost() {
-        store.dispatch('adminBoard/destroyPost', searchData);
+        store.dispatch('adminBoard/destroyFree', searchData);
     }
     
     </script>
