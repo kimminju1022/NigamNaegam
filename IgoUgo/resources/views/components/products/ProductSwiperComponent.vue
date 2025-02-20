@@ -115,7 +115,7 @@ const getProductLinkDetail = (condition, id) => {
     font-size: 20px;
     font-weight: 900;
     border-radius: 0 0 30px 30px;
-    padding: 0 20px;
+    margin: 0 20px;
     display: flex;
     justify-content: center;
     align-items: center;

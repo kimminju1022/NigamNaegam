@@ -55,8 +55,8 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
 });
 
-onBeforeMount(() => {
-    store.dispatch(actionName, searchData);
+onBeforeMount(async() => {
+    await store.dispatch(actionName, searchData);
 });
 </script>
 
