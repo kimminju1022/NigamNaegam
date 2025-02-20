@@ -63,7 +63,7 @@
             </div>
             <div class="board-content">
                 <p>내용</p>
-                <textarea v-model="boardInfo.board_content" name="board_content" placeholder="당신의 이야기를 남겨주세요 &#10;&#10;어떤 일들이 당신을 즐겁게 했는지 공유해 주시면 더 많은 트래블러에게 도움이 된답니다(´▽`ʃ♡ƪ)"></textarea>
+                <textarea v-model="boardInfo.board_content" name="board_content" placeholder="당신의 이야기를 남겨주세요."></textarea>
             </div>
         </div>
         <div class="success-btn-box"> 
@@ -102,8 +102,8 @@ const boardInfo = reactive({
     ,board_content: ''
     ,board_img: []
     ,bc_code: store.state.board.bcCode
-    ,area_code: ''
-    ,rc_code: ''
+    // ,area_code: ''
+    // ,rc_code: ''
     ,rate: ''
     ,product_id: 0
 });
@@ -222,7 +222,7 @@ const selectProduct = (productId) => {
 }
 
 .container > h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 50px 0;
 }
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -23,6 +24,8 @@ class UserFactory extends Factory
         $six_months = Carbon::now()->subMonths(6); // 240727
         $out = rand(0,1);
         $flg = rand(0,1);
+        $date = Carbon::now();
+        $name = $this->faker->name();
 
         // $update_date = $this->faker->dateTimeBetween('-3 years', '-2.5 years');
 
@@ -53,22 +56,39 @@ class UserFactory extends Factory
         }
 
 
+        // return [
+        //     'user_out' => $out
+        //     ,'user_flg' => $flg
+        //     ,'user_email' => $this->faker->unique()->safeEmail()
+        //     ,'user_password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+        //     ,'user_name' => $this->faker->name()
+        //     ,'user_nickname' => $this->faker->unique()->name()
+        //     ,'user_phone' => '0' . $this->faker->randomElement(['10', '11', '17']) . $this->faker->numerify('########')
+        //     // ,'refresh_token' => Str::random(10)
+        //     ,'email_verified_at'=> $create_date
+        //     ,'user_last_login'=> $create_date
+        //     // ,'password_reset_token'=> null
+        //     // ,'password_reset_expires_at'=> null
+        //     ,'created_at' => $create_date
+        //     ,'updated_at' => $update_date
+        //     ,'deleted_at' => $deleted_date
+        // ];
         return [
             'user_out' => $out
             ,'user_flg' => $flg
             ,'user_email' => $this->faker->unique()->safeEmail()
-            ,'user_password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
-            ,'user_name' => $this->faker->name()
-            ,'user_nickname' => $this->faker->unique()->name()
-            ,'user_phone' => '0' . $this->faker->randomElement(['10', '11', '17']) . $this->faker->numerify('########')
+            ,'user_password' => Hash::make('qwer1234!')
+            ,'user_name' => $name
+            ,'user_nickname' => $name
+            ,'user_phone' => '0' . $this->faker->randomElement(['10']) . $this->faker->numerify('########')
             // ,'refresh_token' => Str::random(10)
-            ,'email_verified_at'=> $create_date
-            ,'user_last_login'=> $create_date
+            ,'email_verified_at'=> $date
+            ,'user_last_login'=> $date
             // ,'password_reset_token'=> null
             // ,'password_reset_expires_at'=> null
-            ,'created_at' => $create_date
-            ,'updated_at' => $update_date
-            ,'deleted_at' => $deleted_date
+            ,'created_at' => $date
+            ,'updated_at' => $date
+            ,'deleted_at' => null
         ];
     }
 

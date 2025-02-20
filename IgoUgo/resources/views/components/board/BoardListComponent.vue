@@ -1,5 +1,5 @@
 <template>
-    <h2 style="margin: 30px 0; font-size: 3rem;">
+    <h2 style="margin: 30px 0; font-size: 2rem;">
         {{ bcName }} 
     </h2>
     <div class="board-search-tb">

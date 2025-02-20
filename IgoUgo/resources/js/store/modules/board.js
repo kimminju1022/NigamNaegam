@@ -139,62 +139,23 @@ export default {
                 console.error(error);
             });
         },
+
+
+        // postBoardCreate(context){
+        //     const url = '/api/boards/create';
+        //     const config = {
+        //         header: {
+        //             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+        //         }
+        //     }
+
+        //     axios.get(url, config)
+        //     .then()
+        //     .catch();
+        // },
         
-        /** 게시글 작성
-         * 
-         */
-        storeBoard(context, data){
-            const url = '/api/boards';
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            }
-            
-            const formData = new FormData();
-            formData.append('bc_code', data.bc_code);
-            formData.append('board_title', data.board_title);
-            formData.append('board_content', data.board_content);
-            if(data.board_img) {
-                data.board_img.forEach(file => formData.append('board_img[]', file));
-            }
-            if(data.bc_code) {
-                formData.append('bc_code', data.bc_code);
-            } 
-            if(data.area_code) {
-                formData.append('area_code', data.area_code);
-            }
-            if(data.rate) {
-                formData.append('rate', data.rate);
-            }
-            // console.log(data);
 
-            axios.post(url,formData, config)
-            .then(response => {
-                // console.log(response);
-                // console.log(response.data.review);
-                
-                // context.commit('setBoardList', response.data.data);
-                
-                router.replace('/boards');
-            })
-            .catch(error => {
-                console.error(error.response.data);
-            });
-        },
-        postBoardCreate(context){
-            const url = '/api/boards/create';
-            const config = {
-                header: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            }
 
-            axios.get(url, config)
-            .then()
-            .catch();
-        },
         /** 게시글 수정
          * 
          */
@@ -463,6 +424,9 @@ export default {
         //         });
         //     });
         // },
+        
+        
+        // ------------------------------------- 경진 start ----------------------------------
 
         // 유저별 리뷰게시글 내역
         userReviewList(context, searchData) {
@@ -506,6 +470,52 @@ export default {
                 console.error(error);
             });
         },
+
+        // 게시글 작성
+        storeBoard(context, data){
+            const url = '/api/boards';
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+            console.log(data);
+            
+            const formData = new FormData();
+            formData.append('bc_code', data.bc_code);
+            formData.append('board_title', data.board_title);
+            formData.append('board_content', data.board_content);
+
+            if (data.board_img && data.board_img.length > 0) {
+                data.board_img.forEach((file) => {
+                    formData.append('board_img[]', file);
+                });
+            }
+            if(data.area_code) {
+                formData.append('area_code', data.area_code);
+            }
+            if(data.rate) {
+                formData.append('rate', data.rate);
+            }
+            if(data.product_id) {
+                formData.append('product_id', data.product_id);
+            }
+
+            axios.post(url,formData, config)
+            .then(response => {
+                console.log(response.data);
+                
+                context.commit('setBoardList', response.data.data);
+                
+                router.replace('/boards');
+            })
+            .catch(error => {
+                console.error(error.response.data);
+            });
+        },
+
+        // ------------------------------------- 경진 end ----------------------------------
     },
         
     getters: {
