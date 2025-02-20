@@ -57,7 +57,12 @@
                     <div v-for="item in products" :key="item">
                         <router-link :to="route.path + '/' + item.contentid">
                             <div class="card">
-                                <img :src="item.firstimage" @error="e => e.target.src='/default/default_img_white.png'" class="img-card">
+                                <img :src="item.firstimage"
+                                    @error="e => { 
+                                        e.target.src = '/default/default_no_img.png'; 
+                                        e.target.classList.add('error-img'); 
+                                    }" class="img-card"
+                                >
                                 <p class="font-bold card-title">{{ item.title }}</p>
                             </div>
                         </router-link>
@@ -775,7 +780,13 @@ const clearMarkers = () => {
         object-fit: cover;
         background-repeat: no-repeat;
         border-radius: 5px 5px 0px 0px;
-        border-bottom: 1px solid #e9e9e9;
+        /* border-bottom: 1px solid #e9e9e9; */
+    }
+    .error-img {
+        width: auto;
+        object-fit: contain;
+        padding: 20px;
+        opacity: 0.5;
     }
     
     /* 폰트 관련 */

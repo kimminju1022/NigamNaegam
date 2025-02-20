@@ -527,7 +527,7 @@ a, a:visited {
     border-bottom: 1px solid #01083a;
     border-radius: 0;
     margin-bottom: 40px;
-    margin-left: 700px;
+    margin-left: 730px;
 }
 .swiper-scrollbar > .swiper-scrollbar-drag {
     background-color: #01083a;
