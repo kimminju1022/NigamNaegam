@@ -104,6 +104,7 @@ Route::get('/search/board/content', [SearchController::class, 'searchBoardConten
 // 체험단 게시판
 Route::get('/testers', [TesterController::class, 'index']);
 Route::get('/testers/{id}', [TesterController::class, 'show']);
+Route::get('/testers/comments/{id}', [CommentController::class, 'index']);
 
 // 공지사항
 Route::get('/notices/top', [NoticeController::class, 'topList']);
@@ -213,7 +214,6 @@ Route::middleware('my.auth')->group(function() {
     Route::delete('/questions/{id}', [QuestionController::class, 'destroy']);
 
     // 체험단 댓글
-    Route::get('/testers/comments/{id}', [CommentController::class, 'index']);
     Route::post('/testers/comments', [CommentController::class, 'store']);
     Route::delete('/testers/comments/{id}', [CommentController::class, 'destroy']);
     

@@ -191,11 +191,7 @@ class QuestionController extends Controller
             
             // 이미지 테이블 분리 후 작업
             $boardImg = BoardImage::where('board_id', $request->board_id)->get();
-            // Log::debug('boardImage : ',$boardImg->toArray());
-
-            // Log::debug($request->board_img_path);
-            // Log::debug($request->board_img_file);
-
+            
             // 이미 있던 이미지 request
             if ($request->has('board_img_path')) {
                 foreach ($boardImg as $image) {
@@ -255,6 +251,7 @@ class QuestionController extends Controller
 
         // $board->delete();
         $board->board_flg = '1';
+        $board->save();
 
         $board_img = BoardImage::with('board')
                                 ->where('board_id', $id)
@@ -267,6 +264,7 @@ class QuestionController extends Controller
                             ->first();
 
         $question->que_flg = '1';
+        $question->save();
 
         $responseData = [
             'success' => true

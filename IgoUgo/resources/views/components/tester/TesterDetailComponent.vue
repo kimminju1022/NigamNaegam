@@ -99,7 +99,6 @@ const commentList = computed(() => store.state.comment.commentList);
 // });
 const searchData = reactive({
     board_id: route.params.id,
-    // page: store.state.pagination.currentPage,
 });
 
 const searchDataComment = reactive({
@@ -132,11 +131,11 @@ onBeforeMount(()=>{
 });
 
 const deleteComment = (id) => {
-    const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    const check = confirm('해당 댓글을 삭제 하시겠습니까?');
     if(check) {
         store.dispatch('comment/destroyComment', id);
     }
-    console.log(commentList.comment_id);
+    testerDetail.value.comments_count--;
 }
 </script>
 

@@ -17,10 +17,10 @@ export default {
     },
     actions: {
         // 체험단 게시글 리스트
-        testerList(context, searchData) {
+        testerList(context, data) {
             const url = '/api/testers';
             const config = {
-                params: searchData,
+                params: data,
             }
 
             axios.get(url, config)
