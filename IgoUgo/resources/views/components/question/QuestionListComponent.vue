@@ -20,7 +20,7 @@
             </div>
             <div class="board-notice-box">
                 <div v-for="(item, index) in noticeTopList" class="board-content">
-                    <p>{{ index + 1 }}</p>
+                    <p>{{ 5 - index }}</p>
                     <p>공지</p>
                     <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
                     <p>관리자</p>

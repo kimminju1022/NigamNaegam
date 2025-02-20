@@ -39,7 +39,7 @@ class BoardController extends Controller
                         '=',
                         'like_tmp.board_id'
                     )
-                    ->select('boards.*', 'users.user_nickname', 'areas.area_name', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'));
+                    ->select('boards.*', 'users.user_nickname', 'areas.area_name', 'products.contenttypeid', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt')); // 경진 수정
             })
             ->where('board_title', 'like', "%$request->search%")
             ->where('boards.bc_code', '=', $request->bc_code)
