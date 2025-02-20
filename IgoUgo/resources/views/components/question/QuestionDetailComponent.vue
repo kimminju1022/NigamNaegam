@@ -106,7 +106,7 @@ const deleteQuestion = (id) => {
 }
 
 .container > h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 50px 0;
 }
 

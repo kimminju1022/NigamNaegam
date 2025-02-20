@@ -2,7 +2,7 @@
     <div class="container" v-if="noticeDetail">
         <h1><router-link :to="`/notices`">공지사항</router-link></h1>
         <div class="header-btn-box">
-            <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
+            <button @click="goBack" class="btn bg-navy header-btn">목록</button>
         </div>
         <div class="board-box">
             <div class="board-box-flex">
@@ -28,16 +28,21 @@
 <script setup>
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 
 const noticeDetail = computed(() => store.state.notice.noticeDetail);
 // console.log(noticeDetail);
 
 const boardInfo = reactive({
     board_id: route.params.id,
+});
+
+const goBack = (() => {
+    router.go(-1);
 });
 
 onBeforeMount(()=>{
@@ -50,7 +55,7 @@ onBeforeMount(()=>{
 }
 
 .container > h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 50px 0;
 }
 

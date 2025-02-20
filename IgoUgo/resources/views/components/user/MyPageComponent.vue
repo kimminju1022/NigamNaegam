@@ -412,7 +412,7 @@ const deletemodal = (userInfo) => {
     padding: 10px;
 }
 
-.question-content :nth-child(3) {
+.question-content :nth-child(3), .board-content a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
