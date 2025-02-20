@@ -3,8 +3,8 @@
         <!-- 경로표시 -->
         <div class="board-detail-category">
             <h1>{{ $store.state.board.bcName }}</h1>
-            <h3>≫ {{ $store.state.board.rcName }}</h3>
-            <h3>≫ {{ $store.state.board.areaName }}</h3>
+            <h3 v-if="store.state.board.bcCode === '0'" >≫ {{ $store.state.board.rcName }}</h3>
+            <h3 v-if="store.state.board.bcCode === '0'" >≫ {{ $store.state.board.areaName }}</h3>
         </div>
         <!-- 버튼영역 -->
         
@@ -14,12 +14,57 @@
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="editConfirm(boardDetail.board_id)">수정</button>
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-clear board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">🗑️</button>
+            <!-- <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="editConfirm(boardDetail.board_id)">수정</button> -->
+            <!-- ---------------- 경진 start ----------------- -->
+            <router-link :to="`/boards/${boardDetail.board_id}/update`"><button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn">수정</button></router-link>
+            <!-- ---------------- 경진 end ----------------- -->
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
 
         </div>
     </div>
-    
+
+    <div class="board-box">
+        <div class="board-title-flex">
+            <p>제목</p>
+            <p>{{ boardDetail.board_title }}</p>
+            <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
+        </div>
+        <div class="board-review-flex">
+            <p>리뷰</p>
+            <p>{{ boardDetail.title }}</p>
+            <div class="btn-list">
+                <div class="btn-like">
+                    <button class="btn loveIt_btn" @click="likeProccess(boardDetail.board_id)">
+                        <img style="height: 20px;" :src="$store.state.board.likeImgPath">
+                    </button>
+                    <p>{{ boardDetail.likes_count }}</p>
+                </div>
+                <button class="btn boardReport_btn" @click="boardReport(boardDetail.board_id)">🚨 신고 </button>
+            </div>
+        </div>
+        <div class="board-content-box">
+            <div class="board-content">
+                <div class="board-content-img">
+                    <div class="img-grid">
+                        <img v-for="(image, index) in boardDetail.board_images" :key="index" :src="image.board_img">
+                    </div>
+                </div>
+                <div class="content-textarea">
+                    <textarea ref="textArea" @input="resize" readonly>{{ boardDetail.board_content }}</textarea>
+                </div>
+                <div class="board-user">
+                    <div class="border-user-profile">
+                        <img :src="boardDetail.user_profile">
+                        <p>by  {{ boardDetail.user_nickname }}</p>
+                    </div>
+                    <p>{{ boardDetail.created_at }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <h1 style="margin: 200px 0;">----------------------------------------------------------------</h1>
+
     <!-- 상세 글머리_정보불러오기-->
     <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head" :class="gridDetail">
@@ -30,7 +75,6 @@
         <p>{{ boardDetail.created_at }}</p>
         <button class="loveIt_btn" @click="likeProccess(boardDetail.board_id)">
             <img style="height: 20px;" :src="$store.state.board.likeImgPath">
-            :
             <span>{{ boardDetail.likes_count }}</span>
         </button>
         <!-- <p> {{ loveIt[0] }}</p> -->
@@ -122,28 +166,13 @@ const commentsInfo =  reactive({
 
 // alert 안내문구---------------------start-----------------
     // 게시물수정
-const editConfirm = () => {
-    const userResponse = confirm('해당 글을 수정 하시겠습니까?');
-    if (userResponse) {
-        router.push(`/boards/${route.params.id}/update`);
-    }
-}
-    // 게시물삭제
-const deleteConfirm = () => {
-    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
-    
-    if (userResponse) {
-        store.dispatch('board/boardDelete', route.params.id)
-        .then(() => {
-            alert('게시글 삭제 성공');
-            router.replace('/boards');
-        })
-        .catch(error => {
-            alert('삭제 중 오류 발생');
-            console.error(error);
-        });
-    }
-};
+// const editConfirm = () => {
+//     const userResponse = confirm('해당 글을 수정 하시겠습니까?');
+//     if (userResponse) {
+//         router.push(`/boards/${route.params.id}/update`);
+//     }
+// }
+
     /*2차
     if (userResponse) {
         store.dispatch('board/boardDelete', route.params.id);
@@ -212,6 +241,17 @@ const likeProccess = (id) => {
 }
 
 // ------------------ meerkat End ------------------
+
+
+// ----------------------- 경진 start ---------------------
+    // 게시물삭제
+    const deleteConfirm = (id) => {
+    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+    if(userResponse) {
+        store.dispatch('board/boardDelete', id);
+    }
+};
+// ----------------------- 경진 end ---------------------
 
 
 // alert 안내문구---------------------end-----------------
@@ -301,18 +341,19 @@ hr{
     text-align: right;
 }
 .boardReport_btn{
-    cursor: pointer;
     background-color: transparent;
-    border: none;
     margin-right: 10px;
+    font-size: 16px;
 }
 .loveIt_btn{
     /* cursor: url(/IgoUgo/public/images/Lcussor.png),auto; */
-    cursor: url('/images/Lcussor.png');
+    /* cursor: url('/images/Lcussor.png'); */
+    background-color: transparent;
+    display: flex;
 }
-.loveIt_btn:active{
+/* .loveIt_btn:active{
     background-image:url('/images/heart.png') 10 10;
-}
+} */
 .grid-4{
     display: grid;
     grid-template-columns: 9fr 3fr 3fr 3fr;
@@ -527,6 +568,110 @@ hr{
         align-items: flex-start; 
     }
 } */
+
+/* 수정수정 */
+.board-box {
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
+    margin-top: 50px;
+}
+
+.board-box p {
+    padding: 10px;
+    font-size: 17px;
+}
+
+.board-title-flex > p:first-child
+, .board-review-flex > p:first-child
+, .board-content-box > p:first-child {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600;
+    border-right: 1px solid #01083a;
+}
+
+.board-content > div:not(:last-child){
+    width: 90%;
+    margin: 20px auto;
+}
+
+.board-box p, .board-content textarea {
+    font-size: 17px;
+}
+.board-title-flex {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    border-bottom: 1px solid #01083a;
+    /* align-items: center; */
+}
+
+.board-title-flex :last-child {
+    font-size: 22px;
+}
+
+.board-review-flex {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    border-bottom: 1px solid #01083a;
+}
+
+.btn-list {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-like {
+    display: flex;
+    align-items: center;
+}
+
+.board-content > :last-child {
+    border-top: 1px solid #01083a;
+}
+
+.board-content textarea {
+    resize: none;
+    height: 250px;
+    width: 99%;
+    margin: 10px;
+    /* background-color: #f7f7f7; */
+}
+
+.board-content-img {
+    margin: 20px auto;
+}
+
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    place-items: center;
+    /* margin: 0 auto; */
+}
+
+.img-grid > img {
+    max-width: 185px;
+    max-height: 185px;
+}
+
+.board-user {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.border-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.board-user img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    border: 2px solid #01083a18;
+}
+
 @media(max-width:800px){
     
     /* .board-detail-head {

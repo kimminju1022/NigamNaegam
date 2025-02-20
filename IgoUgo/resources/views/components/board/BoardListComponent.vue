@@ -1,65 +1,69 @@
 <template>
-    <h2 style="margin: 30px 0; font-size: 2rem;">
-        {{ bcName }} 
-    </h2>
-    <div class="board-search-tb">
-        <input v-model="searchData.search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
-        <!-- <button @click="$store.dispatch('/search/board')" class="btn bg-navy board-search-btn">검색</button> -->
-        <button @click="searchBoardContent" class="btn bg-navy board-search-btn">검색</button>
-    </div>
-
-    
-<!-- 리스트항목 -->
-    <div class="board-list">
-        <!-- 리스트 헤드 -->
-        <div class="board-li-title" :class="gridClass" >
-            <p>번호</p>
-            <p v-if="$store.state.board.bcCode === '0'">지역</p>
-            <p v-if="$store.state.board.bcCode === '0'">카테고리</p>
-            <p>제목</p>
-            <p>닉네임</p>
-            <p>작성일자</p>
-            <p>좋아요</p>
-            <p>조회수</p>
+    <div class="container">
+        <h1>{{ bcName }}</h1>
+        <p v-if="store.state.board.bcCode === '0'" class="title-text">솔직한 리뷰를 남겨보세요!</p>
+        <p v-else class="title-text">자유롭게 의견을 나누고 소통하는 공간입니다!</p>
+        <div class="search-box">
+            <div class="board-search-tb">
+                <input v-model="searchData.search" class="board-search" type="text" placeholder="검색어를 입력해 주세요">
+                <!-- <button @click="$store.dispatch('/search/board')" class="btn bg-navy board-search-btn">검색</button> -->
+                <button @click="searchBoardContent" class="btn bg-navy board-search-btn">검색</button>
+            </div>
         </div>
+
         
-        <!-- [관리자] 리스트 목록 -->
-        <div>
-            <div class="board-li-notice" >
-                <div v-for="(item, index) in noticeTopList" class="board-li-item" :class="gridClass">
-                    <p v-if="$store.state.board.bcCode === '0'">{{ index + 1 }}</p>
-                    <p v-if="$store.state.board.bcCode === '0'">-</p>
-                    <!-- v-show="$store.state.board.bcCode === 0" -->
-                    <p class="notice-text">공지</p>
-                    <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
-                    <p>관리자</p>
-                    <p>{{ item.created_at }}</p>
-                    <p>-</p>
-                    <p>{{ item.view_cnt }}</p>
-                </div>
+    <!-- 리스트항목 -->
+        <div class="board-list">
+            <!-- 리스트 헤드 -->
+            <div class="board-li-title" :class="gridClass" >
+                <p>번호</p>
+                <p v-if="$store.state.board.bcCode === '0'">지역</p>
+                <p v-if="$store.state.board.bcCode === '0'">카테고리</p>
+                <p>제목</p>
+                <p>닉네임</p>
+                <p>작성일자</p>
+                <p>좋아요</p>
+                <p>조회수</p>
             </div>
-
-            <!-- [유저] 리스트 시작 -->
             
-            <div  class="board-list" >
-                <div class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
-                    <p>{{ item.board_id }}</p>
-                    <p v-if="$store.state.board.bcCode === '0'">{{ item.area_name }}</p>
-                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '12'">관광지</p>
-                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '14'">문화시설</p>
-                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '28'">레포츠</p>
-                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '32'">호텔</p>
-                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '38'">쇼핑</p>
-                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '39'">음식점</p>
-                    <!-- <router-link v-if="$store.state.board.bcCode === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcCode === '2', 'grid-5': $store.state.board.bcCode === '1'}">{{ item.board_title }}</router-link> -->
-                    <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
-                    <p>{{ item.user_nickname }}</p>
-                    <p>{{ item.created_at }}</p>
-                    <p>{{ item.like_cnt }}</p>
-                    <p>{{ item.view_cnt }}</p>
+            <!-- [관리자] 리스트 목록 -->
+            <div>
+                <div class="board-li-notice" >
+                    <div v-for="(item, index) in noticeTopList" class="board-li-item" :class="gridClass">
+                        <p v-if="$store.state.board.bcCode === '0'">{{ index + 1 }}</p>
+                        <p v-if="$store.state.board.bcCode === '0'">-</p>
+                        <!-- v-show="$store.state.board.bcCode === 0" -->
+                        <p class="notice-text">공지</p>
+                        <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
+                        <p>관리자</p>
+                        <p>{{ item.created_at }}</p>
+                        <p>-</p>
+                        <p>{{ item.view_cnt }}</p>
+                    </div>
+                </div>
+
+                <!-- [유저] 리스트 시작 -->
+                
+                <div  class="board-list" >
+                    <div class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
+                        <p>{{ item.board_id }}</p>
+                        <p v-if="$store.state.board.bcCode === '0'">{{ item.area_name }}</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '12'">관광지</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '14'">문화시설</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '28'">레포츠</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '32'">호텔</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '38'">쇼핑</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '39'">음식점</p>
+                        <!-- <router-link v-if="$store.state.board.bcCode === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcCode === '2', 'grid-5': $store.state.board.bcCode === '1'}">{{ item.board_title }}</router-link> -->
+                        <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
+                        <p>{{ item.user_nickname }}</p>
+                        <p>{{ item.created_at }}</p>
+                        <p>{{ item.like_cnt }}</p>
+                        <p>{{ item.view_cnt }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>        
     </div>
     <!-- 하단 기능버튼 -->
     <div class="pagination-btn">
@@ -136,7 +140,20 @@ onBeforeMount(async () => {
 });
 
 </script>
-<style scoped>  
+<style scoped> 
+.container{
+    align-items: center;
+}
+
+.container > h1 {
+    font-size: 2rem;
+    margin: 25px 0;
+}
+
+.title-text {
+    font-size: 18px;
+}
+
 /* [ 순서 ]
 1. 보드,페이지 관련
 2. 검색색
@@ -259,7 +276,12 @@ onBeforeMount(async () => {
     margin-top: 30px;
 }
 
-/* search 관련 --------------search*/             
+/* search 관련 --------------search*/     
+.search-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+}        
 .board-search-tb{
     display: inline-flex;
     /* float: right; */

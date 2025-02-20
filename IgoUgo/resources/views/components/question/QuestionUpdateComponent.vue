@@ -3,7 +3,7 @@
         <h1>문의게시판</h1>
         <div class="header-btn-box"> 
             <button @click="$store.dispatch('question/updateQuestion', question)" class="btn bg-navy header-btn">완료</button>
-            <router-link :to="'/questions'"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
+            <router-link :to="`/questions/${question.questionDetail.board_id}`"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
         </div>
         <div class="board-box">  
             <div class="board-box-flex">
@@ -163,7 +163,7 @@ const removeFile = (item) => {
 }
 
 .container > h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 50px 0;
 }
 

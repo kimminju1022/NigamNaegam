@@ -21,7 +21,18 @@ class TesterManagement extends Model
         'tester_area',
         'due_date',
     ];
-    
+        
+    /**
+     * TimeZone format when serializing JSON
+     * 
+     * @param \DateTimeInterface $date
+     * 
+     * @return String('Y-m-d H:i:s')
+     */
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     public function boards() {
         return $this->belongsTo(Board::class, 'board_id', 'board_id');
     }

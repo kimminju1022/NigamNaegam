@@ -127,7 +127,7 @@ export default {
             
             axios.get(url, config)
             .then(response => {
-                console.log(response.data.likeFlg);
+                // console.log(response.data.likeFlg);
                 context.commit('setBoardDetail', response.data.board);
                 context.commit('setBcName', response.data.bcName);
                 context.commit('setRcName', response.data.rcName);
@@ -139,98 +139,6 @@ export default {
                 console.error(error);
             });
         },
-
-
-        // postBoardCreate(context){
-        //     const url = '/api/boards/create';
-        //     const config = {
-        //         header: {
-        //             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-        //         }
-        //     }
-
-        //     axios.get(url, config)
-        //     .then()
-        //     .catch();
-        // },
-        
-
-
-        /** 게시글 수정
-         * 
-         */
-        boardUpdate(context, boardInfo){
-            // console.log(boardInfo.boardDetail);
-            const url = `/api/boards/${boardInfo.boardDetail.board_id}`;
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                    'Content-Type': 'multipart/form-data',
-                }
-            }
-            const formData = new FormData();
-            formData.append('bc_code', boardInfo.boardDetail.bc_code);
-            formData.append('board_title', boardInfo.boardDetail.board_title);
-            formData.append('board_content', boardInfo.boardDetail.board_content);
-            
-            boardInfo.boardDetail.board_img.forEach((file) => {
-                formData.append('board_img[]', file);
-            });  //3rd
-            
-            // if(boardInfo.boardDetail.board_img) {
-            //     formData.append('board_img', boardInfo.boardDetail.board_img);
-            // }2nd
-
-            if(boardInfo.boardDetail.bc_code) {
-                formData.append('bc_code', boardInfo.boardDetail.bc_code);
-            } 
-            if(boardInfo.boardDetail.area_code) {
-                formData.append('area_code', boardInfo.boardDetail.area_code);
-            }
-            if(boardInfo.boardDetail.rate) {
-                formData.append('rate', boardInfo.boardDetail.rate);
-            }
-
-            // console.log('formData는', formData);
-
-            axios.post(url, formData, config)
-            .then(response => {
-                // context.commit('setBcCode', response.data.bcCode);
-                context.commit('setBoardDetail', response.data.board);
-                context.commit('setBcName', response.data.bcName);
-                context.commit('setRcName', response.data.rcName);
-                context.commit('setAreaName', response.data.areaName);
-
-                alert('수정 성공');
-                router.replace(`/boards/${boardInfo.boardDetail.board_id}`);
-            })
-            .catch(error => {
-                alert('수정 실패');
-                console.error(error.response.data);
-            });
-        },
-        
-        /** 게시글 삭제
-         * 
-         */
-        boardDelete(context, id) {
-            const url = `/api/boards/${id}`;
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            }
-
-            axios.delete(url, config)
-            .then(response => {
-
-            })
-            .catch(error => {
-                console.error(error);
-                alert('삭제 실패');
-            });
-        },
-
         /**게시글 신고 */
         boardReport(context, id) {
             const url = `/api/boards/${id}/report`;
@@ -480,8 +388,7 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                 }
             }
-            console.log(data);
-            
+
             const formData = new FormData();
             formData.append('bc_code', data.bc_code);
             formData.append('board_title', data.board_title);
@@ -504,10 +411,7 @@ export default {
 
             axios.post(url,formData, config)
             .then(response => {
-                console.log(response.data);
-                
                 context.commit('setBoardList', response.data.data);
-                
                 router.replace('/boards');
             })
             .catch(error => {
@@ -515,6 +419,85 @@ export default {
             });
         },
 
+        // 게시글 수정
+        boardUpdate(context, boardInfo){
+            const url = `/api/boards/${boardInfo.boardDetail.board_id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    'Content-Type': 'multipart/form-data',
+                }
+            }
+
+            const formData = new FormData();
+            formData.append('board_id', boardInfo.boardDetail.board_id);
+            formData.append('bc_code', boardInfo.boardDetail.bc_code);
+            formData.append('board_title', boardInfo.boardDetail.board_title);
+            formData.append('board_content', boardInfo.boardDetail.board_content);
+
+            // 이미지 배열 넘기기
+            if (boardInfo.boardDetail.board_images && boardInfo.boardDetail.board_images.length > 0) {
+                boardInfo.boardDetail.board_images.forEach((image) => {
+                    formData.append('board_img_path[]', image.board_img);
+                });
+            }
+
+            if (boardInfo.board_img && boardInfo.board_img.length > 0) {
+                boardInfo.board_img.forEach((file) => {
+                    formData.append('board_img_file[]', file);
+                });
+            }
+
+            // if(boardInfo.boardDetail.bc_code) {
+            //     formData.append('bc_code', boardInfo.boardDetail.bc_code);
+            // } 
+            // if(boardInfo.boardDetail.area_code) {
+            //     formData.append('area_code', boardInfo.boardDetail.area_code);
+            // }
+
+            if(boardInfo.boardDetail.product_id) {
+                formData.append('product_id', boardInfo.boardDetail.product_id);
+            }
+            if(boardInfo.boardDetail.rate) {
+                formData.append('rate', boardInfo.boardDetail.rate);
+            }
+
+            axios.post(url, formData, config)
+            .then(response => {
+                // context.commit('setBcCode', response.data.bcCode);
+                context.commit('setBoardDetail', response.data.board);
+                context.commit('setBcName', response.data.bcName);
+                // context.commit('setRcName', response.data.rcName);
+                // context.commit('setAreaName', response.data.areaName);
+
+                alert('수정 성공');
+                router.replace(`/boards/${boardInfo.boardDetail.board_id}`);
+            })
+            .catch(error => {
+                alert('수정 실패');
+                console.error(error);
+            });
+        },
+
+        // 게시글 삭제
+        boardDelete(context, id) {
+            const url = `/api/boards/${id}`;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+
+            axios.delete(url, config)
+            .then(response => {
+                alert('삭제 성공인가');
+                router.push('/boards');
+            })
+            .catch(error => {
+                console.error(error);
+                alert('삭제 실패');
+            });
+        },
         // ------------------------------------- 경진 end ----------------------------------
     },
         

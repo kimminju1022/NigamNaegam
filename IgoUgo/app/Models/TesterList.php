@@ -18,6 +18,17 @@ class TesterList extends Model
         'user_id',
         'review_chk',
     ];
+    
+    /**
+     * TimeZone format when serializing JSON
+     * 
+     * @param \DateTimeInterface $date
+     * 
+     * @return String('Y-m-d H:i:s')
+     */
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     public function users() {
         return $this->belongsTo(User::class, 'user_id', 'user_id');

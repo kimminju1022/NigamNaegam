@@ -3,7 +3,7 @@
         <h1><router-link :to="`/questions`">문의게시판</router-link></h1>
         <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
             <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
-            <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link>
+            <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn">수정</button></router-link>
             <!-- <router-link :to="`/questions/${$store.state.questions.questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link> -->
             <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
         </div>
@@ -107,7 +107,7 @@ const deleteQuestion = (id) => {
 
 .container > h1 {
     font-size: 2rem;
-    margin: 50px 0;
+    margin: 25px 0;
 }
 
 .header-btn-box {

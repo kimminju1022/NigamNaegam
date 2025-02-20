@@ -255,9 +255,11 @@ class QuestionController extends Controller
 
         $board_img = BoardImage::with('board')
                                 ->where('board_id', $id)
-                                ->first();
+                                ->get();
                 
-        $board_img->delete();
+        foreach ($board_img as $image) {
+            $image->delete();
+        }
         
         $question = Question::with('board')
                             ->where('board_id', $id)

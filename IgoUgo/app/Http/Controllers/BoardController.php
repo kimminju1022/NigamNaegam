@@ -41,6 +41,7 @@ class BoardController extends Controller
                     )
                     ->select('boards.*', 'users.user_nickname', 'areas.area_name', 'products.contenttypeid', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt')); // 경진 수정
             })
+            ->where('board_flg', '0') // 경진 추가
             ->where('board_title', 'like', "%$request->search%")
             ->where('boards.bc_code', '=', $request->bc_code)
             ->orderBy('boards.created_at', 'desc')
@@ -82,7 +83,7 @@ class BoardController extends Controller
         $bc_code = $board_target->bc_code;
         
         // 250124 컬럼에 맞게 수정_민주
-        $board = Board::select('boards.*', 'users.user_nickname', 'board_categories.bc_name',)
+        $board = Board::select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'users.user_profile', 'users.user_nickname')
                     ->join('board_categories', 'board_categories.bc_code', '=', 'boards.bc_code')
                     ->join('users', 'users.user_id', '=', 'boards.user_id')
                     ->when($bc_code === '0', function($query) {
@@ -90,7 +91,7 @@ class BoardController extends Controller
                             ->join('products', 'products.product_id', '=', 'reviews.product_id')
                             ->join('review_categories','products.contenttypeid', '=', 'review_categories.rc_code')
                             ->join('areas', 'areas.area_code', '=', 'products.area_code')
-                            ->addSelect('areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.title');     //3rd
+                            ->addSelect('areas.area_name', 'review_categories.rc_name','reviews.rate', 'products.title', 'products.product_id');     //3rd
                             /**2nd code
                              * ->join('review_categories', 'review_categories.bc_code', '=', 'reviews.bc_code')
                              * ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'review_categories.rc_name', 'reviews.rate', 'reviews.bc_code', 'reviews.area_code');
@@ -320,17 +321,6 @@ class BoardController extends Controller
     // }
 
     // ------------------- meerkat Start -------------------
-    // 게시글 삭제
-    public function destroy($id) {
-        $board = Board::destroy($id);
-
-        $responseData = [
-            'success' => true
-            ,'msg' => '게시글 삭제 성공'
-        ];
-
-        return response()->json($responseData, 200);
-    }
 
     // 게시글 신고
     public function report(Request $request, $id){
@@ -530,106 +520,89 @@ class BoardController extends Controller
     }
 
     // 게시글 수정
-    // public function update(BoardRequest $request) {
-    //     try {
-    //         DB::beginTransaction();
-    //         $boardTarget = Board::find($request->id);
+    public function update(BoardRequest $request) {
+        try {
+            DB::beginTransaction();
+            $boardTarget = Board::find($request->board_id);
 
-    //         if($boardTarget-> bc_code !== $request->bc_code){
-    //             $boardTarget->bc_code = $request->bc_code;
-    //         }
-    //         // $boardTarget->bc_code = $request->bc_code; //2nd 250124
-    //         $boardTarget->board_title = $request->board_title;
-    //         $boardTarget->board_content = $request->board_content;
-    //         // img일치 확인 및 불일치 시 새정보 적용
-    //         if ($request->hasFile('board_img') && $request->file('board_img')->isValid()) {
-    //             $path = '/'.$request->file('board_img')->store('img');
-    //             $boardTarget->board_img = $path;
-    //         } else {
-    //             // unset($boardTarget->board_img); 
-    //             $boardTarget->board_img = null; // unset 대신 null 사용
-    //         }
-    //         if($boardTarget->bc_code === '0') {
-    //             $review = Review::where('board_id', $request->id)->first();
+            $boardTarget->board_title = $request->board_title;
+            $boardTarget->board_content = $request->board_content;
 
-    //             $review->area_code = $request->area_code;
-    //             $review->bc_code = $request->bc_code;
-    //             $review->rate = $request->rate;
-    //             $review->save();
-    //         } else if($boardTarget-> bc_code === '1') {
-    //             // Review::where('board_id', $request->id)->delete(); //2nd 250124               
-    //         }
-    //         // 2nd 작업(보드img별 버튼으로 구현(총2개개))
-    //         // if($request->hasFile('board_img2') && $request->file('board_img2')->isValid()) {
-    //         //     $path = '/'.$request->file('board_img2')->store('img');
-    //         //     $boardTarget->board_img2 = $path;
-    //         // }
+            $boardTarget->save();
 
-    //         /*
-    //         // 4가지 상황에 따른 쿼리-------------------------------------------start------2nd작업(보드타입변경작업)
-    //         // 리뷰에서 자유로 변경 시 저장 방법 변경(리뷰테이블 내 정보 삭제)
-    //         if($boardTarget->getOriginal('bc_code') === '0') {
-    //             $review = Review::where('board_id', $request->id)->first();
+            // 이미지
+            $boardImg = BoardImage::where('board_id', $request->board_id)->get();
 
-    //             if($boardTarget->bc_code === '0') {
-    //                 $review->area_code = $request->area_code;
-    //                 $review->bc_code = $request->bc_code;
-    //                 $review->rate = $request->rate;
-    //                 $review->save();
-    //             } else if($boardTarget->bc_code === '1') {
-    //                 $review->delete();
-    //             }
-    //         } else if($boardTarget->getOriginal('bc_code') === '1') {
-    //             if($boardTarget->bc_code === '0') {
-    //                 $review = new Review();
-    //                 $review->board_id = $request->id;
-    //                 $review->area_code = $request->area_code;
-    //                 $review->bc_code = $request->bc_code;
-    //                 $review->rate = $request->rate;
-    //                 $review->save();
-    //             }
-    //         }
-    //         // 4가지 상황에 따른 쿼리-------------------------------------------end------
-    //         */
-    //         // boards update
-    //         $boardTarget->save();
+            // 이미 있던 이미지 request
+            if ($request->has('board_img_path')) {
+                foreach ($boardImg as $image) {
+                    // 현재 board_img가 request에 없으면 softDelete
+                    if (!in_array($image->board_img, $request->board_img_path)) {
+                        $image->deleted_at = now();
+                        $image->save();
+                    }
+                }
+            }
 
-    //         $board = Board::select('boards.*', 'users.user_nickname', 'board_categories.bc_name')
-    //                     ->join('board_categories', 'board_categories.bc_code', '=', 'boards.bc_code')
-    //                     ->join('users', 'users.user_id', '=', 'boards.user_id')
-    //                     ->when($boardTarget->bc_code === '0', function($query) {
-    //                         $query->join('reviews', 'reviews.board_id', '=', 'boards.board_id')
-    //                                 ->join('products', 'products.product_id', '=', 'reviews.product_id')
-    //                                 ->join('areas', 'areas.area_code', '=', 'products.area_code')
-    //                                 // 2nd 작업250124 수정
-    //                                 // ->join('areas', 'areas.area_code', '=', 'reviews.area_code')
-    //                                 // ->join('review_categories', 'review_categories.bc_code', '=', 'reviews.bc_code')
-    //                                 ->select('boards.*', 'users.user_nickname', 'board_categories.bc_name', 'areas.area_name', 'products.contenttypeid', 'reviews.rate');
-    //                     })
-    //                     // ->withCount('likes')
-    //                     ->where('boards.board_id', '=', $boardTarget->board_id)
-    //                     ->first();
-    //         DB::commit();
-    //     } catch(Throwable $th) {
-    //         DB::rollBack();
-    //         Log::error('게시글 수정 중 오류 발생: ' . $th->getMessage());
-    //         throw $th;
-    //     }
+            // 새로 추가한 이미지 request
+            if ($request->has('board_img_file')) {
+                foreach ($request->board_img_file as $file) {
+                    $path = '/'.$file->store('img');
+                    BoardImage::create([
+                        'board_id' => $request->board_id
+                        ,'board_img' => $path
+                        ,'deleted_at' => null,      
+                    ]);
+                }
+            }
 
-    //     $responseData = [
-    //         'success' => true
-    //         ,'msg' =>'게시글 수정 성공'
-    //         ,'bcName' => $board->bc_name
-    //         ,'rcName' => $board->bc_code === '0' ? $board->rc_name : ''
-    //         ,'areaName' => $board->bc_code === '0' ? $board->area_name : ''
-    //         ,'board' => $board->toArray()
-    //     ];
+            if($boardTarget->bc_code === '0') {
+                $review = Review::where('board_id', $request->board_id)->first();
 
-    //     return response()->json($responseData, 200);
-    // }
+                $review->product_id = $request->product_id;
+                $review->rate = $request->rate;
+                $review->save();
+            }
 
+            $responseData = [
+                'success' => true
+                ,'msg' =>'게시글 수정 성공'
+                // ,'bcName' => $board->bc_name
+                ,'board' => $boardTarget->toArray()
+            ];
 
+            DB::commit();
+        } catch(Throwable $th) {
+            DB::rollBack();
+            Log::error('게시글 수정 중 오류 발생: ' . $th->getMessage());
+            throw $th;
+        }
 
+        return response()->json($responseData, 200);
+    }
+
+    // 게시글 삭제
+    public function destroy($id) {
+        $board = Board::find($id);
+
+        $board->board_flg = '1';
+        $board->save();
+
+        $board_img = BoardImage::with('board')
+                                ->where('board_id', $id)
+                                ->get();
+                
+        foreach ($board_img as $image) {
+            $image->delete();
+        }
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '게시글 삭제 성공'
+        ];
+
+        return response()->json($responseData, 200);
+    }
     // ------------------------------------- 경진 end ------------------------------------------------
 }
 

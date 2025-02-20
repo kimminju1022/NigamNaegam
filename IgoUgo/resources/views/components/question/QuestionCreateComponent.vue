@@ -137,7 +137,7 @@ const clearFile = (index) => {
 
 .container > h1 {
     font-size: 2rem;
-    margin: 50px 0;
+    margin: 25px 0;
 }
 
 select {
