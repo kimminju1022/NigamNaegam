@@ -19,6 +19,7 @@ class CommentController extends Controller
     public function boardIndex(Request $request) {
         $comments = Comment::with('user')
                         ->where('comments.board_id', '=', $request->board_id)
+                        ->orderBy('created_at','ASC')
                         ->paginate(10); //10개마다 페이지네이션하기
                         // ->get()
                         // ->map(function ($comment) {

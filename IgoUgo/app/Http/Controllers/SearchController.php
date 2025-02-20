@@ -42,8 +42,11 @@ class SearchController extends Controller
         // Log::debug($request);
         $key = $request->input('search');
 
-        $products = Product::with('area')
-                            ->where(function($query) {
+        // ------------- meerkat edit Start -------------
+        // $products = Product::with('area') 
+                            // ->where(function($query) {
+        $products = Product::where(function($query) {
+        // ------------- meerkat edit End -------------
                                 $query->where('contenttypeid', '12')
                                     ->orWhere('contenttypeid', '14')
                                     ->orWhere('contenttypeid', '28')
@@ -58,7 +61,18 @@ class SearchController extends Controller
                             ->whereNotNull('firstimage')
                             ->whereNotNull('area_code')
                             ->orderBy('created_at', 'DESC')
-                            ->paginate(5);
+                            // ->paginate(5); // meerkat del
+                            // ------------- meerkat add Start -------------
+                            ->when(
+                                $request->mode === 'all'
+                                , function($query) {
+                                    return $query->select('product_id','title')->get();
+                                }
+                                , function($query) {
+                                    return $query->with('area')->paginate(5);
+                                }
+                            );
+                            // ------------- meerkat add End -------------
 
         $responseData = [
             'success' => true

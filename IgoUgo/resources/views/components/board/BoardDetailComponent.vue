@@ -195,12 +195,19 @@ const commentReport= (comment_id) => {
 // 좋아요 관련
 let debouncingLikeFlg = false;
 const likeProccess = (id) => {
-    if(!debouncingLikeFlg) {
-        debouncingLikeFlg = true;
-        store.dispatch('board/likeProcess', id)
-        .then(() => {
-            debouncingLikeFlg = false;
-        });
+    // 로그인 체크
+    if(!store.state.auth.authFlg) {
+        alert('로그인이 필요한 기능입니다.');
+        router.push('/login');
+    } else {
+        // 좋아요 처리
+        if(!debouncingLikeFlg) {
+            debouncingLikeFlg = true;
+            store.dispatch('board/likeProcess', id)
+            .then(() => {
+                debouncingLikeFlg = false;
+            });
+        }
     }
 }
 

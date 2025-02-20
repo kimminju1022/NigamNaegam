@@ -14,11 +14,13 @@
                 </div>
                 <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
                     <p>리뷰</p>
-                    <!-- <div v-for="searchItem in searchKeyword" class="board-category"> -->
                     <div class="board_category">
+                        <!-- ------------- meerkat edit Start -->
                         <div class="search-box">
-                            <button @click="modalSearchFlg = true" class="btn bg-navy header-bg-btn">검색</button>
+                            <p>{{ $store.state.productSearch.selectedProduct.title }}</p>
+                            <button @click="modalOpen" class="btn bg-navy header-bg-btn">검색</button>
                         </div>
+                        <!-- ------------- meerkat edit End -->
                         <!-- 별점 -->
                         <div class="board-starGrade board-category">
                             <p>별점</p>
@@ -72,27 +74,17 @@
     
     <!-- ------------------------ meerkat Start ------------------------ -->
     <!-- ⭐ 검색 모달 -->
-    <div class="modal_search" v-show="modalSearchFlg">
-        <div class="modal_container">
-            <div class="modal_searchBar">
-                <input v-model="searchKeyword" class="search-bar" type="text" placeholder="어디를 다녀 오셨나요?">
-                <button @click="searchProducts" class="btn bg-clear search_btn">검색</button>
+    <div class="bc-modal-search" v-if="modalSearchFlg">
+        <div class="bc-modal-container">
+            <button class="bc-modal-btn-close" @click="modalClose">X</button>
+            <div class="bc-modal-header">
+                <input v-model="requestData.search" class="bc-modal-input-search" type="text" placeholder="어디를 다녀 오셨나요?">
+                <button @click="searchProducts" class="bc-modal-btn-search">검색</button>
             </div>
-            <div class="product_resultContent">
-                <div class="searchResult_head">
-                    <p>지역</p>
-                    <p>상품명</p>
-                    <p>주소</p>
+            <div class="bc-modal-content-list">
+                <div class="bc-modal-content-item" v-for="(item, key) in $store.state.productSearch.searchProductList" :key="key">
+                    <span @click="selectProduct(item.product_id)">{{ item.title }}</span>
                 </div>
-                <div class="searchResult_content" v-for="item in $store.state.productSearch.searchData" :key="item">
-                    <p>대ㅑ구</p>
-                    <p>으아아아</p>
-                    <p>우주시</p>
-                </div>
-            </div>
-            <div class="modal_searchBtn">
-                <button @click="modalSearchFlg = false;">❌취소</button>
-                <button>✔️선택</button>
             </div>
         </div>
     </div>
@@ -115,8 +107,6 @@ const boardInfo = reactive({
     ,rate: ''
     ,product_id: 0
 });
-
-
 
 // img관련 ----------------------start *****
 const previews = ref([]);
@@ -150,6 +140,7 @@ const setFile = (e) => {
     // <input> 초기화하여 동일한 파일 다시 선택 가능
     e.target.value = '';
 };
+
 const clearFile = (index) => {
     // 삭제할 파일과 미리보기 URL 제거
     URL.revokeObjectURL(previews.value[index]); // 메모리 해제
@@ -160,9 +151,33 @@ const clearFile = (index) => {
 // --------------------- meerkat Start ---------------------
 //검색 관련
 const modalSearchFlg = ref(false);
-const searchKeyword = ref('');
-const searchProducts = () => {
+const requestData = reactive({
+    search: ''
+    ,mode: 'all'
+});
 
+// 검색 모달 열기
+const modalOpen = () => {
+    store.commit('productSearch/setSearchProductList', {}); // 검색 리스트 초기화
+    requestData.search = ''; // 검색어 초기화
+    modalSearchFlg.value = true; // 모달 오픈
+};
+
+// 검색 모달 닫기
+const modalClose = () => {
+    modalSearchFlg.value = false; // 모달 클로즈
+};
+
+// 검색 리스트 획득
+const searchProducts = () => {
+    store.dispatch('productSearch/searchProductList', requestData);
+};
+
+const selectProduct = (productId) => {
+    const product = store.getters['productSearch/getSelectProduct'](productId); // product List에서 선택한 product만 획득
+    store.commit('productSearch/setSelectedProduct', product); // 선택한 product 정보 저장
+    boardInfo.product_id = product.product_id; // 작성 데이터에 선택한 product_id 셋팅
+    modalClose(); // 모달 닫기
 };
 
 // --------------------- meerkat End ---------------------
@@ -375,10 +390,21 @@ select {
 
 /* -------------------img */
 
-.board_category, .search-box{
+/* .board_category, .search-box{  edit meerkat */
+.board_category{ 
     display: grid;
     margin: 0 10px;
     grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 10px;
+    margin: 0 10px;
     text-align: center;
     align-items: center;
 }
@@ -421,19 +447,29 @@ select {
 
 /* 모달 - 검색 */
 /* 모달 시 메인 배경 */
-.modal_search{
-    width: 100%;
-    height: 100%;
+.bc-modal-search{
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(197, 198, 198, 0.374);
     position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* 모달 디자인 */
-.modal_container{
-    width: 50%;
-    background-color: azure;
+.bc-modal-container{
+    width: 600px;
+    background-color: #fff;
     border-radius: 10px;
     padding: 20px;
+    display: grid;
+    place-items: center;
+    gap: 20px;
+    grid-template-columns: 30px 1fr 30px;
 }
 .modal-content {
     background: white;
@@ -443,18 +479,55 @@ select {
     text-align: center;
     width: 300px;
 }
-
-select[readonly] {
-    pointer-events: none;
+.bc-modal-btn-close {
+    border: none;
+    border-radius: 5px;
+    background-color: #01083a;
+    color: #fff;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
-.product_resultContent{
-    grid: flex;
-    grid-template-columns: 7fr 2fr;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
+.bc-modal-header {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+.bc-modal-input-search {
+    border: 1px solid #01083a;
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+    margin-right: 30px;
+}
+.bc-modal-input-search::placeholder {
+    text-align: center;
+}
+.bc-modal-btn-search {
+    border: none;
+    border-radius: 30px;
+    background-color: #01083a;
+    color: #fff;
+    font-size: 16px;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+}
+.bc-modal-content-list {
+    overflow: scroll;
+    width: 450px;
+    height: 400px;
+    margin-top: 30px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    text-align: center;
+}
+.bc-modal-content-item {
+    font-size: 16px;
     font-weight: 500;
 }
+
 /* -------------------modal */
 
 @media screen and (max-width: 1000px) {
