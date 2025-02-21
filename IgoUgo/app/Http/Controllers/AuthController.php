@@ -20,15 +20,21 @@ class AuthController extends Controller
 {
     // 로그인
     public function login(UserRequest $request) {
-        $userInfo = User::where('user_email', $request->user_email)->first();
+        $userInfo = User::with('user_controls')
+                        ->where('user_email', $request->user_email)
+                        ->first();
 
-        $userInfo->user_last_login = now();
+        $date = Carbon::now()->format('Y-m-d H:i:s');
 
         // 관리자인지 일반 유저인지 체크
         if($userInfo->manager_flg === '1') {
             throw new AuthenticationException('회원 정보 오류');
         }
 
+        if (Carbon::parse($userInfo->user_controls[0]->expires_at)->lessThanOrEqualTo($date)) {
+            throw new AuthenticationException('제재 회원 로그인 불가');
+        }
+        
         if($userInfo->user_flg === '1') {
             throw new AuthenticationException('탈퇴 회원 오류');
         }
@@ -41,6 +47,8 @@ class AuthController extends Controller
         if(!(Hash::check($request->user_password, $userInfo->user_password))) {
             throw new AuthenticationException('비밀번호 체크 오류');
         }
+
+        $userInfo->user_last_login = now();
 
         // 토큰 발행
         list($accessToken, $refreshToken) = MyToken::createTokens($userInfo);

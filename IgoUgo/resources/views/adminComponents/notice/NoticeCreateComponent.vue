@@ -200,5 +200,6 @@ textarea {
     background: #ebebeb;
     border-radius: 10px;
     padding: 10px;
+    font-size: 16px;
 }
 </style>

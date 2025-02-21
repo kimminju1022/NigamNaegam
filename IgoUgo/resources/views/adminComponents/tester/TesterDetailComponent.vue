@@ -2,7 +2,7 @@
     <div class="tester-container" v-if="testerDetail">
         <div class="header-flex">
             <div>
-                <p class="tester-title">체험단 상세</p>
+                <router-link to="/admin/tester"><p class="tester-title">체험단 상세</p></router-link>
                 <hr class="hr-style">
             </div>
             <div class="header-btn">
@@ -18,8 +18,8 @@
                         <p>번호</p>
                         <p>{{ testerDetail.board_id }}</p>
                     </div>
-                    <p>{{ testerDetail.tester_management.tester_area }}</p>
-                    <p>호텔</p>
+                    <p>{{ testerDetail.tester_management?.tester_area }}</p>
+                    <p>{{ testerDetail.tester_management?.tester_name }}</p>
                 </div>
                 <div class="admin-name">
                     <p>작성자</p>
@@ -49,8 +49,7 @@
                 </div>
             </div>
             <div class="tester-content">
-                <img :src="testerDetail.board_images[0]?.board_img" alt="board_img1 무조건 가게정보사진">
-                <!-- <p>{{ testerDetail.board_content }}</p> -->
+                <img :src="testerDetail.board_images[0]?.board_img">
                 <textarea ref="textArea" @input="resize" name="board_content" placeholder="내용" readonly>{{ testerDetail.board_content }}</textarea>
             </div>
         </div>
@@ -201,6 +200,7 @@ textarea {
     width: 100%;
     min-height: 300px;
     padding: 10px;
+    font-size: 16px;
 }
 
 /* --------------------------------------------------------- */

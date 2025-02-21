@@ -6,8 +6,8 @@
         </div>
         <div class="board-box">
             <div class="board-box-flex">
-                <p>{{ testerDetail.tester_management?.tester_area }}</p>
-                <p>{{ testerDetail.tester_management?.tester_name }}</p>
+                    <p>{{ testerDetail.tester_management?.tester_area }}</p>
+                    <p>{{ testerDetail.tester_management?.tester_name }}</p>
                 <p>{{ testerDetail.board_title }}</p>
                 <p>{{ testerDetail.created_at_timestamps }}</p>
             </div>
@@ -20,10 +20,10 @@
                         <!-- <textarea ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</textarea> -->
                         <pre ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</pre>
                     </div>
-                    <div>
+                    <div class="board-place-box">
                         <p>장소 : {{ testerDetail.tester_management?.tester_place }}</p>
                         <p>모집 기한 : {{ testerDetail.tester_management?.dd }}</p>
-                        <p>신청은 댓글로</p>
+                        <p>신청은 댓글로 부탁드립니다.</p>
                     </div>
                 </div>
             </div>
@@ -170,18 +170,17 @@ const deleteComment = (id) => {
 .board-content {
     text-align: center;
 }
-
-.board-content > :last-child {
-    margin-top: 30px;
-}
-
 .board-box p, .board-content textarea {
     font-size: 17px;
 }
 
-/* .board-box >.board-box-flex > :first-child {
-    border-right: 1px solid #01083a;
-} */
+.board-place-box {
+    background-color: #edf0f3;
+    border-radius: 10px;
+    margin: 70px auto;
+    width: 70%;
+    padding: 10px 0;
+}
 
 .board-box-flex {
     display: grid;
