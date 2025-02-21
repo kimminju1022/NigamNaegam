@@ -189,7 +189,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useStore } from 'vuex'; 
 import { useRoute } from 'vue-router';
 import PaginationComponent from '../../components/PaginationComponent.vue';
@@ -313,6 +313,15 @@ function blockBtn() {
         store.dispatch('userManage/updateUserControl', control);
     }
 }
+
+watch(
+    () => userControlExp?.expires_at,
+    (newVal, oldVal) => {
+        if(newVal !== oldVal) {
+            store.dispatch('userManage/showUserControl', control);
+        }
+    }
+);
 </script>
 
 <style scoped>
