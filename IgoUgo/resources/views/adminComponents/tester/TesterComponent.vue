@@ -11,7 +11,7 @@
             <div class="tester-list-title">
                 <p>번호</p>
                 <p>지역</p>
-                <p>가게 이름</p>
+                <p>가게 주소</p>
                 <p>게시글 제목</p>
                 <p>댓글 수</p>
                 <p>관리자 이름</p>

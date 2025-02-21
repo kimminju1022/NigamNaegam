@@ -366,6 +366,10 @@ const deletemodal = (userInfo) => {
     margin-bottom: 10px;
 }
 
+.sort p:not(:nth-child(2)) {
+    cursor: pointer;
+}
+
 .question-content-box {
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;

@@ -71,12 +71,12 @@
                 <div v-else>
                     <div v-for="(item, index) in $store.state.search.searchProductList" :key="item" class="search-content">
                         <p>{{ index+1 }}</p>
-                        <p class="area_name">{{ item.area.area_name }}</p>
-                        <p v-if="item.contenttypeid === '12'">관광지</p>
-                        <p v-else-if="item.contenttypeid === '14'">문화시설</p>
-                        <p v-else-if="item.contenttypeid === '28'">레포츠</p>
-                        <p v-else-if="item.contenttypeid === '38'">쇼핑</p>
-                        <p v-else="item.contenttypeid === '39'">음식점</p>
+                        <p class="area_name">{{ item?.area.area_name }}</p>
+                        <p v-if="item?.contenttypeid === '12'">관광지</p>
+                        <p v-else-if="item?.contenttypeid === '14'">문화시설</p>
+                        <p v-else-if="item?.contenttypeid === '28'">레포츠</p>
+                        <p v-else-if="item?.contenttypeid === '38'">쇼핑</p>
+                        <p v-else="item?.contenttypeid === '39'">음식점</p>
                         <router-link :to="`/products/${item.contenttypeid}/${item.contentid}`" class="title">{{ item.title }}</router-link>
                         <p></p>
                         <p></p>
@@ -116,12 +116,12 @@
                         <p>{{ index+1 }}</p>
                         <p class="area_name">{{ item.board_category.bc_name }}</p>
                         <!-- <p></p> -->
-                        <p v-if="item.product.contenttypeid === '12'">관광지</p>
-                        <p v-else-if="item.product.contenttypeid === '14'">문화시설</p>
-                        <p v-else-if="item.product.contenttypeid === '28'">레포츠</p>
-                        <p v-else-if="item.product.contenttypeid === '32'">호텔</p>
-                        <p v-else-if="item.product.contenttypeid === '38'">쇼핑</p>
-                        <p v-else="item.product.contenttypeid === '39'">음식점</p>
+                        <p v-if="item?.product?.contenttypeid === '12'">관광지</p>
+                        <p v-else-if="item?.product?.contenttypeid === '14'">문화시설</p>
+                        <p v-else-if="item?.product?.contenttypeid === '28'">레포츠</p>
+                        <p v-else-if="item?.product?.contenttypeid === '32'">호텔</p>
+                        <p v-else-if="item?.product?.contenttypeid === '38'">쇼핑</p>
+                        <p v-else="item?.product?.contenttypeid === '39'">음식점</p>
                         <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
                         <p></p>
                         <p>{{ item.created_at }}</p>
@@ -161,7 +161,7 @@
                         <p>{{ index+1 }}</p>
                         <p class="area_name"></p>
                         <p>{{ item.tester_management?.tester_name }}</p>
-                        <router-link :to="`/boards/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
+                        <router-link :to="`/testers/${item.board_id}`" class="title">{{ item.board_title }}</router-link>
                         <p></p>
                         <p>{{ item.tester_management?.dd }}</p>
                     </div>

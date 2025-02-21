@@ -18,10 +18,10 @@
             </div>
             <div class="noti-list-box" >
                 <div v-for="item in noticeList" class="noti-item">
-                    <p>{{ item.board_id }}</p>
+                    <p>{{ item?.board_id }}</p>
                     <router-link :to="`/admin/notice/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
-                    <p>{{ item.user?.user_name }}</p>
-                    <p>{{ item.created_at_timestamps }}</p>
+                    <p>{{ item?.user?.user_name }}</p>
+                    <p>{{ item?.created_at_timestamps }}</p>
                 </div>
                 <!-- 페이지네이션 -->
                 <PaginationComponent

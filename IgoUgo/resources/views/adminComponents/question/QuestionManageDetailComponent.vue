@@ -18,14 +18,14 @@
                     <div class="que-content que-content-number">
                         <!-- <p>글번호</p> -->
                         <p>글번호 : {{ questionDetail.board_id }}</p>
-                        <p>{{ questionDetail.question_category.qc_name }}</p>
+                        <p>{{ questionDetail.question_category?.qc_name }}</p>
                     </div>
                     <div class="que-content que-content-title">
                         <p>제목 :</p>
                         <textarea name="" id="" class="textarea-title" readonly>{{ questionDetail.board_title }}</textarea>
                     </div>
                     <div class="que-content que-content-user">
-                        <p>{{ questionDetail.user.user_nickname}}</p>
+                        <p>{{ questionDetail.user?.user_nickname}}</p>
                         <p>{{ questionDetail.created_at_timestamps }}</p>
                     </div>
                 </div>

@@ -78,7 +78,7 @@ export default {
                                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                             }
                         }
-                        
+
                         const formData = new FormData();
 
                         formData.append('user_name', userData.userInfo.user_name);
@@ -278,7 +278,7 @@ export default {
             
             axios.post(url, data)
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
 
                 sessionStorage.setItem('EmailChk', true);
                 alert('사용가능한 이메일입니다.');
@@ -301,35 +301,6 @@ export default {
             });
         },
 
-        // 닉네임 중복체크
-        // chkAvailableNickname(context, user_nickname) {
-        //     const url = '/api/available/nickname';
-        //     const data = JSON.stringify({ user_nickname: user_nickname });
-
-        //     // console.log(user_nickname,data);
-
-        //     axios.post(url, data)
-        //     .then(response => {
-        //         console.log(response.data);
-        //         alert('사용가능한 닉네임입니다.');
-        //     })
-        //     .catch(error => {
-        //         let errorMsgList = [];
-        //         console.log(error.response.data);
-                
-        //         if(error.response.status === 422 || error.response.status === 401) {
-        //         errorMsgList.push(error.response.data.data.user_nickname[0]);
-        //         } else if(error.response.status === 409) {
-        //             errorMsgList.push(error.response.data.data.user_nickname[0]);
-        //         } else {
-        //             errorMsgList.push('예기치 못한 오류 발생');
-        //         }
-                
-        //         context.commit('setErrorMsgList', errorMsgList);
-        //         alert(errorMsgList.join('\n'));
-        //     });
-        // },
-
         // 전화번호 중복체크
         chkAvailablePhone(context, user_phone) {
             const url = '/api/available/phone';
@@ -339,7 +310,7 @@ export default {
 
             axios.post(url, data)
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 alert('사용가능한 전화번호입니다.');
             })
             .catch(error => {

@@ -9,8 +9,8 @@
         <div class="board-box">
             <div class="board-title">
                 <p>번호</p>
+                <p>지역</p>
                 <p>카테고리</p>
-                <p></p>
                 <p>제목</p>
                 <p></p>
                 <p>작성일자</p>
@@ -19,8 +19,8 @@
             <div class="board-notice-box" >
                 <div v-for="(item, index) in noticeTopList" class="board-content">
                     <p>{{ 5 - index }}</p>
+                    <p> - </p>
                     <p>공지</p>
-                    <p></p>
                     <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
                     <p></p>
                     <p>{{ item.created_at }}</p>
@@ -30,8 +30,8 @@
             <div class="board-content-box">
                 <div v-for="item in testerList" :key="item" class="board-content">
                     <p>{{ item.board_id }}</p>
+                    <p>{{ item.tester_management?.tester_area }}</p>
                     <p>{{ item.tester_management?.tester_name }}</p>
-                    <p></p>
                     <router-link :to="`/testers/${item.board_id}`">{{ item.board_title }}<span> [{{ item.comments_count }}]</span></router-link>
                     <p></p>
                     <p>{{ item.created_at }}</p>
@@ -139,7 +139,7 @@ onBeforeMount(() => {
     padding:  5px;
 }
 
-.board-notice-box > .board-content > p:nth-child(2) {
+.board-notice-box > .board-content > p:nth-child(3) {
     font-weight: 600;
 }
 

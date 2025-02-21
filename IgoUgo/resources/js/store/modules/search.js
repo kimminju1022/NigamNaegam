@@ -113,7 +113,7 @@ export default {
                 // console.log('setSearchBoardList',response.data);
                 context.commit('setSearchBoardCnt', response.data.board.total);
                 context.commit('setSearchBoardList', response.data.board.data);
-                console.log(response.data.board.data);
+                // console.log(response.data.board.data);
                 context.commit('pagination/setBoardPagination', response.data.board, {root: true});
             }) 
             .catch(error => {

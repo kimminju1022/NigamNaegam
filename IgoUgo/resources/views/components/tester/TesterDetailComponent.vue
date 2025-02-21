@@ -6,6 +6,7 @@
         </div>
         <div class="board-box">
             <div class="board-box-flex">
+                <p>{{ testerDetail.tester_management?.tester_area }}</p>
                 <p>{{ testerDetail.tester_management?.tester_name }}</p>
                 <p>{{ testerDetail.board_title }}</p>
                 <p>{{ testerDetail.created_at_timestamps }}</p>
@@ -13,17 +14,17 @@
             <div class="board-content-box">
                 <div class="board-content">
                     <div class="board-content-img">
-                        <!-- <div class="img-grid">
-                            <img v-for="(image, index) in testerDetail.board_images" :key="index" :src="image.board_img">
-                        </div>  -->
                         <img :src="testerDetail.board_images[0]?.board_img">
                     </div>
                     <div class="content-textarea">
                         <!-- <textarea ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</textarea> -->
                         <pre ref="textArea" @input="resize" readonly>{{ testerDetail.board_content }}</pre>
                     </div>
-                    <p>모집 기한 : {{ testerDetail.tester_management?.dd }}</p>
-                    <p>신청은 댓글로</p>
+                    <div>
+                        <p>장소 : {{ testerDetail.tester_management?.tester_place }}</p>
+                        <p>모집 기한 : {{ testerDetail.tester_management?.dd }}</p>
+                        <p>신청은 댓글로</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,7 +35,7 @@
                     <div class="comment-flex">
                         <!-- <textarea @click="chkAuth" class="comment-text-box" :disabled="!store.state.auth.authFlg"></textarea> -->
                         <textarea v-model="searchDataComment.comment" @click="chkAuth" class="comment-text-box"></textarea>
-                        <button @click="storeComment" class="btn bg-store" :disabled="!store.state.auth.authFlg">등록</button>
+                        <button @click="storeComment" class="btn bg-store" :disabled="!store.state.auth.authFlg">작성</button>
                     </div>
                     <p>총 댓글 : {{ testerDetail.comments_count }}</p>
                     <div class="comment-list">
@@ -52,22 +53,6 @@
                             <p>{{ item.comment_content }}</p>
                         </div>
                     </div>
-                    <!-- <p>총 댓글 : {{ testerDetail.comments_count }}</p>
-                    <div class="comment-list">
-                        <div v-for="item in testerDetail.comments" class="comment-user">
-                            <div class="comment-user-header">
-                                <div class="user-profile-flex">
-                                    <img :src="item.user?.user_profile" alt="">
-                                    <div class="user-flex">
-                                        <p>{{ item.user?.user_nickname }}</p>
-                                        <p>{{ item.created_at_timestamps }}</p>
-                                    </div>
-                                </div>
-                                <button v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-clear btn-delete">X</button>
-                            </div>
-                            <p>{{ item.comment_content }}</p>
-                        </div>
-                    </div> -->
                 </div>
                 <PaginationComponent
                     :actionName="actionNameCommentList"
@@ -184,7 +169,11 @@ const deleteComment = (id) => {
 
 .board-content {
     text-align: center;
-} 
+}
+
+.board-content > :last-child {
+    margin-top: 30px;
+}
 
 .board-box p, .board-content textarea {
     font-size: 17px;
@@ -196,9 +185,13 @@ const deleteComment = (id) => {
 
 .board-box-flex {
     display: grid;
-    grid-template-columns: 1fr 7fr 1.5fr;
+    grid-template-columns: 1fr 1fr 9fr 2fr;
     place-items: center;
     margin: 10px 0;
+}
+
+.board-box-flex :nth-child(3) {
+    font-weight: 600;
 }
 
 .board-content-box {
@@ -296,12 +289,12 @@ const deleteComment = (id) => {
 
 /* 댓글 등록 버튼 */
 .bg-store {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 40px;
     border-radius: 10px;
-    background: #6a7f9b;
+    background: #01083a;
     color: #fff;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 /* 댓글 내용 */

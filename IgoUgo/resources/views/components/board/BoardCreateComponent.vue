@@ -67,8 +67,8 @@
             </div>
         </div>
         <div class="success-btn-box"> 
-            <router-link :to="'/boards'"><button class="btn bg-navy success-btn">취소</button></router-link>
-            <button @click="$store.dispatch('board/storeBoard', boardInfo)" class="btn bg-navy success-btn">완료</button>
+            <button @click="clearSelectedProduct(); $store.dispatch('board/storeBoard', boardInfo);" class="btn bg-navy success-btn">완료</button>
+            <router-link :to="'/boards'" @click="clearSelectedProduct"><button class="btn bg-navy success-btn">취소</button></router-link>
         </div>
     </div>
     
@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed} from 'vue';
+import { reactive, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -180,6 +180,9 @@ const selectProduct = (productId) => {
     modalClose(); // 모달 닫기
 };
 
+const clearSelectedProduct = () => {
+    store.commit('productSearch/setSelectedProduct', {});
+}
 // --------------------- meerkat End ---------------------
 
 </script>

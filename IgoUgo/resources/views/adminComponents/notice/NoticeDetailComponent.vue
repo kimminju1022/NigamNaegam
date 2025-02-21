@@ -16,25 +16,25 @@
                 <div class="info-top-grid">
                     <div class="board-id">
                         <p>번호</p>
-                        <p>{{ noticeDetail.board_id }}</p>
+                        <p>{{ noticeDetail?.board_id }}</p>
                     </div>
                     <div class="admin-name">
                         <p>작성자</p>
-                        <p>{{ noticeDetail.user.user_name }}</p>
+                        <p>{{ noticeDetail?.user?.user_name }}</p>
                     </div>
                 </div>
                 <div class="title-content-time">
                     <p>최종 수정일자</p>
-                    <p>{{ noticeDetail.updated_at_timestamps }}</p>
+                    <p>{{ noticeDetail?.updated_at_timestamps }}</p>
                 </div>
             </div>
             <div class="title-box">
                 <p>제목</p>
-                <p>{{ noticeDetail.board_title }}</p>
+                <p>{{ noticeDetail?.board_title }}</p>
             </div>
             <div class="notice-content">
                 <img :src="noticeDetail.board_images[0]?.board_img">
-                <textarea ref="textArea" @input="resize" name="board_content" placeholder="내용" readonly>{{ noticeDetail.board_content }}</textarea>
+                <textarea ref="textArea" @input="resize" name="board_content" placeholder="내용" readonly>{{ noticeDetail?.board_content }}</textarea>
             </div>
         </div>
     </div>
