@@ -490,7 +490,7 @@ export default {
 
             axios.delete(url, config)
             .then(response => {
-                alert('삭제 성공인가');
+                alert('삭제 성공');
                 router.push('/boards');
             })
             .catch(error => {

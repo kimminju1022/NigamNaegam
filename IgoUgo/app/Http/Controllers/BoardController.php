@@ -7,6 +7,7 @@ use App\Models\Board;
 use App\Models\BoardCategory;
 use App\Models\BoardImage;
 use App\Models\BoardReport;
+use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,8 +42,17 @@ class BoardController extends Controller
                     )
                     ->select('boards.*', 'users.user_nickname', 'areas.area_name', 'products.contenttypeid', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt')); // 경진 수정
             })
-            ->where('board_flg', '0') // 경진 추가
-            ->where('board_title', 'like', "%$request->search%")
+            // ------------------------- 경진 start -----------------------------
+            ->where('board_flg', '0')
+            // ->where('board_title', 'like', "%$request->search%")
+            ->where(function ($query) use ($request) {
+                $query->where('board_title', 'like', "%$request->search%")
+                        ->orWhere('board_content', 'like', "%$request->search%");
+                if ($request->bc_code === '0') {
+                    $query->orWhere('area_name', 'like', "%$request->search%");
+                }
+            })
+            // ------------------------- 경진 end -----------------------------           
             ->where('boards.bc_code', '=', $request->bc_code)
             ->orderBy('boards.created_at', 'desc')
             ->paginate(15);
@@ -72,7 +82,7 @@ class BoardController extends Controller
     // 게시글 획득_상세
     public function show(Request $request, $id) {
         $board_target = Board::find($id);
- 
+
 
         // 게시글 ID에 대한 조회 시간 확인
         if (!isset($viewedBoards[$id])) {
@@ -136,7 +146,7 @@ class BoardController extends Controller
             $like = new Like();
             $like->board_id = $id;
             $like->user_id = $idt;
-            $like->like_flg = '0';
+            $like->like_flg = '1';
         }
 
         $like->save();
@@ -506,7 +516,7 @@ class BoardController extends Controller
                 'success' => true
                 ,'msg' => '게시글 작성 성공'
                 ,'board' => $board->toArray()
-                ,'review' => $review->toArray() ? $review->toArray() : null,
+                // ,'review' => $review->toArray() ? $review->toArray() : null,
             ];
 
             DB::commit();
@@ -595,6 +605,9 @@ class BoardController extends Controller
         foreach ($board_img as $image) {
             $image->delete();
         }
+
+        $comments = Comment::where('board_id', $id)
+                            ->update(['comment_flg' => '1']);
 
         $responseData = [
             'success' => true

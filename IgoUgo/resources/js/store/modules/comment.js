@@ -15,17 +15,16 @@ export default {
         setRemoveCommentById(state, commentId) {
             state.commentList = state.commentList.filter(commentList => commentList.comment_id !== commentId);
         }
-        // // 댓글 입력란 초기화
-        // setSearchDataComment(state, comment) {
-        //     state.searchDataComment.comment = comment;
-        // }
     },
     actions: {
         // 댓글 리스트
         commentList(context, data) {
             const url = `/api/testers/comments/${data.board_id}`;
+            const config = {
+                params: data,
+            }
 
-            axios.get(url)
+            axios.get(url, config)
             .then(response => {
                 // console.log('setCommentList',response.data);
                 context.commit('setCommentList', response.data.data.data);

@@ -94,11 +94,14 @@ const actionNameCommentList = 'comment/commentList';
 
 const testerDetail = computed(() => store.state.tester.testerDetail);
 const commentList = computed(() => store.state.comment.commentList);
+
 // const boardInfo = reactive({
 //     board_id: route.params.id,
 // });
+
 const searchData = reactive({
     board_id: route.params.id,
+    page: store.state.pagination.currentPage,
 });
 
 const searchDataComment = reactive({
@@ -106,17 +109,6 @@ const searchDataComment = reactive({
     comment: '',
     page: store.state.pagination.currentPage,
 });
-
-const chkAuth = () => {
-    if(!store.state.auth.authFlg) {
-        alert('로그인 후 작성 가능');
-    }
-}
-
-const storeComment = () => {
-    store.dispatch('comment/storeComment', searchDataComment);
-    testerDetail.value.comments_count++;
-}
 
 const textArea = ref(null);
 
@@ -130,6 +122,24 @@ onBeforeMount(()=>{
     store.dispatch(actionNameCommentList, searchData);
 });
 
+// 댓글 로그인 체크
+const chkAuth = () => {
+    if(!store.state.auth.authFlg) {
+        alert('로그인 후 작성 가능');
+    }
+}
+
+// 댓글 작성
+const storeComment = () => {
+    if(!store.state.auth.authFlg) {
+        alert('로그인 후 작성 가능');
+    } else {
+        store.dispatch('comment/storeComment', searchDataComment);
+        testerDetail.value.comments_count++;
+    }
+}
+
+// 댓글 삭제
 const deleteComment = (id) => {
     const check = confirm('해당 댓글을 삭제 하시겠습니까?');
     if(check) {

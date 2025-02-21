@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="board-box">
+    <!-- <div class="board-box">
         <div class="board-title-flex">
             <p>제목</p>
             <p>{{ boardDetail.board_title }}</p>
@@ -63,10 +63,10 @@
         </div>
     </div>
 
-        <h1 style="margin: 200px 0;">----------------------------------------------------------------</h1>
+        <h1 style="margin: 200px 0;">----------------------------------------------------------------</h1> -->
 
     <!-- 상세 글머리_정보불러오기-->
-    <h1>{{ boardDetail.board_title }}</h1>
+    <p>{{ boardDetail.board_title }}</p>
     <div class="board-detail-head" :class="gridDetail">
         <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
         <b v-if="boardDetail.bc_code === '0'" style="text-align: left; font-size: 1.3rem;">상품명   :   {{ boardDetail.title }}</b>
@@ -110,7 +110,7 @@
         <hr>
         <div class="board-detail-reply ">
             <p>댓글</p>
-            <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요" v-model="commentsInfo.comment_content">
+            <input type="text" maxlength="100" placeholder="소통하고 싶은 글이 있다면 남겨 주세요" v-model="commentsInfo.comment_content" @click="chkAuth">
             <button @click="storeComment();" class="btn bg-navy board-detail-btn">작성</button>
             <p style="text-align: end; padding-right: 40px;">총 댓글 : {{ $store.state.board.commentsTotal }}</p>
         </div>
@@ -128,7 +128,7 @@
                     {{ item.user.user_nickname }}
                 </p>
                 <p>{{ item.created_at }}</p>
-                <button v-if="$store.state.auth.userInfo.user_id == item.user.user_id" class="clear_btn" @click="deleteComments(item.comment_id)">🗑️</button>
+                <button v-if="$store.state.auth.userInfo.user_id == item.user.user_id" class="clear_btn" @click="deleteComments(item.comment_id)">X</button>
             </div>
         </div>
         <div class="pagination-btn">
@@ -142,7 +142,6 @@
             />
         </div>
     </div>
-
 </template>
 
 <script setup>
@@ -181,6 +180,13 @@ const commentsInfo =  reactive({
 
     // 신고
 const boardReport= (id) => {
+    // ------------ 경진 추가 -----------
+    if(!store.state.auth.authFlg) {
+        alert('로그인이 필요한 기능입니다.');
+        router.push('/login');
+        return; 
+    } 
+    // ------------ 경진 추가 -----------
     const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
     if (userResponse) {
         // 신고적용할 조건필요
@@ -212,12 +218,19 @@ const deleteComments = (id) => {
 };
     // 댓글 신고
 const commentReport= (comment_id) => {
-    const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
-    if (userResponse) {
-        // 신고적용할 조건필요
-        // router.push('/boards/');
-        store.dispatch('board/commentReport', comment_id); 
-    } else {
+    // ------------ 경진 추가 -----------
+    if(!store.state.auth.authFlg) {
+        alert('로그인이 필요한 기능입니다.');
+        router.push('/login');
+    } 
+    // ------------ 경진 추가 -----------
+    else {
+        const userResponse = confirm('본 게시물을 신고 하시겠습니까?\n신고 조건은 다음과 같습니다\n    *유해성 내용 포함\n    *악의적, 의도적 비방글\n    -조건에 부합할 시 신고해 주시길 바라며,\n신고는 신중히 생각하고 요청해 주세요-');
+        if (userResponse) {
+            // 신고적용할 조건필요
+            // router.push('/boards/');
+            store.dispatch('board/commentReport', comment_id); 
+        }
     }
 }
 
@@ -243,13 +256,20 @@ const likeProccess = (id) => {
 // ------------------ meerkat End ------------------
 
 
-// ----------------------- 경진 start ---------------------
-    // 게시물삭제
-    const deleteConfirm = (id) => {
-    const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
-    if(userResponse) {
-        store.dispatch('board/boardDelete', id);
+// ----------------------- 경진 start ---------------------]
+// 댓글 로그인 체크
+const chkAuth = () => {
+    if(!store.state.auth.authFlg) {
+        alert('로그인 후 작성 가능');
     }
+}
+
+// 게시물삭제
+const deleteConfirm = (id) => {
+const userResponse = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
+if(userResponse) {
+    store.dispatch('board/boardDelete', id);
+}
 };
 // ----------------------- 경진 end ---------------------
 
