@@ -12,13 +12,13 @@
             <div class="comment-table">
                 <div class="comment-column">게시글 번호</div>
                 <div class="comment-table-text" >
-                    <p class="comment-content">{{ commentDetail.board_id }}</p>
+                    <router-link :to="`/admin/board/${commentDetail.bc_code === '0' ? 'review' : 'free'}/${commentDetail.board_id}`"><p class="comment-content">{{ commentDetail.board_id }}</p></router-link>
                 </div>
             </div>
             <div class="comment-table">
                 <div class="comment-column">게시글 제목</div>
                 <div class="comment-table-text" >
-                    <p class="comment-content">{{ commentDetail.board_title }}</p>
+                    <router-link :to="`/admin/board/${commentDetail.bc_code === '0' ? 'review' : 'free'}/${commentDetail.board_id}`"><p class="comment-content">{{ commentDetail.board_title }}</p></router-link>
                 </div>
             </div>
             <div class="comment-table">

@@ -6,14 +6,14 @@
             <router-link to="/admin/main"><img class="admin-header-image" src="/img_admin/admin_logo.png" alt=""></router-link>
             <!-- <hr> -->
             <div class="admin-header-dropdown">
-                <router-link to="/admin/user"><p>유저관리</p></router-link>
+                <router-link to="/admin/user" @click="$store.commit('pagination/setPaginationInitialize')"><p>유저관리</p></router-link>
 
                 <div @mouseenter="showDropdown" @mouseleave="hideDropdown">
                     <p>게시판관리</p>
                     <div v-if="dropdownVisible" class="admin-dropdown-menu">
                         <!-- <router-link to="/admin/board/api"><p>API통합 관리</p></router-link> -->
-                        <router-link to="/admin/board/review"><p>리뷰게시판</p></router-link>
-                        <router-link to="/admin/board/free"><p>자유게시판</p></router-link>
+                        <router-link to="/admin/board/review" @click="$store.commit('pagination/setPaginationInitialize')"><p>리뷰게시판</p></router-link>
+                        <router-link to="/admin/board/free" @click="$store.commit('pagination/setPaginationInitialize')"><p>자유게시판</p></router-link>
                     </div>
                 </div>
                 

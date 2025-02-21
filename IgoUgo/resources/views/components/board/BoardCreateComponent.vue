@@ -423,7 +423,7 @@ select {
 .star-label {
     font-size: 30px;
     color: rgba(255, 217, 0, 0.5); /* 기본 별 색상 */
-    /* cursor: pointer; */ /* 잔재주인데 포인터 할까? */
+    cursor: pointer;
 }
 
 /* 기본 별 스타일 */
@@ -500,6 +500,7 @@ select {
     width: 300px;
     height: 30px;
     margin-right: 30px;
+    padding-left: 10px;
 }
 .bc-modal-input-search::placeholder {
     text-align: center;
@@ -514,6 +515,11 @@ select {
     height: 30px;
     cursor: pointer;
 }
+.bc-modal-btn-search:hover {
+    color: #01083a;
+    background-color: #fff;
+    border: 2px solid #01083a;
+}
 .bc-modal-content-list {
     overflow: scroll;
     width: 450px;
@@ -526,6 +532,7 @@ select {
 .bc-modal-content-item {
     font-size: 16px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 /* -------------------modal */

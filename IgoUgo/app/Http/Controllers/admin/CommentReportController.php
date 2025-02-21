@@ -18,6 +18,8 @@ class CommentReportController extends Controller
                                 ->select(
                                     'comments.comment_id',
                                     'boards.board_id',
+                                    'boards.board_flg',
+                                    'boards.deleted_at',
                                     'comments.comment_content',
                                     'users.user_name',
                                     'users.user_nickname',
@@ -28,12 +30,15 @@ class CommentReportController extends Controller
                                 ->groupBy(
                                     'comments.comment_id',
                                     'boards.board_id',
+                                    'boards.board_flg',
+                                    'boards.deleted_at',
                                     'comments.comment_content',
                                     'users.user_name',
                                     'users.user_nickname',
                                     'comments.created_at',
                                     'comments.comment_flg'
                                 )
+                                ->whereNull('boards.deleted_at')
                                 ->orderBy('comments.created_at', 'DESC')
                                 ->paginate(17);
 
@@ -55,6 +60,7 @@ class CommentReportController extends Controller
                                 ->select(
                                     'boards.board_id',
                                     'boards.board_title',
+                                    'boards.bc_code',
                                     'comments.comment_id',
                                     'comments.comment_flg',
                                     'comments.comment_content',
@@ -65,6 +71,7 @@ class CommentReportController extends Controller
                                 ->groupBy(
                                     'boards.board_id',
                                     'boards.board_title',
+                                    'boards.bc_code',
                                     'comments.comment_id',
                                     'comments.comment_flg',
                                     'comments.comment_content',

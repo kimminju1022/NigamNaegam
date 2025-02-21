@@ -18,9 +18,9 @@
             <div class="comment-list-box" >
                 <div v-for="item in commentList" :key=item class="comment-item">
                     <p>{{ item.report_cnt }}</p>
-                    <p>{{ item.board_id }}</p>
+                    <p :class="{ 'deleted-class': item.board_flg === '1' }">{{ item.board_id }}</p>
                     <p :class="{ 'deleted-class': item.comment_flg === '1' }">{{ item.comment_id }}</p>
-                    <router-link :to="`/admin/comment/${item.comment_id}`"><p>{{ item.comment_content }}</p></router-link>
+                    <p><router-link :to="`/admin/comment/${item.comment_id}`">{{ item.comment_content }}</router-link></p>
                     <p>{{ item.user_nickname }}</p>
                     <p>{{ item.user_name }}</p>
                     <p>{{ item.created_at }}</p>
