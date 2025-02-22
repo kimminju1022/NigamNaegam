@@ -13,9 +13,9 @@
 
         
     <!-- 리스트항목 -->
-        <div class="board-list">
+        <!-- <div class="board-list"> -->
             <!-- 리스트 헤드 -->
-            <div class="board-li-title" :class="gridClass" >
+            <!-- <div class="board-li-title" :class="gridClass" >
                 <p>번호</p>
                 <p v-if="$store.state.board.bcCode === '0'">지역</p>
                 <p v-if="$store.state.board.bcCode === '0'">카테고리</p>
@@ -24,26 +24,26 @@
                 <p>작성일자</p>
                 <p>좋아요</p>
                 <p>조회수</p>
-            </div>
+            </div> -->
             
             <!-- [관리자] 리스트 목록 -->
-            <div>
+            <!-- <div>
                 <div class="board-li-notice" >
                     <div v-for="(item, index) in noticeTopList" class="board-li-item" :class="gridClass">
                         <p v-if="$store.state.board.bcCode === '0'">{{ index + 1 }}</p>
-                        <p v-if="$store.state.board.bcCode === '0'">-</p>
+                        <p v-if="$store.state.board.bcCode === '0'">-</p> -->
                         <!-- v-show="$store.state.board.bcCode === 0" -->
-                        <p class="notice-text">공지</p>
+                        <!-- <p class="notice-text">공지</p>
                         <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
                         <p>관리자</p>
                         <p>{{ item.created_at }}</p>
                         <p>-</p>
                         <p>{{ item.view_cnt }}</p>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- [유저] 리스트 시작 -->
-                
+<!--                 
                 <div  class="board-list" >
                     <div class="board-li-item" :class="gridClass" v-for="item in boardList" :key="item">
                         <p>{{ item.board_id }}</p>
@@ -53,9 +53,9 @@
                         <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '28'">레포츠</p>
                         <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '32'">호텔</p>
                         <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '38'">쇼핑</p>
-                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '39'">음식점</p>
+                        <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '39'">음식점</p> -->
                         <!-- <router-link v-if="$store.state.board.bcCode === '1'" :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="{'grid-4': $store.state.board.bcCode === '2', 'grid-5': $store.state.board.bcCode === '1'}">{{ item.board_title }}</router-link> -->
-                        <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
+                        <!-- <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')" class="board-li-innertitle">{{ item.board_title }}</router-link>
                         <p>{{ item.user_nickname }}</p>
                         <p>{{ item.created_at }}</p>
                         <p>{{ item.like_cnt }}</p>
@@ -63,7 +63,55 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div> -->
+
+
+        <div class="board-box">
+            <div class="board-title" :class="gridClassTitle">
+                <p>번호</p>
+                <p v-if="$store.state.board.bcCode === '0'">지역</p>
+                <!-- <p v-if="$store.state.board.bcCode === '0'">카테고리</p> -->
+                <p>카테고리</p>
+                <p>제목</p>
+                <p>닉네임</p>
+                <p>작성일자</p>
+                <p>좋아요</p>
+                <p>조회수</p>
+            </div>
+            <div class="board-notice-box">
+                <!-- <div v-for="(item, index) in noticeTopList" class="board-content" :class="gridClass"> -->
+                <div v-for="(item, index) in noticeTopList" class="board-content" :class="gridClassNotice">
+                    <p>{{ 5 - index }}</p>
+                    <p v-if="$store.state.board.bcCode === '0'">-</p>
+                    <!-- <p v-if="$store.state.board.bcCode === '0'">공지</p> -->
+                    <p>공지</p>
+                    <router-link :to="`/notices/${item.board_id}`"><p>{{ item.board_title }}</p></router-link>
+                    <p>관리자</p>
+                    <p>{{ item.created_at }}</p>
+                    <p>-</p>
+                    <p>{{ item.view_cnt }}</p>
+                </div>
+            </div>
+            <div class="board-content-box">
+                <div v-for="item in boardList" :key="item" class="board-content" :class="gridClass2">
+                    <p>{{ item.board_id }}</p>
+                    <p v-if="$store.state.board.bcCode === '0'">{{ item.area_name }}</p>
+                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '12'">관광지</p>
+                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '14'">문화시설</p>
+                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '28'">레포츠</p>
+                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '32'">호텔</p>
+                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '38'">쇼핑</p>
+                    <p v-if="$store.state.board.bcCode === '0' && item.contenttypeid === '39'">음식점</p>
+                    <p v-if="$store.state.board.bcCode === '1'"></p>
+                    <router-link :to="`/boards/${item.board_id}`" @click="$store.commit('pagination/setPaginationInitialize')">{{ item.board_title }}</router-link>
+                    <p>{{ item.user_nickname }}</p>
+                    <p>{{ item.created_at }}</p>
+                    <p>{{ item.like_cnt }}</p>
+                    <p>{{ item.view_cnt }}</p>
+                </div>
+            </div>
+        </div>
+            
     </div>
     <!-- 하단 기능버튼 -->
     <div class="pagination-btn">
@@ -91,9 +139,9 @@ const bcName = computed(() => store.state.board.bcName);
 // boardlist
 const boardList = computed(() => store.state.board.boardList);
 
-const gridClass = computed(() => {
-    return store.state.board.bcCode === '0' ? 'grid-7' : 'grid-6';
-});
+// const gridClass = computed(() => {
+//     return store.state.board.bcCode === '0' ? 'grid-7' : 'grid-6';
+// });
 
 /* 페이지네이션 관련------------start*/
 const actionName = 'board/getBoardListPagination';
@@ -113,6 +161,18 @@ watch(
 // ------------- 경진 -----------------------------
 const actionNameNotice = 'notice/noticeTopList';
 const noticeTopList = computed(() => store.state.notice.noticeTopList);
+
+const gridClassTitle = computed(() => {
+    return store.state.board.bcCode === '0' ? 'review-title' : 'free-title';
+});
+
+const gridClassNotice = computed(() => {
+    return store.state.board.bcCode === '0' ? 'review-notice' : 'free-notice';
+});
+
+const gridClass2 = computed(() => {
+    return store.state.board.bcCode === '0' ? 'review-content' : 'free-content';
+});
 // ------------- 경진 -----------------------------
 
 // --------------------------- meerkat Start ---------------------------
@@ -273,14 +333,14 @@ onBeforeMount(async () => {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
 }
 
 /* search 관련 --------------search*/     
 .search-box {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }        
 .board-search-tb{
     display: inline-flex;
@@ -289,7 +349,6 @@ onBeforeMount(async () => {
     align-items: flex-end;
 }
 .board-search {
-    /* margin-right: -22px;  */
     border: #01083a solid 1px;
     color: #01083a;
     border-radius: 20px;
@@ -339,6 +398,119 @@ onBeforeMount(async () => {
     color: #fff;
     background: #01083a;
 }
+
+
+/* --------------- 경진 start ---------------- */
+.board-box{
+    /* width: 100%; */
+    border-top: 2px solid #01083a;
+    border-bottom: 2px solid #01083a;
+    /* max-width: 1250px; */
+    min-width: 500px;
+    margin: 40px auto;
+    font-size: 18px;
+}
+
+.board-notice-box {
+    background-color: #eeeeee;
+    padding:  5px;
+}
+
+.board-notice-box > .board-content > p:nth-child(3) {
+    font-weight: 600;
+}
+
+.board-content-box {
+    padding: 5px;
+}
+
+/* 리뷰게시판일 경우 */
+.review-title {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.2fr 7fr 1.5fr 1.5fr 0.7fr 0.7fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #01083a;
+}
+
+.review-notice{
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.2fr 7fr 1.5fr 1.5fr 0.7fr 0.7fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.review-content{
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.2fr 7fr 1.5fr 1.5fr 0.7fr 0.7fr;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* 자유게시판일 경우 */
+.free-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1.5fr 0.7fr 0.7fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #01083a;
+}
+
+.free-notice{
+    display: grid;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1.5fr 0.7fr 0.7fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.free-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr 7fr 1.5fr 1.5fr 0.7fr 0.7fr;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+/* 제목, 닉네임 말줄임표 */
+.review-content > :nth-child(n + 4):nth-child(-n + 5)
+, .free-content > :nth-child(n + 3):nth-child(-n + 4){
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    padding: 0 10px;
+}
+
+.review-notice > :nth-child(3)
+, .free-notice > :nth-child(2) {
+    font-weight: 600;
+}
+
+.review-content > :nth-child(4)
+, .free-content > :nth-child(3) {
+    text-align: left;
+    padding: 0 20px;
+}
+/* --------------- 경진 end ---------------- */
 
 @media screen and (max-width: 320px) {
     .board-li-title > span:nth-child(2),

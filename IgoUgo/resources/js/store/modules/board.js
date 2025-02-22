@@ -221,7 +221,7 @@ export default {
     
                 axios.post(url, JSON.stringify(data), config)
                 .then(response => {
-                    // commit('setCommentsTotal', state.commentsTotal + 1);
+                    commit('setCommentsTotal', state.commentsTotal + 1);
                     // console.log(response.data);
                     // console.log(response.data.board);
                     // console.log(response.data.review);
@@ -253,6 +253,7 @@ export default {
                     context.commit('setBoardComments', response.data.comments.data);
                     // context.commit('', response.data.comments.total);
                     context.commit('pagination/setPagination', response.data.comments, {root: true});
+                    context.commit('setCommentsTotal', response.data.comments.total); // 경진 추가
                 })
                 .catch(error => {
                     console.error(error);
@@ -448,13 +449,7 @@ export default {
                 });
             }
 
-            // if(boardInfo.boardDetail.bc_code) {
-            //     formData.append('bc_code', boardInfo.boardDetail.bc_code);
-            // } 
-            // if(boardInfo.boardDetail.area_code) {
-            //     formData.append('area_code', boardInfo.boardDetail.area_code);
-            // }
-
+            // 리뷰게시판일 경우
             if(boardInfo.boardDetail.product_id) {
                 formData.append('product_id', boardInfo.boardDetail.product_id);
             }
@@ -464,11 +459,8 @@ export default {
 
             axios.post(url, formData, config)
             .then(response => {
-                // context.commit('setBcCode', response.data.bcCode);
                 context.commit('setBoardDetail', response.data.board);
                 context.commit('setBcName', response.data.bcName);
-                // context.commit('setRcName', response.data.rcName);
-                // context.commit('setAreaName', response.data.areaName);
 
                 alert('수정 성공');
                 router.replace(`/boards/${boardInfo.boardDetail.board_id}`);

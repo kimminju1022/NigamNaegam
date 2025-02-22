@@ -24,15 +24,23 @@ class AuthController extends Controller
                         ->where('user_email', $request->user_email)
                         ->first();
 
-        $date = Carbon::now()->format('Y-m-d H:i:s');
-
         // 관리자인지 일반 유저인지 체크
         if($userInfo->manager_flg === '1') {
             throw new AuthenticationException('회원 정보 오류');
         }
 
-        if (Carbon::parse($userInfo->user_controls[0]->expires_at)->lessThanOrEqualTo($date)) {
-            throw new AuthenticationException('제재 회원 로그인 불가');
+        // 제재 이력 확인
+        $user_control = $userInfo->user_controls->whereNull('deleted_at')->first();
+        if($user_control) {
+            $expires_at = Carbon::parse($user_control->expires_at);
+            $date = Carbon::now();
+
+            // 제재 만료일자가 현재보다 이후인 경우
+            if($expires_at->greaterThanOrEqualTo($date)) {
+                // throw new AuthenticationException('제재 회원 로그인 불가');
+                $message = "제재 회원 로그인 불가 / 제재 만료일: " . $expires_at->format('Y-m-d');
+                throw new AuthenticationException($message);
+            }
         }
         
         if($userInfo->user_flg === '1') {

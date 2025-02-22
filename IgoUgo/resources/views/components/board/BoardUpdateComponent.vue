@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="boardInfo.boardDetail">
         <h1>게시판 수정</h1>
         <div class="board-box">  
             <div class="board-select-container">
@@ -23,7 +23,7 @@
                     <div class="board-category">
                         <!-- ------------- 경진 Start -->
                         <div class="search-box">
-                            <p>{{ boardDetail.title }}</p>
+                            <p>{{ boardInfo.boardDetail.title }}</p>
                             <button @click="modalOpen" class="btn bg-navy header-bg-btn">검색</button>
                         </div>
                         <!-- ------------- 경진 End -->
@@ -99,8 +99,8 @@
         </div>
     </div>
     <div class="header-btn-box"> 
-        <router-link :to="`/boards/${$route.params.id}`"><button class="btn bg-clear header-btn">취소</button></router-link>
         <button @click="$store.dispatch('board/boardUpdate', boardInfo)" class="btn bg-navy header-btn">완료</button>
+        <router-link :to="`/boards/${boardID.board_id}`"><button class="btn bg-clear header-btn">취소</button></router-link>
     </div>
 
     <!-- ------------------------ meerkat Start ------------------------ -->
@@ -130,7 +130,10 @@ import { useStore } from 'vuex';
 const store = useStore();
 const route = useRoute();
 
-const boardDetail = computed(() => store.state.board.boardDetail);
+// const boardDetail = computed(() => store.state.board.boardDetail);
+const boardID = reactive({
+    board_id: route.params.id,
+});
 
 const boardInfo = reactive({
     boardDetail: store.state.board.boardDetail
@@ -154,7 +157,6 @@ const gridDetail = computed(() => {
         ? 'grid-4'
         : 'grid-3';
 });
-
 
     // boardInfo.board_img= e.target.files;
     // const arrayFiles = Array.from(e.target.files);

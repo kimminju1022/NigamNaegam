@@ -201,6 +201,11 @@ class QuestionController extends Controller
                         $image->save();
                     }
                 }
+            } else if ($request->board_img_path === null) {
+                foreach ($boardImg as $image) {
+                    $image->deleted_at = now();
+                    $image->save();
+                }
             }
 
             // 새로 추가한 이미지 request

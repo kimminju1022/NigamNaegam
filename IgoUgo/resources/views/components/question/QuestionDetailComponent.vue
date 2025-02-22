@@ -1,15 +1,15 @@
 <template>
     <div class="container" v-if="questionDetail">
         <h1><router-link :to="`/questions`">문의게시판</router-link></h1>
-        <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
+        <!-- <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
             <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
-            <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn">수정</button></router-link>
+            <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn">수정</button></router-link> -->
             <!-- <router-link :to="`/questions/${$store.state.questions.questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link> -->
-            <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
+            <!-- <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
         </div>
         <div v-else class="header-btn-box">
             <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
-        </div>
+        </div> -->
         <div class="board-box">
             <!-- <div class="board-title-box">
                 <p>제목</p>
@@ -22,7 +22,8 @@
             <div class="board-box-flex">
                 <div class="board-title-box board-title">
                     <p>제목</p>
-                    <textarea readonly>{{ questionDetail.board_title }}</textarea>
+                    <!-- <textarea readonly>{{ questionDetail.board_title }}</textarea> -->
+                    <p>{{ questionDetail.board_title }}</p>
                 </div>
                 <div class="board-title-box board-title-category">
                     <p>카테고리</p>
@@ -63,6 +64,17 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-if="$store.state.auth.userInfo.user_id === questionDetail.user_id" class="header-btn-box"> 
+            <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
+            <div class="header-btn-right">
+                <router-link :to="`/questions/${questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn">수정</button></router-link>
+                <!-- <router-link :to="`/questions/${$store.state.questions.questionDetail.board_id}/edit`"><button class="btn bg-navy header-btn" @click="updateConfirm">수정</button></router-link> -->
+                <button class="btn bg-navy header-btn" @click="deleteQuestion(questionDetail.board_id)">삭제</button>
+            </div>
+        </div>
+        <div v-else class="header-btn-box">
+            <router-link :to="`/questions`"><button class="btn bg-navy header-btn">목록</button></router-link>
         </div>
     </div>
 </template>
@@ -112,7 +124,13 @@ const deleteQuestion = (id) => {
 
 .header-btn-box {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.header-btn-right {
+    display: flex;
+    justify-content: space-between;
 }
 
 .header-btn{
@@ -172,7 +190,7 @@ const deleteQuestion = (id) => {
     margin: 5px;
 }
 /* .board-box > div > :first-child, .board-title-box > p:not(.board-title-category :last-child){ */
-.board-box >.board-box-flex > :first-child, .board-title-box > p:not(.board-title-category :last-child){
+.board-title-box > p:not(.board-title-category :last-child){
     border-right: 1px solid #01083a;
 }
 
@@ -183,7 +201,7 @@ const deleteQuestion = (id) => {
 
 .board-title {
     display: grid;
-    grid-template-columns: 1fr 2.99fr;
+    grid-template-columns: 1fr 4fr;
     border-bottom: 1px solid #01083a;
 }
 
@@ -214,10 +232,9 @@ const deleteQuestion = (id) => {
 } */
 
 /* 이렇게 써도되나? 밑에거가 맞는건가 */
-.board-box > div > :first-child:not(:last-child) {
-/* .board-box > div > p:nth-child(1) { */
+/* .board-box > div > :first-child:not(:last-child) {
     border-right: 1px solid #01083a;
-}
+} */
 
 /* .board-content > *:first-child, .admin-content > *:not(:last-child) { */
 .admin-content > *:not(:last-child) {

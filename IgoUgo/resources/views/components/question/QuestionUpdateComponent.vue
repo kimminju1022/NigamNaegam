@@ -1,10 +1,10 @@
 -<template>
     <div class="container">
         <h1>문의게시판</h1>
-        <div class="header-btn-box"> 
+        <!-- <div class="header-btn-box"> 
             <button @click="$store.dispatch('question/updateQuestion', question)" class="btn bg-navy header-btn">완료</button>
             <router-link :to="`/questions/${question.questionDetail.board_id}`"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
-        </div>
+        </div> -->
         <div class="board-box">  
             <div class="board-box-flex">
                 <div class="board-title-box board-title">
@@ -23,6 +23,7 @@
                         <option value="6">레포츠</option>
                         <option value="7">쇼핑</option>
                         <option value="8">음식점</option>
+                        <option value="9">기타</option>
                     </select>
                     <!-- <p>{{ question.questionDetail.question_category.qc_code }}</p> -->
                 </div>
@@ -62,6 +63,10 @@
                 <textarea maxlength="2000" v-model="question.questionDetail.board_content" name="board_content"></textarea>
             </div>
         </div>
+        <div class="header-btn-box"> 
+            <button @click="$store.dispatch('question/updateQuestion', question)" class="btn bg-navy header-btn">완료</button>
+            <router-link :to="`/questions/${question.questionDetail.board_id}`"><button @click="" class="btn bg-navy header-btn">취소</button></router-link>
+        </div>
     </div>
 </template>
 
@@ -76,9 +81,7 @@ const question = reactive({
     questionDetail: store.state.question.questionDetail
     ,board_img: []
 });
-
-// console.log('question : ',question);
-// console.log('questionDetail : ',question.questionDetail);
+;
 
 watch(() => question.questionDetail.question_category.qc_code, (newQcCode) => {
     const categories = {
@@ -90,10 +93,10 @@ watch(() => question.questionDetail.question_category.qc_code, (newQcCode) => {
         5: '문화시설',
         6: '레포츠',
         7: '쇼핑',
-        8: '음식점'
+        8: '음식점',
+        9: '기타',
     };
     question.questionDetail.question_category.qc_name = categories[newQcCode] || '';
-    // console.log(question.questionDetail.question_category.qc_name);
 });
 
 // const preview1 = ref('');
@@ -174,6 +177,7 @@ select {
 .header-btn-box {
     display: flex;
     justify-content: flex-end;
+    margin-top: 50px;
 }
 
 .header-btn{

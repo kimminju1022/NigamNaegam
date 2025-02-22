@@ -21,41 +21,51 @@ class BoardController extends Controller
 {
     //리스트정보_ action-Method
     public function index(Request $request) {
-        $boardList = Board::select('boards.*','users.user_nickname')->
-            join('users', 'users.user_id', '=', 'boards.user_id')
-            ->when($request->bc_code === '0', function(Builder $query) {
-                $query->join('reviews', function ($join) {
-                        $join->on('reviews.board_id', '=', 'boards.board_id');
-                    })
-                    ->join('board_categories', 'boards.bc_code', '=', 'board_categories.bc_code')
-                    ->join('products', 'products.product_id', '=', 'reviews.product_id')
-                    ->join('areas', 'products.area_code', '=', 'areas.area_code')
-                    ->leftJoinSub(
-                        DB::table('likes')
-                            ->select('likes.board_id', DB::raw('COUNT(likes.like_id) as like_cnt'))
-                            ->where('like_flg', '=', '1')
-                            ->groupBy('likes.board_id'),
-                        'like_tmp',
-                        'boards.board_id',
-                        '=',
-                        'like_tmp.board_id'
-                    )
-                    ->select('boards.*', 'users.user_nickname', 'areas.area_name', 'products.contenttypeid', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt')); // 경진 수정
-            })
-            // ------------------------- 경진 start -----------------------------
-            ->where('board_flg', '0')
-            // ->where('board_title', 'like', "%$request->search%")
-            ->where(function ($query) use ($request) {
-                $query->where('board_title', 'like', "%$request->search%")
-                        ->orWhere('board_content', 'like', "%$request->search%");
-                if ($request->bc_code === '0') {
-                    $query->orWhere('area_name', 'like', "%$request->search%");
-                }
-            })
-            // ------------------------- 경진 end -----------------------------           
-            ->where('boards.bc_code', '=', $request->bc_code)
-            ->orderBy('boards.created_at', 'desc')
-            ->paginate(15);
+        $boardList = Board::select('boards.*','users.user_nickname', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt'))
+                            ->join('users', 'users.user_id', '=', 'boards.user_id')
+                            ->leftJoinSub(
+                                DB::table('likes')
+                                    ->select('likes.board_id', DB::raw('COUNT(likes.like_id) as like_cnt'))
+                                    ->where('like_flg', '=', '1')
+                                    ->groupBy('likes.board_id'),
+                                'like_tmp',
+                                'boards.board_id',
+                                '=',
+                                'like_tmp.board_id'
+                            ) // 경진 수정
+                            ->when($request->bc_code === '0', function(Builder $query) {
+                                $query->join('reviews', function ($join) {
+                                        $join->on('reviews.board_id', '=', 'boards.board_id');
+                                    })
+                                    ->join('board_categories', 'boards.bc_code', '=', 'board_categories.bc_code')
+                                    ->join('products', 'products.product_id', '=', 'reviews.product_id')
+                                    ->join('areas', 'products.area_code', '=', 'areas.area_code')
+                                    // ->leftJoinSub(
+                                    //     DB::table('likes')
+                                    //         ->select('likes.board_id', DB::raw('COUNT(likes.like_id) as like_cnt'))
+                                    //         ->where('like_flg', '=', '1')
+                                    //         ->groupBy('likes.board_id'),
+                                    //     'like_tmp',
+                                    //     'boards.board_id',
+                                    //     '=',
+                                    //     'like_tmp.board_id'
+                                    // )
+                                    ->select('boards.*', 'users.user_nickname', 'areas.area_name', 'products.contenttypeid', DB::raw('IFNULL(like_tmp.like_cnt, 0) as like_cnt')); // 경진 수정
+                            })
+                            // ------------------------- 경진 start -----------------------------
+                            ->where('board_flg', '0')
+                            // ->where('board_title', 'like', "%$request->search%")
+                            ->where(function ($query) use ($request) {
+                                $query->where('board_title', 'like', "%$request->search%")
+                                        ->orWhere('board_content', 'like', "%$request->search%");
+                                if ($request->bc_code === '0') {
+                                    $query->orWhere('area_name', 'like', "%$request->search%");
+                                }
+                            })
+                            // ------------------------- 경진 end -----------------------------           
+                            ->where('boards.bc_code', '=', $request->bc_code)
+                            ->orderBy('boards.created_at', 'desc')
+                            ->paginate(15);
 
         // 보드 타이틀 획득
         $boardName = BoardCategory::select('bc_name')
@@ -482,7 +492,7 @@ class BoardController extends Controller
 
     // 게시글 작성
     public function store(BoardRequest $request) {
-        Log::debug('rr', $request->toArray());
+        // Log::debug('rr', $request->toArray());
 
         try {
             DB::beginTransaction();
@@ -492,7 +502,7 @@ class BoardController extends Controller
             $insertData['bc_code'] = $request->bc_code;
 
             $board = Board::create($insertData);
-            Log::debug('bb', $board->toArray());
+            // Log::debug('bb', $board->toArray());
 
             if($request->hasFile('board_img')) {
                 foreach ($request->board_img as $file) {
@@ -551,6 +561,11 @@ class BoardController extends Controller
                         $image->deleted_at = now();
                         $image->save();
                     }
+                }
+            } else if ($request->board_img_path === null) {
+                foreach ($boardImg as $image) {
+                    $image->deleted_at = now();
+                    $image->save();
                 }
             }
 

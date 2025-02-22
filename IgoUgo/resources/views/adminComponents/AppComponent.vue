@@ -4,25 +4,19 @@
     <div class="admin-header-left">
         <div>
             <router-link to="/admin/main"><img class="admin-header-image" src="/img_admin/admin_logo.png" alt=""></router-link>
-            <!-- <hr> -->
             <div class="admin-header-dropdown">
                 <router-link to="/admin/user" @click="$store.commit('pagination/setPaginationInitialize')"><p>유저관리</p></router-link>
-
                 <div @mouseenter="showDropdown" @mouseleave="hideDropdown">
                     <p>게시판관리</p>
                     <div v-if="dropdownVisible" class="admin-dropdown-menu">
-                        <!-- <router-link to="/admin/board/api"><p>API통합 관리</p></router-link> -->
                         <router-link to="/admin/board/review" @click="$store.commit('pagination/setPaginationInitialize')"><p>리뷰게시판</p></router-link>
                         <router-link to="/admin/board/free" @click="$store.commit('pagination/setPaginationInitialize')"><p>자유게시판</p></router-link>
                     </div>
                 </div>
-                
                 <router-link to="/admin/comment" @click="$store.commit('pagination/setPaginationInitialize')"><p>댓글관리</p></router-link>
-                <router-link to="/admin/tester" @click="$store.commit('pagination/setPaginationInitialize')"><p>체험단</p></router-link>
-                <!-- <router-link to="/admin/recommend"><p>이달의 추천</p></router-link> -->
-                <router-link to="/admin/notice" @click="$store.commit('pagination/setPaginationInitialize')"><p>공지사항</p></router-link>
                 <router-link to="/admin/question" @click="$store.commit('pagination/setPaginationInitialize')"><p>문의 관리</p></router-link>
-                <!-- <p>통계</p> -->
+                <router-link to="/admin/tester" @click="$store.commit('pagination/setPaginationInitialize')"><p>체험단 관리</p></router-link>
+                <router-link to="/admin/notice" @click="$store.commit('pagination/setPaginationInitialize')"><p>공지사항</p></router-link>
             </div>
         </div>
         <div class="admin-user-box">
@@ -36,17 +30,6 @@
                     <p>아이디 : {{ user.user_email }}</p>
                     <p>닉네임 : {{ user.user_nickname }}</p>
                 </div>
-
-                <!-- <div class="admin-user-box">
-                    <div class="admin-user-option">
-                        <p>운영진</p>
-                        <div class="admin-user-image-view">
-                            <img class="admin-user-image-small" src="\logo_gam.png" alt="">
-                            <img class="admin-user-image-small" src="\logo_gam.png" alt="">
-                            <img class="admin-user-image-small" src="\logo_gam.png" alt="">
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
         <div class="admin-user-btn">

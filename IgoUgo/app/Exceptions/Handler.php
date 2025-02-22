@@ -94,6 +94,14 @@ class Handler extends ExceptionHandler
             $errInfo = $th->context()[$code];
         }
             
+        // 예외가 AuthenticationException이라면, 메시지를 동적으로 처리
+        if($th instanceof AuthenticationException) {
+            $errInfo = [
+                'status' => 401,
+                'msg' => $th->getMessage() // 예외에서 받은 메시지를 그대로 사용
+            ];
+        }
+
         // Response Data 생성
         $responseData = [
             'success' => false

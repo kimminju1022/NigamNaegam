@@ -1,92 +1,46 @@
 <template>
-    <div class="board-detail-header">
+    <!-- <div class="board-detail-header"> -->
         <!-- 경로표시 -->
-        <div class="board-detail-category">
+        <!-- <div class="board-detail-category">
             <h1>{{ $store.state.board.bcName }}</h1>
             <h3 v-if="store.state.board.bcCode === '0'" >≫ {{ $store.state.board.rcName }}</h3>
             <h3 v-if="store.state.board.bcCode === '0'" >≫ {{ $store.state.board.areaName }}</h3>
-        </div>
+        </div> -->
         <!-- 버튼영역 -->
-        
-        <div class="board-detailItem-btn"> 
+        <!-- <div class="board-detailItem-btn">  -->
             <!-- <router-link :to="`/boards/${boardDetail.board_id}/edit`"><button class="btn bg-navy board-detail-btn" @click="editConfirm(boardDetail.board_id)">수정</button></router-link> -->
             <!--<button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
             <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             
-            <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
+            <!-- <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link> -->
             <!-- <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="editConfirm(boardDetail.board_id)">수정</button> -->
-            <!-- ---------------- 경진 start ----------------- -->
-            <router-link :to="`/boards/${boardDetail.board_id}/update`"><button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn">수정</button></router-link>
-            <!-- ---------------- 경진 end ----------------- -->
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+            <!-- <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
 
         </div>
-    </div>
-
-    <!-- <div class="board-box">
-        <div class="board-title-flex">
-            <p>제목</p>
-            <p>{{ boardDetail.board_title }}</p>
-            <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
-        </div>
-        <div class="board-review-flex">
-            <p>리뷰</p>
-            <p>{{ boardDetail.title }}</p>
-            <div class="btn-list">
-                <div class="btn-like">
-                    <button class="btn loveIt_btn" @click="likeProccess(boardDetail.board_id)">
-                        <img style="height: 20px;" :src="$store.state.board.likeImgPath">
-                    </button>
-                    <p>{{ boardDetail.likes_count }}</p>
-                </div>
-                <button class="btn boardReport_btn" @click="boardReport(boardDetail.board_id)">🚨 신고 </button>
-            </div>
-        </div>
-        <div class="board-content-box">
-            <div class="board-content">
-                <div class="board-content-img">
-                    <div class="img-grid">
-                        <img v-for="(image, index) in boardDetail.board_images" :key="index" :src="image.board_img">
-                    </div>
-                </div>
-                <div class="content-textarea">
-                    <textarea ref="textArea" @input="resize" readonly>{{ boardDetail.board_content }}</textarea>
-                </div>
-                <div class="board-user">
-                    <div class="border-user-profile">
-                        <img :src="boardDetail.user_profile">
-                        <p>by  {{ boardDetail.user_nickname }}</p>
-                    </div>
-                    <p>{{ boardDetail.created_at }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <h1 style="margin: 200px 0;">----------------------------------------------------------------</h1> -->
+    </div> -->
 
     <!-- 상세 글머리_정보불러오기-->
-    <p>{{ boardDetail.board_title }}</p>
+    <!-- <h1>{{ boardDetail.board_title }}</h1>
     <div class="board-detail-head" :class="gridDetail">
         <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
-        <b v-if="boardDetail.bc_code === '0'" style="text-align: left; font-size: 1.3rem;">상품명   :   {{ boardDetail.title }}</b>
+        <b v-if="boardDetail.bc_code === '0'" style="text-align: left; font-size: 1.3rem;">상품명   :   {{ boardDetail.title }}</b> -->
         <!-- <p v-if="boardDetail.bc_code === '0'">{{ $store.state.board.productTitle }}</p> -->
-        <p>작성자 :  {{ boardDetail.user_nickname }}</p>
+        <!-- <p>작성자 :  {{ boardDetail.user_nickname }}</p>
         <p>{{ boardDetail.created_at }}</p>
         <button class="loveIt_btn" @click="likeProccess(boardDetail.board_id)">
             <img style="height: 20px;" :src="$store.state.board.likeImgPath">
             <span>{{ boardDetail.likes_count }}</span>
-        </button>
+        </button> -->
         <!-- <p> {{ loveIt[0] }}</p> -->
         <!-- <p>조회 : {{ absolve[]++ }}</p> -->
-        <button class="boardReport_btn" @click="boardReport(boardDetail.board_id)">🚨 신고 </button>
-    </div>
+        <!-- <button class="boardReport_btn" @click="boardReport(boardDetail.board_id)">🚨 신고 </button>
+    </div> -->
     
     <!-- 등록이미지 -->
-    <div class="board-detail-img">
+    <!-- <div class="board-detail-img">
         <div v-for="(image, index) in boardDetail.board_images" :key="index">
             <img :src="image.board_img" @click="modalOpen(image)" class="detailImg_slot" alt="등록 이미지" />
-        </div>
+        </div> -->
 
         <!-- img 확대 모달창 -->
         <!-- <div class="modal-img" v-show="modalCheck">
@@ -97,16 +51,16 @@
                 </div>
             </div>
         </div> -->
-    </div>
+    <!-- </div> -->
     <!-- <div class="board-detail-img">
         <img :src="boardDetail.board_img">
     </div> -->
     <!-- 내용 -->
     <!-- <textarea readonly class="board-detail-content" ref="boardTextarea" :style="{height: 'auto'}">{{ boardDetail.board_content}}</textarea> -->
-    <textarea readonly class="board-detail-content">{{ boardDetail.board_content}}</textarea>
+    <!-- <textarea readonly class="board-detail-content">{{ boardDetail.board_content}}</textarea> -->
 
     <!-- 댓글 -->
-    <div class="board-reply-container">
+    <!-- <div class="board-reply-container">
         <hr>
         <div class="board-detail-reply ">
             <p>댓글</p>
@@ -131,8 +85,104 @@
                 <button v-if="$store.state.auth.userInfo.user_id == item.user.user_id" class="clear_btn" @click="deleteComments(item.comment_id)">X</button>
             </div>
         </div>
-        <div class="pagination-btn">
+        <div class="pagination-btn"> -->
             <!-- 페이지네이션 -->
+            <!-- <PaginationComponent
+                :actionName="actionName"
+                :searchData="searchData"
+                :currentPage="$store.state.pagination.currentPage"
+                :lastPage="$store.state.pagination.lastPage"
+                :viewPageNumber="$store.state.pagination.viewPageNumber"
+            />
+        </div> -->
+
+    <!-- -------------------------- 경진 start ------------------------------- -->
+    <div class="board-detail-header">
+        <!-- 경로표시 -->
+        <div class="board-detail-category">
+            <h1>{{ $store.state.board.bcName }}</h1>
+            <!-- <h3 v-if="store.state.board.bcCode === '0'" >> {{ $store.state.board.rcName }}</h3>
+            <h3 v-if="store.state.board.bcCode === '0'" >> {{ $store.state.board.areaName }}</h3> -->
+        </div>
+
+    </div>
+
+
+    <!-- 상세 글머리_정보불러오기-->
+    <div class="board-title-box">
+        <p class="board-title">{{ boardDetail.board_title }}</p>
+        <div class="product-info">
+            <div class="product-review">
+                <p v-if="store.state.board.bcCode === '0'" > {{ $store.state.board.rcName }}</p>
+                <p> / </p>
+                <p v-if="store.state.board.bcCode === '0'" > {{ $store.state.board.areaName }}</p>
+                <p> / </p>
+                <p v-if="boardDetail.bc_code === '0'">🚩 {{ boardDetail.title }}</p>
+            </div>
+            <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
+        </div>
+        <div class="board-info">
+            <div class="board-user-info">
+                <p>작성자 :  {{ boardDetail.user_nickname }}</p>
+                <p>{{ boardDetail.created_at }}</p>
+            </div>
+            <div class="board-btn-info">
+                <button class="btn like-btn" @click="likeProccess(boardDetail.board_id)">
+                    <img :src="$store.state.board.likeImgPath">
+                    <p>{{ boardDetail.likes_count }}</p>
+                </button>
+                <button class="btn boardReport_btn" @click="boardReport(boardDetail.board_id)">🚨 신고</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 등록이미지 -->
+    <div class="board-detail-img">
+        <div v-for="(image, index) in boardDetail.board_images" :key="index">
+            <img :src="image.board_img" @click="modalOpen(image)" class="detailImg_slot" alt="등록 이미지" />
+        </div>
+    </div>
+
+    <textarea readonly class="board-detail-content">{{ boardDetail.board_content}}</textarea>
+
+    <!-- 버튼영역 -->
+    <div class="board-detailItem-btn"> 
+        <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
+        <div class="board-edit-btn">
+            <router-link :to="`/boards/${boardDetail.board_id}/update`"><button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn">수정</button></router-link>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+        </div>
+    </div>
+
+    <!-- 댓글 -->
+    <div class="comment">
+        <h2>댓글</h2>
+        <div class="comment-box">
+            <div class="comment-list-box">
+                <div class="comment-flex">
+                    <textarea v-model="commentsInfo.comment_content" @click="chkAuth" class="comment-text-box"></textarea>
+                    <button @click="storeComment" class="btn bg-store" :disabled="!store.state.auth.authFlg">작성</button>
+                </div>
+                <p>총 댓글 : {{ commentCnt }}</p>
+                <div class="comment-list">
+                    <div v-for="item in $store.state.board.boardComments" class="comment-user">
+                        <button class="btn boardReport_btn" @click="commentReport(item.comment_id)">🚨</button>
+                        <div class="comment-content-box">
+                            <div class="comment-user-header">
+                                <div class="user-profile-flex">
+                                    <img :src="item.user?.user_profile" alt="">
+                                    <div class="user-flex">
+                                        <p>{{ item.user?.user_nickname }}</p>
+                                        <p>{{ item.created_at }}</p>
+                                    </div>
+                                </div>
+                                <p>{{ item.comment_content }}</p>
+                            </div>
+                            <button @click="deleteComment(item.comment_id)" v-if="$store.state.auth.userInfo.user_id === item.user_id" class="btn bg-clear btn-delete">X</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <PaginationComponent
                 :actionName="actionName"
                 :searchData="searchData"
@@ -142,6 +192,7 @@
             />
         </div>
     </div>
+    <!-- -------------------------- 경진 end ------------------------------- -->
 </template>
 
 <script setup>
@@ -155,6 +206,7 @@ const route = useRoute();
 const router = useRouter();
 // board출력값
 const boardDetail = computed(() => store.state.board.boardDetail); 
+const commentCnt = computed(() => store.state.board.commentsTotal);
 // contenttypeid명칭정의
 // const readableRcName = computed(() => store.state.board.rcName);
 // const image = ;
@@ -202,9 +254,10 @@ const storeComment = () => {
     .then(() => {
         commentsInfo.comment_content = '';
     });
+    
 };
 // 댓글 삭제
-const deleteComments = (id) => {
+const deleteComment = (id) => {
     const check = confirm('해당 글을 삭제 하시겠습니까?\n삭제 시 게시글을 되돌릴 수 없습니다');
     const data = {
         page: searchData.page,
@@ -216,7 +269,7 @@ const deleteComments = (id) => {
         store.dispatch('board/commentsDelete', data);
     }
 };
-    // 댓글 신고
+// 댓글 신고
 const commentReport= (comment_id) => {
     // ------------ 경진 추가 -----------
     if(!store.state.auth.authFlg) {
@@ -256,11 +309,12 @@ const likeProccess = (id) => {
 // ------------------ meerkat End ------------------
 
 
-// ----------------------- 경진 start ---------------------]
+// ----------------------- 경진 start ---------------------
 // 댓글 로그인 체크
 const chkAuth = () => {
     if(!store.state.auth.authFlg) {
         alert('로그인 후 작성 가능');
+        router.push('/login');
     }
 }
 
@@ -334,14 +388,14 @@ hr{
     align-items: flex-end;
     column-gap: 20px;
 }
-.board-detailItem-btn{
+/* .board-detailItem-btn{
     display: flex;
     align-items: flex-end;
     justify-content: right;
     width: 100%;
     column-gap: 10px;
     float: right;
-}
+} */
 .board-detail-btn{
     font-size: large;       
     border-radius: 20px;
@@ -371,6 +425,7 @@ hr{
     background-color: transparent;
     display: flex;
 }
+
 /* .loveIt_btn:active{
     background-image:url('/images/heart.png') 10 10;
 } */
@@ -405,7 +460,7 @@ hr{
     font-size: 1.2rem;
 }
 .star-label {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: rgba(255, 217, 1, 0.932);
     text-align: left;
     margin-left: 10px;
@@ -462,12 +517,13 @@ hr{
 .board-detail-content{
     padding: 20px 30px;
     width: 100%;
-    min-height: 500px;
+    min-height: 400px;
     max-height: 4000px;
     /* height: auto; */
     font-size: 1.2rem;
     line-height: 2rem;
     resize: none;
+    border-bottom: 3px double #000;
 }
 
 .board-reply-container{
@@ -589,8 +645,196 @@ hr{
     }
 } */
 
+
+/* ------------ 경진 추가 ------------ */
+.board-title-box {
+    border-bottom: double #01083a 3px;
+}
+.board-title {
+    font-size: 23px;
+    padding: 0 10px;
+    margin: 50px 0 10px;
+    /* text-decoration: gray solid underline; */
+    font-weight: 600;
+}
+
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+}
+
+.product-info p:first-child {
+    text-align: left;
+    font-size: 16px;
+    padding: 0 10px;
+}
+
+.product-review {
+    display: flex;
+}
+
+.product-review p {
+    margin: 0 5px;
+}
+
+.board-info, .board-user-info, .board-btn-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.board-info {
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+.like-btn {
+    background-color: transparent;
+    display: flex;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.like-btn img {
+    height: 20px;
+}
+
+/* 목록, 수정, 삭제 버튼 */
+.board-detailItem-btn {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.board-edit-btn {
+    display: flex;
+    gap: 5px;
+}
+
+/* 댓글 */
+
+.comment {
+    margin-top: 50px;
+}
+
+.comment h2 {
+    margin-bottom: 20px;
+}
+
+.comment-box {
+    background: #d1dceb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+.comment-list-box {
+    display: grid;
+    grid-template-rows: 200px 1fr;
+    width: 90%;
+    margin-bottom: 50px;
+}
+
+.comment-list-box > p {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #01083a50;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.comment-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.comment-text-box {
+    background: #fff;
+    width: 100%;
+    height: 100px;
+    margin: 20px auto;
+    border-radius: 10px;
+    resize: none;
+    padding: 15px;
+}
+
+/* 댓글 등록 버튼 */
+.bg-store {
+    width: 75px;
+    height: 40px;
+    border-radius: 10px;
+    background: #01083a;
+    color: #fff;
+    font-size: 20px;
+}
+
+/* 댓글 내용 */
+.comment-user {
+    border-bottom: 1px solid #01083a50;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.comment-user > p {
+    /* margin-left: 10px; */
+    margin: 10px;
+}
+
+.comment-content-box {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.comment-user-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* 댓글 유저 프로필 */
+.user-profile-flex {
+    display: flex;
+    gap: 10px;
+}
+
+.user-flex {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 17px;
+}
+
+.user-flex :last-child {
+    font-size: 14px;
+    color: #4c4c4c;
+}
+/* 프로필 사진 */
+.comment-user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    border: 2px solid #01083a18;
+}
+
+.btn-delete {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.btn-delete:hover {
+    color: red;
+}
+
 /* 수정수정 */
-.board-box {
+/* .board-box {
     border-top: 2px solid #01083a;
     border-bottom: 2px solid #01083a;
     margin-top: 50px;
@@ -622,7 +866,6 @@ hr{
     display: grid;
     grid-template-columns: 1fr 5fr 1fr;
     border-bottom: 1px solid #01083a;
-    /* align-items: center; */
 }
 
 .board-title-flex :last-child {
@@ -654,7 +897,6 @@ hr{
     height: 250px;
     width: 99%;
     margin: 10px;
-    /* background-color: #f7f7f7; */
 }
 
 .board-content-img {
@@ -665,7 +907,6 @@ hr{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     place-items: center;
-    /* margin: 0 auto; */
 }
 
 .img-grid > img {
@@ -690,7 +931,7 @@ hr{
     height: 35px;
     border-radius: 50px;
     border: 2px solid #01083a18;
-}
+} */
 
 @media(max-width:800px){
     
