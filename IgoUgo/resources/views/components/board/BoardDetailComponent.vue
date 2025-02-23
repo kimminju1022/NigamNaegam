@@ -111,15 +111,15 @@
     <!-- 상세 글머리_정보불러오기-->
     <div class="board-title-box">
         <p class="board-title">{{ boardDetail.board_title }}</p>
-        <div class="product-info">
+        <div v-if="boardDetail.bc_code === '0'" class="product-info">
             <div class="product-review">
-                <p v-if="store.state.board.bcCode === '0'" > {{ $store.state.board.rcName }}</p>
+                <p> {{ $store.state.board.rcName }}</p>
                 <p> / </p>
-                <p v-if="store.state.board.bcCode === '0'" > {{ $store.state.board.areaName }}</p>
+                <p> {{ $store.state.board.areaName }}</p>
                 <p> / </p>
-                <p v-if="boardDetail.bc_code === '0'">🚩 {{ boardDetail.title }}</p>
+                <p>🚩 {{ boardDetail.title }}</p>
             </div>
-            <p v-if="boardDetail.bc_code === '0'" class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
+            <p class="star-label">{{'★'.repeat(boardRate)+'☆'.repeat(5-boardRate)}}</p>
         </div>
         <div class="board-info">
             <div class="board-user-info">
@@ -149,6 +149,8 @@
     <div class="board-detailItem-btn"> 
         <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
         <div class="board-edit-btn">
+            <!-- <router-link :to="`/boards/${boardDetail.board_id}/update`"><button class="btn bg-navy board-detail-btn">수정</button></router-link>
+            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button> -->
             <router-link :to="`/boards/${boardDetail.board_id}/update`"><button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn">수정</button></router-link>
             <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
         </div>

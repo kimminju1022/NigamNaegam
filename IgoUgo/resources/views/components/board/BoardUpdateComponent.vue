@@ -14,9 +14,9 @@
                         <option value="0">리뷰게시판</option>
                         <option value="1">자유게시판</option> -->
                     <!-- </select> -->
-                    <p>{{ boardInfo.bc_code === '0' ? '리뷰게시판' : '자유게시판' }}</p>
+                    <p>{{ boardInfo.boardDetail.bc_code === '0' ? '리뷰게시판' : '자유게시판' }}</p>
                 </div>
-                <div v-show="boardInfo.bc_code === '0'" class="board-review-box">
+                <div v-show="boardInfo.boardDetail.bc_code === '0'" class="board-review-box">
                 <!-- 2nd del_250205 -->
                 <!-- <div v-show="boardInfo.boardDetail.bc_type === '0'" class="board-review-box"> -->
                     <p>리뷰</p>
@@ -248,7 +248,7 @@ watch(
     () => store.state.productSearch.selectedProduct,
     (newVal) => {
         if (newVal) {
-        boardDetail.value.title = newVal.title;
+    boardInfo.boardDetail.title = newVal.title;
         }
     }
 );

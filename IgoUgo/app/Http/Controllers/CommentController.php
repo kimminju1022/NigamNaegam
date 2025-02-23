@@ -17,7 +17,9 @@ class CommentController extends Controller
     // ------------------------- meerkat Start -------------------------
     // 댓글 목록
     public function boardIndex(Request $request) {
-        $comments = Comment::with('user')
+        $comments = Comment::with(['user' => function ($query) {
+                                    $query->withTrashed();
+                                }])
                         ->where('comments.board_id', '=', $request->board_id)
                         ->orderBy('created_at','ASC')
                         ->paginate(10); //10개마다 페이지네이션하기
