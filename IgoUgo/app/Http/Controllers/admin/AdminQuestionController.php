@@ -36,6 +36,7 @@ class AdminQuestionController extends Controller
     public function adminQuestionDone() {
         $questionList = Board::select(DB::raw("*, DATE_FORMAT(boards.created_at, '%Y-%m-%d %H:%i:%s') as created_at_timestamps"))
                                 ->join('questions', 'boards.board_id', '=', 'questions.board_id')
+                                ->join('users', 'boards.user_id', 'users.user_id')
                                 ->with(['question' => function ($query) {
                                     $query->select(DB::raw("*, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at_timestamps"))
                                             ->with('user')
