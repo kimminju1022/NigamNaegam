@@ -12,7 +12,7 @@ class CommentReportController extends Controller
     // 댓글 리스트
     public function showCommentList() {
         $commentList = Comment::join('users', 'comments.user_id', 'users.user_id')
-                                ->join('comment_reports', 'comments.comment_id', 'comment_reports.comment_id')
+                                ->leftJoin('comment_reports', 'comments.comment_id', 'comment_reports.comment_id')
                                 ->join('boards', 'comments.board_id', 'boards.board_id')
                                 ->whereIn('boards.bc_code', ['0', '1'])
                                 ->select(
@@ -25,7 +25,7 @@ class CommentReportController extends Controller
                                     'users.user_nickname',
                                     'comments.created_at',
                                     'comments.comment_flg',
-                                    DB::raw("count(*) as report_cnt")
+                                    DB::raw("COUNT(comment_reports.comment_id) as report_cnt")
                                 )
                                 ->groupBy(
                                     'comments.comment_id',
@@ -55,7 +55,7 @@ class CommentReportController extends Controller
     public function showCommentDetail(Request $request) {
         $commentId = $request->commentid;
         $commentDetail = Comment::join('users', 'comments.user_id', 'users.user_id')
-                                ->join('comment_reports', 'comments.comment_id', 'comment_reports.comment_id')
+                                ->leftJoin('comment_reports', 'comments.comment_id', 'comment_reports.comment_id')
                                 ->join('boards', 'comments.board_id', 'boards.board_id')
                                 ->select(
                                     'boards.board_id',
@@ -66,7 +66,7 @@ class CommentReportController extends Controller
                                     'comments.comment_content',
                                     'users.user_nickname',
                                     'comments.created_at',
-                                    DB::raw("count(*) as report_cnt")
+                                    DB::raw("COUNT(comment_reports.comment_id) as report_cnt")
                                 )
                                 ->groupBy(
                                     'boards.board_id',
