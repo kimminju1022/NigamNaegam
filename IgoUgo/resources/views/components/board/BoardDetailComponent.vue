@@ -149,10 +149,10 @@
     <div class="board-detailItem-btn"> 
         <router-link to="/boards"><button class="btn bg-navy board-detail-btn">목록</button></router-link>
         <div class="board-edit-btn">
-            <!-- <router-link :to="`/boards/${boardDetail.board_id}/update`"><button class="btn bg-navy board-detail-btn">수정</button></router-link>
-            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button> -->
-            <router-link :to="`/boards/${boardDetail.board_id}/update`"><button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn">수정</button></router-link>
-            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+            <router-link :to="`/boards/${boardDetail.board_id}/update`"><button class="btn bg-navy board-detail-btn">수정</button></router-link>
+            <button class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button>
+            <!-- <router-link :to="`/boards/${boardDetail.board_id}/update`"><button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn">수정</button></router-link>
+            <button v-if="$store.state.auth.userInfo.user_id === boardDetail.user_id" class="btn bg-navy board-detail-btn" @click="deleteConfirm(boardDetail.board_id)">삭제</button> -->
         </div>
     </div>
 

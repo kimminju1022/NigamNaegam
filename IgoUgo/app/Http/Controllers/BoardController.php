@@ -411,8 +411,7 @@ class BoardController extends Controller
                                     'user' => function ($query) {
                                         $query->withTrashed();
                                     },
-                                    'likes'
-                                ])
+                                    'likes', 'board_images'])
                                 ->where('bc_code', 0)
                                 ->groupBy('board_id', 'board_title', 'board_content', 'user_id')
                                 ->orderBy('likes_count','DESC')

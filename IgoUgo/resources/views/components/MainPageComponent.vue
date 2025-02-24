@@ -173,7 +173,7 @@
                 <div class="main-popular-box">
                     <div v-for="item in boardReview" :key="item" class="main-card review-card">
                         <router-link :to="`/boards/${item.board_id}`" class="review-card-content">
-                            <img :src="item.board_img1">
+                            <img :src="item.board_images[0]?.board_img">
                             <p>{{ item.board_title }}</p>
                             <p>{{ item.board_content }}</p>
                             <div class="user">

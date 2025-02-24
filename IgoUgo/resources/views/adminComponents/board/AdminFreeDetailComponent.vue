@@ -19,7 +19,7 @@
                         <!-- <p>카테고리 : 호텔 </p> -->
                         <p>작성자 : {{ postDetail[0].user_nickname }}</p>
                         <p>작성일자 : {{ postDetail[0].created_at }}</p>
-                        <p>신고 : {{ postDetail[0].report_count }}회</p>
+                        <p>신고 : {{ postDetail[0].board_reports.length }}회</p>
                     </div>
                 </div>
             </div>
