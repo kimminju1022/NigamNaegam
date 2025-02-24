@@ -97,9 +97,9 @@ const searchDataQuestionDone = reactive({
 });
 
 
-onBeforeMount(() => {
-    store.dispatch(actionNameQuestionYet, searchDataQuestionYet);
-    store.dispatch(actionNameQuestionDone, searchDataQuestionDone);
+onBeforeMount(async () => {
+    await store.dispatch(actionNameQuestionYet, searchDataQuestionYet);
+    await store.dispatch(actionNameQuestionDone, searchDataQuestionDone);
 });
 </script>
 

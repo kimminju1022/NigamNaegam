@@ -23,7 +23,7 @@ export default {
                 const config = {
                     params: searchData
                 }
-                console.log(url);
+                // console.log(url);
                 axios.get(url, config)
                 .then(response => {
                     context.commit('setCommentList', response.data.commentList.data);
