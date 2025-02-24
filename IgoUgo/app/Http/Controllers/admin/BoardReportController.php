@@ -80,9 +80,7 @@ class BoardReportController extends Controller
                                 // ->leftJoin('board_images', 'boards.board_id', '=', 'board_images.board_id') // 이미지 연결
 
                                 // board_reports, board_images는 hasMany라서 relationship 사용
-                                ->with(['board_reports' => function ($query) {
-                                            $query->select(DB::raw('count(board_id) as report_count'));
-                                        }, 'board_images'])
+                                ->with(['board_reports', 'board_images'])
                                 ->where('boards.bc_code', $bcCode)
                                 ->where('boards.board_id', $board_id)
                                 ->groupBy(
