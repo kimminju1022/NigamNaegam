@@ -57,18 +57,22 @@ export default {
     actions: {
         // 유저 리스트
         showUserList(context, searchData) {
-            const url = '/api/admin/user';
-            const config = {
-                params: searchData,
-            }
+            return new Promise ((resolve, reject) => {
+                const url = '/api/admin/user';
+                const config = {
+                    params: searchData,
+                }
 
-            axios.get(url, config)
-            .then(response => {
-                context.commit('setUserList', response.data.userList.data);
-                context.commit('pagination/setPagination', response.data.userList, {root: true});
-            })
-            .catch(error => {
-                console.error(error);
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setUserList', response.data.userList.data);
+                    context.commit('pagination/setPagination', response.data.userList, {root: true});
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                });
             });
         },
 
@@ -224,52 +228,68 @@ export default {
         // 오늘 유저 현황
         // 신규 회원 수
         showUserTodaySignUpCnt(context) {
-            const url = '/api/admin/today/signup';
+            return new Promise ((resolve, reject) => {
+                const url = '/api/admin/today/signup';
 
-            axios.get(url)
-            .then(response => {
-                context.commit('setUserTodaySignUpCnt', response.data.signupCnt);
-                // console.log(response.data.signupCnt);
-            })
-            .catch(error => {
-                console.error(error);
-            })
+                axios.get(url)
+                .then(response => {
+                    context.commit('setUserTodaySignUpCnt', response.data.signupCnt);
+                    // console.log(response.data.signupCnt);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                })
+            });
         },
         // 탈퇴 회원 수
         showUserTodayDeleteCnt(context) {
-            const url = '/api/admin/today/delete';
+            return new Promise ((resolve, reject) => {
+                const url = '/api/admin/today/delete';
 
-            axios.get(url)
-            .then(response => {
-                context.commit('setUserTodayDeleteCnt', response.data.deleteCnt);
-            })
-            .catch(error => {
-                console.error(error);
-            })
+                axios.get(url)
+                .then(response => {
+                    context.commit('setUserTodayDeleteCnt', response.data.deleteCnt);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                })
+            });
         },
         // 강퇴 회원 수
         showUserTodayOutCnt(context) {
-            const url = '/api/admin/today/out';
+            return new Promise ((resolve, reject) => {
+                const url = '/api/admin/today/out';
 
-            axios.get(url)
-            .then(response => {
-                context.commit('setUserTodayOutCnt', response.data.outCnt);
-            })
-            .catch(error => {
-                console.error(error);
-            })
+                axios.get(url)
+                .then(response => {
+                    context.commit('setUserTodayOutCnt', response.data.outCnt);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                })
+            });
         },
         // 제재 받은 회원 수
         showUserTodayControlCnt(context) {
-            const url = '/api/admin/today/control';
+            return new Promise ((resolve, reject) => {
+                const url = '/api/admin/today/control';
 
-            axios.get(url)
-            .then(response => {
-                context.commit('setUserTodayControlCnt', response.data.controlCnt);
-            })
-            .catch(error => {
-                console.error(error);
-            })
+                axios.get(url)
+                .then(response => {
+                    context.commit('setUserTodayControlCnt', response.data.controlCnt);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error(error);
+                    return reject();
+                })
+            });
         },
 
         // 제재 기간 적용

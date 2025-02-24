@@ -91,12 +91,12 @@ const searchData = reactive({
     page: store.state.pagination.currentPage,
 });
 
-onBeforeMount(() => {
-    store.dispatch(actionName, searchData);
-    store.dispatch('userManage/showUserTodaySignUpCnt');
-    store.dispatch('userManage/showUserTodayDeleteCnt');
-    store.dispatch('userManage/showUserTodayOutCnt');
-    store.dispatch('userManage/showUserTodayControlCnt');
+onBeforeMount(async () => {
+    await store.dispatch(actionName, searchData);
+    await store.dispatch('userManage/showUserTodaySignUpCnt');
+    await store.dispatch('userManage/showUserTodayDeleteCnt');
+    await store.dispatch('userManage/showUserTodayOutCnt');
+    await store.dispatch('userManage/showUserTodayControlCnt');
 });
 </script>
 
