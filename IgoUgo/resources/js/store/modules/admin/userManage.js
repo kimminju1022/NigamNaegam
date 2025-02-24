@@ -287,6 +287,7 @@ export default {
             .then(response => {
                 context.commit('setUserControlExp', response.data.userControl);
                 alert('적용되었습니다.');
+                window.location.reload();
             })
             .catch(error => {
                 alert('적용 실패하였습니다.');
