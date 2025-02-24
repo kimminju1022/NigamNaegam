@@ -148,7 +148,7 @@ Route::get('/admin/question/done', [AdminQuestionController::class, 'adminQuesti
 Route::get('/admin/question/{id}', [AdminQuestionController::class, 'showQuestionDetail']);
 Route::post('/admin/question/{id}', [AdminQuestionController::class, 'storeQuestion']);
 
-// 게신판관리
+// 게시판관리
 Route::get('admin/review', [BoardReportController::class, 'posts']);
 Route::get('admin/review/{boardid}', [BoardReportController::class, 'postDetail']);
 Route::delete('admin/destroy/{boardid}', [BoardReportController::class, 'destroyPost']);

@@ -32,6 +32,11 @@
         <div class="adminboard-table">
             <div class="adminboard-column">내용</div>
             <div class="adminboard-table-left">
+                <!-- ------------ 경진 start ------------  -->
+                <div class="img-grid">
+                    <img v-for="(image, index) in postDetail[0].board_images" :key="index" :src="image.board_img">
+                </div>
+                <!-- ------------ 경진 end ------------  -->
                 <p class="adminboard-content">{{ postDetail[0].board_content }}</p>
             </div>
         </div>
@@ -64,6 +69,8 @@ onBeforeMount(async() => {
 function deletePost() {
         store.dispatch('adminBoard/destroyReview', searchData);
 }
+
+console.log(postDetail.value);
 
 </script>
 <style scoped>
@@ -125,11 +132,31 @@ function deletePost() {
     grid-template-columns: 1fr 8fr;
     border-top: solid 2px #000;
 }
-.adminboard-table-left {
+/* .adminboard-table-left {
     display: flex;
     border-left: solid 2px #000;
     overflow: scroll;
+} */
+
+/* ------------ 경진 start ------------ */
+.adminboard-table-left {
+    /* display: flex; */
+    border-left: solid 2px #000;
+    margin-top: 10px;
 }
+
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    place-items: center;
+}
+
+.img-grid > img {
+    max-width: 185px;
+    max-height: 185px;
+}
+/* ------------ 경진 end ------------ */
+
 .first-table-aline {
     align-items: center;
 }

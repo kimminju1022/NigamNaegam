@@ -100,8 +100,8 @@ export default {
 
             axios.post(url, null, config)
             .then(response => {
-                window.location.reload();
                 alert('답변 작성 완료');
+                window.location.reload();
             })
             .catch(error => {
                 console.log(error);

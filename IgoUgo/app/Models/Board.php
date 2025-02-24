@@ -87,7 +87,7 @@ class Board extends Model
         return $this->hasMany(BoardImage::class, 'board_id', 'board_id');
     }
 
-    public function reports(){
+    public function board_reports(){
         // return $this->hasMany(BoardReport::class,'board_id', 'user_id', 'board_id', 'user_id'); 
         return $this->hasMany(BoardReport::class,'board_id', 'board_id'); 
     }

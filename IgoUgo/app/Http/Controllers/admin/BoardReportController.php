@@ -61,6 +61,7 @@ class BoardReportController extends Controller
         // Log::debug($bcCode);
         // Log::debug($board_id);
 
+        // ----------------------------- 경진 start ---------------------------------------------
         $boardPostDetail = Board::select(
                                     'boards.board_id', 
                                     'products.contenttypeid',
@@ -69,12 +70,19 @@ class BoardReportController extends Controller
                                     'boards.board_title',
                                     'boards.board_content',
                                     'boards.board_flg',
-                                    DB::raw('count(board_reports.board_id) as report_count'),
+                                    // 'board_images.board_img',
+                                    // DB::raw('count(board_reports.board_id) as report_count'),
                                 )
                                 ->leftJoin('users', 'boards.user_id', "=", "users.user_id") // 유저 연결
-                                ->leftJoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id') // 보드리포트 연결
                                 ->leftJoin('reviews', 'boards.board_id', '=', 'reviews.board_id') // 프로덕트 연결
                                 ->leftJoin('products', 'reviews.product_id', '=', 'products.product_id') // 프로덕트 연결
+                                // ->leftJoin('board_reports', 'boards.board_id', '=', 'board_reports.board_id') // 보드리포트 연결
+                                // ->leftJoin('board_images', 'boards.board_id', '=', 'board_images.board_id') // 이미지 연결
+
+                                // board_reports, board_images는 hasMany라서 relationship 사용
+                                ->with(['board_reports' => function ($query) {
+                                            $query->select(DB::raw('count(board_id) as report_count'));
+                                        }, 'board_images'])
                                 ->where('boards.bc_code', $bcCode)
                                 ->where('boards.board_id', $board_id)
                                 ->groupBy(
@@ -84,9 +92,11 @@ class BoardReportController extends Controller
                                     'boards.created_at',
                                     'boards.board_title',
                                     'boards.board_content',
-                                    'boards.board_flg'
+                                    'boards.board_flg',
+                                    // 'board_images.board_img',
                                 )
                                 ->get();
+        // ----------------------------- 경진 end ---------------------------------------------
         // Log::debug('test');
         $responseData = [
             'success' => true,
